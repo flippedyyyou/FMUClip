@@ -1,0 +1,10 @@
+__pycache__
+retrieval/output/*
+retrieval/mask/*
+output/clip/*
+classification/mask/*
+classification/output/*
+sam3/*
+Df/coco/retain_horse_train.txt
+Df/coco/retain_orange_train.txt
+Df/coco/retain_dog_train.txt

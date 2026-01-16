@@ -1,0 +1,52 @@
+# =========================================================
+#  CLIP Unlearning TTA on Flickr30k
+#  用于 clip_unlearn_policy.py
+# =========================================================
+
+model:
+  arch: clip
+  model_type: ViT-B-16
+
+datasets:
+  flickr30k:
+    vis_processor:
+      train:
+        name: "clip_image_train"
+        image_size: 224
+      eval:
+        name: "clip_image_eval"
+        image_size: 224
+    text_processor:
+      train:
+        name: "blip_caption"
+      eval:
+        name: "blip_caption"
+
+run:
+  task: retrieval
+
+  # ======= Dataloader =======
+  num_workers: 4
+  batch_size_train: 8
+  batch_size_eval: 1
+  test_splits: ["test"]
+
+  # ======= Distributed =======
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: False
+  use_dist_eval_sampler: False
+
+  # ======= Misc =======
+  seed: 42
+  output_dir: "/datanfs4/shenruoyan/FMUClip/output/clip/Retrieval_flickr_unlearn"
+  evaluate: True
+
+  # ======= Unlearning / Reward hyperparams =======
+  # λ1, λ2, γ 在 clip_unlearn_policy.py 的 test_time_tune_split() 中使用
+  lambda_df: 3.0        # Df（遗忘集）的奖励权重
+  lambda_dr: 2.0        # Dr（保留集）的奖励权重
+  drift_coef: 0.05      # 保留集特征保持正则项
+  df_size: 1000          # Df 样本数量上限（与 image-<seed>.txt 匹配）
+  data_type: flickr30k  # 用于读取 Df/flickr30k/image-<seed>.txt
