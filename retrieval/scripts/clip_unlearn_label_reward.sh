@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export CUDA_VISIBLE_DEVICES=5
 
-root=/datanfs4/shenruoyan/FMUClip
+root="."
 code_path=${root}/retrieval
 
 # ========= 通用参数 =========
