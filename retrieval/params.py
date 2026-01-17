@@ -89,6 +89,10 @@ def parse_args():
         default="unlearned_clip",
         help="Subdirectory under --output to place the saved ClipErase checkpoint and metadata",
     )
+
+    parser.add_argument('--forget_train_file', type=str, default='', help='path to the forget train ids file')
+    parser.add_argument('--forget_test_file', type=str, default='', help='path to the forget test ids file')
+
     args = parser.parse_args()
 
     if not os.path.exists(args.output):

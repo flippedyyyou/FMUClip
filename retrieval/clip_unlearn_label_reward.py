@@ -156,7 +156,7 @@ def _load_forget_test_ids(dataset_test_ori, cfg, data_type):
     """
     修改：现在直接使用测试集来加载遗忘集测试集的图片路径。
     """
-    with open(cfg.forget_test_file, 'r') as f:
+    with open(f'Df/flickr30k/forget_horse_test.txt', 'r') as f:
         df_ids = [i.strip() for i in f.readlines() if i.strip()]
 
     test_ids = {_normalize_annotation_id(ann, cfg) for ann in dataset_test_ori.annotation}
@@ -367,6 +367,9 @@ def main():
     print('\n job_ID {}: \n'.format(job_id))
 
     cfg = Config(args)
+    # Config does not include custom CLI args by default.
+    cfg.forget_train_file = args.forget_train_file
+    cfg.forget_test_file = args.forget_test_file
 
     init_distributed_mode(cfg.run_cfg)
     setup_seeds(cfg)
