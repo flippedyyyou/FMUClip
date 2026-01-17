@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-export CUDA_VISIBLE_DEVICES=5
+export CUDA_VISIBLE_DEVICES=2
 
 root="."
 code_path=${root}/retrieval
+
+ruoyan_root="/datanfs4/shenruoyan/FMUClip"
+ruoyan_code_path=${ruoyan_root}/retrieval
 
 # ========= 通用参数 =========
 tta_steps=8
@@ -63,7 +66,7 @@ python ${runfile} \
     --lambda_reward ${lambda_reward} \
     --lambda_uni ${lambda_uni} \
     --max_epoch ${max_epoch} \
-    --sam3_mask_dir ${code_path}/mask/flickr/horse/train \
+    --sam3_mask_dir ${ruoyan_code_path}/mask/flickr/horse/train \
     --sam3_mask_suffix .png \
     --save_unlearned_model \
     --unlearned_model_name clip_unlearned.pt \

@@ -40,7 +40,7 @@ run:
 
   # ======= Misc =======
   seed: 42
-  output_dir: "/datanfs4/shenruoyan/FMUClip/output/clip/Retrieval_flickr_unlearn"
+  output_dir: "output/clip/Retrieval_flickr_unlearn"
   evaluate: True
 
   # ======= Unlearning / Reward hyperparams =======
