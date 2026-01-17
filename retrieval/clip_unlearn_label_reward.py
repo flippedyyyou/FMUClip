@@ -125,7 +125,7 @@ def _centered_adv(scores: torch.Tensor, mode: str) -> torch.Tensor:
     return adv
 
 def _load_forget_train_ids(dataset_train_ori, cfg, data_type):
-    with open(f'/datanfs4/shenruoyan/FMUClip/Df/flickr30k/forget_horse_train.txt', 'r') as f:
+    with open(cfg.forget_train_file, 'r') as f:
         df_ids = [i.strip() for i in f.readlines() if i.strip()]
 
     train_ids = {_normalize_annotation_id(ann, cfg) for ann in dataset_train_ori.annotation}
@@ -156,7 +156,7 @@ def _load_forget_test_ids(dataset_test_ori, cfg, data_type):
     """
     修改：现在直接使用测试集来加载遗忘集测试集的图片路径。
     """
-    with open(f'/datanfs4/shenruoyan/FMUClip/Df/flickr30k/forget_horse_test.txt', 'r') as f:
+    with open(cfg.forget_test_file, 'r') as f:
         df_ids = [i.strip() for i in f.readlines() if i.strip()]
 
     test_ids = {_normalize_annotation_id(ann, cfg) for ann in dataset_test_ori.annotation}
