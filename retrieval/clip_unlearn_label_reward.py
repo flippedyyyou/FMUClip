@@ -305,14 +305,14 @@ def supervised_unlearn_train(
                         )
                         clip_probs = torch.softmax(clip_scores, dim=-1)
                         sample_k = min(reward_model.sample_k, clip_scores.size(1))
-                        topk_probs, indices = torch.topk(clip_probs, sample_k, dim=-1, largest=True)
+                        topk_probs, indices = torch.topk(clip_probs, sample_k, dim=-1, largest=True) 
                         adv = topk_probs.detach()
 
                     sim_i2t_syn_u, sim_t2i_syn_u, img_syn_u, txt_syn_u = _get_logits_and_feats(
                         model, syn_img, txt_dr
                     )
-                    rep_output = torch.repeat_interleave(sim_i2t_syn_u, sample_k, dim=0)
-                    text_index = indices.flatten()
+                    rep_output = torch.repeat_interleave(sim_i2t_syn_u, sample_k, dim=0) # [B*sample_k, N_text]
+                    text_index = indices.flatten() # [B*sample_k]
                     ce = F.cross_entropy(rep_output, text_index, reduction="none").view(img_df.size(0), sample_k)
                     loss_syn = (adv * ce).mean()
 
