@@ -1,0 +1,15 @@
+torch==2.9.0
+tqdm
+pandas
+omegaconf
+iopath
+timm
+decord
+webdataset
+opencv-python
+transformers==4.55.4
+fairscale
+einops
+spacy
+pycocoevalcap
+ftfy
