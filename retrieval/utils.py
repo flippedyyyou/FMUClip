@@ -26,8 +26,6 @@ except Exception:
     lavis_tokenize = None
 
 
-
-
 def _tokenize_texts(texts, context_length=77):
     """把 list[str] -> LongTensor token ids；若已是 Tensor 则原样返回。"""
     if isinstance(texts, torch.Tensor):
@@ -37,8 +35,10 @@ def _tokenize_texts(texts, context_length=77):
             return openai_clip.tokenize(texts, context_length=context_length)
         if lavis_tokenize is not None:
             return lavis_tokenize(texts, context_length=context_length)
-        raise RuntimeError("No tokenizer available: install `clip` or ensure LAVIS tokenizer is importable.")
+        raise RuntimeError(
+            "No tokenizer available: install `clip` or ensure LAVIS tokenizer is importable.")
     raise TypeError(f"Unsupported texts type: {type(texts)}")
+
 
 def _to_token_ids(texts, device):
     """
@@ -77,7 +77,8 @@ def _to_token_ids(texts, device):
         return clip_tokenize([texts]).to(device)
 
     # 4) 其它类型直接报错
-    raise TypeError(f"Unsupported text type: {type(texts)}. Expect list[str] or LongTensor.")
+    raise TypeError(
+        f"Unsupported text type: {type(texts)}. Expect list[str] or LongTensor.")
 
 
 def _resolve_clip_model(model):
@@ -129,12 +130,12 @@ def _normalize_annotation_id(ann, cfg):
     )
 
 
-
 def _load_forget_train_ids(dataset_train_ori, cfg, data_type):
     with open(cfg.forget_train_file, 'r') as f:
         df_ids = [i.strip() for i in f.readlines() if i.strip()]
 
-    train_ids = {_normalize_annotation_id(ann, cfg) for ann in dataset_train_ori.annotation}
+    train_ids = {_normalize_annotation_id(
+        ann, cfg) for ann in dataset_train_ori.annotation}
 
     filtered_ids = [img_id for img_id in df_ids if img_id in train_ids]
     ignored = sorted(set(df_ids) - set(filtered_ids))
@@ -148,7 +149,8 @@ def _load_forget_train_ids(dataset_train_ori, cfg, data_type):
         )
 
     if not filtered_ids:
-        raise ValueError("No forget images remaining after filtering against the training split.")
+        raise ValueError(
+            "No forget images remaining after filtering against the training split.")
 
     logging.info(
         "Loaded %d forget images from list (requested %d).",
@@ -158,6 +160,7 @@ def _load_forget_train_ids(dataset_train_ori, cfg, data_type):
 
     return filtered_ids, set(filtered_ids), train_ids
 
+
 def _load_forget_test_ids(dataset_test_ori, cfg, data_type):
     """
     修改：现在直接使用测试集来加载遗忘集测试集的图片路径。
@@ -165,7 +168,8 @@ def _load_forget_test_ids(dataset_test_ori, cfg, data_type):
     with open(cfg.forget_test_file, 'r') as f:
         df_ids = [i.strip() for i in f.readlines() if i.strip()]
 
-    test_ids = {_normalize_annotation_id(ann, cfg) for ann in dataset_test_ori.annotation}
+    test_ids = {_normalize_annotation_id(ann, cfg)
+                for ann in dataset_test_ori.annotation}
 
     # 过滤遗忘集图片，只保留那些在测试集中的图片
     filtered_ids = [img_id for img_id in df_ids if img_id in test_ids]
@@ -180,7 +184,8 @@ def _load_forget_test_ids(dataset_test_ori, cfg, data_type):
         )
 
     if not filtered_ids:
-        raise ValueError("No forget images remaining after filtering against the test split.")
+        raise ValueError(
+            "No forget images remaining after filtering against the test split.")
 
     logging.info(
         "Loaded %d forget images from list (requested %d).",
@@ -191,11 +196,10 @@ def _load_forget_test_ids(dataset_test_ori, cfg, data_type):
     return filtered_ids, set(filtered_ids), test_ids
 
 
-
-
 def prepare_dr_data(dataset_train_ori, cfg, data_type, sample_size=None, df_ids_set=None):
     if df_ids_set is None:
-        _, df_ids_set, _ = _load_forget_train_ids(dataset_train_ori, cfg, data_type)
+        _, df_ids_set, _ = _load_forget_train_ids(
+            dataset_train_ori, cfg, data_type)
 
     dataset = copy.deepcopy(dataset_train_ori)
 
@@ -205,7 +209,8 @@ def prepare_dr_data(dataset_train_ori, cfg, data_type, sample_size=None, df_ids_
         ]
 
     elif cfg.run_cfg.task == 'vqa':
-        dataset.annotation = [ann for ann in dataset.annotation if ann['image'] not in df_ids_set]
+        dataset.annotation = [
+            ann for ann in dataset.annotation if ann['image'] not in df_ids_set]
         dataset._add_instance_ids()
 
     elif cfg.model_cfg.model_type == 'nlvr':
@@ -215,7 +220,8 @@ def prepare_dr_data(dataset_train_ori, cfg, data_type, sample_size=None, df_ids_
         dataset._add_instance_ids()
 
     elif cfg.model_cfg.model_type == 've':
-        dataset.annotation = [ann for ann in dataset.annotation if ann['image'] not in df_ids_set]
+        dataset.annotation = [
+            ann for ann in dataset.annotation if ann['image'] not in df_ids_set]
         dataset._add_instance_ids()
 
     # assert num_image_before_removal == num_image_after_removal + cfg.run_cfg.df_size
@@ -227,9 +233,11 @@ def prepare_dr_data(dataset_train_ori, cfg, data_type, sample_size=None, df_ids_
     # 返回处理后的数据集
     return dataset
 
+
 def prepare_df_data(dataset_train_ori, cfg, data_type, df_ids=None, df_ids_set=None, max_df_size=1000):
     if df_ids is None or df_ids_set is None:
-        df_ids, df_ids_set, _ = _load_forget_train_ids(dataset_train_ori, cfg, data_type)
+        df_ids, df_ids_set, _ = _load_forget_train_ids(
+            dataset_train_ori, cfg, data_type)
 
     dataset = copy.deepcopy(dataset_train_ori)
 
@@ -244,7 +252,8 @@ def prepare_df_data(dataset_train_ori, cfg, data_type, df_ids=None, df_ids_set=N
         ]
 
     elif cfg.run_cfg.task == 'vqa':
-        dataset.annotation = [ann for ann in dataset.annotation if ann['image'] in df_ids_set]
+        dataset.annotation = [
+            ann for ann in dataset.annotation if ann['image'] in df_ids_set]
         dataset._add_instance_ids()
 
     elif cfg.model_cfg.model_type == 'nlvr':
@@ -254,7 +263,8 @@ def prepare_df_data(dataset_train_ori, cfg, data_type, df_ids=None, df_ids_set=N
         dataset._add_instance_ids()
 
     elif cfg.model_cfg.model_type == 've':
-        dataset.annotation = [ann for ann in dataset.annotation if ann['image'] in df_ids_set]
+        dataset.annotation = [
+            ann for ann in dataset.annotation if ann['image'] in df_ids_set]
         dataset._add_instance_ids()
 
     # assert num_image_after_removal == cfg.run_cfg.df_size, f"{num_image_after_removal}, {cfg.run_cfg.df_size}"
@@ -271,7 +281,8 @@ def prepare_df_data_for_test(dataset_train_ori, dataset_test_ori, cfg, data_type
     准备遗忘集的测试数据，设置df大小上限，确保每次实验使用固定种子。
     """
     if df_ids is None or df_ids_set is None:
-        df_ids, df_ids_set, _ = _load_forget_test_ids(dataset_test_ori, cfg, data_type)
+        df_ids, df_ids_set, _ = _load_forget_test_ids(
+            dataset_test_ori, cfg, data_type)
 
     if cfg.run_cfg.task == 'retrieval':
         df_for_test = copy.deepcopy(dataset_test_ori)
@@ -280,7 +291,8 @@ def prepare_df_data_for_test(dataset_train_ori, dataset_test_ori, cfg, data_type
         ]
 
         test_anno = pd.DataFrame(annotation).sort_values(by='image')
-        test_anno = test_anno.groupby(['image'])['caption'].apply(list).reset_index()
+        test_anno = test_anno.groupby(
+            ['image'])['caption'].apply(list).reset_index()
         test_anno = test_anno.to_dict(orient='records')
 
         # >>> 新增：检索分支支持 sample_size 下采样，避免 OOM <<<
@@ -291,7 +303,6 @@ def prepare_df_data_for_test(dataset_train_ori, dataset_test_ori, cfg, data_type
         # <<< 新增结束 >>>
 
         df_for_test.annotation = test_anno
-
 
         text = []
         image = []
@@ -322,7 +333,8 @@ def prepare_df_data_for_test(dataset_train_ori, dataset_test_ori, cfg, data_type
         # Retrieval train and test data are same. To use VQA test data for Df, copy the ori train data
         df_for_test = copy.deepcopy(dataset_train_ori)
 
-        df_for_test.annotation = [ann for ann in df_for_test.annotation if ann['image'] in df_ids_set]
+        df_for_test.annotation = [
+            ann for ann in df_for_test.annotation if ann['image'] in df_ids_set]
         df_for_test._add_instance_ids()
 
     # NLVR train and test data are different. To use NLVR test data for Df, copy the ori test data
@@ -337,7 +349,8 @@ def prepare_df_data_for_test(dataset_train_ori, dataset_test_ori, cfg, data_type
         if max_df_size is not None:
             anno_id = np.arange(len(df_for_test.annotation))
             indices = np.random.choice(anno_id, max_df_size, replace=False)
-            df_for_test.annotation = [df_for_test.annotation[i] for i in indices]
+            df_for_test.annotation = [
+                df_for_test.annotation[i] for i in indices]
 
         df_for_test._add_instance_ids()
 
@@ -345,7 +358,8 @@ def prepare_df_data_for_test(dataset_train_ori, dataset_test_ori, cfg, data_type
         df_for_test = copy.deepcopy(dataset_test_ori)
         df_for_test.annotation = copy.deepcopy(dataset_train_ori.annotation)
 
-        df_for_test.annotation = [ann for ann in df_for_test.annotation if ann['image'] in df_ids_set]
+        df_for_test.annotation = [
+            ann for ann in df_for_test.annotation if ann['image'] in df_ids_set]
         df_for_test._add_instance_ids()
 
     return df_for_test
@@ -360,10 +374,11 @@ def prepare_dr_data_for_test(
     df_ids_set=None,
 ):
     if df_ids_set is None:
-        _, df_ids_set, _ = _load_forget_test_ids(dataset_test_ori, cfg, data_type)
+        _, df_ids_set, _ = _load_forget_test_ids(
+            dataset_test_ori, cfg, data_type)
 
     # 使用固定的随机种子，确保每次划分的数据一致
-    np.random.seed(cfg.run_cfg.seed) 
+    np.random.seed(cfg.run_cfg.seed)
 
     if cfg.run_cfg.task == 'retrieval':
         dr_for_test = copy.deepcopy(dataset_test_ori)
@@ -372,7 +387,8 @@ def prepare_dr_data_for_test(
         ]
 
         test_anno = pd.DataFrame(annotation).sort_values(by='image')
-        test_anno = test_anno.groupby(['image'])['caption'].apply(list).reset_index()
+        test_anno = test_anno.groupby(
+            ['image'])['caption'].apply(list).reset_index()
         test_anno = test_anno.to_dict(orient='records')
 
         # >>> 新增：检索分支支持 sample_size 下采样，避免 OOM <<<
@@ -383,7 +399,6 @@ def prepare_dr_data_for_test(
         # <<< 新增结束 >>>
 
         dr_for_test.annotation = test_anno
-
 
         text = []
         image = []
@@ -414,7 +429,8 @@ def prepare_dr_data_for_test(
         # Retrieval train and test data are same. To use VQA test data for Df, copy the ori train data
         dr_for_test = copy.deepcopy(dataset_train_ori)
 
-        dr_for_test.annotation = [ann for ann in dr_for_test.annotation if ann['image'] not in df_ids_set]
+        dr_for_test.annotation = [
+            ann for ann in dr_for_test.annotation if ann['image'] not in df_ids_set]
         dr_for_test._add_instance_ids()
 
     # NLVR train and test data are different. To use NLVR test data for Df, copy the ori test data
@@ -429,7 +445,8 @@ def prepare_dr_data_for_test(
         if sample_size is not None:
             anno_id = np.arange(len(dr_for_test.annotation))
             indices = np.random.choice(anno_id, sample_size, replace=False)
-            dr_for_test.annotation = [dr_for_test.annotation[i] for i in indices]
+            dr_for_test.annotation = [
+                dr_for_test.annotation[i] for i in indices]
 
         dr_for_test._add_instance_ids()
 
@@ -437,7 +454,8 @@ def prepare_dr_data_for_test(
         dr_for_test = copy.deepcopy(dataset_test_ori)
         dr_for_test.annotation = copy.deepcopy(dataset_train_ori.annotation)
 
-        dr_for_test.annotation = [ann for ann in dr_for_test.annotation if ann['image'] not in df_ids_set]
+        dr_for_test.annotation = [
+            ann for ann in dr_for_test.annotation if ann['image'] not in df_ids_set]
         dr_for_test._add_instance_ids()
 
     return dr_for_test
@@ -455,7 +473,8 @@ def _get_logits_and_feats(model, images, texts, *, return_feats=True):
     img_feat = img_feat / img_feat.norm(dim=-1, keepdim=True)
 
     # --- text features (always LongTensor token ids) ---
-    text_tokens = _to_token_ids(texts, device)             # [B, ctx] LongTensor
+    # [B, ctx] LongTensor
+    text_tokens = _to_token_ids(texts, device)
     txt_feat = model.encode_text(text_tokens)              # [B, D]
     txt_feat = txt_feat / txt_feat.norm(dim=-1, keepdim=True)
 
@@ -475,11 +494,15 @@ def _get_logits_and_feats(model, images, texts, *, return_feats=True):
     else:
         return sim_i2t, sim_t2i
 
+
 def _mask_to_patch_attention(mask_tensor: torch.Tensor, grid_size: int):
     mask_tensor = mask_tensor.unsqueeze(1)
-    mask_resized = F.interpolate(mask_tensor, size=(grid_size, grid_size), mode="nearest")
-    patch_mask = (mask_resized.squeeze(1) > 0.3).float() # 掩码值大于 0.3 的区域设为 1（前景），小于 0.3 的区域设为 0（背景）
-    return patch_mask.flatten(1) # [B, N]
+    mask_resized = F.interpolate(mask_tensor, size=(
+        grid_size, grid_size), mode="nearest")
+    # 掩码值大于 0.3 的区域设为 1（前景），小于 0.3 的区域设为 0（背景）
+    patch_mask = (mask_resized.squeeze(1) > 0.3).float()
+    return patch_mask.flatten(1)  # [B, N]
+
 
 def _centered_adv(scores: torch.Tensor, mode: str) -> torch.Tensor:
     """
@@ -497,6 +520,7 @@ def _centered_adv(scores: torch.Tensor, mode: str) -> torch.Tensor:
         adv = (scores - mean) / std
     return adv
 
+
 def _select_neg_texts_by_minsim(teacher, images, text_list):
     """
     给一批图像与其对应文本，使用 teacher 的 i2t 相似度矩阵，
@@ -505,16 +529,19 @@ def _select_neg_texts_by_minsim(teacher, images, text_list):
     """
     with torch.no_grad():
         # 先用 teacher 计算这批 (img, text_list) 的全量相似度矩阵
-        sim_i2t_t, _, _, _ = _get_logits_and_feats(teacher, images, text_list)  # 期望形状 [B, B]
+        sim_i2t_t, _, _, _ = _get_logits_and_feats(
+            teacher, images, text_list)  # 期望形状 [B, B]
         # 屏蔽对角：防止选到本来的正例
         B = sim_i2t_t.size(0)
-        mask = torch.eye(B, device=sim_i2t_t.device, dtype=sim_i2t_t.dtype) * 1e9
+        mask = torch.eye(B, device=sim_i2t_t.device,
+                         dtype=sim_i2t_t.dtype) * 1e9
         sim_masked = sim_i2t_t + mask
         # 每行 argmin，得到每张图像对应的“最不相似”的文本索引
         neg_idx = torch.argmin(sim_masked, dim=1)   # [B]
     neg_idx_list = neg_idx.detach().cpu().tolist()
     neg_texts = [text_list[j] for j in neg_idx_list]
     return neg_texts
+
 
 def _load_sam3_masks(image_paths, mask_dir, mask_suffix, target_size):
     masks = []
@@ -525,7 +552,8 @@ def _load_sam3_masks(image_paths, mask_dir, mask_suffix, target_size):
             raise FileNotFoundError(f"SAM3 mask not found: {mask_path}")
         mask = Image.open(mask_path).convert("L")
         if target_size is not None:
-            mask = mask.resize((target_size, target_size), resample=Image.NEAREST)
+            mask = mask.resize((target_size, target_size),
+                               resample=Image.NEAREST)
         mask_tensor = torch.from_numpy(np.array(mask)).float() / 255.0
         masks.append(mask_tensor)
     return torch.stack(masks, dim=0)
@@ -537,7 +565,7 @@ def tokenize_all_text(texts, model, text_bs=128):
     text_ids = []
     i = 0
     while i < num_text:
-        text = texts[i : min(num_text, i + text_bs)]
+        text = texts[i: min(num_text, i + text_bs)]
         input_ids = tokenize(text).to(model.device)
         text_ids.append(input_ids)
         i += text_bs
@@ -551,12 +579,13 @@ def get_all_text_embeds(text_inputs, model, text_bs=128):
     text_embeds = []
     i = 0
     while i < text_inputs.shape[0]:
-        batch = text_inputs[i : min(text_inputs.shape[0], i + text_bs)]
+        batch = text_inputs[i: min(text_inputs.shape[0], i + text_bs)]
         with torch.no_grad():
             # LAVIS-CLIP: 直接传 token ids 给 encode_text
             text_features = model.encode_text(batch)           # [B, D]
             # 归一化，和 image/text 特征的余弦相似度匹配
-            text_features = text_features / text_features.norm(dim=-1, keepdim=True)
+            text_features = text_features / \
+                text_features.norm(dim=-1, keepdim=True)
             text_embeds.append(text_features)
         i += text_bs
 
@@ -578,7 +607,8 @@ def get_all_image_embeds(data_loader, model):
 
 @torch.no_grad()
 def eval_split_no_tta(loader, model, task="i2t", text_bs=128):
-    print(f"Evaluating with {len(loader.dataset.image), len(loader.dataset.text)} samples.")
+    print(
+        f"Evaluating with {len(loader.dataset.image), len(loader.dataset.text)} samples.")
     """
     用“当前权重”一次性评测一个 split（不做任何更新）：
     - 评分矩阵放 CPU float16 + pinned（省显存，几乎不降速）
@@ -592,20 +622,24 @@ def eval_split_no_tta(loader, model, task="i2t", text_bs=128):
         # 1) 缓存全部文本特征 → CPU half
         with torch.amp.autocast('cuda'):
             text_ids = tokenize_all_text(loader.dataset.text, model, text_bs)
-            text_embeds = get_all_text_embeds(text_ids, model, text_bs)  # [N_t, D]
+            text_embeds = get_all_text_embeds(
+                text_ids, model, text_bs)  # [N_t, D]
         text_embeds = text_embeds.half().cpu().pin_memory()
 
         # 2) 评分矩阵（CPU half + pinned）
         num_img, num_txt = len(loader.dataset.image), len(loader.dataset.text)
-        scores = torch.full((num_img, num_txt), -100.0, dtype=torch.float16, device='cpu').pin_memory()
+        scores = torch.full((num_img, num_txt), -100.0,
+                            dtype=torch.float16, device='cpu').pin_memory()
         # 3) 逐图像前向并写入该行
         for i, samples in enumerate(tqdm(loader, total=len(loader), ncols=150, desc="EVAL I2T")):
             image = samples["image"].to(device, non_blocking=True)
             with torch.amp.autocast('cuda'):
                 img_feat = model.encode_image(image)             # [B, D]
                 img_feat = img_feat / img_feat.norm(dim=-1, keepdim=True)
-                logits = logit_scale * (img_feat @ text_embeds.to(device).T)      # [1,N_t]
-            scores[i] = logits.squeeze(0).to('cpu', dtype=torch.float16, non_blocking=True)
+                logits = logit_scale * \
+                    (img_feat @ text_embeds.to(device).T)      # [1,N_t]
+            scores[i] = logits.squeeze(0).to(
+                'cpu', dtype=torch.float16, non_blocking=True)
         return scores.numpy()
 
     else:  # task == "t2i"
@@ -616,16 +650,18 @@ def eval_split_no_tta(loader, model, task="i2t", text_bs=128):
 
         # 2) 评分矩阵（CPU half + pinned）
         num_txt, num_img = len(loader.dataset.text), len(loader.dataset.image)
-        scores = torch.full((num_txt, num_img), -100.0, dtype=torch.float16, device='cpu').pin_memory()
+        scores = torch.full((num_txt, num_img), -100.0,
+                            dtype=torch.float16, device='cpu').pin_memory()
 
         # 3) 逐文本前向并写入该行
         for i, samples in enumerate(tqdm(loader, total=len(loader), ncols=150, desc="EVAL T2I")):
             raw_text = samples.get("text", None)
             tokenized_prompts = samples.get("tokenized_prompts", None)
             if tokenized_prompts is not None:
-                tokenized_prompts = tokenized_prompts.to(device, non_blocking=True)
+                tokenized_prompts = tokenized_prompts.to(
+                    device, non_blocking=True)
             with torch.amp.autocast('cuda'):
-            # 假设这里是在遍历 text loader / 或者在 image loader 外面 encode 全部文本
+                # 假设这里是在遍历 text loader / 或者在 image loader 外面 encode 全部文本
                 for batch in loader:  # 具体变量名按你原来的来
                     # 1) 拿到 raw text（和你 train 里一样的写法）
                     raw_text = batch.get("text", batch.get("text_input", None))
@@ -637,59 +673,64 @@ def eval_split_no_tta(loader, model, task="i2t", text_bs=128):
                         texts = [raw_text]
 
                     # 2) 用你已经写好的 _to_token_ids，绝不再出现 None
-                    tokenized_prompts = _to_token_ids(texts, device)   # -> LongTensor [B, ctx]
+                    tokenized_prompts = _to_token_ids(
+                        texts, device)   # -> LongTensor [B, ctx]
 
                     # 3) encode_text
                     with torch.amp.autocast("cuda", enabled=True):
-                        txt_feat = model.encode_text(tokenized_prompts)    # [B, D]
+                        txt_feat = model.encode_text(
+                            tokenized_prompts)    # [B, D]
 
                     # 4) 正常收集 text 特征
                     txt_feat = txt_feat / txt_feat.norm(dim=-1, keepdim=True)
                 # 归一化，和 image/text 特征的余弦相似度匹配
                 txt_feat = txt_feat / txt_feat.norm(dim=-1, keepdim=True)
-                logits = logit_scale * (txt_feat @ image_embeds.to(device).T)                            # [1,N_i]
-            scores[i] = logits.squeeze(0).to('cpu', dtype=torch.float16, non_blocking=True)
+                # [1,N_i]
+                logits = logit_scale * (txt_feat @ image_embeds.to(device).T)
+            scores[i] = logits.squeeze(0).to(
+                'cpu', dtype=torch.float16, non_blocking=True)
         return scores.numpy()
-
 
 
 def _select_neg_texts_by_similarity_range(teacher, images, text_list, lower_percent=20, upper_percent=50):
     """
     给一批图像与其对应文本，使用 teacher 的 i2t 相似度矩阵，
     对每张图像选择相似度在指定百分比范围内的文本作为负样本（并屏蔽对角，避免选到自身正样本）。
-    
+
     参数:
     - teacher: 训练好的教师模型
     - images: 当前批次的图像（Tensor）
     - text_list: 文本列表（所有文本）
     - lower_percent: 选择相似度最低的前百分之多少（例如20表示前20%）
     - upper_percent: 选择相似度最高的前百分之多少（例如50表示前50%）
-    
+
     返回:
     - neg_texts: 选择的负样本文本列表
     """
     with torch.no_grad():
         # 计算图像与文本之间的相似度矩阵 [B, B]
         sim_i2t_t, _, _, _ = _get_logits_and_feats(teacher, images, text_list)
-        
+
         # 屏蔽对角：防止选到本来的正例
         B = sim_i2t_t.size(0)
-        mask = torch.eye(B, device=sim_i2t_t.device, dtype=sim_i2t_t.dtype) * 1e9
+        mask = torch.eye(B, device=sim_i2t_t.device,
+                         dtype=sim_i2t_t.dtype) * 1e9
         sim_masked = sim_i2t_t + mask
-        
+
         # 将相似度矩阵展平并进行排序
         sim_scores = sim_masked.view(-1)  # 展平后的相似度分数
         _, sorted_indices = torch.sort(sim_scores, descending=True)  # 从高到低排序
-        
+
         # 调试输出，查看相似度的排序
         if len(sorted_indices) == 0:
-            logging.warning("Sorted indices are empty. Check the similarity matrix.")
-        
+            logging.warning(
+                "Sorted indices are empty. Check the similarity matrix.")
+
         # 计算需要选择的样本范围
         num_samples = sim_masked.size(0)
         lower_idx = int(num_samples * lower_percent / 100)
         upper_idx = int(num_samples * upper_percent / 100)
-        
+
         # 调试输出，查看选定的范围
         # logging.info(f"Selecting samples from index {lower_idx} to {upper_idx} of {num_samples} samples.")
 
@@ -698,20 +739,24 @@ def _select_neg_texts_by_similarity_range(teacher, images, text_list, lower_perc
 
         # 如果选择的范围为空，记录警告
         if len(selected_indices) == 0:
-            logging.warning(f"No samples selected in the range {lower_percent}% to {upper_percent}%.")
-        
+            logging.warning(
+                f"No samples selected in the range {lower_percent}% to {upper_percent}%.")
+
         # 将选择出的索引转换为图像-文本索引
-        selected_image_indices = [idx // num_samples for idx in selected_indices]
+        selected_image_indices = [
+            idx // num_samples for idx in selected_indices]
         selected_text_indices = [idx % num_samples for idx in selected_indices]
-        
+
         # 获取相应的文本列表
         neg_texts = [text_list[j] for j in selected_text_indices]
-        
+
         # 如果返回的负样本列表为空，记录警告
         if len(neg_texts) == 0:
-            logging.warning("No negative texts selected. The returned list is empty.")
-        
+            logging.warning(
+                "No negative texts selected. The returned list is empty.")
+
     return neg_texts
+
 
 def _dump_detailed_topk_results(scores_np, loader, task, out_file, k=10):
     """
@@ -725,23 +770,23 @@ def _dump_detailed_topk_results(scores_np, loader, task, out_file, k=10):
     os.makedirs(os.path.dirname(out_file), exist_ok=True)
     import json
     import os
-    
+
     K = max(1, k)
     scores = torch.from_numpy(scores_np)  # [N_query, N_candidate]
     dataset = loader.dataset
-    
+
     with open(out_file, "w", encoding="utf-8") as f:
         for i in range(scores.size(0)):
             row = scores[i]
             v, idx = torch.topk(row, min(K, row.numel()))
-            
+
             result_entry = {}
-            
+
             if task == "i2t":
                 # 查询是图像，候选是文本
                 img_path = dataset.image[i]
                 query_basename = os.path.basename(img_path)
-                
+
                 # 1. 提取 Top-K 文本内容
                 topk_items = []
                 for jj, sc in zip(idx.tolist(), v.tolist()):
@@ -750,21 +795,21 @@ def _dump_detailed_topk_results(scores_np, loader, task, out_file, k=10):
                         "score": float(sc),
                         "content": dataset.text[jj]
                     })
-                
+
                 # 2. 提取真值 (通常是 5 个 captions)
                 gt_indices = dataset.img2txt.get(i, [])
                 gt_contents = [dataset.text[gi] for gi in gt_indices]
-                
+
                 result_entry = {
                     "image_basename": query_basename,
                     "top10_retrieved_texts": topk_items,
                     "ground_truth_captions": gt_contents
                 }
-                
+
             else:  # task == "t2i"
                 # 查询是文本，候选是图像
                 query_text = dataset.text[i]
-                
+
                 # 1. 提取 Top-K 图像文件名
                 topk_items = []
                 for jj, sc in zip(idx.tolist(), v.tolist()):
@@ -773,17 +818,18 @@ def _dump_detailed_topk_results(scores_np, loader, task, out_file, k=10):
                         "score": float(sc),
                         "image_basename": os.path.basename(dataset.image[jj])
                     })
-                
+
                 # 2. 提取真值图像
                 gt_img_idx = dataset.txt2img.get(i, None)
-                gt_basename = os.path.basename(dataset.image[gt_img_idx]) if gt_img_idx is not None else "None"
-                
+                gt_basename = os.path.basename(
+                    dataset.image[gt_img_idx]) if gt_img_idx is not None else "None"
+
                 result_entry = {
                     "query_text": query_text,
                     "top10_retrieved_images": topk_items,
                     "ground_truth_image": gt_basename
                 }
-            
+
             f.write(json.dumps(result_entry, ensure_ascii=False) + "\n")
-            
+
     logging.info(f"[Detailed TopK] Saved results to {out_file}")

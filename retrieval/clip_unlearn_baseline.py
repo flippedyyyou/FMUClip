@@ -1,4 +1,20 @@
 # coding=utf-8
+from utils import (
+    _tokenize_texts,
+    _select_neg_texts_by_minsim,
+    _resolve_clip_model,
+    _save_unlearned_checkpoint,
+    prepare_dr_data,
+    prepare_df_data,
+    prepare_df_data_for_test,
+    prepare_dr_data_for_test,
+    _get_logits_and_feats,
+    _load_forget_train_ids,
+    _load_forget_test_ids,
+    eval_split_no_tta,
+    _select_neg_texts_by_similarity_range,
+    _dump_detailed_topk_results
+)
 import contextlib
 import math
 import os
@@ -16,7 +32,6 @@ import torch.nn.functional as F
 import numpy as np
 import pandas as pd
 import torch.backends.cudnn as cudnn
-
 
 
 import lavis.tasks as tasks
@@ -44,29 +59,16 @@ _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 if _CURRENT_DIR not in sys.path:
     sys.path.insert(0, _CURRENT_DIR)
 
-from utils import (
-    _tokenize_texts,
-    _select_neg_texts_by_minsim,
-    _resolve_clip_model,
-    _save_unlearned_checkpoint,
-    prepare_dr_data,
-    prepare_df_data,
-    prepare_df_data_for_test,
-    prepare_dr_data_for_test,
-    _get_logits_and_feats,
-    _load_forget_train_ids,
-    _load_forget_test_ids,
-    eval_split_no_tta,
-    _select_neg_texts_by_similarity_range,
-    _dump_detailed_topk_results
-)
 
 # 读取图片路径
+
 def load_image_paths(file_path):
     with open(file_path, 'r') as f:
         return [line.strip() for line in f.readlines()]
 
 # 准备自定义数据集
+
+
 def prepare_custom_dataset(image_paths, caption_data):
     dataset = []
     for img_path in image_paths:
@@ -75,33 +77,36 @@ def prepare_custom_dataset(image_paths, caption_data):
     return dataset
 
 
-
-
 def _is_hf_clip(model):
     # HuggingFace Transformers: CLIPModel
     return hasattr(model, "get_image_features") and hasattr(model, "get_text_features")
+
 
 def _is_openai_clip(model):
     # openai/clip: has encode_image/encode_text and a .logit_scale Parameter
     return hasattr(model, "encode_image") and hasattr(model, "encode_text") and hasattr(model, "logit_scale")
 
+
 def _is_open_clip(model):
     # open_clip-pytorch: encode_image/encode_text 且通常也有 logit_scale
     return hasattr(model, "encode_image") and hasattr(model, "encode_text")
 
+
 def _encode_image(model, images: torch.Tensor):
-     feats = model.encode_image(images)
-     feats = feats / feats.norm(dim=-1, keepdim=True)
-     return feats
+    feats = model.encode_image(images)
+    feats = feats / feats.norm(dim=-1, keepdim=True)
+    return feats
+
 
 def _encode_text(model, text_tokens: torch.Tensor):
-     # 新版：显式要求传入 LongTensor 的 token ids（batch, seq_len）
-     # 兼容类型与设备
-     if not isinstance(text_tokens, torch.Tensor):
-         raise TypeError("text_tokens 必须是 Tensor（'text_input'），而不是 list[str]")
-     feats = model.encode_text(text_tokens)
-     feats = feats / feats.norm(dim=-1, keepdim=True)
-     return feats
+    # 新版：显式要求传入 LongTensor 的 token ids（batch, seq_len）
+    # 兼容类型与设备
+    if not isinstance(text_tokens, torch.Tensor):
+        raise TypeError("text_tokens 必须是 Tensor（'text_input'），而不是 list[str]")
+    feats = model.encode_text(text_tokens)
+    feats = feats / feats.norm(dim=-1, keepdim=True)
+    return feats
+
 
 def _get_logit_scale(model):
     # HF: model.logit_scale；openai/clip & open_clip: 通常也是 model.logit_scale
@@ -118,14 +123,15 @@ def _get_logit_scale(model):
     return ls.exp() if torch.is_tensor(ls) or isinstance(ls, torch.nn.Parameter) else torch.tensor(ls).exp()
 
 
-
 def _encode_image_patches(model, images: torch.Tensor):
     clip_model = _resolve_clip_model(model)
     if not hasattr(clip_model, "visual"):
-        raise AttributeError("CLIP model does not expose a visual encoder for patch extraction.")
+        raise AttributeError(
+            "CLIP model does not expose a visual encoder for patch extraction.")
     visual = clip_model.visual
     if not hasattr(visual, "conv1"):
-        raise AttributeError("Visual encoder does not expose patch embeddings.")
+        raise AttributeError(
+            "Visual encoder does not expose patch embeddings.")
 
     x = visual.conv1(images)
     grid = x.shape[-1]
@@ -155,14 +161,13 @@ def _encode_image_patches(model, images: torch.Tensor):
     return patch_feats, grid
 
 
-
-
-
 def _mask_to_patch_attention(mask_tensor: torch.Tensor, grid_size: int):
     mask_tensor = mask_tensor.unsqueeze(1)
-    mask_resized = F.interpolate(mask_tensor, size=(grid_size, grid_size), mode="nearest")
+    mask_resized = F.interpolate(mask_tensor, size=(
+        grid_size, grid_size), mode="nearest")
     patch_mask = (mask_resized.squeeze(1) > 0.5).float()
     return patch_mask.flatten(1)
+
 
 @torch.no_grad()
 def _frozen_init_image_feats(model, images):
@@ -173,14 +178,17 @@ def _frozen_init_image_feats(model, images):
     feats = model.get_image_features(images)
     return feats.detach()
 
+
 @torch.no_grad()
 def _frozen_init_text_feats(model, text=None, tokenized_prompts=None):
     """
     取当前 initial_state 的文本特征，用于 Dr 漂移约束（只在文本侧 TTA 用）。
     """
     model.eval()
-    feats = model.get_text_features(text=text, tokenized_prompts=tokenized_prompts)
+    feats = model.get_text_features(
+        text=text, tokenized_prompts=tokenized_prompts)
     return feats.detach()
+
 
 def _fmt_topk_rows(indices: torch.Tensor, scores: torch.Tensor, mapper):
     """
@@ -194,7 +202,6 @@ def _fmt_topk_rows(indices: torch.Tensor, scores: torch.Tensor, mapper):
         content = mapper(idx)
         lines.append(f"{r:>2}. id={idx:<6} score={sc:.4f}  {content}")
     return "\n".join(lines)
-
 
 
 def _maybe_to_device(batch, device):
@@ -256,8 +263,6 @@ def _resolve_text_inputs(dataset, index, samples, device):
     return raw_text, tokenized
 
 
-
-
 # def _dump_topk_results(scores_np, loader, task, out_file, k=10):
 #     """
 #     将评测阶段的 score 矩阵导出为 JSONL：
@@ -305,13 +310,16 @@ def supervised_unlearn_train(
     mse = nn.MSELoss()
 
     if not sam3_mask_dir:
-        raise ValueError("sam3_mask_dir must be provided to compute attention-guided loss.")
+        raise ValueError(
+            "sam3_mask_dir must be provided to compute attention-guided loss.")
     concept_tokens = _tokenize_texts([concept_token]).to(device)
     clip_model = _resolve_clip_model(model)
     visual = clip_model.visual if hasattr(clip_model, "visual") else None
     if visual is None or not hasattr(visual, "image_size"):
-        raise AttributeError("CLIP visual encoder does not expose image_size for SAM3 mask mapping.")
-    image_size = visual.image_size[0] if isinstance(visual.image_size, (tuple, list)) else visual.image_size
+        raise AttributeError(
+            "CLIP visual encoder does not expose image_size for SAM3 mask mapping.")
+    image_size = visual.image_size[0] if isinstance(
+        visual.image_size, (tuple, list)) else visual.image_size
 
     # 以较短的一方为 epoch 基础步数
     iters_per_epoch = min(len(df_train_loader), len(dr_train_loader))
@@ -322,7 +330,8 @@ def supervised_unlearn_train(
         running = {"md": 0.0, "keep": 0.0, "uni": 0.0, "tot": 0.0}
         for it in range(iters_per_epoch):
             # ===== 1) 取 batch =====
-            df_s = next(df_iter); dr_s = next(dr_iter)
+            df_s = next(df_iter)
+            dr_s = next(dr_iter)
             img_df = df_s["image"].to(device, non_blocking=True)
             img_dr = dr_s["image"].to(device, non_blocking=True)
             # ✅ 直接使用 dataloader 提供的 token ids（LongTensor）：
@@ -344,11 +353,13 @@ def supervised_unlearn_train(
                 df_text_neg = [txt_df[i] for i in perm.tolist()]
             elif neg_mode == "simrange":
                 # ✅ ours：对每张图像选 teacher 相似度在某范围内的文本
-                df_text_neg = _select_neg_texts_by_similarity_range(teacher, img_df, txt_df, lower_percent=0, upper_percent=20)
+                df_text_neg = _select_neg_texts_by_similarity_range(
+                    teacher, img_df, txt_df, lower_percent=0, upper_percent=20)
             else:
                 # ✅ ours：对每张图像选 teacher 最不相似的文本
-                df_text_neg = _select_neg_texts_by_minsim(teacher, img_df, txt_df)
-                
+                df_text_neg = _select_neg_texts_by_minsim(
+                    teacher, img_df, txt_df)
+
             optimizer.zero_grad(set_to_none=True)
             with torch.amp.autocast(device_type="cuda", enabled=True):
                 # --- 遗忘模型：Df（正确配对）的多模态相似度 ---
@@ -360,7 +371,8 @@ def supervised_unlearn_train(
                     teacher, img_df, df_text_neg
                 )
                 # 多模态“解耦”损失（把 unlearn 的正确配对，拉向 teacher 的错配分布）
-                loss_md = mse(sim_i2t_df_u, sim_i2t_df_t_r) + mse(sim_t2i_df_u, sim_t2i_df_t_r)
+                loss_md = mse(sim_i2t_df_u, sim_i2t_df_t_r) + \
+                    mse(sim_t2i_df_u, sim_t2i_df_t_r)
 
                 # ===== 3) Dr：保持一致（与原模型 matched 分布接近）=====
                 sim_i2t_dr_u, sim_t2i_dr_u, img_dr_u, txt_dr_u = _get_logits_and_feats(
@@ -370,7 +382,8 @@ def supervised_unlearn_train(
                     sim_i2t_dr_t, sim_t2i_dr_t, img_dr_t, txt_dr_t = _get_logits_and_feats(
                         teacher, img_dr, txt_dr
                     )
-                loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + mse(sim_t2i_dr_u, sim_t2i_dr_t)
+                loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + \
+                    mse(sim_t2i_dr_u, sim_t2i_dr_t)
 
                 # ===== 4) 单模态保持（避免 encoder 漂移过大）=====
                 loss_uni = mse(img_dr_u, img_dr_t) + mse(txt_dr_u, txt_dr_t)
@@ -378,7 +391,8 @@ def supervised_unlearn_train(
                 loss = lambda_md * loss_md + lambda_keep * loss_keep + lambda_uni * loss_uni
 
             scaler.scale(loss).backward()
-            scaler.step(optimizer); scaler.update()
+            scaler.step(optimizer)
+            scaler.update()
 
             # log
             running["md"] += float(loss_md.detach().item())
@@ -393,6 +407,7 @@ def supervised_unlearn_train(
                     f"uni={running['uni']/t:.4f} total={running['tot']/t:.4f}"
                 )
         logging.info(f"[EP {ep+1}] done.")
+
 
 def supervised_unlearn_train_cliperase(
     cfg, model, teacher,
@@ -481,8 +496,10 @@ def supervised_unlearn_train_cliperase(
                     )
 
                 # ===== CE 部分：每个样本一条 CE loss =====
-                ce_img = F.cross_entropy(sim_i2t_u, targets, reduction="none")  # [B]
-                ce_txt = F.cross_entropy(sim_t2i_u, targets, reduction="none")  # [B]
+                ce_img = F.cross_entropy(
+                    sim_i2t_u, targets, reduction="none")  # [B]
+                ce_txt = F.cross_entropy(
+                    sim_t2i_u, targets, reduction="none")  # [B]
 
                 # Df: 只在 forget_mask == 1 上取平均，再取负号
                 forget_img_loss = masked_mean(ce_img, forget_mask)
@@ -497,13 +514,15 @@ def supervised_unlearn_train_cliperase(
                 # ===== KL 部分：只在 Dr 样本上做 KL(unlearn || teacher) =====
                 # 先对整批算 KL，再用 retain_mask 做 masked_mean
                 log_p_img = F.log_softmax(sim_i2t_u, dim=-1)    # [B, B]
-                p_img_t   = F.softmax(sim_i2t_t, dim=-1)        # [B, B]
+                p_img_t = F.softmax(sim_i2t_t, dim=-1)        # [B, B]
 
                 log_p_txt = F.log_softmax(sim_t2i_u, dim=-1)    # [B, B]
-                p_txt_t   = F.softmax(sim_t2i_t, dim=-1)        # [B, B]
+                p_txt_t = F.softmax(sim_t2i_t, dim=-1)        # [B, B]
 
-                kl_img_all = F.kl_div(log_p_img, p_img_t, reduction="none").sum(dim=-1)  # [B]
-                kl_txt_all = F.kl_div(log_p_txt, p_txt_t, reduction="none").sum(dim=-1)  # [B]
+                kl_img_all = F.kl_div(log_p_img, p_img_t,
+                                      reduction="none").sum(dim=-1)  # [B]
+                kl_txt_all = F.kl_div(log_p_txt, p_txt_t,
+                                      reduction="none").sum(dim=-1)  # [B]
 
                 kl_img = masked_mean(kl_img_all, retain_mask)
                 kl_txt = masked_mean(kl_txt_all, retain_mask)
@@ -566,8 +585,7 @@ def main():
     datasets = task.build_datasets(cfg)
     model = task.build_model(cfg)
 
-
-    ## Prepare for Dr and Df
+    # Prepare for Dr and Df
     data_name = list(cfg.datasets_cfg.keys())[0]
     if 'flickr30k' in data_name:
         data_type = 'flickr30k'
@@ -580,12 +598,16 @@ def main():
 
     dtrain = datasets[data_name]['train']
     dtest = datasets[data_name]['test']
-    
-    forget_train_ids, forget_train_id_set, _ = _load_forget_train_ids(dtrain, cfg, data_type)
-    forget_test_ids, forget_test_id_set, _ = _load_forget_test_ids(dtest, cfg, data_type)
+
+    forget_train_ids, forget_train_id_set, _ = _load_forget_train_ids(
+        dtrain, cfg, data_type)
+    forget_test_ids, forget_test_id_set, _ = _load_forget_test_ids(
+        dtest, cfg, data_type)
     print(f"Loaded {len(forget_test_ids)} forget test images.")
-    dr = prepare_dr_data(dtrain, cfg, data_type, df_ids_set=forget_train_id_set)
-    df = prepare_df_data(dtrain, cfg, data_type, df_ids=forget_train_ids, df_ids_set=forget_train_id_set)
+    dr = prepare_dr_data(dtrain, cfg, data_type,
+                         df_ids_set=forget_train_id_set)
+    df = prepare_df_data(dtrain, cfg, data_type,
+                         df_ids=forget_train_ids, df_ids_set=forget_train_id_set)
     df_for_test = prepare_df_data_for_test(
         dtrain, dtest, cfg, data_type, df_ids=forget_test_ids, df_ids_set=forget_test_id_set
     )
@@ -599,14 +621,13 @@ def main():
         data_type,
         retain_sample_size,
         df_ids_set=forget_test_id_set,
-    )    
-    
+    )
+
     datasets[data_name]['df'] = df_for_test
     datasets[data_name]['dr'] = dr_for_test
 
-
-
-    runner = RunnerBase(cfg=cfg, job_id=job_id, task=task, model=model, datasets=datasets)
+    runner = RunnerBase(cfg=cfg, job_id=job_id, task=task,
+                        model=model, datasets=datasets)
     df_loader = runner.dataloaders['df']
     dr_loader = runner.dataloaders['dr']
     device = runner.model.device
@@ -616,13 +637,15 @@ def main():
     log_path = os.path.join(args.output, f"run_{now()}.log")
     file_handler = logging.FileHandler(log_path, mode="w", encoding="utf-8")
     file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s | %(message)s"))
+    file_handler.setFormatter(logging.Formatter(
+        "%(asctime)s | %(levelname)s | %(message)s"))
     logging.getLogger().addHandler(file_handler)
     logging.info(f"[Log] Saving logs to: {log_path}")
 
-     # ========= 新增：判断是否只评测原始模型 =========
+    # ========= 新增：判断是否只评测原始模型 =========
     use_original_only = bool(getattr(args, "original_eval", False)) or (
-        getattr(args, "unlearn_method", "") in ["original", "none", "clip-original"]
+        getattr(args, "unlearn_method", "") in [
+            "original", "none", "clip-original"]
     )
 
     if not use_original_only:
@@ -634,7 +657,8 @@ def main():
         print("unlearn policy arch:", args.arch)
 
         # # https://huggingface.co/docs/transformers/main_classes/optimizer_schedules#transformers.AdamW
-        optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, eps=1e-06, weight_decay=args.weight_decay)
+        optimizer = torch.optim.AdamW(
+            model.parameters(), lr=args.lr, eps=1e-06, weight_decay=args.weight_decay)
         optim_state = copy.deepcopy(optimizer.state_dict())
 
         # 冻结“原模型”作为 teacher
@@ -646,9 +670,10 @@ def main():
         # 训练用 dataloader（直接走 LAVIS dataset 的 __getitem__）
         bs_train = cfg.run_cfg.batch_size_train
         num_workers = cfg.run_cfg.num_workers
-        df_train_loader = DataLoader(df, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
-        dr_train_loader = DataLoader(dr, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
-
+        df_train_loader = DataLoader(
+            df, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
+        dr_train_loader = DataLoader(
+            dr, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
 
         # 当传入 --cliperase 或 --unlearn_method cliperase 时，走 ClipErase baseline
         use_cliperase = bool(getattr(args, "cliperase", False)) or (
@@ -662,20 +687,25 @@ def main():
                 optimizer, scaler,
                 lambda_df=getattr(args, "lambda_df", 1.0),   # Df (forget) 权重
                 lambda_dr=getattr(args, "lambda_dr", 1.0),   # Dr (retain) 权重
-                lambda_uni=getattr(args, "lambda_uni", 1.0), # KL 权重
+                lambda_uni=getattr(args, "lambda_uni", 1.0),  # KL 权重
                 max_epoch=getattr(args, "max_epoch", 1),
                 log_interval=getattr(args, "log_interval", 50),
             )
         else:
-            logging.info("[Train] Using Multidelete-style supervised baseline.")
-            logging.info("[Train] Using MSE-based supervised baseline (shuffle/minsim).")
+            logging.info(
+                "[Train] Using Multidelete-style supervised baseline.")
+            logging.info(
+                "[Train] Using MSE-based supervised baseline (shuffle/minsim).")
             # ========= 监督式 unlearning（替代原 TTA 训练），评测仍用 df/dr/test =========
             supervised_unlearn_train(
                 cfg, model, teacher, df_train_loader, dr_train_loader,
                 optimizer, scaler,
-                lambda_md=getattr(args, "lambda_df", 1.0),          # Df 多模态解耦损失权重
-                lambda_keep=getattr(args, "lambda_dr", 2.0),        # Dr 多模态保持损失权重
-                lambda_uni=getattr(args, "lambda_uni", 0.1),        # 单模态 MSE 权重
+                # Df 多模态解耦损失权重
+                lambda_md=getattr(args, "lambda_df", 1.0),
+                lambda_keep=getattr(args, "lambda_dr",
+                                    2.0),        # Dr 多模态保持损失权重
+                lambda_uni=getattr(args, "lambda_uni",
+                                   0.1),        # 单模态 MSE 权重
                 max_epoch=getattr(args, "max_epoch", 1),
                 log_interval=getattr(args, "log_interval", 50),
                 neg_mode=args.neg_mode,
@@ -684,25 +714,29 @@ def main():
                 sam3_mask_suffix=getattr(args, "sam3_mask_suffix", ".png"),
             )
     else:
-        logging.info("[Eval-only] Skip unlearning. Directly evaluate ORIGINAL CLIP on df/dr/test.")
-
+        logging.info(
+            "[Eval-only] Skip unlearning. Directly evaluate ORIGINAL CLIP on df/dr/test.")
 
     # 监督训练完后，再在 df/dr/test 上按原规则评测（不做 TTA）
     task_name = "i2t" if args.retrieval_task == "image2text" else "t2i"
     # 确保 df_loader 只加载遗忘集的图像
-    print(f"df_loader contains {len(df_loader.dataset.image)} images from the forget test set.")
+    print(
+        f"df_loader contains {len(df_loader.dataset.image)} images from the forget test set.")
     score_df = eval_split_no_tta(df_loader, model, task=task_name, text_bs=128)
     score_dr = eval_split_no_tta(dr_loader, model, task=task_name, text_bs=128)
     # 设置要查询的关键词
     keyword = "cat"  # 这里可以是任意关键词
 
     # 调用评估函数
-    eval_df = task._report_metrics(score_df, score_df.T, df_loader.dataset.txt2img, df_loader.dataset.img2txt)
-    eval_dr = task._report_metrics(score_dr, score_dr.T, dr_loader.dataset.txt2img, dr_loader.dataset.img2txt)
+    eval_df = task._report_metrics(
+        score_df, score_df.T, df_loader.dataset.txt2img, df_loader.dataset.img2txt)
+    eval_dr = task._report_metrics(
+        score_dr, score_dr.T, dr_loader.dataset.txt2img, dr_loader.dataset.img2txt)
 
     # 输出
     for name, result in [("df", eval_df), ("dr", eval_dr)]:
-        output_filename = os.path.join(args.output, f"results_{args.retrieval_task}_{name}.json")
+        output_filename = os.path.join(
+            args.output, f"results_{args.retrieval_task}_{name}.json")
         logging.info(output_filename)
         result = {k: round(v, 3) for k, v in result.items()}
         logging.info(result)
@@ -711,10 +745,14 @@ def main():
 
     # 训练后再根据评测得到的分数矩阵，导出 Top-K 结果
     task_suffix = "i2t" if args.retrieval_task == "image2text" else "t2i"
-    df_res_path = os.path.join(args.output, f"detailed_top10_{task_suffix}_df.jsonl")
-    _dump_detailed_topk_results(score_df, df_loader, task_name, df_res_path, k=10)
-    dr_res_path = os.path.join(args.output, f"detailed_top10_{task_suffix}_dr.jsonl")
-    _dump_detailed_topk_results(score_dr, dr_loader, task_name, dr_res_path, k=10)
+    df_res_path = os.path.join(
+        args.output, f"detailed_top10_{task_suffix}_df.jsonl")
+    _dump_detailed_topk_results(
+        score_df, df_loader, task_name, df_res_path, k=10)
+    dr_res_path = os.path.join(
+        args.output, f"detailed_top10_{task_suffix}_dr.jsonl")
+    _dump_detailed_topk_results(
+        score_dr, dr_loader, task_name, dr_res_path, k=10)
 
     if not use_original_only and args.save_unlearned_model and get_rank() == 0:
         save_dir = os.path.join(args.output, args.unlearned_subdir)
@@ -733,7 +771,8 @@ def main():
     test_loader = runner.dataloaders.get('test', None)
     if test_loader is not None:
         task_name = "i2t" if args.retrieval_task == "image2text" else "t2i"
-        full_test_scores = eval_split_no_tta(test_loader, model, task=task_name, text_bs=128)
+        full_test_scores = eval_split_no_tta(
+            test_loader, model, task=task_name, text_bs=128)
         # 汇报标准 Recall@K
         eval_test = task._report_metrics(
             full_test_scores,
@@ -741,13 +780,18 @@ def main():
             test_loader.dataset.txt2img,
             test_loader.dataset.img2txt
         )
-        test_out = os.path.join(args.output, f"results_{args.retrieval_task}_official_test.json")
+        test_out = os.path.join(
+            args.output, f"results_{args.retrieval_task}_official_test.json")
         logging.info(test_out)
         with open(test_out, "w") as fp:
-            json.dump({k: round(v, 3) for k, v in eval_test.items()}, fp, indent=4)
-        logging.info(f"[OFFICIAL TEST] { {k: round(v, 3) for k, v in eval_test.items()} }")
+            json.dump({k: round(v, 3)
+                      for k, v in eval_test.items()}, fp, indent=4)
+        logging.info(
+            f"[OFFICIAL TEST] { {k: round(v, 3) for k, v in eval_test.items()} }")
     else:
-        logging.warning("[OFFICIAL TEST] runner.dataloaders['test'] 不存在，已跳过官方测试集评测。")
+        logging.warning(
+            "[OFFICIAL TEST] runner.dataloaders['test'] 不存在，已跳过官方测试集评测。")
+
 
 if __name__ == "__main__":
     main()

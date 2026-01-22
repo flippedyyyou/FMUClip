@@ -1,4 +1,21 @@
 # coding=utf-8
+from utils import (
+    _tokenize_texts,
+    _select_neg_texts_by_minsim,
+    _get_logits_and_feats,
+    _resolve_clip_model,
+    _save_unlearned_checkpoint,
+    prepare_dr_data,
+    prepare_df_data,
+    prepare_df_data_for_test,
+    prepare_dr_data_for_test,
+    _load_sam3_masks,
+    _load_forget_train_ids,
+    _load_forget_test_ids,
+    eval_split_no_tta,
+    _select_neg_texts_by_similarity_range,
+    _dump_detailed_topk_results
+)
 import os
 import sys
 import json
@@ -33,24 +50,6 @@ _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 if _CURRENT_DIR not in sys.path:
     sys.path.insert(0, _CURRENT_DIR)
 
-from utils import (
-    _tokenize_texts,
-    _select_neg_texts_by_minsim,
-    _get_logits_and_feats,
-    _resolve_clip_model,
-    _save_unlearned_checkpoint,
-    prepare_dr_data,
-    prepare_df_data,
-    prepare_df_data_for_test,
-    prepare_dr_data_for_test,
-    _load_sam3_masks,
-    _load_forget_train_ids,
-    _load_forget_test_ids,
-    eval_split_no_tta,
-    _select_neg_texts_by_similarity_range,
-    _dump_detailed_topk_results
-)
-
 
 def supervised_unlearn_train(
     cfg, model, teacher,
@@ -72,13 +71,16 @@ def supervised_unlearn_train(
     mse = nn.MSELoss()
 
     if not sam3_mask_dir:
-        raise ValueError("sam3_mask_dir must be provided to compute attention-guided loss.")
+        raise ValueError(
+            "sam3_mask_dir must be provided to compute attention-guided loss.")
     concept_tokens = _tokenize_texts([concept_token]).to(device)
     clip_model = _resolve_clip_model(model)
     visual = clip_model.visual if hasattr(clip_model, "visual") else None
     if visual is None or not hasattr(visual, "image_size"):
-        raise AttributeError("CLIP visual encoder does not expose image_size for SAM3 mask mapping.")
-    image_size = visual.image_size[0] if isinstance(visual.image_size, (tuple, list)) else visual.image_size
+        raise AttributeError(
+            "CLIP visual encoder does not expose image_size for SAM3 mask mapping.")
+    image_size = visual.image_size[0] if isinstance(
+        visual.image_size, (tuple, list)) else visual.image_size
 
     # 以较短的一方为 epoch 基础步数
     iters_per_epoch = min(len(df_train_loader), len(dr_train_loader))
@@ -89,7 +91,8 @@ def supervised_unlearn_train(
         running = {"attn": 0.0, "reward": 0.0, "uni": 0.0, "tot": 0.0}
         for it in range(iters_per_epoch):
             # ===== 1) 取 batch =====
-            df_s = next(df_iter); dr_s = next(dr_iter)
+            df_s = next(df_iter)
+            dr_s = next(dr_iter)
             img_df = df_s["image"].to(device, non_blocking=True)
             img_dr = dr_s["image"].to(device, non_blocking=True)
             # ✅ 直接使用 dataloader 提供的 token ids（LongTensor）：
@@ -112,28 +115,34 @@ def supervised_unlearn_train(
                 df_text_neg = [txt_df[i] for i in perm.tolist()]
             elif neg_mode == "simrange":
                 # ✅ ours：对每张图像选 teacher 相似度在某范围内的文本
-                df_text_neg = _select_neg_texts_by_similarity_range(teacher, img_df, txt_df, lower_percent=0, upper_percent=20)
+                df_text_neg = _select_neg_texts_by_similarity_range(
+                    teacher, img_df, txt_df, lower_percent=0, upper_percent=20)
             else:
                 # ✅ ours：对每张图像选 teacher 最不相似的文本
-                df_text_neg = _select_neg_texts_by_minsim(teacher, img_df, txt_df)
-                
+                df_text_neg = _select_neg_texts_by_minsim(
+                    teacher, img_df, txt_df)
+
             optimizer.zero_grad(set_to_none=True)
             with torch.amp.autocast(device_type="cuda", enabled=True):
                 if df_image_paths is None:
-                    raise KeyError("Df batch missing image_path; update dataset to return image_path for SAM3 masks.")
-                
-                sam3_masks = _load_sam3_masks(df_image_paths, sam3_mask_dir, sam3_mask_suffix, image_size) # (B, H, W)
+                    raise KeyError(
+                        "Df batch missing image_path; update dataset to return image_path for SAM3 masks.")
+
+                sam3_masks = _load_sam3_masks(
+                    df_image_paths, sam3_mask_dir, sam3_mask_suffix, image_size)  # (B, H, W)
                 sam3_masks = sam3_masks.to(img_df.device)
                 target_img = img_df * sam3_masks.unsqueeze(1)
 
                 # (B,N) = (B,D) · (D,)
-                target_sim, _ = _get_logits_and_feats(model, target_img, [concept_token]*B, return_feats=False) # 遗忘概念文本特征和区域图像特征相似度
+                target_sim, _ = _get_logits_and_feats(
+                    model, target_img, [concept_token]*B, return_feats=False)  # 遗忘概念文本特征和区域图像特征相似度
                 # loss_rtf = target_sim.mean()
                 # 提取对角线（即：这张图 vs "horse"）
                 diag_logits = torch.diagonal(target_sim)
 
                 # 反推原始余弦相似度 (Cosine Similarity)
-                ls_param = getattr(model, "logit_scale", None) or model.clip_model.logit_scale
+                ls_param = getattr(model, "logit_scale",
+                                   None) or model.clip_model.logit_scale
                 current_scale = ls_param.exp().item()
                 diag_cos_sim = diag_logits / current_scale
 
@@ -164,31 +173,39 @@ def supervised_unlearn_train(
                             )
                         reward_model.set_image_features(images=reward_img)
                         if isinstance(txt_dr, torch.Tensor):
-                            reward_model.set_text_features(tokenized_cap=txt_dr)
+                            reward_model.set_text_features(
+                                tokenized_cap=txt_dr)
                         else:
                             reward_model.set_text_features(captions=txt_dr)
                         text_pool = reward_model.text_features
                         image_pool = reward_model.image_features
                         if text_pool is None or image_pool is None:
-                            raise RuntimeError("Reward model text/image features are not initialized.")
-                        text_index_pool = torch.arange(text_pool.size(0), device=text_pool.device)
-                        image_index_pool = torch.arange(image_pool.size(0), device=image_pool.device)
+                            raise RuntimeError(
+                                "Reward model text/image features are not initialized.")
+                        text_index_pool = torch.arange(
+                            text_pool.size(0), device=text_pool.device)
+                        image_index_pool = torch.arange(
+                            image_pool.size(0), device=image_pool.device)
                         clip_scores = reward_model.CLIPScore(
                             text_index=text_index_pool,
                             images_index=image_index_pool,
                             pairwise=True,
                         )
                         clip_probs = torch.softmax(clip_scores, dim=-1)
-                        sample_k = min(reward_model.sample_k, clip_scores.size(1))
-                        topk_probs, indices = torch.topk(clip_probs, sample_k, dim=-1, largest=True) 
+                        sample_k = min(reward_model.sample_k,
+                                       clip_scores.size(1))
+                        topk_probs, indices = torch.topk(
+                            clip_probs, sample_k, dim=-1, largest=True)
                         adv = topk_probs.detach()
 
                     sim_i2t_syn_u, sim_t2i_syn_u, img_syn_u, txt_syn_u = _get_logits_and_feats(
                         model, syn_img, txt_dr
                     )
-                    rep_output = torch.repeat_interleave(sim_i2t_syn_u, sample_k, dim=0) # [B*sample_k, N_text]
-                    text_index = indices.flatten() # [B*sample_k]
-                    ce = F.cross_entropy(rep_output, text_index, reduction="none").view(img_df.size(0), sample_k)
+                    rep_output = torch.repeat_interleave(
+                        sim_i2t_syn_u, sample_k, dim=0)  # [B*sample_k, N_text]
+                    text_index = indices.flatten()  # [B*sample_k]
+                    ce = F.cross_entropy(rep_output, text_index, reduction="none").view(
+                        img_df.size(0), sample_k)
                     loss_syn = (adv * ce).mean()
 
                 sim_i2t_dr_u, sim_t2i_dr_u, img_dr_u, txt_dr_u = _get_logits_and_feats(
@@ -204,16 +221,19 @@ def supervised_unlearn_train(
                     sim_i2t_dr_t, sim_t2i_dr_t, img_dr_t, txt_dr_t = _get_logits_and_feats(
                         teacher, img_dr, txt_dr
                     )
-                loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + mse(sim_t2i_dr_u, sim_t2i_dr_t)
+                loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + \
+                    mse(sim_t2i_dr_u, sim_t2i_dr_t)
                 # loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + mse(sim_t2i_dr_u, sim_t2i_dr_t)
 
                 # ===== 4) 单模态保持（避免 encoder 漂移过大）=====
                 loss_uni = mse(img_dr_u, img_dr_t) + mse(txt_dr_u, txt_dr_t)
 
-                loss = lambda_md * loss_rtf + lambda_keep * loss_keep + lambda_reward * loss_syn + lambda_uni * loss_uni
+                loss = lambda_md * loss_rtf + lambda_keep * loss_keep + \
+                    lambda_reward * loss_syn + lambda_uni * loss_uni
 
             scaler.scale(loss).backward()
-            scaler.step(optimizer); scaler.update()
+            scaler.step(optimizer)
+            scaler.update()
 
             # log
             running["attn"] += float(loss_rtf.detach().item())
@@ -228,6 +248,8 @@ def supervised_unlearn_train(
                     f"uni={running['uni']/t:.4f} total={running['tot']/t:.4f}"
                 )
         logging.info(f"[EP {ep+1}] done.")
+
+
 def main():
     logging.basicConfig(
         level=logging.INFO,
@@ -255,8 +277,7 @@ def main():
     datasets = task.build_datasets(cfg)
     model = task.build_model(cfg)
 
-
-    ## Prepare for Dr and Df
+    # Prepare for Dr and Df
     data_name = list(cfg.datasets_cfg.keys())[0]
     if 'flickr30k' in data_name:
         data_type = 'flickr30k'
@@ -269,12 +290,16 @@ def main():
 
     dtrain = datasets[data_name]['train']
     dtest = datasets[data_name]['test']
-    
-    forget_train_ids, forget_train_id_set, _ = _load_forget_train_ids(dtrain, cfg, data_type)
-    forget_test_ids, forget_test_id_set, _ = _load_forget_test_ids(dtest, cfg, data_type)
+
+    forget_train_ids, forget_train_id_set, _ = _load_forget_train_ids(
+        dtrain, cfg, data_type)
+    forget_test_ids, forget_test_id_set, _ = _load_forget_test_ids(
+        dtest, cfg, data_type)
     print(f"Loaded {len(forget_test_ids)} forget test images.")
-    dr = prepare_dr_data(dtrain, cfg, data_type, df_ids_set=forget_train_id_set)
-    df = prepare_df_data(dtrain, cfg, data_type, df_ids=forget_train_ids, df_ids_set=forget_train_id_set)
+    dr = prepare_dr_data(dtrain, cfg, data_type,
+                         df_ids_set=forget_train_id_set)
+    df = prepare_df_data(dtrain, cfg, data_type,
+                         df_ids=forget_train_ids, df_ids_set=forget_train_id_set)
     df_for_test = prepare_df_data_for_test(
         dtrain, dtest, cfg, data_type, df_ids=forget_test_ids, df_ids_set=forget_test_id_set
     )
@@ -288,14 +313,13 @@ def main():
         data_type,
         retain_sample_size,
         df_ids_set=forget_test_id_set,
-    )    
-    
+    )
+
     datasets[data_name]['df'] = df_for_test
     datasets[data_name]['dr'] = dr_for_test
 
-
-
-    runner = RunnerBase(cfg=cfg, job_id=job_id, task=task, model=model, datasets=datasets)
+    runner = RunnerBase(cfg=cfg, job_id=job_id, task=task,
+                        model=model, datasets=datasets)
     df_loader = runner.dataloaders['df']
     dr_loader = runner.dataloaders['dr']
     device = runner.model.device
@@ -305,13 +329,15 @@ def main():
     log_path = os.path.join(args.output, f"run_{now()}.log")
     file_handler = logging.FileHandler(log_path, mode="w", encoding="utf-8")
     file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s | %(message)s"))
+    file_handler.setFormatter(logging.Formatter(
+        "%(asctime)s | %(levelname)s | %(message)s"))
     logging.getLogger().addHandler(file_handler)
     logging.info(f"[Log] Saving logs to: {log_path}")
 
-     # ========= 新增：判断是否只评测原始模型 =========
+    # ========= 新增：判断是否只评测原始模型 =========
     use_original_only = bool(getattr(args, "original_eval", False)) or (
-        getattr(args, "unlearn_method", "") in ["original", "none", "clip-original"]
+        getattr(args, "unlearn_method", "") in [
+            "original", "none", "clip-original"]
     )
 
     if not use_original_only:
@@ -323,7 +349,8 @@ def main():
         print("unlearn policy arch:", args.arch)
 
         # # https://huggingface.co/docs/transformers/main_classes/optimizer_schedules#transformers.AdamW
-        optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, eps=1e-06, weight_decay=args.weight_decay)
+        optimizer = torch.optim.AdamW(
+            model.parameters(), lr=args.lr, eps=1e-06, weight_decay=args.weight_decay)
         optim_state = copy.deepcopy(optimizer.state_dict())
 
         # 冻结“原模型”作为 teacher
@@ -335,11 +362,14 @@ def main():
         # 训练用 dataloader（直接走 LAVIS dataset 的 __getitem__）
         bs_train = cfg.run_cfg.batch_size_train
         num_workers = cfg.run_cfg.num_workers
-        df_train_loader = DataLoader(df, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
-        dr_train_loader = DataLoader(dr, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
+        df_train_loader = DataLoader(
+            df, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
+        dr_train_loader = DataLoader(
+            dr, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
 
         logging.info("[Train] Using Multidelete-style supervised baseline.")
-        logging.info("[Train] Using MSE-based supervised baseline (shuffle/minsim).")
+        logging.info(
+            "[Train] Using MSE-based supervised baseline (shuffle/minsim).")
         reward_model = get_reward_model(device, args)
         # ========= 监督式 unlearning（替代原 TTA 训练），评测仍用 df/dr/test =========
         supervised_unlearn_train(
@@ -348,7 +378,8 @@ def main():
             lambda_md=getattr(args, "lambda_df", 1.0),          # Df 多模态解耦损失权重
             lambda_keep=getattr(args, "lambda_dr", 2.0),        # Dr 多模态保持损失权重
             lambda_uni=getattr(args, "lambda_uni", 0.1),        # 单模态 MSE 权重
-            lambda_reward=getattr(args, "lambda_reward", 1.0),  # Dr reward advantage 损失权重
+            # Dr reward advantage 损失权重
+            lambda_reward=getattr(args, "lambda_reward", 1.0),
             max_epoch=getattr(args, "max_epoch", 1),
             log_interval=getattr(args, "log_interval", 50),
             neg_mode=args.neg_mode,
@@ -358,23 +389,27 @@ def main():
             reward_model=reward_model,
         )
     else:
-        logging.info("[Eval-only] Skip unlearning. Directly evaluate ORIGINAL CLIP on df/dr/test.")
-
+        logging.info(
+            "[Eval-only] Skip unlearning. Directly evaluate ORIGINAL CLIP on df/dr/test.")
 
     # 监督训练完后，再在 df/dr/test 上按原规则评测（不做 TTA）
     task_name = "i2t" if args.retrieval_task == "image2text" else "t2i"
     # 确保 df_loader 只加载遗忘集的图像
-    print(f"df_loader contains {len(df_loader.dataset.image)} images from the forget test set.")
+    print(
+        f"df_loader contains {len(df_loader.dataset.image)} images from the forget test set.")
     score_df = eval_split_no_tta(df_loader, model, task=task_name, text_bs=128)
     score_dr = eval_split_no_tta(dr_loader, model, task=task_name, text_bs=128)
 
     # 调用评估函数
-    eval_df = task._report_metrics(score_df, score_df.T, df_loader.dataset.txt2img, df_loader.dataset.img2txt)
-    eval_dr = task._report_metrics(score_dr, score_dr.T, dr_loader.dataset.txt2img, dr_loader.dataset.img2txt)
+    eval_df = task._report_metrics(
+        score_df, score_df.T, df_loader.dataset.txt2img, df_loader.dataset.img2txt)
+    eval_dr = task._report_metrics(
+        score_dr, score_dr.T, dr_loader.dataset.txt2img, dr_loader.dataset.img2txt)
 
     # 输出
     for name, result in [("df", eval_df), ("dr", eval_dr)]:
-        output_filename = os.path.join(args.output, f"results_{args.retrieval_task}_{name}.json")
+        output_filename = os.path.join(
+            args.output, f"results_{args.retrieval_task}_{name}.json")
         logging.info(output_filename)
         result = {k: round(v, 3) for k, v in result.items()}
         logging.info(result)
@@ -383,10 +418,14 @@ def main():
 
     # 训练后再根据评测得到的分数矩阵，导出 Top-K 结果
     task_suffix = "i2t" if args.retrieval_task == "image2text" else "t2i"
-    df_res_path = os.path.join(args.output, f"detailed_top10_{task_suffix}_df.jsonl")
-    _dump_detailed_topk_results(score_df, df_loader, task_name, df_res_path, k=10)
-    dr_res_path = os.path.join(args.output, f"detailed_top10_{task_suffix}_dr.jsonl")
-    _dump_detailed_topk_results(score_dr, dr_loader, task_name, dr_res_path, k=10)
+    df_res_path = os.path.join(
+        args.output, f"detailed_top10_{task_suffix}_df.jsonl")
+    _dump_detailed_topk_results(
+        score_df, df_loader, task_name, df_res_path, k=10)
+    dr_res_path = os.path.join(
+        args.output, f"detailed_top10_{task_suffix}_dr.jsonl")
+    _dump_detailed_topk_results(
+        score_dr, dr_loader, task_name, dr_res_path, k=10)
 
     if not use_original_only and args.save_unlearned_model and get_rank() == 0:
         save_dir = os.path.join(args.output, args.unlearned_subdir)
@@ -405,7 +444,8 @@ def main():
     test_loader = runner.dataloaders.get('test', None)
     if test_loader is not None:
         task_name = "i2t" if args.retrieval_task == "image2text" else "t2i"
-        full_test_scores = eval_split_no_tta(test_loader, model, task=task_name, text_bs=128)
+        full_test_scores = eval_split_no_tta(
+            test_loader, model, task=task_name, text_bs=128)
         # 汇报标准 Recall@K
         eval_test = task._report_metrics(
             full_test_scores,
@@ -413,13 +453,18 @@ def main():
             test_loader.dataset.txt2img,
             test_loader.dataset.img2txt
         )
-        test_out = os.path.join(args.output, f"results_{args.retrieval_task}_official_test.json")
+        test_out = os.path.join(
+            args.output, f"results_{args.retrieval_task}_official_test.json")
         logging.info(test_out)
         with open(test_out, "w") as fp:
-            json.dump({k: round(v, 3) for k, v in eval_test.items()}, fp, indent=4)
-        logging.info(f"[OFFICIAL TEST] { {k: round(v, 3) for k, v in eval_test.items()} }")
+            json.dump({k: round(v, 3)
+                      for k, v in eval_test.items()}, fp, indent=4)
+        logging.info(
+            f"[OFFICIAL TEST] { {k: round(v, 3) for k, v in eval_test.items()} }")
     else:
-        logging.warning("[OFFICIAL TEST] runner.dataloaders['test'] 不存在，已跳过官方测试集评测。")
+        logging.warning(
+            "[OFFICIAL TEST] runner.dataloaders['test'] 不存在，已跳过官方测试集评测。")
+
 
 if __name__ == "__main__":
     main()
