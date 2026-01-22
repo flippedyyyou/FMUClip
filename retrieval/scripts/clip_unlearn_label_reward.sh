@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 export CUDA_VISIBLE_DEVICES=2
 
+date=$(date +"%m%d")
+
 root="."
 code_path=${root}/retrieval
 
@@ -36,8 +38,8 @@ cfg_yaml=${code_path}/lavis/projects/clip/exp_flickr_unlearn_tta_llava.yaml
 runfile=${code_path}/clip_unlearn_label_reward.py
 
 # ========= 运行 =========
-output=${code_path}/output/clip_flickr_unlearn1k_horse_attn1_reward100_uni3_epoch20_sample1_export0115
-export_dir=${code_path}/output/clip_flickr_unlearn1k_horse_attn1_reward100_uni3_epoch20_sample1_export0115
+output=${code_path}/output/clip_flickr_unlearn1k_horse_attn1_reward100_uni3_epoch20_sample1_export${date}
+export_dir=${code_path}/output/clip_flickr_unlearn1k_horse_attn1_reward100_uni3_epoch20_sample1_export${date}
 
 echo "🚀 Running Unlearning attn+reward"
 echo "Output -> ${output}"
@@ -66,7 +68,7 @@ python ${runfile} \
     --lambda_reward ${lambda_reward} \
     --lambda_uni ${lambda_uni} \
     --max_epoch ${max_epoch} \
-    --sam3_mask_dir ${ruoyan_code_path}/mask/flickr/horse/train \
+    --sam3_mask_dir ${code_path}/mask/flickr30k/horse/train \
     --sam3_mask_suffix .png \
     --save_unlearned_model \
     --unlearned_model_name clip_unlearned.pt \

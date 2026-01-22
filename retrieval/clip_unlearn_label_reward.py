@@ -1,32 +1,19 @@
 # coding=utf-8
-import contextlib
-import math
 import os
 import sys
 import json
-import time
-import random
 import logging
-import datetime
-from tqdm import tqdm
 import copy
 
 import torch
 import torch.nn.functional as F
-import numpy as np
-import pandas as pd
-import torch.nn.functional as F
-import torch.backends.cudnn as cudnn
-from PIL import Image
 
 
-from lavis.models.clip_models.tokenizer import tokenize as clip_tokenize
 import lavis.tasks as tasks
 from lavis.common.config import Config
 from lavis.common.dist_utils import get_rank, init_distributed_mode
 from lavis.common.logger import setup_logger
 from lavis.common.utils import now
-from lavis.common.logger import MetricLogger
 
 from lavis.datasets.builders import *
 from lavis.models import *
@@ -39,8 +26,6 @@ from lavis.tasks import *
 from params import parse_args
 from clip_unlearn_reward import get_reward_model
 from lavis_evaluate import setup_seeds
-from custom_models import CLIPRet_TTA
-from lavis.models.clip_models.tokenizer import tokenize
 from torch import nn
 
 # Allow running this file as a script by adding its directory to sys.path.
@@ -48,141 +33,24 @@ _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 if _CURRENT_DIR not in sys.path:
     sys.path.insert(0, _CURRENT_DIR)
 
-from clip_unlearn_baseline import (
-    load_image_paths,
-    prepare_custom_dataset,
+from utils import (
     _tokenize_texts,
-    load_image_paths,
-    prepare_custom_dataset,
-    _tokenize_texts,
-    _is_hf_clip,
-    _is_openai_clip,
-    _is_open_clip,
-    _encode_image,
-    _encode_text,
-    _get_logit_scale,
-    _to_token_ids,
-    _resolve_clip_model,
-    _encode_image_patches,
-    _load_sam3_masks,
-    _save_unlearned_checkpoint,
+    _select_neg_texts_by_minsim,
     _get_logits_and_feats,
-    _frozen_init_image_feats,
-    _frozen_init_text_feats,
-    _fmt_topk_rows,
-    _maybe_to_device,
-    _normalize_text_input,
-    _resolve_text_inputs,
-    _normalize_annotation_id,
+    _resolve_clip_model,
+    _save_unlearned_checkpoint,
     prepare_dr_data,
     prepare_df_data,
     prepare_df_data_for_test,
     prepare_dr_data_for_test,
+    _load_sam3_masks,
+    _load_forget_train_ids,
+    _load_forget_test_ids,
     eval_split_no_tta,
-    _dump_detailed_topk_results,
-    tokenize_all_text,
-    get_all_text_embeds,
-    get_all_image_embeds,
-    _select_neg_texts_by_minsim,
     _select_neg_texts_by_similarity_range,
-    supervised_unlearn_train_cliperase
+    _dump_detailed_topk_results
 )
 
-try:
-    import clip as openai_clip  # OpenAI CLIP 的 tokenizer
-except Exception:
-    openai_clip = None
-try:
-    # LAVIS 自带的 CLIP tokenizer（有些环境可用）
-    from lavis.models.clip_models.tokenizer import tokenize as lavis_tokenize
-except Exception:
-    lavis_tokenize = None
-
-
-
-def _mask_to_patch_attention(mask_tensor: torch.Tensor, grid_size: int):
-    mask_tensor = mask_tensor.unsqueeze(1)
-    mask_resized = F.interpolate(mask_tensor, size=(grid_size, grid_size), mode="nearest")
-    patch_mask = (mask_resized.squeeze(1) > 0.3).float() # 掩码值大于 0.3 的区域设为 1（前景），小于 0.3 的区域设为 0（背景）
-    return patch_mask.flatten(1) # [B, N]
-
-
-
-def _centered_adv(scores: torch.Tensor, mode: str) -> torch.Tensor:
-    """
-    scores: [B, K] or [BK]
-    mode: 'df' or 'dr'
-    return: advantage scores aligned with input shape
-    """
-    if scores.dim() == 1:
-        scores = scores.view(-1, 1)
-    mean = scores.mean(dim=-1, keepdim=True)
-    std = scores.std(dim=-1, keepdim=True) + 1e-6
-    if mode == "df":
-        adv = (mean - scores) / std
-    else:
-        adv = (scores - mean) / std
-    return adv
-
-def _load_forget_train_ids(dataset_train_ori, cfg, data_type):
-    with open(cfg.forget_train_file, 'r') as f:
-        df_ids = [i.strip() for i in f.readlines() if i.strip()]
-
-    train_ids = {_normalize_annotation_id(ann, cfg) for ann in dataset_train_ori.annotation}
-
-    filtered_ids = [img_id for img_id in df_ids if img_id in train_ids]
-    ignored = sorted(set(df_ids) - set(filtered_ids))
-    if ignored:
-        sample_ignored = ', '.join(ignored[:5])
-        logging.warning(
-            "%d forget images are not part of the official training split and will be ignored: %s%s",
-            len(ignored),
-            sample_ignored,
-            "..." if len(ignored) > 5 else "",
-        )
-
-    if not filtered_ids:
-        raise ValueError("No forget images remaining after filtering against the training split.")
-
-    logging.info(
-        "Loaded %d forget images from list (requested %d).",
-        len(filtered_ids),
-        len(df_ids),
-    )
-
-    return filtered_ids, set(filtered_ids), train_ids
-
-def _load_forget_test_ids(dataset_test_ori, cfg, data_type):
-    """
-    修改：现在直接使用测试集来加载遗忘集测试集的图片路径。
-    """
-    with open(f'Df/flickr30k/forget_horse_test.txt', 'r') as f:
-        df_ids = [i.strip() for i in f.readlines() if i.strip()]
-
-    test_ids = {_normalize_annotation_id(ann, cfg) for ann in dataset_test_ori.annotation}
-
-    # 过滤遗忘集图片，只保留那些在测试集中的图片
-    filtered_ids = [img_id for img_id in df_ids if img_id in test_ids]
-    ignored = sorted(set(df_ids) - set(filtered_ids))
-    if ignored:
-        sample_ignored = ', '.join(ignored[:5])
-        logging.warning(
-            "%d forget images are not part of the official test split and will be ignored: %s%s",
-            len(ignored),
-            sample_ignored,
-            "..." if len(ignored) > 5 else "",
-        )
-
-    if not filtered_ids:
-        raise ValueError("No forget images remaining after filtering against the test split.")
-
-    logging.info(
-        "Loaded %d forget images from list (requested %d).",
-        len(filtered_ids),
-        len(df_ids),
-    )
-
-    return filtered_ids, set(filtered_ids), test_ids
 
 def supervised_unlearn_train(
     cfg, model, teacher,
@@ -374,7 +242,6 @@ def main():
     print('\n job_ID {}: \n'.format(job_id))
 
     cfg = Config(args)
-    # Config does not include custom CLI args by default.
     cfg.forget_train_file = args.forget_train_file
     cfg.forget_test_file = args.forget_test_file
 
@@ -471,43 +338,25 @@ def main():
         df_train_loader = DataLoader(df, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
         dr_train_loader = DataLoader(dr, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
 
-
-        # 当传入 --cliperase 或 --unlearn_method cliperase 时，走 ClipErase baseline
-        use_cliperase = bool(getattr(args, "cliperase", False)) or (
-            getattr(args, "unlearn_method", "") == "cliperase"
+        logging.info("[Train] Using Multidelete-style supervised baseline.")
+        logging.info("[Train] Using MSE-based supervised baseline (shuffle/minsim).")
+        reward_model = get_reward_model(device, args)
+        # ========= 监督式 unlearning（替代原 TTA 训练），评测仍用 df/dr/test =========
+        supervised_unlearn_train(
+            cfg, model, teacher, df_train_loader, dr_train_loader,
+            optimizer, scaler,
+            lambda_md=getattr(args, "lambda_df", 1.0),          # Df 多模态解耦损失权重
+            lambda_keep=getattr(args, "lambda_dr", 2.0),        # Dr 多模态保持损失权重
+            lambda_uni=getattr(args, "lambda_uni", 0.1),        # 单模态 MSE 权重
+            lambda_reward=getattr(args, "lambda_reward", 1.0),  # Dr reward advantage 损失权重
+            max_epoch=getattr(args, "max_epoch", 1),
+            log_interval=getattr(args, "log_interval", 50),
+            neg_mode=args.neg_mode,
+            concept_token=getattr(args, "concept_token", "horse"),
+            sam3_mask_dir=getattr(args, "sam3_mask_dir", None),
+            sam3_mask_suffix=getattr(args, "sam3_mask_suffix", ".png"),
+            reward_model=reward_model,
         )
-
-        if use_cliperase:
-            logging.info("[Train] Using ClipErase-style supervised baseline.")
-            supervised_unlearn_train_cliperase(
-                cfg, model, teacher, df_train_loader, dr_train_loader,
-                optimizer, scaler,
-                lambda_df=getattr(args, "lambda_df", 1.0),   # Df (forget) 权重
-                lambda_dr=getattr(args, "lambda_dr", 1.0),   # Dr (retain) 权重
-                lambda_uni=getattr(args, "lambda_uni", 1.0), # KL 权重
-                max_epoch=getattr(args, "max_epoch", 1),
-                log_interval=getattr(args, "log_interval", 50),
-            )
-        else:
-            logging.info("[Train] Using Multidelete-style supervised baseline.")
-            logging.info("[Train] Using MSE-based supervised baseline (shuffle/minsim).")
-            reward_model = get_reward_model(device, args)
-            # ========= 监督式 unlearning（替代原 TTA 训练），评测仍用 df/dr/test =========
-            supervised_unlearn_train(
-                cfg, model, teacher, df_train_loader, dr_train_loader,
-                optimizer, scaler,
-                lambda_md=getattr(args, "lambda_df", 1.0),          # Df 多模态解耦损失权重
-                lambda_keep=getattr(args, "lambda_dr", 2.0),        # Dr 多模态保持损失权重
-                lambda_uni=getattr(args, "lambda_uni", 0.1),        # 单模态 MSE 权重
-                lambda_reward=getattr(args, "lambda_reward", 1.0),  # Dr reward advantage 损失权重
-                max_epoch=getattr(args, "max_epoch", 1),
-                log_interval=getattr(args, "log_interval", 50),
-                neg_mode=args.neg_mode,
-                concept_token=getattr(args, "concept_token", "horse"),
-                sam3_mask_dir=getattr(args, "sam3_mask_dir", None),
-                sam3_mask_suffix=getattr(args, "sam3_mask_suffix", ".png"),
-                reward_model=reward_model,
-            )
     else:
         logging.info("[Eval-only] Skip unlearning. Directly evaluate ORIGINAL CLIP on df/dr/test.")
 
