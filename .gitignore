@@ -1,6 +1,5 @@
 __pycache__
 retrieval/output/*
-retrieval/mask/*
 output/clip/*
 classification/mask/*
 classification/output/*

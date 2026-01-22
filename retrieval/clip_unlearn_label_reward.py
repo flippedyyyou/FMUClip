@@ -255,20 +255,27 @@ def supervised_unlearn_train(
                     raise KeyError("Df batch missing image_path; update dataset to return image_path for SAM3 masks.")
                 
                 sam3_masks = _load_sam3_masks(df_image_paths, sam3_mask_dir, sam3_mask_suffix, image_size) # (B, H, W)
-                sam3_masks = sam3_masks.to(device, non_blocking=True)
-                
-                # grid 是每边 patch 数（比如 ViT-L/14 输入 336 时通常 grid=24，N=576
-                patch_feats, grid = _encode_image_patches(model, img_df) # (B,N,D)，N 是补丁的数量
-                text_feat = _encode_text(model, concept_tokens).squeeze(0) # (D,)
-                # (B,N) = (B,N,D) · (D,)
-                patch_sim = F.cosine_similarity(patch_feats, text_feat.unsqueeze(0), dim=-1) # 遗忘概念文本特征和整图特征
-                patch_attn = _mask_to_patch_attention(sam3_masks, grid) # (B,N) 0/1
-                attn_sum = patch_attn.sum(dim=1) # (B,)，mask 区域有多少个 patch，保证不会因为 mask 大小影响 loss 尺度导致训练不稳
-                masked_similarity = patch_sim * patch_attn # (B,N)
-                # # 使用指数函数来放大相似度差异，惩罚相似度较高的区域
-                # exp_similarity = torch.exp(masked_similarity)  # 使用指数函数，放大相似度差异
-                # loss_attn = (exp_similarity.sum(dim=1) / attn_sum.clamp(min=1.0)).mean()
-                loss_attn = (masked_similarity.sum(dim=1) / attn_sum).mean()
+                sam3_masks = sam3_masks.to(img_df.device)
+                target_img = img_df * sam3_masks.unsqueeze(1)
+
+                # (B,N) = (B,D) · (D,)
+                target_sim, _ = _get_logits_and_feats(model, target_img, [concept_token]*B, return_feats=False) # 遗忘概念文本特征和区域图像特征相似度
+                # loss_rtf = target_sim.mean()
+                # 提取对角线（即：这张图 vs "horse"）
+                diag_logits = torch.diagonal(target_sim)
+
+                # 反推原始余弦相似度 (Cosine Similarity)
+                ls_param = getattr(model, "logit_scale", None) or model.clip_model.logit_scale
+                current_scale = ls_param.exp().item()
+                diag_cos_sim = diag_logits / current_scale
+
+                # 打印调试信息
+                # print(f"\n>>> [Step {it}] Unlearn Target: {concept_token}")
+                # print(f"    - 最终 Loss (Mean Logit): {diag_logits.mean().item():.4f}")
+                # print(f"    - 原始余弦相似度 (Mean Cos): {diag_cos_sim.mean().item():.4f}")
+                # print(f"    - 当前 Logit Scale: {current_scale:.2f}")
+
+                loss_rtf = diag_logits.mean()
 
                 loss_syn = torch.tensor(0.0, device=device)
                 if reward_model is not None:
@@ -335,13 +342,13 @@ def supervised_unlearn_train(
                 # ===== 4) 单模态保持（避免 encoder 漂移过大）=====
                 loss_uni = mse(img_dr_u, img_dr_t) + mse(txt_dr_u, txt_dr_t)
 
-                loss = lambda_md * loss_attn + lambda_keep * loss_keep + lambda_reward * loss_syn + lambda_uni * loss_uni
+                loss = lambda_md * loss_rtf + lambda_keep * loss_keep + lambda_reward * loss_syn + lambda_uni * loss_uni
 
             scaler.scale(loss).backward()
             scaler.step(optimizer); scaler.update()
 
             # log
-            running["attn"] += float(loss_attn.detach().item())
+            running["attn"] += float(loss_rtf.detach().item())
             running["reward"] += float(loss_syn.detach().item())
             running["uni"] += float(loss_uni.detach().item())
             running["tot"] += float(loss.detach().item())
@@ -496,7 +503,7 @@ def main():
                 max_epoch=getattr(args, "max_epoch", 1),
                 log_interval=getattr(args, "log_interval", 50),
                 neg_mode=args.neg_mode,
-                concept_token=getattr(args, "concept_token", "dog"),
+                concept_token=getattr(args, "concept_token", "horse"),
                 sam3_mask_dir=getattr(args, "sam3_mask_dir", None),
                 sam3_mask_suffix=getattr(args, "sam3_mask_suffix", ".png"),
                 reward_model=reward_model,
