@@ -69,4 +69,6 @@ python ${runfile} \
     --save_unlearned_model \
     --unlearned_model_name clip_unlearned.pt \
     --unlearned_meta_name clip_unlearned_meta.json \
-    --unlearned_subdir unlearned_clip
+    --unlearned_subdir unlearned_clip \
+    --forget_train_file "Df/coco/forget_horse_train.txt" \
+    --forget_test_file "Df/coco/forget_horse_test.txt'"
