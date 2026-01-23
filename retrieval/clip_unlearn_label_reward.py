@@ -1,21 +1,4 @@
 # coding=utf-8
-from utils import (
-    _tokenize_texts,
-    _select_neg_texts_by_minsim,
-    _get_logits_and_feats,
-    _resolve_clip_model,
-    _save_unlearned_checkpoint,
-    prepare_dr_data,
-    prepare_df_data,
-    prepare_df_data_for_test,
-    prepare_dr_data_for_test,
-    _load_sam3_masks,
-    _load_forget_train_ids,
-    _load_forget_test_ids,
-    eval_split_no_tta,
-    _select_neg_texts_by_similarity_range,
-    _dump_detailed_topk_results
-)
 import os
 import sys
 import json
@@ -45,6 +28,25 @@ from clip_unlearn_reward import get_reward_model
 from lavis_evaluate import setup_seeds
 from torch import nn
 
+
+from utils import (
+    _tokenize_texts,
+    _select_neg_texts_by_minsim,
+    _get_logits_and_feats,
+    _resolve_clip_model,
+    _save_unlearned_checkpoint,
+    prepare_dr_data,
+    prepare_df_data,
+    prepare_df_data_for_test,
+    prepare_dr_data_for_test,
+    _load_sam3_masks,
+    _load_forget_train_ids,
+    _load_forget_test_ids,
+    eval_split_no_tta,
+    _select_neg_texts_by_similarity_range,
+    _dump_detailed_topk_results
+)
+
 # Allow running this file as a script by adding its directory to sys.path.
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 if _CURRENT_DIR not in sys.path:
@@ -52,8 +54,11 @@ if _CURRENT_DIR not in sys.path:
 
 
 def supervised_unlearn_train(
-    cfg, model, teacher,
-    df_train_loader, dr_train_loader,
+    cfg,
+    model,
+    teacher,
+    df_train_loader,
+    dr_train_loader,
     optimizer, scaler,
     lambda_md=1.0,          # Df 的“多模态解耦”损失（unlearn vs teacher@shuffled）
     lambda_keep=2.0,        # Dr 的“多模态保持”损失（unlearn vs teacher@matched）
@@ -362,6 +367,11 @@ def main():
         # 训练用 dataloader（直接走 LAVIS dataset 的 __getitem__）
         bs_train = cfg.run_cfg.batch_size_train
         num_workers = cfg.run_cfg.num_workers
+
+        logging.info(f"[Train] Df train samples: {len(df)}")
+        logging.info(f"[Train] Dr train samples: {len(dr)}")
+        logging.info(f"[Train] Batch size: {bs_train}")
+
         df_train_loader = DataLoader(
             df, batch_size=bs_train, shuffle=True, num_workers=num_workers, drop_last=True)
         dr_train_loader = DataLoader(
