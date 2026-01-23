@@ -23,18 +23,18 @@ tta_momentum=0.9  #0.9998
 update_w=1.0
 
 # ========= Unlearn 参数 =========
-lambda_df=3
+lambda_df=1
 lambda_dr=1
-lambda_uni=3
-max_epoch=20
-neg_mode="cliperase"
+lambda_uni=1
+max_epoch=10
+neg_mode="minsim"
 concept_token="horse"
-cfg_yaml=${code_path}/lavis/projects/clip/exp_coco_unlearn_tta_llava.yaml
+cfg_yaml=${code_path}/lavis/projects/clip/exp_flickr_unlearn_tta_llava.yaml
 runfile=${code_path}/clip_unlearn_baseline.py
 
 # ========= 运行 =========
-output=${code_path}/output/clip_coco_unlearn1k_${neg_mode}_${concept_token}_df3_dr1_uni3_export0112
-export_dir=${code_path}/output/clip_coco_unlearn1k_${neg_mode}_${concept_token}_df1=3_dr1_uni3_export0112
+output=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df1_dr1_uni1_export0121
+export_dir=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df1_dr1_uni1_export0121
 
 echo "🚀 Running Unlearning baseline minsim"
 echo "Output -> ${output}"
@@ -63,8 +63,8 @@ python ${runfile} \
     --lambda_dr ${lambda_dr} \
     --lambda_uni ${lambda_uni} \
     --max_epoch ${max_epoch} \
-    --cliperase \
-    --sam3_mask_dir ${code_path}/mask/coco/horse/train \
+    --neg_mode ${neg_mode} \
+    --sam3_mask_dir ${code_path}/mask/flickr30k/horse/train \
     --sam3_mask_suffix .png \
     --save_unlearned_model \
     --unlearned_model_name clip_unlearned.pt \
