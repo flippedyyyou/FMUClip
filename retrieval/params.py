@@ -62,7 +62,7 @@ def parse_args():
     parser.add_argument('--lambda_attn', type=float, default=1.0, help='coefficient for attention-guided loss')
     parser.add_argument('--lambda_fea', type=float, default=1.0, help='coefficient for feature regularization loss')
     parser.add_argument('--lambda_sim', type=float, default=1.0, help='coefficient for similarity KL loss')
-    parser.add_argument('--lambda_reward', type=float, default=1.0, help='coefficient for reward advantage loss')
+    parser.add_argument('--lambda_rdr', type=float, default=1.0, help='coefficient for reward advantage loss')
     parser.add_argument('--sam3_mask_dir', type=str, default='', help='directory containing SAM3 binary masks')
     parser.add_argument('--sam3_mask_suffix', type=str, default='.png', help='file suffix for SAM3 masks')
     # checkpoint export

@@ -692,18 +692,10 @@ def eval_split_no_tta(loader, model, task="i2t", text_bs=128):
         return scores.numpy()
 
 
-def _select_neg_texts_by_similarity_range(teacher, images, text_list, lower_percent=20, upper_percent=50):
+def _select_neg_texts_by_proximal(teacher, images, text_list):
     """
     给一批图像与其对应文本，使用 teacher 的 i2t 相似度矩阵，
-    对每张图像选择相似度在指定百分比范围内的文本作为负样本（并屏蔽对角，避免选到自身正样本）。
-
-    参数:
-    - teacher: 训练好的教师模型
-    - images: 当前批次的图像（Tensor）
-    - text_list: 文本列表（所有文本）
-    - lower_percent: 选择相似度最低的前百分之多少（例如20表示前20%）
-    - upper_percent: 选择相似度最高的前百分之多少（例如50表示前50%）
-
+    对每张图像选择每一行中除去对角线后最相似的索引（避免选到自身正样本）。
     返回:
     - neg_texts: 选择的负样本文本列表
     """
@@ -711,51 +703,17 @@ def _select_neg_texts_by_similarity_range(teacher, images, text_list, lower_perc
         # 计算图像与文本之间的相似度矩阵 [B, B]
         sim_i2t_t, _, _, _ = _get_logits_and_feats(teacher, images, text_list)
 
-        # 屏蔽对角：防止选到本来的正例
-        B = sim_i2t_t.size(0)
-        mask = torch.eye(B, device=sim_i2t_t.device,
-                         dtype=sim_i2t_t.dtype) * 1e9
-        sim_masked = sim_i2t_t + mask
-
-        # 将相似度矩阵展平并进行排序
-        sim_scores = sim_masked.view(-1)  # 展平后的相似度分数
-        _, sorted_indices = torch.sort(sim_scores, descending=True)  # 从高到低排序
-
-        # 调试输出，查看相似度的排序
-        if len(sorted_indices) == 0:
-            logging.warning(
-                "Sorted indices are empty. Check the similarity matrix.")
-
-        # 计算需要选择的样本范围
-        num_samples = sim_masked.size(0)
-        lower_idx = int(num_samples * lower_percent / 100)
-        upper_idx = int(num_samples * upper_percent / 100)
-
-        # 调试输出，查看选定的范围
-        # logging.info(f"Selecting samples from index {lower_idx} to {upper_idx} of {num_samples} samples.")
-
-        # 选择在指定百分比范围内的负样本
-        selected_indices = sorted_indices[lower_idx:upper_idx]
-
-        # 如果选择的范围为空，记录警告
-        if len(selected_indices) == 0:
-            logging.warning(
-                f"No samples selected in the range {lower_percent}% to {upper_percent}%.")
-
-        # 将选择出的索引转换为图像-文本索引
-        selected_image_indices = [
-            idx // num_samples for idx in selected_indices]
-        selected_text_indices = [idx % num_samples for idx in selected_indices]
-
-        # 获取相应的文本列表
-        neg_texts = [text_list[j] for j in selected_text_indices]
-
-        # 如果返回的负样本列表为空，记录警告
-        if len(neg_texts) == 0:
-            logging.warning(
-                "No negative texts selected. The returned list is empty.")
-
-    return neg_texts
+        # 1. 克隆一份矩阵，避免原地修改原始数据
+        matrix = sim_i2t_t.clone()
+        
+        # 2. 将对角线元素填充为负无穷大
+        # 这样在取 argmax 时，程序就会自动忽略掉“自己”
+        matrix.fill_diagonal_(float('-inf'))
+        
+        # 3. 在每一行（dim=1）寻找最大值的索引
+        most_similar_indices = torch.argmax(matrix, dim=1)
+        
+        return most_similar_indices
 
 
 def _dump_detailed_topk_results(scores_np, loader, task, out_file, k=10):

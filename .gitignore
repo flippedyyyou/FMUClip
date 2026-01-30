@@ -8,4 +8,5 @@ Df/coco/retain_horse_train.txt
 Df/coco/retain_orange_train.txt
 Df/coco/retain_dog_train.txt
 .vscode/*
+build/*
 tmp*

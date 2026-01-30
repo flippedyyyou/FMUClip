@@ -12,7 +12,7 @@ from utils import (
     _load_forget_train_ids,
     _load_forget_test_ids,
     eval_split_no_tta,
-    _select_neg_texts_by_similarity_range,
+    _select_neg_texts_by_proximal,
     _dump_detailed_topk_results
 )
 import contextlib
@@ -353,8 +353,8 @@ def supervised_unlearn_train(
                 df_text_neg = [txt_df[i] for i in perm.tolist()]
             elif neg_mode == "simrange":
                 # ✅ ours：对每张图像选 teacher 相似度在某范围内的文本
-                df_text_neg = _select_neg_texts_by_similarity_range(
-                    teacher, img_df, txt_df, lower_percent=0, upper_percent=20)
+                df_text_neg = _select_neg_texts_by_proximal(
+                    teacher, img_df, txt_df)
             else:
                 # ✅ ours：对每张图像选 teacher 最不相似的文本
                 df_text_neg = _select_neg_texts_by_minsim(

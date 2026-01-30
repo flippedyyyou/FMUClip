@@ -29,6 +29,7 @@ from lavis_evaluate import setup_seeds
 from torch import nn
 
 
+from clip_unlearn_baseline import _encode_image_patches, _encode_text, _mask_to_patch_attention
 from utils import (
     _tokenize_texts,
     _select_neg_texts_by_minsim,
@@ -43,7 +44,7 @@ from utils import (
     _load_forget_train_ids,
     _load_forget_test_ids,
     eval_split_no_tta,
-    _select_neg_texts_by_similarity_range,
+    _select_neg_texts_by_proximal,
     _dump_detailed_topk_results
 )
 
@@ -60,10 +61,10 @@ def supervised_unlearn_train(
     df_train_loader,
     dr_train_loader,
     optimizer, scaler,
-    lambda_md=1.0,          # Df 的“多模态解耦”损失（unlearn vs teacher@shuffled）
+    lambda_rtf=1.0,          # Df 的“多模态解耦”损失（unlearn vs teacher@shuffled）
     lambda_keep=2.0,        # Dr 的“多模态保持”损失（unlearn vs teacher@matched）
     lambda_uni=0.1,         # 单模态保持（img/text embedding vs teacher）
-    lambda_reward=1.0,      # Dr 的 reward advantage 损失
+    lambda_rdr=1.0,      # Dr 的 reward advantage 损失
     max_epoch=1,
     log_interval=50,
     neg_mode="shuffle",     # 新增：'shuffle' 或 'minsim'
@@ -93,7 +94,7 @@ def supervised_unlearn_train(
         model.train()
         df_iter = iter(df_train_loader)
         dr_iter = iter(dr_train_loader)
-        running = {"attn": 0.0, "reward": 0.0, "uni": 0.0, "tot": 0.0}
+        running = {"rtf": 0.0, "rdr": 0.0, "uni": 0.0, "tot": 0.0}
         for it in range(iters_per_epoch):
             # ===== 1) 取 batch =====
             df_s = next(df_iter)
@@ -135,36 +136,33 @@ def supervised_unlearn_train(
 
                 sam3_masks = _load_sam3_masks(
                     df_image_paths, sam3_mask_dir, sam3_mask_suffix, image_size)  # (B, H, W)
-                sam3_masks = sam3_masks.to(img_df.device)
-                target_img = img_df * sam3_masks.unsqueeze(1)
+                sam3_masks = sam3_masks.to(device, non_blocking=True)
 
-                # (B,N) = (B,D) · (D,)
-                target_sim, _ = _get_logits_and_feats(
-                    model, target_img, [concept_token]*B, return_feats=False)  # 遗忘概念文本特征和区域图像特征相似度
-                # loss_rtf = target_sim.mean()
-                # 提取对角线（即：这张图 vs "horse"）
-                diag_logits = torch.diagonal(target_sim)
+                # grid 是每边 patch 数（比如 ViT-L/14 输入 336 时通常 grid=24，N=576
+                patch_feats, grid = _encode_image_patches(model, img_df) # (B,N,D)，N 是补丁的数量
+                text_feat = _encode_text(model, concept_tokens).squeeze(0) # (D,)
+                # (B,N) = (B,N,D) · (D,)
+                patch_sim = F.cosine_similarity(patch_feats, text_feat.unsqueeze(0), dim=-1) # 遗忘概念文本特征和整图特征
+                patch_mask = _mask_to_patch_attention(sam3_masks, grid) # (B,N) 0/1
+                patch_num = patch_mask.sum(dim=1) # (B,)，mask 区域有多少个 patch，保证不会因为 mask 大小影响 loss 尺度导致训练不稳
+                masked_similarity = patch_sim * patch_mask # (B,N)
+                # # 使用指数函数来放大相似度差异，惩罚相似度较高的区域
+                # exp_similarity = torch.exp(masked_similarity)  # 使用指数函数，放大相似度差异
+                # loss_rtf = (exp_similarity.sum(dim=1) / patch_num.clamp(min=1.0)).mean()
+                loss_rtf = (masked_similarity.sum(dim=1) / patch_num).mean()
 
-                # 反推原始余弦相似度 (Cosine Similarity)
-                ls_param = getattr(model, "logit_scale",
-                                   None) or model.clip_model.logit_scale
-                current_scale = ls_param.exp().item()
-                diag_cos_sim = diag_logits / current_scale
-
-                # 打印调试信息
-                # print(f"\n>>> [Step {it}] Unlearn Target: {concept_token}")
-                # print(f"    - 最终 Loss (Mean Logit): {diag_logits.mean().item():.4f}")
-                # print(f"    - 原始余弦相似度 (Mean Cos): {diag_cos_sim.mean().item():.4f}")
-                # print(f"    - 当前 Logit Scale: {current_scale:.2f}")
-
-                loss_rtf = diag_logits.mean()
-
-                loss_syn = torch.tensor(0.0, device=device)
+                loss_rdr = torch.tensor(0.0, device=device)
                 if reward_model is not None:
                     with torch.no_grad():
-                        sam3_binary = (sam3_masks > 0.3).float()
-                        syn_mask = 1.0 - sam3_binary
-                        syn_img = img_df * syn_mask.unsqueeze(1)
+                        # 先按 patch 粒度抽取背景区域（复用上面的 grid/patch_mask）
+                        bg_patch_mask = 1.0 - patch_mask  # (B, N)
+                        bg_patch_mask = bg_patch_mask.view(B, grid, grid)  # (B, g, g)
+                        bg_mask = F.interpolate(
+                            bg_patch_mask.unsqueeze(1),
+                            size=img_df.shape[-2:],
+                            mode="nearest",
+                        )  # (B, 1, H, W)
+                        syn_img = img_df * bg_mask
                         reward_img = syn_img
                         reward_target = reward_model.clip_model.visual.image_size
                         if isinstance(reward_target, (tuple, list)):
@@ -211,7 +209,7 @@ def supervised_unlearn_train(
                     text_index = indices.flatten()  # [B*sample_k]
                     ce = F.cross_entropy(rep_output, text_index, reduction="none").view(
                         img_df.size(0), sample_k)
-                    loss_syn = (adv * ce).mean()
+                    loss_rdr = (adv * ce).mean()
 
                 sim_i2t_dr_u, sim_t2i_dr_u, img_dr_u, txt_dr_u = _get_logits_and_feats(
                     model, img_dr, txt_dr
@@ -233,23 +231,23 @@ def supervised_unlearn_train(
                 # ===== 4) 单模态保持（避免 encoder 漂移过大）=====
                 loss_uni = mse(img_dr_u, img_dr_t) + mse(txt_dr_u, txt_dr_t)
 
-                loss = lambda_md * loss_rtf + lambda_keep * loss_keep + \
-                    lambda_reward * loss_syn + lambda_uni * loss_uni
+                loss = lambda_rtf * loss_rtf + lambda_keep * loss_keep + \
+                    lambda_rdr * loss_rdr + lambda_uni * loss_uni
 
             scaler.scale(loss).backward()
             scaler.step(optimizer)
             scaler.update()
 
             # log
-            running["attn"] += float(loss_rtf.detach().item())
-            running["reward"] += float(loss_syn.detach().item())
+            running["rtf"] += float(loss_rtf.detach().item())
+            running["rdr"] += float(loss_rdr.detach().item())
             running["uni"] += float(loss_uni.detach().item())
             running["tot"] += float(loss.detach().item())
             if (it + 1) % log_interval == 0:
                 t = it + 1
                 logging.info(
                     f"[EP {ep+1}/{max_epoch}] it={t}/{iters_per_epoch} "
-                    f"attn={running['attn']/t:.4f} reward={running['reward']/t:.4f} "
+                    f"rtf={running['rtf']/t:.4f} rdr={running['rdr']/t:.4f} "
                     f"uni={running['uni']/t:.4f} total={running['tot']/t:.4f}"
                 )
         logging.info(f"[EP {ep+1}] done.")
@@ -385,11 +383,11 @@ def main():
         supervised_unlearn_train(
             cfg, model, teacher, df_train_loader, dr_train_loader,
             optimizer, scaler,
-            lambda_md=getattr(args, "lambda_df", 1.0),          # Df 多模态解耦损失权重
+            lambda_rtf=getattr(args, "lambda_df", 1.0),          # Df 多模态解耦损失权重
             lambda_keep=getattr(args, "lambda_dr", 2.0),        # Dr 多模态保持损失权重
             lambda_uni=getattr(args, "lambda_uni", 0.1),        # 单模态 MSE 权重
             # Dr reward advantage 损失权重
-            lambda_reward=getattr(args, "lambda_reward", 1.0),
+            lambda_rdr=getattr(args, "lambda_rdr", 1.0),
             max_epoch=getattr(args, "max_epoch", 1),
             log_interval=getattr(args, "log_interval", 50),
             neg_mode=args.neg_mode,

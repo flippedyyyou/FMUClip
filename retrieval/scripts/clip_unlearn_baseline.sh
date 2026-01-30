@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=1
 
 root=/datanfs4/shenruoyan/FMUClip
 code_path=${root}/retrieval
@@ -27,14 +27,14 @@ lambda_df=1
 lambda_dr=1
 lambda_uni=1
 max_epoch=10
-neg_mode="minsim"
+neg_mode="simrange"
 concept_token="horse"
 cfg_yaml=${code_path}/lavis/projects/clip/exp_flickr_unlearn_tta_llava.yaml
 runfile=${code_path}/clip_unlearn_baseline.py
 
 # ========= 运行 =========
-output=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df1_dr1_uni1_export0121
-export_dir=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df1_dr1_uni1_export0121
+output=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df1_dr1_uni1_export${date}
+export_dir=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df1_dr1_uni1_export${date}
 
 echo "🚀 Running Unlearning baseline minsim"
 echo "Output -> ${output}"
@@ -70,5 +70,5 @@ python ${runfile} \
     --unlearned_model_name clip_unlearned.pt \
     --unlearned_meta_name clip_unlearned_meta.json \
     --unlearned_subdir unlearned_clip \
-    --forget_train_file "Df/coco/forget_horse_train.txt" \
-    --forget_test_file "Df/coco/forget_horse_test.txt'"
+    --forget_train_file "Df/flickr30k/forget_horse_train.txt" \
+    --forget_test_file "Df/flickr30k/forget_horse_test.txt"

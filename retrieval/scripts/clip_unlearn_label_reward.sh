@@ -3,7 +3,7 @@ export CUDA_VISIBLE_DEVICES=2
 
 date=$(date +"%m%d")
 
-root="."
+root="/datanfs4/shenruoyan/FMUClip"
 code_path=${root}/retrieval
 
 ruoyan_root="/datanfs4/shenruoyan/FMUClip"
@@ -30,18 +30,18 @@ update_w=1.0
 # ========= Unlearn 参数 =========
 lambda_df=1
 lambda_dr=0
-lambda_reward=100
-lambda_uni=3
-max_epoch=20
+lambda_rdr=0
+lambda_uni=0
+max_epoch=10
 neg_mode="minsim"
 cfg_yaml=${code_path}/lavis/projects/clip/exp_flickr_unlearn_tta_llava.yaml
 runfile=${code_path}/clip_unlearn_label_reward.py
 
 # ========= 运行 =========
-output=${code_path}/output/clip_flickr_unlearn1k_horse_attn1_reward100_uni3_epoch20_sample1_export${date}
-export_dir=${code_path}/output/clip_flickr_unlearn1k_horse_attn1_reward100_uni3_epoch20_sample1_export${date}
+output=${code_path}/output/clip_flickr_unlearn1k_horse_rtf1_rdr0_uni0_epoch10_export${date}
+export_dir=${code_path}/output/clip_flickr_unlearn1k_horse_rtf1_rdr0_uni0_epoch10_export${date}
 
-echo "🚀 Running Unlearning attn+reward"
+echo "🚀 Running Unlearning rtf+rdr"
 echo "Output -> ${output}"
 
 # ---- image→text ----
@@ -65,7 +65,7 @@ python ${runfile} \
     --retrieval_task "image2text" \
     --lambda_df ${lambda_df} \
     --lambda_dr ${lambda_dr} \
-    --lambda_reward ${lambda_reward} \
+    --lambda_rdr ${lambda_rdr} \
     --lambda_uni ${lambda_uni} \
     --max_epoch ${max_epoch} \
     --sam3_mask_dir ${code_path}/mask/flickr30k/horse/train \
