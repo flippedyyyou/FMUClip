@@ -225,11 +225,7 @@ def _split_eval_indices(
     train_indices: List[int] = []
     test_indices: List[int] = []
 
-    class_labels = list(per_class.keys())
-    rng.shuffle(class_labels)
-    for label in class_labels:
-        indices = per_class[label]
-        rng.shuffle(indices)
+    for _, indices in per_class.items():
         split_point = int(len(indices) * train_fraction)
         test_count = int(len(indices) * test_fraction)
         test_count = min(test_count, max_test_per_class)
@@ -240,9 +236,10 @@ def _split_eval_indices(
 
         train_indices.extend(train_part)
         test_indices.extend(test_part)
-        if max_train_count is not None and len(train_indices) >= max_train_count:
-            train_indices = train_indices[:max_train_count]
-            break
+    rng.shuffle(train_indices)
+    if max_train_count is not None and len(train_indices) >= max_train_count:
+        train_indices = train_indices[:max_train_count]
+    
 
     return train_indices, test_indices
 
