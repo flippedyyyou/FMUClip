@@ -233,6 +233,7 @@ def _split_eval_indices(
     train_fraction: float = 0.7,
     test_fraction: float = 0.3,
     max_test_per_class: int = 50,
+    max_train_count: Optional[int] = None,
     seed: int = 42,
 ) -> Tuple[List[int], List[int]]:
     per_class: dict[int, List[int]] = {}
@@ -244,7 +245,10 @@ def _split_eval_indices(
     train_indices: List[int] = []
     test_indices: List[int] = []
 
-    for label, indices in per_class.items():
+    class_labels = list(per_class.keys())
+    rng.shuffle(class_labels)
+    for label in class_labels:
+        indices = per_class[label]
         rng.shuffle(indices)
         split_point = int(len(indices) * train_fraction)
         test_count = int(len(indices) * test_fraction)
@@ -256,6 +260,9 @@ def _split_eval_indices(
 
         train_indices.extend(train_part)
         test_indices.extend(test_part)
+        if max_train_count is not None and len(train_indices) >= max_train_count:
+            train_indices = train_indices[:max_train_count]
+            break
 
     return train_indices, test_indices
 
@@ -712,6 +719,11 @@ def main() -> None:
         train_fraction=TRAIN_FRACTION,
         test_fraction=TEST_FRACTION,
         max_test_per_class=MAX_TEST_PER_CLASS,
+        max_train_count=len(df_train_indices),
+    )
+    logging.info(
+        "Retain train set is capped by forget train size: %d",
+        len(df_train_indices),
     )
 
     df_train_dataset = ClassificationDataset(

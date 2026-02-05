@@ -56,6 +56,6 @@ if __name__ == "__main__":
     DATA_ROOT = "/datanfs4/shenruoyan/datasets/cifar-100-python"
     FORGET_CLASSES = list(range(0, 1)) 
     # 更新后缀为 .jsonl
-    OUTPUT_FILE = "/datanfs4/shenruoyan/FMUClip/classification/data_split/cifar100_forget0_10percent.jsonl"
+    OUTPUT_FILE = "/datanfs4/shenruoyan/FMUClip/classification/data_split/cifar100_forget0_complete.jsonl"
     
-    generate_cifar100_forget_jsonl(DATA_ROOT, FORGET_CLASSES, OUTPUT_FILE, keep_ratio=0.1)
+    generate_cifar100_forget_jsonl(DATA_ROOT, FORGET_CLASSES, OUTPUT_FILE, keep_ratio=1)

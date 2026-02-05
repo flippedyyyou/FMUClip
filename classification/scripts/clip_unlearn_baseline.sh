@@ -5,7 +5,7 @@ code_path=$(cd "$(dirname "$0")/.." && pwd)
 
 # ====== CIFAR100 Unlearning config ======
 DATA_ROOT="/datanfs4/shenruoyan/datasets/cifar-100-python"
-FORGET_LIST="/datanfs4/shenruoyan/FMUClip/classification/data_split/cifar100_apple_forget_list.txt"
+FORGET_LIST="/datanfs4/shenruoyan/FMUClip/classification/data_split/cifar100_forget0_complete.jsonl"
 SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/classification/mask/cifar100/train/apple"
 
 # ====== Hyperparameters ======

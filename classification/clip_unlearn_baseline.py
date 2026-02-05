@@ -44,6 +44,17 @@ def _load_dict_from_path(file_path: str):
         raise AttributeError(f"Mapping file {file_path} must contain 'LABEL_NAMES' dict.")
     return mapping_module.LABEL_NAMES
 
+def _load_forget_jsonl(path: str) -> Tuple[List[int], Set[int]]:
+    """返回索引列表和对应的类别 ID 集合"""
+    indices = []
+    forget_classes = set()
+    with open(path, "r", encoding="utf-8") as handle:
+        for line in handle:
+            if line.strip():
+                data = json.loads(line)
+                indices.append(int(data["image_index"]))
+                forget_classes.add(int(data["class_index"]))
+    return indices, forget_classes
 
 def _tokenize_texts(texts: Sequence[str], device: torch.device) -> torch.Tensor:
     if isinstance(texts, torch.Tensor):
@@ -202,6 +213,7 @@ def _split_eval_indices(
     train_fraction: float = 0.7,
     test_fraction: float = 0.3,
     max_test_per_class: int = 50,
+    max_train_count: Optional[int] = None,
     seed: int = 42,
 ) -> Tuple[List[int], List[int]]:
     per_class: dict[int, List[int]] = {}
@@ -213,7 +225,10 @@ def _split_eval_indices(
     train_indices: List[int] = []
     test_indices: List[int] = []
 
-    for _, indices in per_class.items():
+    class_labels = list(per_class.keys())
+    rng.shuffle(class_labels)
+    for label in class_labels:
+        indices = per_class[label]
         rng.shuffle(indices)
         split_point = int(len(indices) * train_fraction)
         test_count = int(len(indices) * test_fraction)
@@ -225,6 +240,9 @@ def _split_eval_indices(
 
         train_indices.extend(train_part)
         test_indices.extend(test_part)
+        if max_train_count is not None and len(train_indices) >= max_train_count:
+            train_indices = train_indices[:max_train_count]
+            break
 
     return train_indices, test_indices
 
@@ -594,25 +612,23 @@ def main() -> None:
         if args.dataset == "cifar100"
         else datasets.ImageNet(root=args.data_root, split="train")
     )
-    forget_list = _load_forget_list(args.forget_list)
-    forget_indices = _build_indices_from_list(base_dataset, forget_list)
-    forget_classes = {int(base_dataset[idx][1]) for idx in forget_indices}
-    if args.dataset == "cifar100":
-        invalid = [c for c in forget_classes if c not in label_mapping]
-        if invalid:
-            raise ValueError(f"Found class indices not in LABEL_NAMES: {invalid}")
-    logging.info("Forget classes in current split: %s", sorted(forget_classes))
+    # 1. 加载 JSONL (获取索引和类别集)
+    forget_indices_list, forget_classes_set = _load_forget_jsonl(args.forget_list)
+    forget_indices = set(forget_indices_list)
+    
+        # 2. 打印一下信息确认读取正确
+    logging.info(f"从 JSONL 加载了 {len(forget_indices)} 个遗忘样本索引")
 
-    image_size = model.visual.image_size if isinstance(model.visual.image_size, int) else model.visual.image_size[0]
+    # 3. 构建数据集 (传入类别集用于过滤保留集)
     df_dataset, dr_dataset, class_names = build_datasets(
         args.dataset,
         args.data_root,
-        image_size=image_size,
-        forget_indices=forget_indices,
-        forget_classes=forget_classes,
+        image_size=model.visual.image_size if isinstance(model.visual.image_size, int) else model.visual.image_size[0],
+        forget_indices=forget_indices_list,
+        forget_classes=forget_classes_set,
     )
 
-    # 训练/测试 = 70%/30%，且每个类别测试样本上限为 50
+    # 执行划分：训练/测试 = 70%/30%，且每个类别测试样本上限为 50
     df_train_indices, df_test_indices = _split_eval_indices(
         df_dataset,
         train_fraction=TRAIN_FRACTION,
@@ -624,7 +640,13 @@ def main() -> None:
         train_fraction=TRAIN_FRACTION,
         test_fraction=TEST_FRACTION,
         max_test_per_class=MAX_TEST_PER_CLASS,
+        max_train_count=len(df_train_indices),
     )
+    logging.info(
+        "Retain train set is capped by forget train size: %d",
+        len(df_train_indices),
+    )
+
     df_train_dataset = ClassificationDataset(
         df_dataset.dataset,
         df_dataset.class_names,
@@ -649,6 +671,7 @@ def main() -> None:
         dr_test_indices,
         use_index_path=dr_dataset.use_index_path,
     )
+
 
     df_loader = DataLoader(
         df_train_dataset,
