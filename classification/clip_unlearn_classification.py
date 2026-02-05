@@ -23,8 +23,9 @@ import sys
 
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
-EVAL_FRACTION = 0.1
 TRAIN_FRACTION = 0.7
+TEST_FRACTION = 0.3
+MAX_TEST_PER_CLASS = 50
 
 def _load_dict_from_path(file_path: str):
     """从指定路径动态加载包含 LABEL_NAMES 的字典"""
@@ -230,29 +231,32 @@ def _iter_labels(dataset: Dataset, indices: Sequence[int]) -> Iterable[int]:
 def _split_eval_indices(
     dataset: ClassificationDataset,
     train_fraction: float = 0.7,
-    test_sampling_ratio: float = 0.1, # 30% 之后再取 10%
+    test_fraction: float = 0.3,
+    max_test_per_class: int = 50,
+    seed: int = 42,
 ) -> Tuple[List[int], List[int]]:
     per_class: dict[int, List[int]] = {}
     for idx in dataset.indices:
         _, label = dataset.dataset[idx]
         per_class.setdefault(int(label), []).append(idx)
-    
+
+    rng = np.random.default_rng(seed)
     train_indices: List[int] = []
     test_indices: List[int] = []
-    
+
     for label, indices in per_class.items():
-        # 1. 划分为 70% 训练集
+        rng.shuffle(indices)
         split_point = int(len(indices) * train_fraction)
+        test_count = int(len(indices) * test_fraction)
+        test_count = min(test_count, max_test_per_class)
+        test_count = min(test_count, len(indices) - split_point)
+
         train_part = indices[:split_point]
-        remaining_part = indices[split_point:]
-        
-        # 2. 从剩下的 30% 中再取 10% 作为最终测试集
-        test_count = max(1, int(len(remaining_part) * test_sampling_ratio)) if remaining_part else 0
-        test_part = remaining_part[:test_count]
-        
+        test_part = indices[split_point: split_point + test_count]
+
         train_indices.extend(train_part)
         test_indices.extend(test_part)
-        
+
     return train_indices, test_indices
 
 def _compute_text_features(
@@ -696,9 +700,19 @@ def main() -> None:
         forget_classes=forget_classes_set,
     )
 
-    # 执行划分：70% 训练，测试集为剩余 30% 中的 10%
-    df_train_indices, df_test_indices = _split_eval_indices(df_dataset)
-    dr_train_indices, dr_test_indices = _split_eval_indices(dr_dataset)
+    # 执行划分：训练/测试 = 70%/30%，且每个类别测试样本上限为 50
+    df_train_indices, df_test_indices = _split_eval_indices(
+        df_dataset,
+        train_fraction=TRAIN_FRACTION,
+        test_fraction=TEST_FRACTION,
+        max_test_per_class=MAX_TEST_PER_CLASS,
+    )
+    dr_train_indices, dr_test_indices = _split_eval_indices(
+        dr_dataset,
+        train_fraction=TRAIN_FRACTION,
+        test_fraction=TEST_FRACTION,
+        max_test_per_class=MAX_TEST_PER_CLASS,
+    )
 
     df_train_dataset = ClassificationDataset(
         df_dataset.dataset,

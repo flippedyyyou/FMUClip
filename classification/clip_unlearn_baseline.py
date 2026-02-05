@@ -1,11 +1,14 @@
 # coding=utf-8
 import argparse
 import copy
+import importlib.util
 import json
 import logging
 import os
+import sys
 from typing import Iterable, List, Optional, Sequence, Set, Tuple
 
+import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -18,6 +21,9 @@ from lavis.models.clip_models.tokenizer import tokenize
 
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
+TRAIN_FRACTION = 0.7
+TEST_FRACTION = 0.3
+MAX_TEST_PER_CLASS = 50
 
 
 def _setup_logging(output_dir: str) -> None:
@@ -28,6 +34,15 @@ def _setup_logging(output_dir: str) -> None:
         format="%(asctime)s | %(levelname)s | %(message)s",
         handlers=[logging.FileHandler(log_path), logging.StreamHandler()],
     )
+
+def _load_dict_from_path(file_path: str):
+    spec = importlib.util.spec_from_file_location("mapping_module", file_path)
+    mapping_module = importlib.util.module_from_spec(spec)
+    sys.modules["mapping_module"] = mapping_module
+    spec.loader.exec_module(mapping_module)
+    if not hasattr(mapping_module, "LABEL_NAMES"):
+        raise AttributeError(f"Mapping file {file_path} must contain 'LABEL_NAMES' dict.")
+    return mapping_module.LABEL_NAMES
 
 
 def _tokenize_texts(texts: Sequence[str], device: torch.device) -> torch.Tensor:
@@ -182,12 +197,44 @@ def _iter_labels(dataset: Dataset, indices: Sequence[int]) -> Iterable[int]:
         _, label = dataset[idx]
         yield int(label)
 
+def _split_eval_indices(
+    dataset: ClassificationDataset,
+    train_fraction: float = 0.7,
+    test_fraction: float = 0.3,
+    max_test_per_class: int = 50,
+    seed: int = 42,
+) -> Tuple[List[int], List[int]]:
+    per_class: dict[int, List[int]] = {}
+    for idx in dataset.indices:
+        _, label = dataset.dataset[idx]
+        per_class.setdefault(int(label), []).append(idx)
+
+    rng = np.random.default_rng(seed)
+    train_indices: List[int] = []
+    test_indices: List[int] = []
+
+    for _, indices in per_class.items():
+        rng.shuffle(indices)
+        split_point = int(len(indices) * train_fraction)
+        test_count = int(len(indices) * test_fraction)
+        test_count = min(test_count, max_test_per_class)
+        test_count = min(test_count, len(indices) - split_point)
+
+        train_part = indices[:split_point]
+        test_part = indices[split_point: split_point + test_count]
+
+        train_indices.extend(train_part)
+        test_indices.extend(test_part)
+
+    return train_indices, test_indices
+
 
 def build_datasets(
     dataset_name: str,
     data_root: str,
     image_size: int,
     forget_indices: Optional[Set[int]] = None,
+    forget_classes: Optional[Set[int]] = None,
 ) -> Tuple[Dataset, Dataset, List[str]]:
     tfm = transforms.Compose(
         [
@@ -208,9 +255,20 @@ def build_datasets(
     else:
         raise ValueError(f"Unsupported dataset: {dataset_name}")
 
-    total_indices = list(range(len(base)))
     forget_indices = forget_indices or set()
-    retain_indices = [i for i in total_indices if i not in forget_indices]
+    forget_classes = forget_classes or set()
+
+    total_indices = list(range(len(base)))
+    labels: Optional[Sequence[int]] = getattr(base, "targets", None)
+    if labels is None and hasattr(base, "samples"):
+        labels = [int(item[1]) for item in base.samples]
+    if labels is None:
+        labels = [int(base[idx][1]) for idx in total_indices]
+
+    retain_indices = [
+        idx for idx in total_indices
+        if idx not in forget_indices and int(labels[idx]) not in forget_classes
+    ]
 
     df_dataset = ClassificationDataset(base, class_names, sorted(forget_indices), use_index_path=use_index_path)
     dr_dataset = ClassificationDataset(base, class_names, retain_indices, use_index_path=use_index_path)
@@ -492,6 +550,7 @@ def _evaluate_and_dump(
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="CLIP classification unlearning for CIFAR100/ImageNet")
     parser.add_argument("--dataset", choices=["cifar100", "imagenet"], required=True)
+    parser.add_argument("--dict-path", required=True, help="Path to Python file containing LABEL_NAMES")
     parser.add_argument("--data_root", required=True)
     parser.add_argument(
         "--method",
@@ -518,6 +577,7 @@ def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
     _setup_logging(args.output)
+    label_mapping = _load_dict_from_path(args.dict_path)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     ckpt_dir = os.path.expanduser("/datanfs4/shenruoyan/checkpoints/clip")
@@ -536,6 +596,12 @@ def main() -> None:
     )
     forget_list = _load_forget_list(args.forget_list)
     forget_indices = _build_indices_from_list(base_dataset, forget_list)
+    forget_classes = {int(base_dataset[idx][1]) for idx in forget_indices}
+    if args.dataset == "cifar100":
+        invalid = [c for c in forget_classes if c not in label_mapping]
+        if invalid:
+            raise ValueError(f"Found class indices not in LABEL_NAMES: {invalid}")
+    logging.info("Forget classes in current split: %s", sorted(forget_classes))
 
     image_size = model.visual.image_size if isinstance(model.visual.image_size, int) else model.visual.image_size[0]
     df_dataset, dr_dataset, class_names = build_datasets(
@@ -543,10 +609,49 @@ def main() -> None:
         args.data_root,
         image_size=image_size,
         forget_indices=forget_indices,
+        forget_classes=forget_classes,
+    )
+
+    # 训练/测试 = 70%/30%，且每个类别测试样本上限为 50
+    df_train_indices, df_test_indices = _split_eval_indices(
+        df_dataset,
+        train_fraction=TRAIN_FRACTION,
+        test_fraction=TEST_FRACTION,
+        max_test_per_class=MAX_TEST_PER_CLASS,
+    )
+    dr_train_indices, dr_test_indices = _split_eval_indices(
+        dr_dataset,
+        train_fraction=TRAIN_FRACTION,
+        test_fraction=TEST_FRACTION,
+        max_test_per_class=MAX_TEST_PER_CLASS,
+    )
+    df_train_dataset = ClassificationDataset(
+        df_dataset.dataset,
+        df_dataset.class_names,
+        df_train_indices,
+        use_index_path=df_dataset.use_index_path,
+    )
+    df_test_dataset = ClassificationDataset(
+        df_dataset.dataset,
+        df_dataset.class_names,
+        df_test_indices,
+        use_index_path=df_dataset.use_index_path,
+    )
+    dr_train_dataset = ClassificationDataset(
+        dr_dataset.dataset,
+        dr_dataset.class_names,
+        dr_train_indices,
+        use_index_path=dr_dataset.use_index_path,
+    )
+    dr_test_dataset = ClassificationDataset(
+        dr_dataset.dataset,
+        dr_dataset.class_names,
+        dr_test_indices,
+        use_index_path=dr_dataset.use_index_path,
     )
 
     df_loader = DataLoader(
-        df_dataset,
+        df_train_dataset,
         batch_size=args.batch_size,
         shuffle=True,
         num_workers=args.num_workers,
@@ -554,7 +659,7 @@ def main() -> None:
         drop_last=True,
     )
     dr_loader = DataLoader(
-        dr_dataset,
+        dr_train_dataset,
         batch_size=args.batch_size,
         shuffle=True,
         num_workers=args.num_workers,
@@ -626,7 +731,7 @@ def main() -> None:
     dr_jsonl = os.path.join(args.output, "topk_dr.jsonl")
     df_acc = _evaluate_and_dump(
         model,
-        df_dataset,
+        df_test_dataset,
         class_names,
         device,
         df_jsonl,
@@ -636,7 +741,7 @@ def main() -> None:
     )
     dr_acc = _evaluate_and_dump(
         model,
-        dr_dataset,
+        dr_test_dataset,
         class_names,
         device,
         dr_jsonl,
