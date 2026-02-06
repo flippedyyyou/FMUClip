@@ -1,4 +1,22 @@
 # coding=utf-8
+from utils import (
+    _tokenize_texts,
+    _select_neg_texts_by_minsim,
+    _get_logits_and_feats,
+    _resolve_clip_model,
+    _save_unlearned_checkpoint,
+    prepare_dr_data,
+    prepare_df_data,
+    prepare_df_data_for_test,
+    prepare_dr_data_for_test,
+    _load_sam3_masks,
+    _load_forget_train_ids,
+    _load_forget_test_ids,
+    eval_split_no_tta,
+    _select_neg_texts_by_proximal,
+    _dump_detailed_topk_results,
+    _select_neg_texts_by_similarity_range
+)
 import os
 import sys
 import json
@@ -30,24 +48,7 @@ from torch import nn
 
 
 from clip_unlearn_baseline import _encode_image_patches, _encode_text, _mask_to_patch_attention
-from utils.utils import (
-    _tokenize_texts,
-    _select_neg_texts_by_minsim,
-    _get_logits_and_feats,
-    _resolve_clip_model,
-    _save_unlearned_checkpoint,
-    prepare_dr_data,
-    prepare_df_data,
-    prepare_df_data_for_test,
-    prepare_dr_data_for_test,
-    _load_sam3_masks,
-    _load_forget_train_ids,
-    _load_forget_test_ids,
-    eval_split_no_tta,
-    _select_neg_texts_by_proximal,
-    _dump_detailed_topk_results,
-    _select_neg_texts_by_similarity_range
-)
+
 
 # Allow running this file as a script by adding its directory to sys.path.
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -140,13 +141,13 @@ def supervised_unlearn_train(
                 sam3_masks = sam3_masks.to(device, non_blocking=True)
 
                 # grid 是每边 patch 数（比如 ViT-L/14 输入 336 时通常 grid=24，N=576
-                patch_feats, grid = _encode_image_patches(model, img_df) # (B,N,D)，N 是补丁的数量
-                text_feat = _encode_text(model, concept_tokens).squeeze(0) # (D,)
+                patch_feats, grid = _encode_image_patches(model, img_df)  # (B,N,D)，N 是补丁的数量
+                text_feat = _encode_text(model, concept_tokens).squeeze(0)  # (D,)
                 # (B,N) = (B,N,D) · (D,)
-                patch_sim = F.cosine_similarity(patch_feats, text_feat.unsqueeze(0), dim=-1) # 遗忘概念文本特征和整图特征
-                patch_mask = _mask_to_patch_attention(sam3_masks, grid) # (B,N) 0/1
-                patch_num = patch_mask.sum(dim=1) # (B,)，mask 区域有多少个 patch，保证不会因为 mask 大小影响 loss 尺度导致训练不稳
-                masked_similarity = patch_sim * patch_mask # (B,N)
+                patch_sim = F.cosine_similarity(patch_feats, text_feat.unsqueeze(0), dim=-1)  # 遗忘概念文本特征和整图特征
+                patch_mask = _mask_to_patch_attention(sam3_masks, grid)  # (B,N) 0/1
+                patch_num = patch_mask.sum(dim=1)  # (B,)，mask 区域有多少个 patch，保证不会因为 mask 大小影响 loss 尺度导致训练不稳
+                masked_similarity = patch_sim * patch_mask  # (B,N)
                 # # 使用指数函数来放大相似度差异，惩罚相似度较高的区域
                 # exp_similarity = torch.exp(masked_similarity)  # 使用指数函数，放大相似度差异
                 # loss_rtf = (exp_similarity.sum(dim=1) / patch_num.clamp(min=1.0)).mean()
