@@ -1,5 +1,5 @@
 # coding=utf-8
-from utils import (
+from utils.utils import (
     _tokenize_texts,
     _select_neg_texts_by_minsim,
     _resolve_clip_model,

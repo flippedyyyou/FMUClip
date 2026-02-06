@@ -30,7 +30,7 @@ from torch import nn
 
 
 from clip_unlearn_baseline import _encode_image_patches, _encode_text, _mask_to_patch_attention
-from utils import (
+from utils.utils import (
     _tokenize_texts,
     _select_neg_texts_by_minsim,
     _get_logits_and_feats,
