@@ -7,12 +7,14 @@
 + 仅仅遗忘了遗忘集中的图片所对应的文本标签，但并没有真正遗忘目标概念。
 
 ## TODO
-### Dataset Splitting
+### Dataset Construction
 #### Candidate datasets
 + flickr30k_entities
 + MS COCO
 
 #### Splitting Strategy
++ **flickr30k_entities:** 基于CIFAR-100中已经定义的class，去flickr中选取包含相应concept的image，筛选图片数>=200的concept作为forgetting set以及retain set的training set，从CIFAR-100中选择concept相对应的image作为test set。
+
 + **Forgetting set:** Select complex images containing *multiple* concepts (items) as training set, and images with less concepts as test set.
 + **Retain set:** TBD.
 
