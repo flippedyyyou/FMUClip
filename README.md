@@ -1,5 +1,15 @@
 # README
 
+
+## Motivation
+### Disadvantages of Current Methods
++ 现有方法是image-level
+    + 当图像中存在多个concept（复杂图像）时，无法对target concept进行细粒度的精确遗忘。
+    + Image-level会导致模型遗忘图像背景中的non-target concepts。
+
+## Task Definition
+给定一个target concept $c_t$以及其对应的图像$i$，目标是在遗忘$c_t$的同时，不遗忘非目标概念$C_{nt}$，特别是遗忘训练集中的背景concept $C_{bg} (C_{bg} \subset C_{nt})$。
+
 ## Early Study
 + 将待遗忘图像对应的文本label替换为最不相似的文本：$D_f$低，同时$D_r$很高。
 
