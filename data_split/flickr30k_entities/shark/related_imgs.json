@@ -1,0 +1,78 @@
+{
+  "4349523799": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "164332",
+        "phrase": "a fake sharks mouth",
+        "phrase_type": [
+          "bodyparts"
+        ]
+      },
+      {
+        "phrase_id": "164325",
+        "phrase": "stuffed sharks",
+        "phrase_type": [
+          "animals"
+        ]
+      },
+      {
+        "phrase_id": "164327",
+        "phrase": "a collection of stuffed shark toys",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "164324",
+        "phrase": "a bin of shark stuffed animals",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3459578742": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "119795",
+        "phrase": "shark attack",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4604977910": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "181994",
+        "phrase": "a shark",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3730431218": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "140171",
+        "phrase": "a shark",
+        "phrase_type": [
+          "animals"
+        ]
+      },
+      {
+        "phrase_id": "140169",
+        "phrase": "a big shark",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

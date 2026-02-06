@@ -1,0 +1,74 @@
+{
+  "119364730": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "4992",
+        "phrase": "a mixed sex group wear lobster",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3030953639": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "88796",
+        "phrase": "a lobster",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "86120427": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "281953",
+        "phrase": "lobsters",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "4463063933": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "170497",
+        "phrase": "fresh lobster",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "5499892202": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "237572",
+        "phrase": "lobster traps",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1480712062": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "14463",
+        "phrase": "a small lobster",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "1454217779": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "13452",
+        "phrase": "the jaw of a stone lizard",
+        "phrase_type": [
+          "animals"
+        ]
+      },
+      {
+        "phrase_id": "13458",
+        "phrase": "the lizard 's mouth",
+        "phrase_type": [
+          "bodyparts"
+        ]
+      },
+      {
+        "phrase_id": "13456",
+        "phrase": "the mouth of a lizard",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3378980591": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "114230",
+        "phrase": "the tiny lizard",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "437230706": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "165262",
+        "phrase": "a lizard",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "166507476": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "18339",
+        "phrase": "two lizards",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

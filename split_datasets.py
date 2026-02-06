@@ -16,12 +16,13 @@ OUTPUT_PATH = 'data_split'
 
 # Classification
 
-# cifar_labels = list(LABEL_NAMES.values())
-# for label in cifar_labels:
-#     label = label.replace('_', ' ')
+cifar_concepts = list(LABEL_NAMES.values())
+for concept in cifar_concepts:
+    concept = concept.replace('_', ' ')
 
-concepts = ['dog', 'horse', 'apple']
+customizd_concepts = ['dog', 'horse', 'apple']
 
+all_concepts = set(cifar_concepts + customizd_concepts)
 
 def split_flickr30k_entities_for_classification():
     print("Splitting Flickr30K Entities dataset for classification...")
@@ -52,7 +53,7 @@ def split_flickr30k_entities_for_classification():
         phrases = load_json(os.path.join(
             OUTPUT_PATH, 'flickr30k_entities/phrases.json'))
 
-    for concept in concepts:
+    for concept in tqdm(all_concepts, desc="Processing concepts:"):
         related_imgs = {}
         for img_id, img_phrases in phrases.items():
             for phrase_id in img_phrases.keys():

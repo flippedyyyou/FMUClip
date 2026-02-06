@@ -1,0 +1,124 @@
+{
+  "4591476340": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "181139",
+        "phrase": "a dinosaur",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "181140",
+        "phrase": "a dinosaur suit",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "491600485": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "218076",
+        "phrase": "the dinosaur exhibt",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5654749179": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "240393",
+        "phrase": "a dinosaur skeleton",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3196557944": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "100187",
+        "phrase": "a dinosaur",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4850301392": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "210423",
+        "phrase": "a dinosaur",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3704097614": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "138048",
+        "phrase": "a dinosaur sign",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "138050",
+        "phrase": "past dinosaur billboard",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2455800418": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "50931",
+        "phrase": "a toy dinosaur",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "115452730": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "4062",
+        "phrase": "dinosaurs",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3687736666": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "136811",
+        "phrase": "the dinosaur statue",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

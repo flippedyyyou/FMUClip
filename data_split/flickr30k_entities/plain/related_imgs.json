@@ -1,0 +1,411 @@
+{
+  "5391728144": {
+    "item_num": 21,
+    "phrases": [
+      {
+        "phrase_id": "235289",
+        "phrase": "plain or striped shirts",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4952669491": {
+    "item_num": 16,
+    "phrases": [
+      {
+        "phrase_id": "222660",
+        "phrase": "plain-clothed people",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "4981184852": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "225779",
+        "phrase": "plain clothes",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "880663417": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "282818",
+        "phrase": "plain black clothes",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3517035380": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "124179",
+        "phrase": "plain shorts",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "399054696": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "151079",
+        "phrase": "plain boats",
+        "phrase_type": [
+          "vehicles",
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3744182161": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "140822",
+        "phrase": "a plain shirt",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3823691082": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "144193",
+        "phrase": "plain clothes",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "8058635660": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "278381",
+        "phrase": "plains",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3775526174": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "142175",
+        "phrase": "a plain light colored shirt",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "54501196": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "236828",
+        "phrase": "a rocky plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5615077255": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "239762",
+        "phrase": "plain clothes",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3644136054": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "133806",
+        "phrase": "green plains",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "470903027": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "193635",
+        "phrase": "a grassy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2839038702": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "76075",
+        "phrase": "the grassy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "270816949": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "67687",
+        "phrase": "plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "45756278": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "179997",
+        "phrase": "a plain blue shirt",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "336551609": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "113162",
+        "phrase": "a snowy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3490517179": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "122145",
+        "phrase": "a sandy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "143552697": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "12951",
+        "phrase": "a grassy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "245845539": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "51080",
+        "phrase": "the african plains",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "240696675": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "46895",
+        "phrase": "a grassy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "143684568": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "13020",
+        "phrase": "plains",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2710416789": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "67891",
+        "phrase": "a plain look",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3191135894": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "99880",
+        "phrase": "a grassy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "390992102": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "147928",
+        "phrase": "snow covered plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "115684808": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "4087",
+        "phrase": "a snowy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2973269132": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "84895",
+        "phrase": "a plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1229756013": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "5692",
+        "phrase": "a brown plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "124195430": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "6076",
+        "phrase": "a sandy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2057306459": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "26225",
+        "phrase": "a grassy plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2036407732": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "25404",
+        "phrase": "a dry , scrubby plain",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "134653574": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "9350",
+        "phrase": "plain clothes",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "506343925": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "227819",
+        "phrase": "sandy plains",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

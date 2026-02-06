@@ -1,0 +1,7940 @@
+{
+  "4950994410": {
+    "item_num": 19,
+    "phrases": [
+      {
+        "phrase_id": "222429",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "222431",
+        "phrase": "a mountainous landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "222430",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3037377051": {
+    "item_num": 18,
+    "phrases": [
+      {
+        "phrase_id": "89254",
+        "phrase": "the middle of these beautiful green mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2770821714": {
+    "item_num": 18,
+    "phrases": [
+      {
+        "phrase_id": "71805",
+        "phrase": "many mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "71806",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "362763393": {
+    "item_num": 17,
+    "phrases": [
+      {
+        "phrase_id": "132529",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7173939318": {
+    "item_num": 16,
+    "phrases": [
+      {
+        "phrase_id": "266534",
+        "phrase": "a landscape of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3249125548": {
+    "item_num": 15,
+    "phrases": [
+      {
+        "phrase_id": "104282",
+        "phrase": "a dirt mountain road",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3213910095": {
+    "item_num": 15,
+    "phrases": [
+      {
+        "phrase_id": "101616",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "101626",
+        "phrase": "mountain peaks",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "101618",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5123000955": {
+    "item_num": 15,
+    "phrases": [
+      {
+        "phrase_id": "229396",
+        "phrase": "a mountainous region",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2222944983": {
+    "item_num": 15,
+    "phrases": [
+      {
+        "phrase_id": "35067",
+        "phrase": "snow covered mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "35064",
+        "phrase": "other mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4467634558": {
+    "item_num": 15,
+    "phrases": [
+      {
+        "phrase_id": "0",
+        "phrase": "a scenic mountain view background",
+        "phrase_type": [
+          "notvisual"
+        ]
+      }
+    ]
+  },
+  "3154107557": {
+    "item_num": 15,
+    "phrases": [
+      {
+        "phrase_id": "96972",
+        "phrase": "a landscape of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3334537556": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "110274",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5375305047": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "234879",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "234881",
+        "phrase": "a picture of the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4304534002": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "162510",
+        "phrase": "a view of the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "162515",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6924870910": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "261556",
+        "phrase": "a scenic mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2190899457": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "33111",
+        "phrase": "mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "202174998": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "25114",
+        "phrase": "a steep mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5267607278": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "232532",
+        "phrase": "mountain dew",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2686849571": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "66150",
+        "phrase": "the great mountain of canyon",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6156276992": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "248823",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "248830",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3458396026": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "119700",
+        "phrase": "the base of a misty mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "0",
+        "phrase": "a mountain view background",
+        "phrase_type": [
+          "notvisual"
+        ]
+      }
+    ]
+  },
+  "2428912710": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "48753",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3179833180": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "98868",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7527074552": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "271054",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3827238558": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "144639",
+        "phrase": "the top of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144638",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4337308572": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "163874",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6907002468": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "260955",
+        "phrase": "mountain bikers",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "4798837062": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "203800",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3364787667": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "113064",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "113068",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "304450431": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "89725",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5054184499": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "227620",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5676780431": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "240742",
+        "phrase": "his mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5444535493": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "236713",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1652324440": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "18137",
+        "phrase": "the snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4384686805": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "165758",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1674159861": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "18485",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "94989565": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "283973",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6261354929": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "251173",
+        "phrase": "a mountain scape",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4019072184": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "152113",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3826412077": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "144325",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7784556300": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "275132",
+        "phrase": "a black mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2053006423": {
+    "item_num": 13,
+    "phrases": [
+      {
+        "phrase_id": "25977",
+        "phrase": "the view of a grassy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3234646850": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "103139",
+        "phrase": "the mountains of the countryside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7723147862": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "274130",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1296740217": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "7738",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3925836925": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "148368",
+        "phrase": "a lovely mountain lake scene",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "148365",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2825808939": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "75040",
+        "phrase": "a mountainous scene",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "75041",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "75039",
+        "phrase": "a picture of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6296741028": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "251917",
+        "phrase": "his mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2750517549": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "70359",
+        "phrase": "a mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6231758027": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "250667",
+        "phrase": "a mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "4798837802": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "203808",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "203813",
+        "phrase": "a mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3177282493": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "98551",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "701383584": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "263988",
+        "phrase": "faraway mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "263982",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3391209042": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "114885",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "114887",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7822662028": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "275816",
+        "phrase": "a mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "7817889978": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "0",
+        "phrase": "a dramatic mountain background",
+        "phrase_type": [
+          "notvisual"
+        ]
+      },
+      {
+        "phrase_id": "275725",
+        "phrase": "the mountains timberline",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "275722",
+        "phrase": "the sheer mountain wall",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "275720",
+        "phrase": "a picturesque mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4274269186": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "161271",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5921223189": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "245245",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "245242",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4268485193": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "160976",
+        "phrase": "mountain bikes",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3533922605": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "125544",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5436966915": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "236521",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3103185190": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "93734",
+        "phrase": "a scenic view of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "93733",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1584315962": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "17013",
+        "phrase": "mountain climbers",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "6847214834": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "259148",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4950996568": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "222454",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1815242986": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "21333",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "21331",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3827234336": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "144617",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144618",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144624",
+        "phrase": "mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "294549892": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "83370",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "83366",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3371887001": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "113694",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3876751750": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "146632",
+        "phrase": "mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "5408221986": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "235830",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5235384370": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "231711",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2858819804": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "77231",
+        "phrase": "man mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3601419342": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "130700",
+        "phrase": "the side of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "130702",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2152688935": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "31421",
+        "phrase": "a snow covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3690883532": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "137115",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "137113",
+        "phrase": "mountainous terrain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "137117",
+        "phrase": "a mountainous region",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3954705002": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "149454",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6251875212": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "251026",
+        "phrase": "another mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "251031",
+        "phrase": "mountain bikes",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2696951725": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "66737",
+        "phrase": "distant mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "66741",
+        "phrase": "a mountain hike",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2299558545": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "39887",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4242573381": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "160129",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "160126",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "542269487": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "236205",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2245989501": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "36553",
+        "phrase": "a mountain pass",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3711664623": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "138725",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "138721",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2676184321": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "65479",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3449647435": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "119081",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8067051359": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "278500",
+        "phrase": "a mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5404491005": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "235662",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4453631343": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "169882",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "218225539": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "32665",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6080521675": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "247688",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "82506738": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "280863",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "488518506": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "214602",
+        "phrase": "green mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3105743276": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "93925",
+        "phrase": "a steep mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "93922",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "93926",
+        "phrase": "a mountain trail",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3584534971": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "129597",
+        "phrase": "three mountain bikers",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "129605",
+        "phrase": "their mountain bikes",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1568723169": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "16575",
+        "phrase": "a grassy mountainous region",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7849579912": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "276036",
+        "phrase": "a steep mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7129695767": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "265781",
+        "phrase": "a view of snow covered mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "265780",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5506399373": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "237862",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7746984692": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "274482",
+        "phrase": "a high mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "274487",
+        "phrase": "other mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2212794589": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "34474",
+        "phrase": "a mountain peak",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3176998867": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "98534",
+        "phrase": "the serene mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "397080364": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "150266",
+        "phrase": "a top of a large mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2239499718": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "36181",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5550039813": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "238663",
+        "phrase": "his lib tech ski board mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6756678811": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "257572",
+        "phrase": "a rocky mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4241497330": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "160047",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "405970010": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "153738",
+        "phrase": "a snow-covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "153739",
+        "phrase": "many distant mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "407008823": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "154143",
+        "phrase": "a snowy mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "154140",
+        "phrase": "a mountain crevasse",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2771214516": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "71842",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4542945548": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "176674",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "176675",
+        "phrase": "a pleasant mountain landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "176671",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "80835424": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "278729",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3831031977": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "144803",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3827245354": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "144650",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144648",
+        "phrase": "the top of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144651",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144653",
+        "phrase": "a beautiful mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3376972502": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "114125",
+        "phrase": "the snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3352199368": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "111950",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "235065283": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "43445",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5210947826": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "231041",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7890007278": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "276396",
+        "phrase": "a mountain ridge",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "276392",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2089539651": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "28005",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3777739107": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "142248",
+        "phrase": "this mountain scene",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "142253",
+        "phrase": "mountain peaks",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6523865937": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "255221",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "506485519": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "227936",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "284105062": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "76176",
+        "phrase": "a desolate mountain location",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "76179",
+        "phrase": "a set of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "76180",
+        "phrase": "mountainous terrain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "146019208": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "13690",
+        "phrase": "rocky mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6887324285": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "260429",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3935633359": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "148660",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2987096101": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "85672",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3805877081": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "143364",
+        "phrase": "a drawing of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "47376414": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "197256",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2067833088": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "26734",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "26731",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7817913726": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "275730",
+        "phrase": "a mountain climber",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "275732",
+        "phrase": "a scenic view of snow covered mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "275739",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2955083038": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "83844",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "319694602": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "100200",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "100197",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "0",
+        "phrase": "a mountain background",
+        "phrase_type": [
+          "notvisual"
+        ]
+      },
+      {
+        "phrase_id": "100199",
+        "phrase": "a mountainous landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "100198",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "100204",
+        "phrase": "other mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2800531753": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "73697",
+        "phrase": "the side of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4777223820": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "201853",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5196647928": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "230816",
+        "phrase": "a snow covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "230820",
+        "phrase": "a snowy mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2657484284": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "64422",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1193547352": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "4979",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "4978",
+        "phrase": "a narrow , snowy mountain ridge",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4973035237": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "224985",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1438632858": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "13087",
+        "phrase": "mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "417839691": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "158122",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3497106366": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "122622",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3356748019": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "112335",
+        "phrase": "mountain bikes",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7117115809": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "265596",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "265597",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2425381259": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "48513",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5748024681": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "242375",
+        "phrase": "a mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "242381",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4931839897": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "219831",
+        "phrase": "a vast mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6845813494": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "259107",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "259111",
+        "phrase": "snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3550348169": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "126866",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "126865",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2066048248": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "26661",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "26663",
+        "phrase": "the mountain trail",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "26660",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3827185640": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "144588",
+        "phrase": "the edge of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144589",
+        "phrase": "the top of mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3186265813": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "99438",
+        "phrase": "a mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2648310638": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "63839",
+        "phrase": "mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3776839227": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "142216",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3827227200": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "0",
+        "phrase": "a mountain background",
+        "phrase_type": [
+          "notvisual"
+        ]
+      },
+      {
+        "phrase_id": "144597",
+        "phrase": "a mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144592",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144591",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "224273695": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "36327",
+        "phrase": "a beautiful view of the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5293641153": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "233085",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "186346360": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "22172",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3849580150": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "145606",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "421780367": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "159396",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5410472318": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "235887",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "216172386": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "31745",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7955537470": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "276948",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3376898612": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "114094",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5139672263": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "229702",
+        "phrase": "his mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7797831448": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "275363",
+        "phrase": "a mountain trail",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "275362",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "275364",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3848362132": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "145511",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2631576413": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "62650",
+        "phrase": "a mountainous region",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "62644",
+        "phrase": "the base of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5312921702": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "233465",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3562050678": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "127827",
+        "phrase": "a mountain viewpoint",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "478209058": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "202186",
+        "phrase": "rocky mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1423126855": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "12328",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5710857189": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "241441",
+        "phrase": "a snowcapped mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3657503733": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "134767",
+        "phrase": "a mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "2272823323": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "38251",
+        "phrase": "mountain climbers",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "747209951": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "270220",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "294391131": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "83260",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3284460070": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "106867",
+        "phrase": "the mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "169959689": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "18990",
+        "phrase": "the mountainous desert",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5075833333": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "228251",
+        "phrase": "a mountain landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3526461098": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "124909",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "44401148": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "168246",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2077079696": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "27250",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "207930963": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "27383",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "461784003": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "183245",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4808471657": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "205148",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3178525519": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "98743",
+        "phrase": "beautiful mountaintops",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "18498385": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "21913",
+        "phrase": "a mountain landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "21918",
+        "phrase": "a mountain path",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2173362914": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "32262",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3488894222": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "122066",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "369047365": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "137101",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6094931376": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "247942",
+        "phrase": "the side of a green-covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "247940",
+        "phrase": "snowcapped mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "247941",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4486280757": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "172434",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3202804141": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "100690",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7849619682": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "276046",
+        "phrase": "a big mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "263216826": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "62703",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4620455202": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "183452",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4898860007": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "216477",
+        "phrase": "a mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6218244928": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "250417",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2435685480": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "49319",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4808742879": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "205234",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8058635660": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "278374",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "278373",
+        "phrase": "more mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3016606751": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "87547",
+        "phrase": "a mountain vista",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3229821595": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "102817",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4931508322": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "219788",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2925242998": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "81891",
+        "phrase": "the view of some mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "81893",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3238654429": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "103280",
+        "phrase": "a mountain cliff",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "103282",
+        "phrase": "mountain area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "54501196": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "236826",
+        "phrase": "stunning mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "236824",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "787401823": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "276259",
+        "phrase": "green mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3081330705": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "91905",
+        "phrase": "some snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "91904",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "91899",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6972855649": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "262901",
+        "phrase": "a mountain landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2662444259": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "64696",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "64698",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "55473406": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "238622",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8209386413": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "280394",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "280398",
+        "phrase": "a scenic view of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2097407245": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "28511",
+        "phrase": "large rocky mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "28513",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1579287915": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "16897",
+        "phrase": "a large mountain of rocks",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5222251832": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "231404",
+        "phrase": "a high mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3826417779": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "144368",
+        "phrase": "a mountainous landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3838361068": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "145052",
+        "phrase": "mountain scenery",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2076428547": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "27209",
+        "phrase": "mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3549408493": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "126751",
+        "phrase": "a set of beautiful mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4591391059": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "181129",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4712636240": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "194019",
+        "phrase": "the expansive , mountainous vista",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "194016",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "194021",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2244613488": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "36472",
+        "phrase": "mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3708743823": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "138465",
+        "phrase": "a mountain course",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2305517013": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "40426",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "40424",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4645546686": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "186190",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6786717458": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "258090",
+        "phrase": "a very windblown mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "258091",
+        "phrase": "side view of a mountaineer",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "279757732": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "73507",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5384132543": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "235102",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "470903027": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "193636",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2057160636": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "26170",
+        "phrase": "some mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4732642723": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "196680",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3564742915": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "128099",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "128097",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "390987167": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "147914",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3462512074": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "119992",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2839038702": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "76072",
+        "phrase": "the top of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4820349542": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "206959",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5312974716": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "233475",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4981165601": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "225758",
+        "phrase": "a mountainous view",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4280376593": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "161417",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "161418",
+        "phrase": "the middle of the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2636454827": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "62975",
+        "phrase": "a mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "62978",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "270816949": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "67684",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "67689",
+        "phrase": "the middle of brown mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3450874870": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "119159",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3157039116": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "97200",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4361912325": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "164928",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2832978253": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "75569",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "75570",
+        "phrase": "a misty mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2657484970": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "64429",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "882048099": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "282891",
+        "phrase": "the foreground of a beautiful mountain region",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "282888",
+        "phrase": "majestic mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3550253365": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "126839",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5479540752": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "237258",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5323049335": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "233649",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7927024514": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "276745",
+        "phrase": "the mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2630806789": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "62534",
+        "phrase": "a mountain lake",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "62533",
+        "phrase": "view of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3350002347": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "111728",
+        "phrase": "a mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5608476880": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "239566",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "189721896": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "22861",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "304398170": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "89678",
+        "phrase": "a barren mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6303698580": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "252099",
+        "phrase": "a mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "4234824441": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "159864",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3297323827": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "107669",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2272491304": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "38229",
+        "phrase": "a snow covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4304622669": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "162518",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4558172302": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "178363",
+        "phrase": "a mountain overlook",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "287999021": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "78584",
+        "phrase": "two mountain climbers",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "78591",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "78585",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "78588",
+        "phrase": "a mountain ridge",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3826428341": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "144413",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6989697177": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "263302",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "541063517": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "235900",
+        "phrase": "snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "235898",
+        "phrase": "top of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "235903",
+        "phrase": "another mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2151230100": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "31335",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "31332",
+        "phrase": "a mountainous landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3349309109": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "111619",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5405095380": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "235723",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3843153426": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "145241",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2155994202": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "31520",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3429142249": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "117547",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3405011838": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "115885",
+        "phrase": "a view of a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "115887",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2188688248": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "33021",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3917122097": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "148171",
+        "phrase": "a mountaintop restaurant",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "148174",
+        "phrase": "view of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3502343542": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "123195",
+        "phrase": "a steep mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "57417274": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "242188",
+        "phrase": "another mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "242191",
+        "phrase": "the snowy mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "242189",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1299817309": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "7842",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3369252082": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "113506",
+        "phrase": "snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5729814": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "241864",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "336551609": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "113157",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4950418907": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "222316",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2298946012": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "39825",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "0",
+        "phrase": "a mountain background",
+        "phrase_type": [
+          "notvisual"
+        ]
+      }
+    ]
+  },
+  "4938550261": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "220808",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5550546246": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "238690",
+        "phrase": "a huge snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "238691",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1484584782": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "14581",
+        "phrase": "large mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4665595084": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "188298",
+        "phrase": "pictures of the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5404931227": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "235684",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4873901110": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "213792",
+        "phrase": "a beautiful mountain view",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3046861840": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "89888",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "89884",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "89889",
+        "phrase": "the mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "240034176": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "46513",
+        "phrase": "view of mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2522230304": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "55027",
+        "phrase": "a rocky mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1403064674": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "11411",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "46739527": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "189187",
+        "phrase": "the rocky mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1363345475": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "10052",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3265864834": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "105607",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2161273260": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "31739",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5447361965": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "236784",
+        "phrase": "a large mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "109202756": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "2215",
+        "phrase": "the snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "899810584": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "283199",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "283198",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1472053993": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "14187",
+        "phrase": "a background of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3555729342": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "127279",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2788183053": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "73001",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3474176841": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "120872",
+        "phrase": "a mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "phrase_id": "120875",
+        "phrase": "a rocky mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2306497411": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "40474",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "40476",
+        "phrase": "the ledge of a mountain area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3193335577": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "100017",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3747007211": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "141028",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3958589423": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "149610",
+        "phrase": "a picture of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4800121810": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "204048",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "97234558": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "284622",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6523865099": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "255217",
+        "phrase": "some mountains shows",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "255216",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "255218",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2711720095": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "67972",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4433821033": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "167672",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "485245061": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "210948",
+        "phrase": "the base of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "205682549": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "26156",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3401333624": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "115705",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6781418332": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "258009",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2769731772": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "71756",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3564385317": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "128050",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1144885633": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "3705",
+        "phrase": "a desert mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3225998968": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "102572",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "102576",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "821599220": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "280464",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3826438677": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "144434",
+        "phrase": "a mountain view",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144433",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3041170372": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "89456",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "89460",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95728660": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "284144",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "771366843": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "273905",
+        "phrase": "a snowcapped mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "273904",
+        "phrase": "a rocky mountain area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "436808119": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "165104",
+        "phrase": "a picture of the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3445544288": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "118897",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3460551728": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "119839",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "129599450": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "7672",
+        "phrase": "a mountain path",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "7676",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "7677",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2129430111": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "30335",
+        "phrase": "a mountain path",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "30337",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2381937867": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "45355",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "45356",
+        "phrase": "a mountain view",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1655781989": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "18143",
+        "phrase": "a group of mountain climbers",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "18144",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2115620856": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "29615",
+        "phrase": "the base of verdant mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "29614",
+        "phrase": "a green mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2873252292": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "78151",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2759860913": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "71078",
+        "phrase": "a high mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "71079",
+        "phrase": "a mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6436370499": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "254226",
+        "phrase": "a snowy , mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "302983277": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "88686",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "88687",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4531897566": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "175974",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4254302719": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "160372",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3045613316": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "89806",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "89804",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7513059830": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "270784",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "470373679": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "193013",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "193016",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3944884778": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "149073",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "197107117": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "24301",
+        "phrase": "a mountain climber",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "3237760601": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "103234",
+        "phrase": "a snow-covered mountain slope",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4785616710": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "202608",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "202609",
+        "phrase": "the side of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "417024751": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "157922",
+        "phrase": "a mountainous region",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "33394246": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "110782",
+        "phrase": "part of the mountain areas",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "110779",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "110781",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3069217945": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "91272",
+        "phrase": "the vicinity of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "91276",
+        "phrase": "the base of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "97577988": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "284706",
+        "phrase": "an icy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "284708",
+        "phrase": "a snowy mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1324816249": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "8633",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3038045802": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "89284",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "89287",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3429956016": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "117641",
+        "phrase": "an icy rock mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "262963190": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "62480",
+        "phrase": "a big , snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "62481",
+        "phrase": "a snowy mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2172574039": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "32216",
+        "phrase": "a snow covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2740762106": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "69692",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3454355269": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "119393",
+        "phrase": "a mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "119394",
+        "phrase": "a mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "455611732": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "178060",
+        "phrase": "the base of a foggy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3435015880": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "118045",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2272967004": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "38264",
+        "phrase": "some mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "38263",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "56489627": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "240307",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2762594886": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "71217",
+        "phrase": "a mountain view",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "71219",
+        "phrase": "a mountain view",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3227111573": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "102631",
+        "phrase": "the side of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3211556865": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "101462",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "223299142": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "35890",
+        "phrase": "a steep snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "35892",
+        "phrase": "steep and snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4846306430": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "210015",
+        "phrase": "a scenic mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1338523142": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "9166",
+        "phrase": "a rocky mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1496289999": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "14878",
+        "phrase": "a steep mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2764178773": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "71365",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "110595925": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "2665",
+        "phrase": "a mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3186338070": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "99449",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3255482333": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "104719",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "33394719": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "110790",
+        "phrase": "an ice covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "445148321": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "169728",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3329169877": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "109856",
+        "phrase": "the snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3090398639": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "92675",
+        "phrase": "mountain bike riders",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "2926786902": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "82004",
+        "phrase": "a view of the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1255504166": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "6476",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6955501424": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "262401",
+        "phrase": "a mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "308452930": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "92157",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3561635009": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "127786",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2831215155": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "75369",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4511353486": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "174336",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "174340",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2463692128": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "51419",
+        "phrase": "a mountainous corner",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3474985008": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "120973",
+        "phrase": "a mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "120974",
+        "phrase": "a mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "143688283": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "13035",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2098174172": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "28581",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "28584",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "28582",
+        "phrase": "snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "127450902": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "6906",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "6910",
+        "phrase": "the snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3549997413": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "126816",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "126817",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3548365737": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "126646",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2631625732": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "62656",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "62653",
+        "phrase": "snowy and mountainous region",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3657209354": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "134737",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "134740",
+        "phrase": "the top of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3856738971": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "145901",
+        "phrase": "a mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3215847501": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "101764",
+        "phrase": "the tops of mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1517807181": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "15499",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4318034861": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "162862",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3376439178": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "114050",
+        "phrase": "a mountainous landscape",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2109911919": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "29294",
+        "phrase": "the side of a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "29293",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3616808182": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "131879",
+        "phrase": "extreme downhill mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2644920808": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "63595",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1429561783": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "12622",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3278811919": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "106505",
+        "phrase": "a snow covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "305512164": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "90599",
+        "phrase": "a hill or mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "90597",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "90598",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "121556607": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "5408",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2043520315": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "25637",
+        "phrase": "a green mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2773468269": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "72046",
+        "phrase": "a mountain backdrop",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3474985112": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "120981",
+        "phrase": "a mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "2664901838": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "64902",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "58357057": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "243826",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1413956047": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "11926",
+        "phrase": "a mountain peak",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "11927",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "11930",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "513116697": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "229560",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "229561",
+        "phrase": "the side of a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "437673289": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "165432",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4220705176": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "159462",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2737664903": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "69565",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3364026240": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "112945",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "251489987": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "54577",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1300744906": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "7896",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3621647714": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "132212",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3259110412": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "105015",
+        "phrase": "beautiful mountain scenery",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "105014",
+        "phrase": "a view of some large snowcapped mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6275746867": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "251457",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6981038793": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "263129",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "405534893": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "153555",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1263801010": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "6656",
+        "phrase": "snow-covered mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "415793623": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "157439",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3692593096": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "137310",
+        "phrase": "the mountaintops",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3333314878": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "110197",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "110198",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2187904131": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "32971",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3599442049": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "130563",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95783195": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "284201",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2931721215": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "82234",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "82233",
+        "phrase": "a beautiful mountain view",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3319338707": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "109070",
+        "phrase": "a view of the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5338568818": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "234008",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "217460891": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "32338",
+        "phrase": "ice capped mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3414770234": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "116372",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "116374",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5375199269": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "234865",
+        "phrase": "a snowcapped mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3532782283": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "125422",
+        "phrase": "the direction of some mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "125418",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "45935254": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "181264",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3299820401": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "107836",
+        "phrase": "a mountain bike",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "541063419": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "235893",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2909955251": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "80717",
+        "phrase": "a wooded , mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3528966521": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "125155",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "125153",
+        "phrase": "a mountain ridge",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3525041739": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "124782",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3159995270": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "97344",
+        "phrase": "the snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3889526603": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "147107",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4707189762": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "193475",
+        "phrase": "a mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "539676201": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "235369",
+        "phrase": "mountain climber safely lands",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2096771662": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "28485",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "55470226": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "238610",
+        "phrase": "a mountain climber",
+        "phrase_type": [
+          "people"
+        ]
+      },
+      {
+        "phrase_id": "238613",
+        "phrase": "a snow mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3525074413": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "124789",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1536597926": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "15840",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1311388430": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "8293",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2097398349": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "28496",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "418619800": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "158424",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2206284983": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "34092",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2097403787": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "28502",
+        "phrase": "an icy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3283784058": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "106824",
+        "phrase": "a snow covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3634281981": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "132920",
+        "phrase": "mountain biker",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "398363306": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "150920",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3661230589": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "134927",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3564738125": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "128090",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "128094",
+        "phrase": "the side of a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3099504809": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "93525",
+        "phrase": "a large rocky mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "56494233": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "240313",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "240315",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4645833149": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "186246",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3827228248": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "144600",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3651476768": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "134216",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2634788737": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "62842",
+        "phrase": "a snow-covered mountain slope",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3156406419": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "97165",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3373069977": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "113789",
+        "phrase": "mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "444047125": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "168283",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "390992102": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "147923",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2757779501": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "70877",
+        "phrase": "the rocky face of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3826476033": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "144461",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2198511848": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "33614",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3154293126": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "96994",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4511060196": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "174318",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "106514190": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "1627",
+        "phrase": "a snow-covered mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "1626",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "581419370": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "243361",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3826418155": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "144379",
+        "phrase": "a mountainous area",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3452982513": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "119266",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "540338917": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "235547",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5676123641": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "240724",
+        "phrase": "a large mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3166578139": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "97697",
+        "phrase": "a high mountain slope",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3549006919": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "126693",
+        "phrase": "a mountain climber",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "3600221224": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "130612",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2654751253": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "64218",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2194494220": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "33411",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "202174004": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "25092",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2172572633": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "32208",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "191592626": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "23064",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "58363928": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "243843",
+        "phrase": "a huge mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3174919870": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "98364",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2642247165": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "63364",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4503659154": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "173587",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2205328215": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "34041",
+        "phrase": "a mountain path",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "511844627": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "229304",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "265528702": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "64261",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "57422853": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "242204",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "242206",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "58363930": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "243848",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "243850",
+        "phrase": "the snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3699763582": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "137792",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "58368365": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "243857",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3402081035": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "115753",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6073565104": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "247484",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3976147771": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "150592",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2860524742": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "77370",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3419916411": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "116844",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5661996549": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "240544",
+        "phrase": "his mountain bike spokes",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3982607071": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "150884",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4230694069": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "159690",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2439154641": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "49560",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2749641730": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "70293",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "70292",
+        "phrase": "cloudy mountain view",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2873070704": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "78137",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2036407732": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "25403",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2560388887": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "58081",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "0",
+        "phrase": "a mountain background",
+        "phrase_type": [
+          "notvisual"
+        ]
+      }
+    ]
+  },
+  "3349258288": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "111595",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3349968447": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "111723",
+        "phrase": "mountain dew",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3299469102": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "107824",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2271671533": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "38163",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1093716555": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "2248",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3831843450": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "144819",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "144821",
+        "phrase": "the side of a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "319870744": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "100386",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "100385",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "478025924": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "201981",
+        "phrase": "a mountain path",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95728664": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "284150",
+        "phrase": "a mountain range",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "182493240": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "21569",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95734038": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "284169",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3241892328": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "103564",
+        "phrase": "a green mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "407678652": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "154385",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3826417429": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "144361",
+        "phrase": "mountain view",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3349307529": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "111598",
+        "phrase": "an empty mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "90011335": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "283207",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3386953179": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "114661",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "270809922": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "67677",
+        "phrase": "a mountain climber",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "121800200": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "5432",
+        "phrase": "the flat side of a large , rocky mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3351357065": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "111845",
+        "phrase": "snowy mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "111843",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "42276187": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "159637",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "330325191": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "108068",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "96985174": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "284543",
+        "phrase": "mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2282600972": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "38892",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3501936223": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "123187",
+        "phrase": "a large mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1247181182": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "6228",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95734036": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "284162",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "284161",
+        "phrase": "a mountain road",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2053733930": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "26014",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "26013",
+        "phrase": "mountain climbing gear",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "486917990": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "213216",
+        "phrase": "a steep mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1469358746": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "14136",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "530888330": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "233360",
+        "phrase": "a mountaintop",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2056041678": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "26116",
+        "phrase": "the mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "466956675": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "188643",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "258476074": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "59714",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2255332561": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "37195",
+        "phrase": "the mountainside",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2950905787": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "83578",
+        "phrase": "the mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "99171998": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "285115",
+        "phrase": "a mountain scene",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "872622575": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "282637",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3541474181": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "126207",
+        "phrase": "a snowy mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2112661738": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "29407",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95151149": {
+    "item_num": 3,
+    "phrases": [
+      {
+        "phrase_id": "284022",
+        "phrase": "a mountainous photo",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "284020",
+        "phrase": "rocky mountains",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "278388986": {
+    "item_num": 2,
+    "phrases": [
+      {
+        "phrase_id": "72804",
+        "phrase": "two mountain climbers",
+        "phrase_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "1472882567": {
+    "item_num": 2,
+    "phrases": [
+      {
+        "phrase_id": "14257",
+        "phrase": "a mountain",
+        "phrase_type": [
+          "scene"
+        ]
+      }
+    ]
+  }
+}

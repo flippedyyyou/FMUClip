@@ -1,0 +1,62 @@
+{
+  "3047264346": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "89942",
+        "phrase": "a werewolf mask",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6141698120": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "248504",
+        "phrase": "a black wolf",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3056464479": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "90648",
+        "phrase": "a wolf",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2318659263": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "41310",
+        "phrase": "a wolf",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "506343925": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "227818",
+        "phrase": "a wolf",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

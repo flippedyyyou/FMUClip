@@ -1,0 +1,160 @@
+{
+  "3576445378": {
+    "item_num": 18,
+    "phrases": [
+      {
+        "phrase_id": "128867",
+        "phrase": "a red toy crab",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2403832405": {
+    "item_num": 17,
+    "phrases": [
+      {
+        "phrase_id": "46746",
+        "phrase": "scrabble",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2166417615": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "31942",
+        "phrase": "crabs",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "119364730": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "4990",
+        "phrase": "a crab",
+        "phrase_type": [
+          "animals"
+        ]
+      },
+      {
+        "phrase_id": "4989",
+        "phrase": "crab",
+        "phrase_type": [
+          "animals"
+        ]
+      },
+      {
+        "phrase_id": "4993",
+        "phrase": "a crab leg",
+        "phrase_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  },
+  "1425529973": {
+    "item_num": 14,
+    "phrases": [
+      {
+        "phrase_id": "12455",
+        "phrase": "crabs",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2543253343": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "57090",
+        "phrase": "a crab",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2663977526": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "64808",
+        "phrase": "live crabs",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "4939705971": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "220987",
+        "phrase": "scrabble shoes",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "203390686": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "25307",
+        "phrase": "crabs",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2653063469": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "64073",
+        "phrase": "a crab dinner",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2705099581": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "67172",
+        "phrase": "their favorite game scrabble",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2355578735": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "43849",
+        "phrase": "the crab",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}
