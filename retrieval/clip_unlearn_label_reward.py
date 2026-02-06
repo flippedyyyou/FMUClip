@@ -45,7 +45,8 @@ from utils.utils import (
     _load_forget_test_ids,
     eval_split_no_tta,
     _select_neg_texts_by_proximal,
-    _dump_detailed_topk_results
+    _dump_detailed_topk_results,
+    _select_neg_texts_by_similarity_range
 )
 
 # Allow running this file as a script by adding its directory to sys.path.
