@@ -13,3 +13,4 @@ einops
 spacy
 pycocoevalcap
 ftfy
+dotenv
