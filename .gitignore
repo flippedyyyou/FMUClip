@@ -10,3 +10,4 @@ Df/coco/retain_dog_train.txt
 .vscode/*
 build/*
 tmp*
+.DS_Store
