@@ -65,6 +65,22 @@ def parse_args():
     parser.add_argument('--lambda_rdr', type=float, default=1.0, help='coefficient for reward advantage loss')
     parser.add_argument('--sam3_mask_dir', type=str, default='', help='directory containing SAM3 binary masks')
     parser.add_argument('--sam3_mask_suffix', type=str, default='.png', help='file suffix for SAM3 masks')
+    # external eval (e.g., CIFAR-100)
+    parser.add_argument('--external_test_dataset', type=str, default='',
+                        choices=['', 'cifar100'],
+                        help='optional external test dataset for forget/retain evaluation')
+    parser.add_argument('--external_test_root', type=str, default='',
+                        help='data root for external test dataset')
+    parser.add_argument('--external_test_forget_class', type=str, default='',
+                        help='class name to evaluate forget rate on (e.g., apple)')
+    parser.add_argument('--external_test_image_size', type=int, default=336,
+                        help='image size for external test eval')
+    parser.add_argument('--external_test_batch_size', type=int, default=64,
+                        help='batch size for external test eval')
+    parser.add_argument('--external_test_num_workers', type=int, default=4,
+                        help='num workers for external test eval dataloader')
+    parser.add_argument('--external_eval_only', action='store_true',
+                        help='skip internal df/dr/official test eval and only run external eval')
     # checkpoint export
     parser.add_argument(
         "--save_unlearned_model",

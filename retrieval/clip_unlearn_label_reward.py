@@ -1,5 +1,5 @@
 # coding=utf-8
-from utils import (
+from retrieval_utils import (
     _tokenize_texts,
     _select_neg_texts_by_minsim,
     _get_logits_and_feats,
@@ -14,8 +14,7 @@ from utils import (
     _load_forget_test_ids,
     eval_split_no_tta,
     _select_neg_texts_by_proximal,
-    _dump_detailed_topk_results,
-    _select_neg_texts_by_similarity_range
+    _dump_detailed_topk_results
 )
 import os
 import sys
@@ -50,10 +49,112 @@ from torch import nn
 from clip_unlearn_baseline import _encode_image_patches, _encode_text, _mask_to_patch_attention
 
 
-# Allow running this file as a script by adding its directory to sys.path.
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 if _CURRENT_DIR not in sys.path:
     sys.path.insert(0, _CURRENT_DIR)
+
+IMAGENET_MEAN = (0.485, 0.456, 0.406)
+IMAGENET_STD = (0.229, 0.224, 0.225)
+
+
+def _normalize_class_name(name: str) -> str:
+    return name.strip().lower().replace("_", " ")
+
+
+def _evaluate_cifar100_forget_retain(
+    model,
+    data_root: str,
+    forget_class: str,
+    image_size: int,
+    batch_size: int,
+    num_workers: int,
+    output_dir: str,
+):
+    device = model.device
+    tfm = transforms.Compose(
+        [
+            transforms.Resize(image_size),
+            transforms.CenterCrop(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD),
+        ]
+    )
+    dataset = datasets.CIFAR100(
+        root=data_root, train=False, transform=tfm, download=False
+    )
+    class_names = [c.replace("_", " ") for c in dataset.classes]
+
+    forget_class_norm = _normalize_class_name(forget_class)
+    class_map = { _normalize_class_name(n): i for i, n in enumerate(class_names) }
+    if forget_class_norm not in class_map:
+        raise ValueError(
+            f"Forget class '{forget_class}' not found in CIFAR-100 classes."
+        )
+    forget_idx = class_map[forget_class_norm]
+
+    tokens = _tokenize_texts(class_names).to(device)
+    with torch.no_grad():
+        text_features = model.encode_text(tokens)
+        text_features = text_features / text_features.norm(dim=-1, keepdim=True)
+
+    loader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True,
+        drop_last=False,
+    )
+
+    logit_scale = model.logit_scale.exp()
+    correct_forget = 0
+    total_forget = 0
+    correct_retain = 0
+    total_retain = 0
+
+    model.eval()
+    with torch.no_grad():
+        for images, labels in loader:
+            images = images.to(device, non_blocking=True)
+            labels = labels.to(device, non_blocking=True)
+            img_features = model.encode_image(images)
+            img_features = img_features / img_features.norm(dim=-1, keepdim=True)
+            logits = logit_scale * (img_features @ text_features.t())
+            preds = logits.argmax(dim=1)
+
+            forget_mask = labels == forget_idx
+            retain_mask = ~forget_mask
+
+            if forget_mask.any():
+                correct_forget += (preds[forget_mask] == labels[forget_mask]).sum().item()
+                total_forget += int(forget_mask.sum().item())
+            if retain_mask.any():
+                correct_retain += (preds[retain_mask] == labels[retain_mask]).sum().item()
+                total_retain += int(retain_mask.sum().item())
+
+    acc_forget = correct_forget / total_forget if total_forget else 0.0
+    acc_retain = correct_retain / total_retain if total_retain else 0.0
+    forget_rate = 1.0 - acc_forget
+
+    results = {
+        "dataset": "cifar100",
+        "forget_class": class_names[forget_idx],
+        "forget_class_index": forget_idx,
+        "forget_accuracy": round(acc_forget, 6),
+        "forget_rate": round(forget_rate, 6),
+        "retain_accuracy": round(acc_retain, 6),
+        "forget_count": int(total_forget),
+        "retain_count": int(total_retain),
+    }
+
+    os.makedirs(output_dir, exist_ok=True)
+    out_path = os.path.join(output_dir, "results_cifar100_forget_retain.json")
+    with open(out_path, "w", encoding="utf-8") as fp:
+        json.dump(results, fp, indent=4)
+    logging.info(f"[CIFAR100] {results}")
+    logging.info(f"[CIFAR100] Saved results to: {out_path}")
+
+
 
 
 def supervised_unlearn_train(
@@ -123,7 +224,7 @@ def supervised_unlearn_train(
                 df_text_neg = [txt_df[i] for i in perm.tolist()]
             elif neg_mode == "simrange":
                 # ✅ ours：对每张图像选 teacher 相似度在某范围内的文本
-                df_text_neg = _select_neg_texts_by_similarity_range(
+                df_text_neg = _select_neg_texts_by_proximal(
                     teacher, img_df, txt_df, lower_percent=0, upper_percent=20)
             else:
                 # ✅ ours：对每张图像选 teacher 最不相似的文本
@@ -391,7 +492,7 @@ def main():
             # Dr reward advantage 损失权重
             lambda_rdr=getattr(args, "lambda_rdr", 1.0),
             max_epoch=getattr(args, "max_epoch", 1),
-            log_interval=getattr(args, "log_interval", 50),
+            log_interval=getattr(args, "log_interval", 2),
             neg_mode=args.neg_mode,
             concept_token=getattr(args, "concept_token", "horse"),
             sam3_mask_dir=getattr(args, "sam3_mask_dir", None),
@@ -402,40 +503,84 @@ def main():
         logging.info(
             "[Eval-only] Skip unlearning. Directly evaluate ORIGINAL CLIP on df/dr/test.")
 
-    # 监督训练完后，再在 df/dr/test 上按原规则评测（不做 TTA）
-    task_name = "i2t" if args.retrieval_task == "image2text" else "t2i"
-    # 确保 df_loader 只加载遗忘集的图像
-    print(
-        f"df_loader contains {len(df_loader.dataset.image)} images from the forget test set.")
-    score_df = eval_split_no_tta(df_loader, model, task=task_name, text_bs=128)
-    score_dr = eval_split_no_tta(dr_loader, model, task=task_name, text_bs=128)
+    if not getattr(args, "external_eval_only", False):
+        # 监督训练完后，再在 df/dr/test 上按原规则评测（不做 TTA）
+        task_name = "i2t" if args.retrieval_task == "image2text" else "t2i"
+        # 确保 df_loader 只加载遗忘集的图像
+        print(
+            f"df_loader contains {len(df_loader.dataset.image)} images from the forget test set.")
+        score_df = eval_split_no_tta(df_loader, model, task=task_name, text_bs=128)
+        score_dr = eval_split_no_tta(dr_loader, model, task=task_name, text_bs=128)
 
-    # 调用评估函数
-    eval_df = task._report_metrics(
-        score_df, score_df.T, df_loader.dataset.txt2img, df_loader.dataset.img2txt)
-    eval_dr = task._report_metrics(
-        score_dr, score_dr.T, dr_loader.dataset.txt2img, dr_loader.dataset.img2txt)
+        # 调用评估函数
+        eval_df = task._report_metrics(
+            score_df, score_df.T, df_loader.dataset.txt2img, df_loader.dataset.img2txt)
+        eval_dr = task._report_metrics(
+            score_dr, score_dr.T, dr_loader.dataset.txt2img, dr_loader.dataset.img2txt)
 
-    # 输出
-    for name, result in [("df", eval_df), ("dr", eval_dr)]:
-        output_filename = os.path.join(
-            args.output, f"results_{args.retrieval_task}_{name}.json")
-        logging.info(output_filename)
-        result = {k: round(v, 3) for k, v in result.items()}
-        logging.info(result)
-        with open(output_filename, "w") as fp:
-            json.dump(result, fp, indent=4)
+        # 输出
+        for name, result in [("df", eval_df), ("dr", eval_dr)]:
+            output_filename = os.path.join(
+                args.output, f"results_{args.retrieval_task}_{name}.json")
+            logging.info(output_filename)
+            result = {k: round(v, 3) for k, v in result.items()}
+            logging.info(result)
+            with open(output_filename, "w") as fp:
+                json.dump(result, fp, indent=4)
 
-    # 训练后再根据评测得到的分数矩阵，导出 Top-K 结果
-    task_suffix = "i2t" if args.retrieval_task == "image2text" else "t2i"
-    df_res_path = os.path.join(
-        args.output, f"detailed_top10_{task_suffix}_df.jsonl")
-    _dump_detailed_topk_results(
-        score_df, df_loader, task_name, df_res_path, k=10)
-    dr_res_path = os.path.join(
-        args.output, f"detailed_top10_{task_suffix}_dr.jsonl")
-    _dump_detailed_topk_results(
-        score_dr, dr_loader, task_name, dr_res_path, k=10)
+        # 训练后再根据评测得到的分数矩阵，导出 Top-K 结果
+        task_suffix = "i2t" if args.retrieval_task == "image2text" else "t2i"
+        df_res_path = os.path.join(
+            args.output, f"detailed_top10_{task_suffix}_df.jsonl")
+        _dump_detailed_topk_results(
+            score_df, df_loader, task_name, df_res_path, k=10)
+        dr_res_path = os.path.join(
+            args.output, f"detailed_top10_{task_suffix}_dr.jsonl")
+        _dump_detailed_topk_results(
+            score_dr, dr_loader, task_name, dr_res_path, k=10)
+
+        # 用训完的模型评测官方 Flickr30k 测试集（全量）
+        # 用 runner 自带的 'test' dataloader
+        test_loader = runner.dataloaders.get('test', None)
+        if test_loader is not None:
+            task_name = "i2t" if args.retrieval_task == "image2text" else "t2i"
+            full_test_scores = eval_split_no_tta(
+                test_loader, model, task=task_name, text_bs=128)
+            # 汇报标准 Recall@K
+            eval_test = task._report_metrics(
+                full_test_scores,
+                full_test_scores.T,
+                test_loader.dataset.txt2img,
+                test_loader.dataset.img2txt
+            )
+            test_out = os.path.join(
+                args.output, f"results_{args.retrieval_task}_official_test.json")
+            logging.info(test_out)
+            with open(test_out, "w") as fp:
+                json.dump({k: round(v, 3)
+                          for k, v in eval_test.items()}, fp, indent=4)
+            logging.info(
+                f"[OFFICIAL TEST] { {k: round(v, 3) for k, v in eval_test.items()} }")
+        else:
+            logging.warning(
+                "[OFFICIAL TEST] runner.dataloaders['test'] 不存在，已跳过官方测试集评测。")
+    else:
+        logging.info("[Eval-only] Skipping internal df/dr/official test evaluation.")
+
+    if getattr(args, "external_test_dataset", "") == "cifar100":
+        if not args.external_test_root:
+            raise ValueError("external_test_root is required for CIFAR-100 evaluation.")
+        if not args.external_test_forget_class:
+            raise ValueError("external_test_forget_class is required for CIFAR-100 evaluation.")
+        _evaluate_cifar100_forget_retain(
+            model,
+            data_root=args.external_test_root,
+            forget_class=args.external_test_forget_class,
+            image_size=args.external_test_image_size,
+            batch_size=args.external_test_batch_size,
+            num_workers=args.external_test_num_workers,
+            output_dir=args.output,
+        )
 
     if not use_original_only and args.save_unlearned_model and get_rank() == 0:
         save_dir = os.path.join(args.output, args.unlearned_subdir)

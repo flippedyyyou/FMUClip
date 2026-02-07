@@ -23,20 +23,21 @@ tta_momentum=0.9  #0.9998
 update_w=1.0
 
 # ========= Unlearn 参数 =========
-lambda_df=1
+lambda_df=3
 lambda_dr=1
-lambda_uni=1
-max_epoch=10
-neg_mode="simrange"
-concept_token="horse"
+lambda_uni=3
+max_epoch=20
+neg_mode="cliperase"
+concept_token="apple"
 cfg_yaml=${code_path}/lavis/projects/clip/exp_flickr_unlearn_tta_llava.yaml
 runfile=${code_path}/clip_unlearn_baseline.py
+external_test_root="/datanfs4/shenruoyan/datasets/cifar-100-python"
 
 # ========= 运行 =========
-output=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df1_dr1_uni1_export${date}
-export_dir=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df1_dr1_uni1_export${date}
+output=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df${lambda_df}_dr${lambda_dr}_uni${lambda_uni}_${date}
+export_dir=${code_path}/output/clip_flickr30k_unlearn1k_${neg_mode}_${concept_token}_df${lambda_df}_dr${lambda_dr}_uni${lambda_uni}_${date}
 
-echo "🚀 Running Unlearning baseline minsim"
+echo "🚀 Running Unlearning baseline cliperase"
 echo "Output -> ${output}"
 
 # ---- image→text ----
@@ -63,12 +64,19 @@ python ${runfile} \
     --lambda_dr ${lambda_dr} \
     --lambda_uni ${lambda_uni} \
     --max_epoch ${max_epoch} \
-    --neg_mode ${neg_mode} \
-    --sam3_mask_dir ${code_path}/mask/flickr30k/horse/train \
+    --cliperase \
+    --sam3_mask_dir ${code_path}/mask/flickr30k/apple/train \
     --sam3_mask_suffix .png \
     --save_unlearned_model \
     --unlearned_model_name clip_unlearned.pt \
     --unlearned_meta_name clip_unlearned_meta.json \
     --unlearned_subdir unlearned_clip \
-    --forget_train_file "Df/flickr30k/forget_horse_train.txt" \
-    --forget_test_file "Df/flickr30k/forget_horse_test.txt"
+    --forget_train_file "/datanfs4/shenruoyan/FMUClip/retrieval/Df/item5+/apple.txt" \
+    --forget_test_file "/datanfs4/shenruoyan/FMUClip/retrieval/Df/flickr30k/forget_apple_test.txt" \
+    --external_test_dataset "cifar100" \
+    --external_test_root "${external_test_root}" \
+    --external_test_forget_class "${concept_token}" \
+    --external_test_image_size 336 \
+    --external_test_batch_size 64 \
+    --external_test_num_workers 4 \
+    --external_eval_only

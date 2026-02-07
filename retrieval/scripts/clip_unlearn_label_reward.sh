@@ -31,15 +31,16 @@ update_w=1.0
 lambda_df=1
 lambda_dr=0
 lambda_rdr=0
-lambda_uni=0
+lambda_uni=1
 max_epoch=10
 neg_mode="minsim"
+concept_token="apple"
 cfg_yaml=${code_path}/lavis/projects/clip/exp_flickr_unlearn_tta_llava.yaml
 runfile=${code_path}/clip_unlearn_label_reward.py
 
 # ========= 运行 =========
-output=${code_path}/output/clip_flickr_unlearn1k_horse_rtf1_rdr0_uni0_epoch10_export${date}
-export_dir=${code_path}/output/clip_flickr_unlearn1k_horse_rtf1_rdr0_uni0_epoch10_export${date}
+output=${code_path}/output/clip_flickr_unlearn1k_apple_rtf${lambda_df}_rdr${lambda_rdr}_uni${lambda_uni}_epoch${max_epoch}_${date}
+export_dir=${code_path}/output/clip_flickr_unlearn1k_apple_rtf${lambda_df}_rdr${lambda_rdr}_uni${lambda_uni}_epoch${max_epoch}_${date}
 
 echo "🚀 Running Unlearning rtf+rdr"
 echo "Output -> ${output}"
@@ -68,11 +69,18 @@ python ${runfile} \
     --lambda_rdr ${lambda_rdr} \
     --lambda_uni ${lambda_uni} \
     --max_epoch ${max_epoch} \
-    --sam3_mask_dir ${code_path}/mask/flickr30k/horse/train \
+    --sam3_mask_dir ${code_path}/mask/flickr30k/item5+/apple/train \
     --sam3_mask_suffix .png \
     --save_unlearned_model \
     --unlearned_model_name clip_unlearned.pt \
     --unlearned_meta_name clip_unlearned_meta.json \
     --unlearned_subdir unlearned_clip \
-    --forget_train_file "Df/flickr30k/forget_horse_train.txt" \
-    --forget_test_file "Df/flickr30k/forget_horse_test.txt"
+    --forget_train_file "/datanfs4/shenruoyan/FMUClip/retrieval/Df/item5+/apple.txt" \
+    --forget_test_file "/datanfs4/shenruoyan/FMUClip/Df/flickr30k/forget_apple_test.txt" \
+    --external_test_dataset "cifar100" \
+    --external_test_root "${external_test_root}" \
+    --external_test_forget_class "${concept_token}" \
+    --external_test_image_size 336 \
+    --external_test_batch_size 64 \
+    --external_test_num_workers 4 \
+    --external_eval_only
