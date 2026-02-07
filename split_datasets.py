@@ -12,7 +12,8 @@ from utils.utils import load_json, save_json
 dotenv.load_dotenv()
 
 FLICKR30K_ENTITIES_PATH = os.getenv("FLICKR30K_ENTITIES_PATH")
-OUTPUT_PATH = 'data_split'
+OUTPUT_ENTITIES_PATH = 'data_split'
+OUTPUT_DF_PATH = os.getenv("OUTPUT_DF_PATH")
 
 # Classification
 
@@ -30,9 +31,9 @@ def split_flickr30k_entities_for_classification():
     sentence_path = os.path.join(
         FLICKR30K_ENTITIES_PATH, 'annotations/Sentences')
 
-    if not os.path.exists(os.path.join(OUTPUT_PATH, 'flickr30k_entities/phrases.json')):
+    if not os.path.exists(os.path.join(OUTPUT_ENTITIES_PATH, 'flickr30k_entities/phrases.json')):
         os.makedirs(os.path.join(
-            OUTPUT_PATH, 'flickr30k_entities'), exist_ok=True)
+            OUTPUT_ENTITIES_PATH, 'flickr30k_entities'), exist_ok=True)
         phrases = {}  # Len: 243801
         for sent_file in tqdm(os.listdir(sentence_path), desc="Loading sentences:"):
             img_id = sent_file.split('.')[0]
@@ -47,11 +48,11 @@ def split_flickr30k_entities_for_classification():
                     }
 
         save_json(phrases, os.path.join(
-            OUTPUT_PATH, 'flickr30k_entities/phrases.json'))
+            OUTPUT_ENTITIES_PATH, 'flickr30k_entities/phrases.json'))
 
     else:
         phrases = load_json(os.path.join(
-            OUTPUT_PATH, 'flickr30k_entities/phrases.json'))
+            OUTPUT_ENTITIES_PATH, 'flickr30k_entities/phrases.json'))
 
     for concept in tqdm(all_concepts, desc="Processing concepts:"):
         related_imgs = {}
@@ -69,12 +70,19 @@ def split_flickr30k_entities_for_classification():
                         'phrase': phrase_text,
                         'phrase_type': img_phrases[phrase_id]['phrase_type'],
                     })
+        for img_id in list(related_imgs.keys()):
+            if related_imgs[img_id]['item_num']>=5:
+                if not os.path.exists(os.path.join(OUTPUT_DF_PATH, f'{concept.replace(" ", "_")}.txt')):
+                    os.makedirs(OUTPUT_DF_PATH, exist_ok=True)
+                with open(os.path.join(OUTPUT_DF_PATH, f'{concept.replace(" ", "_")}.txt'), 'w') as f:
+                    for img_id in related_imgs.keys():
+                        f.write(f"{img_id}.jpg\n")
         related_imgs = dict(
             sorted(related_imgs.items(), key=lambda kv: kv[1]["item_num"], reverse=True)
         )
         save_json(related_imgs, os.path.join(
-            OUTPUT_PATH, f'flickr30k_entities/{concept.replace(" ", "_")}/related_imgs.json'))
-
+            OUTPUT_ENTITIES_PATH, f'flickr30k_entities/{concept.replace(" ", "_")}/related_imgs.json'))
+    
 
 if __name__ == "__main__":
     split_flickr30k_entities_for_classification()
