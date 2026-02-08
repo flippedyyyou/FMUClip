@@ -101,8 +101,9 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
             phrases = load_json(os.path.join(self.output_path, 'classification',
                                 'flickr30k_entities/meta/phrases.json'))
 
+        meta_info = {}
         for concept in tqdm(all_concepts, desc="Processing concepts"):
-            related_imgs, meta_info = {}, {}
+            related_imgs = {}
             for img_id, img_phrases in phrases.items():
                 for phrase_id in img_phrases.keys():
                     phrase_text = img_phrases[phrase_id]['phrase']
@@ -151,8 +152,8 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
                 save_txt(ge_5_img_ids, os.path.join(self.output_path, 'classification',
                     f'flickr30k_entities/Df/item5+/{concept.replace(" ", "_")}.txt'))
 
-            save_json(meta_info, os.path.join(self.output_path, 'classification',
-                    f'flickr30k_entities/meta/meta_info.json'))
+        save_json(meta_info, os.path.join(self.output_path, 'classification',
+                f'flickr30k_entities/meta/meta_info.json'))
 
 
 
