@@ -1,0 +1,50 @@
+{
+  "3490528249": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "122150",
+        "phrase": "two rocket dragsters",
+        "phrase_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2885382946": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "78967",
+        "phrase": "a water rocket",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2496236371": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "53340",
+        "phrase": "a red crotch rocket",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2100735137": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "28712",
+        "phrase": "foam toy rockets",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

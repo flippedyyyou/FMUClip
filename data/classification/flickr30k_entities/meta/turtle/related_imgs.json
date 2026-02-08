@@ -1,0 +1,124 @@
+{
+  "7102122069": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "265452",
+        "phrase": "a turtle backpack",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3243866702": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "103780",
+        "phrase": "a sea turtle",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2916251587": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "81220",
+        "phrase": "a turtle",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3595956590": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "130341",
+        "phrase": "a turtle",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "523485792": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "231688",
+        "phrase": "a turtle tattoo",
+        "phrase_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  },
+  "4420802292": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "167117",
+        "phrase": "a tiny turtle",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2878041967": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "78499",
+        "phrase": "two small turtles",
+        "phrase_type": [
+          "animals"
+        ]
+      },
+      {
+        "phrase_id": "78498",
+        "phrase": "small turtles",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "131890223": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "8500",
+        "phrase": "a turtle",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "6981332729": {
+    "item_num": 5,
+    "phrases": [
+      {
+        "phrase_id": "263149",
+        "phrase": "huge turtle",
+        "phrase_type": [
+          "animals"
+        ]
+      },
+      {
+        "phrase_id": "263150",
+        "phrase": "an image of a sea turtle undersea",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}
