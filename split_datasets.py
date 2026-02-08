@@ -121,7 +121,7 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
             if related_imgs:  # Save only if there are related images.
                 related_imgs = dict(sorted(related_imgs.items(), key=lambda kv: kv[1]["item_num"], reverse=True))
                 save_json(related_imgs, os.path.join(self.output_path, 'classification',
-                        f'flickr30k_entities/meta/{concept.replace(" ", "_")}/related_imgs.json'))
+                                                     f'flickr30k_entities/meta/{concept.replace(" ", "_")}/related_imgs.json'))
                 concept_meta_info = {
                     'all_concepts': {
                         'num': len(related_imgs),
@@ -149,16 +149,16 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
                 # TODO: Modify here to save different splits
                 # Save ge_5 concepts for quick training
                 ge_5_img_ids = concept_meta_info['ge_5']['img_ids']
-                save_txt(ge_5_img_ids, os.path.join(self.output_path, 'classification',
-                    f'flickr30k_entities/Df/item5+/{concept.replace(" ", "_")}.txt'))
+                save_txt([f'{img_id}.jpg' for img_id in ge_5_img_ids], os.path.join(self.output_path, 'classification',
+                                                                                    f'flickr30k_entities/Df/item5+/{concept.replace(" ", "_")}.txt'))
 
-        save_json(meta_info, os.path.join(self.output_path, 'classification',
-                f'flickr30k_entities/meta/meta_info.json'))
-
+        ordered_meta_info = dict(sorted(meta_info.items()))
+        save_json(ordered_meta_info, os.path.join(self.output_path,
+                  'classification', f'flickr30k_entities/meta/meta_info.json'))
 
 
 if __name__ == "__main__":
-    flickr30k_dataset=Flikr30kEntitiesProcessor(
+    flickr30k_dataset = Flikr30kEntitiesProcessor(
         raw_dataset_path=FLICKR30K_ENTITIES_PATH,
         output_path=OUTPUT_PATH,
         all_concepts=all_concepts,
