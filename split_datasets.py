@@ -82,8 +82,7 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
         # annotations_path = os.path.join(FLICKR30K_ENTITIES_PATH, 'annotations/Annotations')
         sentence_path = os.path.join(self.raw_dataset_path, 'annotations/Sentences')
 
-        if not os.path.exists(os.path.join(self.output_path, 'classification', 'flickr30k_entities/phrases.json')):
-            os.makedirs(os.path.join(self.output_path, 'classification', 'flickr30k_entities'), exist_ok=True)
+        if not os.path.exists(os.path.join(self.output_path, 'classification', 'flickr30k_entities/meta/phrases.json')):
             phrases = {}  # Len: 243801
             for sent_file in tqdm(os.listdir(sentence_path), desc="Loading sentences"):
                 img_id = sent_file.split('.')[0]
@@ -153,7 +152,7 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
                     f'flickr30k_entities/Df/item5+/{concept.replace(" ", "_")}.txt'))
 
             save_json(meta_info, os.path.join(self.output_path, 'classification',
-                    f'flickr30k_entities/meta/{concept.replace(" ", "_")}/meta_info.json'))
+                    f'flickr30k_entities/meta/meta_info.json'))
 
 
 
