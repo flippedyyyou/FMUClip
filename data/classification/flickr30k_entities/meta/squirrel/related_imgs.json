@@ -1,0 +1,26 @@
+{
+  "3273091032": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "106033",
+        "phrase": "the squirrel",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3249597269": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "104296",
+        "phrase": "a squirrel",
+        "phrase_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

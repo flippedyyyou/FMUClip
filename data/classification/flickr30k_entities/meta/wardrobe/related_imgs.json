@@ -1,0 +1,50 @@
+{
+  "4703134449": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "192958",
+        "phrase": "a green wardrobe",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "258089565": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "59489",
+        "phrase": "interesting wardrobe",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4669564767": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "188637",
+        "phrase": "the long dress wardrobe",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4622860824": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "183751",
+        "phrase": "traditional muslim wardrobe",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

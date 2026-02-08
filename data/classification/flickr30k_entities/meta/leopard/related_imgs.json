@@ -1,0 +1,208 @@
+{
+  "3097981044": {
+    "item_num": 17,
+    "phrases": [
+      {
+        "phrase_id": "93442",
+        "phrase": "a leopard print jacket",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "166774567": {
+    "item_num": 16,
+    "phrases": [
+      {
+        "phrase_id": "18378",
+        "phrase": "a leopard print outfit",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4813023306": {
+    "item_num": 16,
+    "phrases": [
+      {
+        "phrase_id": "205818",
+        "phrase": "a leopard dress",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4957370596": {
+    "item_num": 12,
+    "phrases": [
+      {
+        "phrase_id": "223143",
+        "phrase": "leopard print shirt",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "226642878": {
+    "item_num": 11,
+    "phrases": [
+      {
+        "phrase_id": "37802",
+        "phrase": "a leopard print backdrop",
+        "phrase_type": [
+          "scene"
+        ]
+      },
+      {
+        "phrase_id": "0",
+        "phrase": "leopard print background",
+        "phrase_type": [
+          "notvisual"
+        ]
+      }
+    ]
+  },
+  "3023753964": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "88176",
+        "phrase": "a leopard print jacket",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4799239390": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "203890",
+        "phrase": "leopard print leggings",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6986780079": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "263230",
+        "phrase": "leopard knee",
+        "phrase_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  },
+  "4893545292": {
+    "item_num": 10,
+    "phrases": [
+      {
+        "phrase_id": "215765",
+        "phrase": "a leopard top",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4431540400": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "167544",
+        "phrase": "leopard print tights",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3217909454": {
+    "item_num": 9,
+    "phrases": [
+      {
+        "phrase_id": "101996",
+        "phrase": "leopard print",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "70036357": {
+    "item_num": 8,
+    "phrases": [
+      {
+        "phrase_id": "263738",
+        "phrase": "a leopard print shirt",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4953342723": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "222713",
+        "phrase": "leopard print earrings records",
+        "phrase_type": [
+          "other"
+        ]
+      },
+      {
+        "phrase_id": "222715",
+        "phrase": "large leopard print earrings",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4895028664": {
+    "item_num": 7,
+    "phrases": [
+      {
+        "phrase_id": "215952",
+        "phrase": "a leopard print shirt",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4590720793": {
+    "item_num": 6,
+    "phrases": [
+      {
+        "phrase_id": "181049",
+        "phrase": "leopard costumes",
+        "phrase_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "7573421864": {
+    "item_num": 4,
+    "phrases": [
+      {
+        "phrase_id": "271565",
+        "phrase": "leopard print paper",
+        "phrase_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}
