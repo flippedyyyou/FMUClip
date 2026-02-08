@@ -75,7 +75,7 @@ python ${runfile} \
     --unlearned_model_name clip_unlearned.pt \
     --unlearned_meta_name clip_unlearned_meta.json \
     --unlearned_subdir unlearned_clip \
-    --forget_train_file "/datanfs4/shenruoyan/FMUClip/retrieval/Df/item5+/apple.txt" \
+    --forget_train_file "data/classification/flickr30k_entities/Df/item5+/apple.txt" \
     --forget_test_file "/datanfs4/shenruoyan/FMUClip/Df/flickr30k/forget_apple_test.txt" \
     --external_test_dataset "cifar100" \
     --external_test_root "${external_test_root}" \
