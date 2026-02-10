@@ -1,0 +1,411 @@
+{
+  "5391728144": {
+    "item_num": 21,
+    "instances": [
+      {
+        "instance_id": "235289",
+        "instance": "plain or striped shirts",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4952669491": {
+    "item_num": 16,
+    "instances": [
+      {
+        "instance_id": "222660",
+        "instance": "plain-clothed people",
+        "instance_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "4981184852": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "225779",
+        "instance": "plain clothes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "880663417": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "282818",
+        "instance": "plain black clothes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3517035380": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "124179",
+        "instance": "plain shorts",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "399054696": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "151079",
+        "instance": "plain boats",
+        "instance_type": [
+          "vehicles",
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3744182161": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "140822",
+        "instance": "a plain shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3823691082": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "144193",
+        "instance": "plain clothes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "8058635660": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "278381",
+        "instance": "plains",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3775526174": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "142175",
+        "instance": "a plain light colored shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "54501196": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "236828",
+        "instance": "a rocky plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5615077255": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "239762",
+        "instance": "plain clothes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3644136054": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "133806",
+        "instance": "green plains",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "470903027": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "193635",
+        "instance": "a grassy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2839038702": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "76075",
+        "instance": "the grassy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "270816949": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "67687",
+        "instance": "plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "45756278": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "179997",
+        "instance": "a plain blue shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "336551609": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "113162",
+        "instance": "a snowy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3490517179": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "122145",
+        "instance": "a sandy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "143552697": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "12951",
+        "instance": "a grassy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "245845539": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "51080",
+        "instance": "the african plains",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "240696675": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "46895",
+        "instance": "a grassy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "143684568": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "13020",
+        "instance": "plains",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2710416789": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "67891",
+        "instance": "a plain look",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3191135894": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "99880",
+        "instance": "a grassy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "390992102": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "147928",
+        "instance": "snow covered plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "115684808": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "4087",
+        "instance": "a snowy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2973269132": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "84895",
+        "instance": "a plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1229756013": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "5692",
+        "instance": "a brown plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "124195430": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "6076",
+        "instance": "a sandy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2057306459": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "26225",
+        "instance": "a grassy plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2036407732": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "25404",
+        "instance": "a dry , scrubby plain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "134653574": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "9350",
+        "instance": "plain clothes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "506343925": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "227819",
+        "instance": "sandy plains",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

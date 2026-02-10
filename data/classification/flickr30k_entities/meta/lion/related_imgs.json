@@ -1,0 +1,172 @@
+{
+  "4735749881": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "197025",
+        "instance": "a black lion print",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5826844495": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "243680",
+        "instance": "a cartoon lion",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "4530524963": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "175852",
+        "instance": "a lion king poster",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4873542302": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "213775",
+        "instance": "a statue of a lion",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "624215910": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "250890",
+        "instance": "the tail of a lion sculpture",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "250893",
+        "instance": "an over-sized lion",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "6801523493": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "258348",
+        "instance": "a lion dance festival",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4878557563": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "214133",
+        "instance": "the lion king",
+        "instance_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "3420338549": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "116897",
+        "instance": "a statue of a lion",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "4777826385": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "201879",
+        "instance": "lion statue",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3363872250": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "112928",
+        "instance": "a lion statue",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4895355979": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "215983",
+        "instance": "a lion statue",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2342643387": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "42965",
+        "instance": "a stone lion",
+        "instance_type": [
+          "animals"
+        ]
+      },
+      {
+        "instance_id": "42966",
+        "instance": "a lion statue",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1000919630": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "49",
+        "instance": "a stuffed lion",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

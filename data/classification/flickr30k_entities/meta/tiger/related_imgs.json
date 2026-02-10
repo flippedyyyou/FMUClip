@@ -1,0 +1,215 @@
+{
+  "3249723543": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "104328",
+        "instance": "the northern city of tigers",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "1122177096": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "3141",
+        "instance": "tiger woods",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3367200276": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "113354",
+        "instance": "the tigers",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "5754249309": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "242451",
+        "instance": "a plush tiger figure",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3016521240": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "87519",
+        "instance": "a blow-up tiger",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "4477467862": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "171618",
+        "instance": "the front arm of a large tiger",
+        "instance_type": [
+          "animals"
+        ]
+      },
+      {
+        "instance_id": "171615",
+        "instance": "a tiger",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2771662950": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "71862",
+        "instance": "the detroit tigers",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "4755772591": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "199119",
+        "instance": "a toy tiger",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "860526919": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "281821",
+        "instance": "the tiger",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2755595842": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "70833",
+        "instance": "a tiger print shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4715763245": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "195000",
+        "instance": "a pink tiger",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3016741474": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "87583",
+        "instance": "an inflatable tiger",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3241892328": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "103560",
+        "instance": "a tiger",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2890075175": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "79304",
+        "instance": "a tiger striped dog",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "4913638675": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "217675",
+        "instance": "a tiger identity",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "217680",
+        "instance": "a tiger 's markings",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "975131015": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "284703",
+        "instance": "a sleeping tiger",
+        "instance_type": [
+          "animals"
+        ]
+      },
+      {
+        "instance_id": "284702",
+        "instance": "a tiger",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

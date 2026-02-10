@@ -1,0 +1,208 @@
+{
+  "3097981044": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "93442",
+        "instance": "a leopard print jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "166774567": {
+    "item_num": 16,
+    "instances": [
+      {
+        "instance_id": "18378",
+        "instance": "a leopard print outfit",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4813023306": {
+    "item_num": 16,
+    "instances": [
+      {
+        "instance_id": "205818",
+        "instance": "a leopard dress",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4957370596": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "223143",
+        "instance": "leopard print shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "226642878": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "37802",
+        "instance": "a leopard print backdrop",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "0",
+        "instance": "leopard print background",
+        "instance_type": [
+          "notvisual"
+        ]
+      }
+    ]
+  },
+  "3023753964": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "88176",
+        "instance": "a leopard print jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4799239390": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "203890",
+        "instance": "leopard print leggings",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6986780079": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "263230",
+        "instance": "leopard knee",
+        "instance_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  },
+  "4893545292": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "215765",
+        "instance": "a leopard top",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4431540400": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "167544",
+        "instance": "leopard print tights",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3217909454": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "101996",
+        "instance": "leopard print",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "70036357": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "263738",
+        "instance": "a leopard print shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4953342723": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "222713",
+        "instance": "leopard print earrings records",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "222715",
+        "instance": "large leopard print earrings",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4895028664": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "215952",
+        "instance": "a leopard print shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4590720793": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "181049",
+        "instance": "leopard costumes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "7573421864": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "271565",
+        "instance": "leopard print paper",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

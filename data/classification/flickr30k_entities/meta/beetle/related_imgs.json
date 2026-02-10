@@ -1,0 +1,38 @@
+{
+  "3525568835": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "124850",
+        "instance": "beetles",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2341080150": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "42773",
+        "instance": "a nice red roofless beetle car",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1082110795": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "1962",
+        "instance": "the engine of an old , rusted vw beetle",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

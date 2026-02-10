@@ -1,0 +1,2562 @@
+{
+  "5929335311": {
+    "item_num": 20,
+    "instances": [
+      {
+        "instance_id": "245603",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "246343513": {
+    "item_num": 19,
+    "instances": [
+      {
+        "instance_id": "51397",
+        "instance": "cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4900546628": {
+    "item_num": 18,
+    "instances": [
+      {
+        "instance_id": "216590",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4813833900": {
+    "item_num": 18,
+    "instances": [
+      {
+        "instance_id": "205960",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7072092297": {
+    "item_num": 18,
+    "instances": [
+      {
+        "instance_id": "265013",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4550055382": {
+    "item_num": 18,
+    "instances": [
+      {
+        "instance_id": "177395",
+        "instance": "a cup of water",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "177392",
+        "instance": "their cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5093235185": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "228769",
+        "instance": "a white cup",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "228768",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "228774",
+        "instance": "cups of water",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2089171831": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "27959",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1089354362": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "2145",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6301391567": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "251989",
+        "instance": "the rugby world cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5921620687": {
+    "item_num": 16,
+    "instances": [
+      {
+        "instance_id": "245263",
+        "instance": "an empty cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4637466845": {
+    "item_num": 16,
+    "instances": [
+      {
+        "instance_id": "185315",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4467895568": {
+    "item_num": 16,
+    "instances": [
+      {
+        "instance_id": "170976",
+        "instance": "a white cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4851524954": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "210784",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "206094882": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "26398",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4637912498": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "185366",
+        "instance": "her cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4915022692": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "217930",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7472814756": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "270233",
+        "instance": "america 's cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6664030": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "256691",
+        "instance": "cups of alcohol beverage",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "256695",
+        "instance": "a tray of cups of wine",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "256698",
+        "instance": "plastic cups of wine or champagne",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2215737172": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "34683",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2310202774": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "40733",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4659370314": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "187805",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "220747961": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "34184",
+        "instance": "plastic cups of iced tea",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4517513099": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "174901",
+        "instance": "a red cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2234368402": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "35959",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2230885062": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "35684",
+        "instance": "a cup and saucer",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4851006985": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "210604",
+        "instance": "red plastic cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2429464837": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "48901",
+        "instance": "large metal cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4705826208": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "193286",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4631205536": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "184493",
+        "instance": "a soda cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "160210791": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "17287",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4804599874": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "204542",
+        "instance": "many plastic cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3822476498": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "144152",
+        "instance": "plastic cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2062425492": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "26479",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5328154314": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "233726",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4720425886": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "195100",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "253924161": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "56653",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5866079837": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "244228",
+        "instance": "cups of fruit",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "244225",
+        "instance": "fruit cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "17840997": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "20406",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3232237447": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "102960",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4029583519": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "152497",
+        "instance": "a couple of coffee cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4006329734": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "151708",
+        "instance": "a blue cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4021518793": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "152223",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2249783327": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "36776",
+        "instance": "tea cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "265561932": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "64271",
+        "instance": "some coffee cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2034553054": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "25313",
+        "instance": "cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "30061114": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "86917",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4828430669": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "208050",
+        "instance": "two tea cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "561204294": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "239668",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4840023291": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "209543",
+        "instance": "mcdonald 's cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "21687074": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "32025",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3595408539": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "130264",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "130267",
+        "instance": "plastic cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3543600125": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "126322",
+        "instance": "ceramic cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3325186785": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "109522",
+        "instance": "the cup holder",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3534183988": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "125594",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3077185981": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "91690",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6244362665": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "250919",
+        "instance": "this final cup match",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2103055320": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "29019",
+        "instance": "a cup of tea",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1401998185": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "11353",
+        "instance": "the afl premiership cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "603452271": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "246889",
+        "instance": "a red-lidded coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1409001204": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "11663",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4497490074": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "173243",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "173239",
+        "instance": "a cup of something",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "173242",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5511459001": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "237976",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2507831979": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "54049",
+        "instance": "two coffee cups and saucers",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2324374253": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "41667",
+        "instance": "a red cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4782776184": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "202318",
+        "instance": "a plastic cup",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "202324",
+        "instance": "a cup of water",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3020785883": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "88002",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4704578554": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "193071",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "502760780": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "227241",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "227238",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4814948954": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "206261",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "44341044": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "167681",
+        "instance": "a red cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4717499333": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "194583",
+        "instance": "cup cakes",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "73471419": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "268799",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4270731854": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "161094",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "179778822": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "20716",
+        "instance": "a yellow cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "496606439": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "224006",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "142347382": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "12359",
+        "instance": "paper cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "126772535": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "6755",
+        "instance": "clear cup containers",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2735822661": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "69284",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "311203232": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "94431",
+        "instance": "a white coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2581218229": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "59528",
+        "instance": "a orange coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2375981973": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "45013",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7232710570": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "267245",
+        "instance": "used cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3475861944": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "121126",
+        "instance": "coffee cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4442323516": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "168587",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4926723": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "219059",
+        "instance": "a hot cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4512324065": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "174470",
+        "instance": "a plastic cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "91852718": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "283486",
+        "instance": "white cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3026459445": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "88361",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5615083329": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "239771",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "511814053": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "229291",
+        "instance": "a white cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4833342189": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "208806",
+        "instance": "a blue cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3738551665": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "140623",
+        "instance": "a drink cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "606691813": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "247381",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "247384",
+        "instance": "their plastic cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4867368731": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "212951",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "286459527": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "77583",
+        "instance": "the fifa world cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6335241": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "252923",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4460747081": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "170373",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3398276602": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "115495",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3084010872": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "92077",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2568065443": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "58592",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4481066026": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "171947",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4313861353": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "162766",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3399906919": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "115596",
+        "instance": "red cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4620455202": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "183453",
+        "instance": "one cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2148663218": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "31183",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3836017313": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "144977",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4524364495": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "175408",
+        "instance": "four small white cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3357999648": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "112443",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4572432426": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "179799",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "450138714": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "173465",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3091673351": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "92839",
+        "instance": "two coffee cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4419325681": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "167064",
+        "instance": "a cup-o-noodles",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "167069",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4916416205": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "218108",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "230100504": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "39987",
+        "instance": "a bright red cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "75902338": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "271838",
+        "instance": "fancy cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2539933563": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "56709",
+        "instance": "an orange cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3145967019": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "96425",
+        "instance": "a blue cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "10160966": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "521",
+        "instance": "his cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4201834761": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "159042",
+        "instance": "two coffee cups",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "159038",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3742085771": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "140772",
+        "instance": "a red cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2339573065": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "42678",
+        "instance": "a cup of ice cream",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "189233427": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "22729",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3245001162": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "103878",
+        "instance": "a glass cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "75902708": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "271847",
+        "instance": "white cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "457607803": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "180022",
+        "instance": "blue and white cups",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "180021",
+        "instance": "a cup of tea",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "112719695": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "3280",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3202281074": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "100618",
+        "instance": "a variety of cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2597483633": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "60479",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6105998656": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "248067",
+        "instance": "a paper cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3156431444": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "97173",
+        "instance": "a white cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "107022557": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "1722",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2339273772": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "42632",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3388096008": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "114708",
+        "instance": "suction cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4195751574": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "158718",
+        "instance": "cups , bowls , pots and baskets of assorted size",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4035354150": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "152761",
+        "instance": "a man 's cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4749605645": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "198387",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4732580131": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "196662",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "25166900": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "54642",
+        "instance": "your daily cup \" works",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3322443827": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "109369",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2844202978": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "76357",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "16630920": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "18258",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2310972631": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "40791",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4412978133": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "166878",
+        "instance": "his styrofoam coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2736656254": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "69432",
+        "instance": "a fast food cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2688848759": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "66312",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "392177194": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "148266",
+        "instance": "painted glass cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4683808691": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "190142",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2853407781": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "76897",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "12526324": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "6388",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3139160252": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "96096",
+        "instance": "a paper cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3084011664": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "92095",
+        "instance": "a blue cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4487371472": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "172571",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2680852294": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "65836",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2882925081": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "78825",
+        "instance": "his cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2709275718": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "67803",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "64716145": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "254636",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "10082348": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "256",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2752926645": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "70713",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4518796612": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "174999",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2644916196": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "63586",
+        "instance": "the green cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2814406547": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "74496",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4655858969": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "187480",
+        "instance": "a drink cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4681940161": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "189970",
+        "instance": "a cup of nectar",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4729526023": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "196261",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2987232840": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "85708",
+        "instance": "a cup of coffee",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5788772871": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "243027",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3139055381": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "96078",
+        "instance": "cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "688940111": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "260551",
+        "instance": "a pink cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2744856447": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "69912",
+        "instance": "a metal cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3359239598": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "112552",
+        "instance": "styrofoam cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4858171330": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "211740",
+        "instance": "a styrofoam cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1334892555": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "9008",
+        "instance": "a plastic cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3965762928": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "149988",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4646346574": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "186283",
+        "instance": "a styrofoam cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "363617160": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "133056",
+        "instance": "a plastic cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "55470226": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "238611",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3569420080": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "128443",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3169016042": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "97873",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2768933636": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "71699",
+        "instance": "a yellow cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "874736612": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "282684",
+        "instance": "a cup of flavored ice",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "86289724": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "282244",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "482048394": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "206984",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3965760848": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "149981",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4698726564": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "192532",
+        "instance": "the 66 fifa world cup",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "192531",
+        "instance": "the 2010 world cup games",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "783994497": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "275956",
+        "instance": "their cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4637210622": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "185257",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2565087972": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "58390",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2824492858": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "74969",
+        "instance": "a cup of soup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4463818813": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "170573",
+        "instance": "a small plastic cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2404747797": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "46817",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3337945724": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "110654",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4865579749": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "212840",
+        "instance": "a fast food cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4511574626": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "174362",
+        "instance": "cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4105969146": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "155686",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2317276332": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "41269",
+        "instance": "coffee cups",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "155215518": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "16161",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "174236758": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "19807",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6623693625": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "256252",
+        "instance": "a plastic pink cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4569102627": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "179419",
+        "instance": "a big cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3006094603": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "86908",
+        "instance": "a coffee cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4753175787": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "198874",
+        "instance": "a plastic cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3163068926": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "97516",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1452361926": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "13377",
+        "instance": "a cup",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

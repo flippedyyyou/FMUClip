@@ -1,0 +1,736 @@
+{
+  "4900546628": {
+    "item_num": 18,
+    "instances": [
+      {
+        "instance_id": "216591",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3082997532": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "92013",
+        "instance": "the hot lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4639459528": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "185540",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4979962304": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "225604",
+        "instance": "lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3052435954": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "90377",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3093713234": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "93043",
+        "instance": "a collection of glass-blown lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4747501990": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "198172",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1196886054": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "5060",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4451567464": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "169758",
+        "instance": "yellow street-lamp light shows",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4919450790": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "218332",
+        "instance": "the street lamp",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "218335",
+        "instance": "the lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2785408815": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "72871",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2631541162": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "62619",
+        "instance": "a yellow lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4447031799": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "169138",
+        "instance": "lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "459560684": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "181410",
+        "instance": "unusually-shaped , colorful lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "247189554": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "51980",
+        "instance": "orange lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4670289514": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "188723",
+        "instance": "sphere lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2141692397": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "30854",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4962418713": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "223633",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2368321486": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "44575",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2102317779": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "28890",
+        "instance": "a small lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1277949368": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "7032",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3529333786": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "125183",
+        "instance": "a lava lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5006721108": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "226720",
+        "instance": "a small lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "82681058": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "280993",
+        "instance": "a lamp light",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4592144222": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "181182",
+        "instance": "the base of a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4122558617": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "156327",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4525286529": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "175484",
+        "instance": "street lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6064872574": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "247292",
+        "instance": "a desk lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2993822651": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "86163",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1412022357": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "11846",
+        "instance": "a street lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4755872312": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "199161",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "439171995": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "166046",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4935749619": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "220452",
+        "instance": "orange sodium vapor lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1313869424": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "8360",
+        "instance": "a tall lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3241627311": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "103543",
+        "instance": "a bright lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3234401637": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "103124",
+        "instance": "a street lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4642442935": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "185827",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "464943168": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "186639",
+        "instance": "two glowing lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3201910861": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "100558",
+        "instance": "lamp light",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4204621843": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "159124",
+        "instance": "the light of a street lamp",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "159123",
+        "instance": "street lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1832085044": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "21672",
+        "instance": "a crystal lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4786291398": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "202706",
+        "instance": "a street lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "328322290": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "106791",
+        "instance": "three lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "42637986": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "160749",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2112830327": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "29415",
+        "instance": "a street lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "711785371": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "265634",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3614269018": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "131747",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2862721322": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "77468",
+        "instance": "a heat lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "461139045": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "182521",
+        "instance": "two red lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4679525981": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "189788",
+        "instance": "a street lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "463852657": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "185450",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3815411755": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "143732",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4254687302": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "160381",
+        "instance": "a tall lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2329331195": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "42001",
+        "instance": "lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3103645451": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "93796",
+        "instance": "a lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2209751": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "34294",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "290764786": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "80575",
+        "instance": "a blue lamp post",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1410193619": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "11755",
+        "instance": "a lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "461139063": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "182524",
+        "instance": "a lit lamp",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "459560694": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "181421",
+        "instance": "unusually decorated lamps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

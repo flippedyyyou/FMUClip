@@ -1,0 +1,551 @@
+{
+  "5639026536": {
+    "item_num": 18,
+    "instances": [
+      {
+        "instance_id": "240192",
+        "instance": "apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4900546628": {
+    "item_num": 18,
+    "instances": [
+      {
+        "instance_id": "216585",
+        "instance": "an apple computer",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2403832405": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "46750",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4467634558": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "170959",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3816130053": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "143780",
+        "instance": "bagged apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2215767852": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "34695",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "541342477": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "235937",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3841625978": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "145193",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "145194",
+        "instance": "green apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "8006608256": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "277665",
+        "instance": "green apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5014752481": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "226888",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2034553054": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "25310",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5181419899": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "230480",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3610051443": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "131408",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2967123604": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "84510",
+        "instance": "an apple pie",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2243943940": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "36398",
+        "instance": "apple cider",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4039941514": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "152892",
+        "instance": "apple computers",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6894728048": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "260704",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4675170500": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "189328",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4873091038": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "213730",
+        "instance": "a golden apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "33972426": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "115382",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4684706810": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "190384",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "467658231": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "189440",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "214167512": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "30834",
+        "instance": "candy apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2705920452": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "67409",
+        "instance": "a apple",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "67410",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "67407",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3335965982": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "110479",
+        "instance": "an open apple laptop",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3393940726": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "115047",
+        "instance": "an apple netbook",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4152320485": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "157182",
+        "instance": "box apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "477990943": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "201955",
+        "instance": "a green apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3124310426": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "95170",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4708678343": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "193566",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2936865989": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "82554",
+        "instance": "her apple laptop",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3457045393": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "119568",
+        "instance": "an apple themed coat",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3712917405": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "138799",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4812310213": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "205745",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4411155296": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "166753",
+        "instance": "an apple computer",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3102705810": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "93702",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "363363320": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "132887",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2551632823": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "57633",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7148046575": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "265972",
+        "instance": "an apple computer",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7348289414": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "268833",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3955794229": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "149484",
+        "instance": "an apple laptop",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2400768851": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "46548",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3710674892": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "138546",
+        "instance": "an apple",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2252264255": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "37010",
+        "instance": "apples",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

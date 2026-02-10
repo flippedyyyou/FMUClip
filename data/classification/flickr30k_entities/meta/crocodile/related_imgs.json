@@ -1,0 +1,64 @@
+{
+  "6878446432": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "260113",
+        "instance": "the protective covers of crocodile clips",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3849219106": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "145580",
+        "instance": "the green crocodiles",
+        "instance_type": [
+          "animals"
+        ]
+      },
+      {
+        "instance_id": "145575",
+        "instance": "a crocodile mouth",
+        "instance_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  },
+  "5712029145": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "241456",
+        "instance": "a picture of a crocodile",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2094543127": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "28334",
+        "instance": "a crocodile",
+        "instance_type": [
+          "animals"
+        ]
+      },
+      {
+        "instance_id": "28335",
+        "instance": "a crocodile 's mouth",
+        "instance_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  }
+}

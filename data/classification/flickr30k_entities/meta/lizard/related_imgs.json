@@ -1,0 +1,64 @@
+{
+  "1454217779": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "13452",
+        "instance": "the jaw of a stone lizard",
+        "instance_type": [
+          "animals"
+        ]
+      },
+      {
+        "instance_id": "13458",
+        "instance": "the lizard 's mouth",
+        "instance_type": [
+          "bodyparts"
+        ]
+      },
+      {
+        "instance_id": "13456",
+        "instance": "the mouth of a lizard",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3378980591": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "114230",
+        "instance": "the tiny lizard",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "437230706": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "165262",
+        "instance": "a lizard",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "166507476": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "18339",
+        "instance": "two lizards",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  }
+}

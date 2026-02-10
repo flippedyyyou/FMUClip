@@ -245,16 +245,16 @@ class COCO2017InstancesProcessor(DatasetProcessor):
 
 
 if __name__ == "__main__":
-    # flickr30k_dataset = Flikr30kEntitiesProcessor(
-    #     raw_dataset_path=FLICKR30K_ENTITIES_PATH,
-    #     output_path=OUTPUT_PATH,
-    #     all_concepts=all_concepts,
-    # )
-    # flickr30k_dataset.split_for_classification()
-
-    coco2017_datasets = COCO2017InstancesProcessor(
-        raw_dataset_path=COCO2017_PATH,
+    flickr30k_dataset = Flikr30kEntitiesProcessor(
+        raw_dataset_path=FLICKR30K_ENTITIES_PATH,
         output_path=OUTPUT_PATH,
         all_concepts=all_concepts,
     )
-    coco2017_datasets.split_for_classification()
+    flickr30k_dataset.split_for_classification()
+
+    # coco2017_datasets = COCO2017InstancesProcessor(
+    #     raw_dataset_path=COCO2017_PATH,
+    #     output_path=OUTPUT_PATH,
+    #     all_concepts=all_concepts,
+    # )
+    # coco2017_datasets.split_for_classification()

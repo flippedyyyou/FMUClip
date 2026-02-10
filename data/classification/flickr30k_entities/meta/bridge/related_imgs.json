@@ -1,0 +1,2996 @@
+{
+  "7421074812": {
+    "item_num": 25,
+    "instances": [
+      {
+        "instance_id": "269580",
+        "instance": "a boat bridge door",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "269582",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5583837367": {
+    "item_num": 19,
+    "instances": [
+      {
+        "instance_id": "239104",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "239102",
+        "instance": "london bridges",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2150834797": {
+    "item_num": 19,
+    "instances": [
+      {
+        "instance_id": "31305",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4696109052": {
+    "item_num": 18,
+    "instances": [
+      {
+        "instance_id": "192173",
+        "instance": "bridges",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "192169",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6853913173": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "259491",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "56012468": {
+    "item_num": 17,
+    "instances": [
+      {
+        "instance_id": "239413",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4651200817": {
+    "item_num": 16,
+    "instances": [
+      {
+        "instance_id": "186833",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "476009642": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "199863",
+        "instance": "the middle of a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7428276152": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "269719",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "331557517": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "108824",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4934102103": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "220133",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4641889254": {
+    "item_num": 15,
+    "instances": [
+      {
+        "instance_id": "185784",
+        "instance": "the underpass of a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "185783",
+        "instance": "a concrete bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7472814756": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "270232",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6205942474": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "250026",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4194543575": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "158676",
+        "instance": "bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "158675",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7655480476": {
+    "item_num": 14,
+    "instances": [
+      {
+        "instance_id": "272803",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3349396565": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "111644",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5522177900": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "238197",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3717258171": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "139151",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3181322965": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "98922",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4833918883": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "208883",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2259134148": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "37406",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3826412077": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "144334",
+        "instance": "red crossing bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4459033855": {
+    "item_num": 13,
+    "instances": [
+      {
+        "instance_id": "170257",
+        "instance": "a mural of the golden gate bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "484443289": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "209878",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2565703445": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "58450",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4912060281": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "217399",
+        "instance": "a suspension bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4877883053": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "214052",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4271298554": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "161153",
+        "instance": "a nearby bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5759427006": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "242557",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2502354602": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "53666",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2537594884": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "56322",
+        "instance": "a wooden bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4929501260": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "219383",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3699725758": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "137783",
+        "instance": "a over water bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4935649066": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "220420",
+        "instance": "bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2633388235": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "62784",
+        "instance": "an incomplete bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2832747707": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "75554",
+        "instance": "arch-style bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6229825733": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "250618",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4636054805": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "185110",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1347001782": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "9359",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3942050764": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "148929",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4510318316": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "174231",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "174236",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3170630855": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "98013",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4725001619": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "195575",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5241430403": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "231901",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "561179890": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "239646",
+        "instance": "a wooden bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4038718263": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "152868",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "260148263": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "60784",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4760466704": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "199929",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4971935706": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "224871",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4806214972": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "204830",
+        "instance": "a traffic bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3399751464": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "115564",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "115566",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4030623833": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "152571",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3465703153": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "120178",
+        "instance": "wooden bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "275290256": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "70681",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2526412711": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "55356",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6079467981": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "247675",
+        "instance": "a wooden bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4725078805": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "195664",
+        "instance": "bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4193422737": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "158622",
+        "instance": "bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4733768667": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "196851",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4568591525": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "179367",
+        "instance": "a street bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "179371",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4328537167": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "163379",
+        "instance": "london bridges",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4620028074": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "183401",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7232710570": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "267246",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4976728206": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "225217",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "371769150": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "139201",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "468739267": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "190820",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "263764537": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "63071",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4879766314": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "214222",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "217108448": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "32125",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6486182665": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "254866",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3541716169": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "126230",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4977186779": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "225253",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4874068843": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "213810",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4271560578": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "161169",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4725075735": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "195638",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2678171436": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "65604",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4649891200": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "186690",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3771613841": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "141879",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "746568292": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "270105",
+        "instance": "a wooden bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4725002777": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "195587",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4940152874": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "221032",
+        "instance": "large bridge-like structure",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "221027",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "221024",
+        "instance": "the bottom view of a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4731694958": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "196544",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "24187497": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "47944",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4696110056": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "192189",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4915628544": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "218030",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6212276888": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "250254",
+        "instance": "a bridge look",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "534133916": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "234095",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2514612680": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "54558",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4923692902": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "218835",
+        "instance": "a pedestrian bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "294391131": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "83258",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2445234281": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "50034",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4435667506": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "167857",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "397186364": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "150363",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2726834392": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "68897",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "68894",
+        "instance": "an archway bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2330310763": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "42026",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2853451727": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "76905",
+        "instance": "a walking bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4877885745": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "214058",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4840867184": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "209594",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "136644885": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "10222",
+        "instance": "a rope bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6933265421": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "261833",
+        "instance": "a picture of a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "261835",
+        "instance": "his painting of the golden gate bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4665612496": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "188309",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4443434749": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "168739",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3891014226": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "147191",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6218244928": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "250412",
+        "instance": "a large bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "77587237": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "274688",
+        "instance": "a stone bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2192802444": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "33282",
+        "instance": "a wood bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "33286",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "263765706": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "63077",
+        "instance": "a long bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4764047623": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "200478",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "200481",
+        "instance": "a bridge look",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3665931784": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "135276",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3080363242": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "91869",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4891182729": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "215534",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3589425899": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "129915",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1281282435": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "7132",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3500147750": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "123003",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2773844590": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "72097",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1350811702": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "9533",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "116569046": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "4377",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3273126450": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "106042",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4833520397": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "208843",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4684510937": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "190272",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2309682355": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "40684",
+        "instance": "a scenic bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3153069448": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "96929",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7207179578": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "267129",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4450905295": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "169671",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4783827768": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "202427",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "202433",
+        "instance": "the side of a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4352857810": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "164531",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2189995738": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "33068",
+        "instance": "a wooden bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "153809771": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "15863",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4665106597": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "188239",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "268654674": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "66125",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1784309115": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "20416",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7184912719": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "266673",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5608476880": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "239569",
+        "instance": "bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "514222303": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "229790",
+        "instance": "a rope bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3407556347": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "116004",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5888200593": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "244517",
+        "instance": "a broken bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4254079840": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "160364",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4234824441": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "159861",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4682065369": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "189985",
+        "instance": "a photo of a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2394919002": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "46254",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2269021076": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "38012",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7889700810": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "276384",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4954753241": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "222901",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4810150528": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "205428",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4540109233": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "176493",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2068403258": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "26743",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6872204096": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "259998",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1223671563": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "5551",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1782543772": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "20373",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4953626913": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "222782",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4760617550": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "199975",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1015712668": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "513",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4729870194": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "196338",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1193746118": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "5002",
+        "instance": "bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "100444898": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "169",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1500853305": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "15005",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4763802065": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "200428",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4979383586": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "225525",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "288880576": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "79191",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3428985247": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "117532",
+        "instance": "a stone bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4152957260": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "157242",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2107837987": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "29220",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2228361155": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "35416",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2520799246": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "54857",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3470711198": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "120490",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2415326086": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "47761",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "496723149": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "224157",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3254993045": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "104699",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3106857210": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "94053",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "301246": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "87260",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4898790718": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "216438",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6065883340": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "247313",
+        "instance": "a large bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2309779665": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "40694",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4885212423": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "214605",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4524196235": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "175324",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4525740976": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "175531",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3535879138": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "125736",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6286343422": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "251723",
+        "instance": "a large bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "572206753": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "241697",
+        "instance": "a wooden bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4932739824": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "219956",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3382303178": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "114451",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4950815995": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "222383",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1141718391": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "3589",
+        "instance": "a rope bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4649105436": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "186619",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3691670743": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "137195",
+        "instance": "the middle of a red bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "137192",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4726926550": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "195951",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4870785283": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "213366",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3152635763": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "96882",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "359291972": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "130124",
+        "instance": "a rope bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2527163162": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "55399",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3385430506": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "114598",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "229954612": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "39852",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "39855",
+        "instance": "a bridge look",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2633093295": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "62767",
+        "instance": "a metal bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "104180524": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "1072",
+        "instance": "a white and red bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2787276494": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "72968",
+        "instance": "bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5361551308": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "234554",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2931759630": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "82244",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4467403927": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "170915",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "306318683": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "90988",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4175221212": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "158057",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "137861003": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "10644",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4662948361": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "188074",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4313255436": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "162744",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "156967462": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "16606",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4953325348": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "222704",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95783195": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "284199",
+        "instance": "a wooden link wire bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1521623639": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "15588",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4480560554": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "171907",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "103953336": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "1033",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3087095548": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "92449",
+        "instance": "the side of a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3573436368": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "128667",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6294582746": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "251873",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6986052122": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "263220",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "551403320": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "238057",
+        "instance": "a metal bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "96978713": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "284536",
+        "instance": "a rope bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "492079410": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "218433",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4024023598": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "152329",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "114722877": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "3830",
+        "instance": "two bridges",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4635157412": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "185033",
+        "instance": "the bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2537603442": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "56348",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "581419370": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "243359",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "492341908": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "218802",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4817781260": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "206563",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2916009941": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "81159",
+        "instance": "bridge railing",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "404216567": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "152919",
+        "instance": "a toll bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3016200560": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "87495",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2238019823": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "36132",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1353425777": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "9653",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4580282343": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "180269",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3982607071": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "150883",
+        "instance": "a rock bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2354914661": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "43770",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3247341210": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "104124",
+        "instance": "a rope bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "122156386": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "5492",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "153374075": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "15785",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2987704992": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "85754",
+        "instance": "a wooden bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3838186953": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "145044",
+        "instance": "the middle of a railroad bridge",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "145042",
+        "instance": "the golden gate bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1260816604": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "6566",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3278777548": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "106498",
+        "instance": "a bridge",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  }
+}
