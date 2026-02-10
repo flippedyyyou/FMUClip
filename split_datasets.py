@@ -81,41 +81,41 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
         # annotations_path = os.path.join(FLICKR30K_ENTITIES_PATH, 'annotations/Annotations')
         sentence_path = os.path.join(self.raw_dataset_path, 'annotations/Sentences')
 
-        if not os.path.exists(os.path.join(self.output_path, 'classification', 'flickr30k_entities/meta/phrases.json')):
-            phrases = {}  # Len: 243801
+        if not os.path.exists(os.path.join(self.output_path, 'classification', 'flickr30k_entities/meta/instances.json')):
+            instances = {}  # Len: 243801
             for sent_file in tqdm(os.listdir(sentence_path), desc="Loading sentences"):
                 img_id = sent_file.split('.')[0]
                 sentences = parse_flickr30k_sentence(
                     os.path.join(sentence_path, sent_file))
-                phrases[img_id] = {}
+                instances[img_id] = {}
                 for sent in sentences:
-                    for phrase in sent['phrases']:
-                        phrases[img_id][phrase['phrase_id']] = {
-                            'phrase': phrase['phrase'].lower(),
-                            'phrase_type': phrase['phrase_type'],
+                    for instance in sent['phrases']:
+                        instances[img_id][instance['phrase_id']] = {
+                            'instance': instance['phrase'].lower(),
+                            'instance_type': instance['phrase_type'],
                         }
-            save_json(phrases, os.path.join(self.output_path, 'classification', 'flickr30k_entities/meta/phrases.json'))
+            save_json(instances, os.path.join(self.output_path, 'classification', 'flickr30k_entities/meta/instances.json'))
 
         else:
-            phrases = load_json(os.path.join(self.output_path, 'classification',
-                                'flickr30k_entities/meta/phrases.json'))
+            instances = load_json(os.path.join(self.output_path, 'classification',
+                                'flickr30k_entities/meta/instances.json'))
 
         meta_info = {}
         for concept in tqdm(all_concepts, desc="Processing concepts"):
             related_imgs = {}
-            for img_id, img_phrases in phrases.items():
-                for phrase_id in img_phrases.keys():
-                    phrase_text = img_phrases[phrase_id]['phrase']
-                    if self._concept_in_phrase(concept, phrase_text):
+            for img_id, img_instances in instances.items():
+                for instance_id in img_instances.keys():
+                    instance_text = img_instances[instance_id]['instance']
+                    if self._concept_in_phrase(concept, instance_text):
                         if img_id not in related_imgs:
                             related_imgs[img_id] = {
-                                'item_num': len(img_phrases),
-                                'phrases': []
+                                'item_num': len(img_instances),
+                                'instances': []
                             }
-                        related_imgs[img_id]['phrases'].append({
-                            'phrase_id': phrase_id,
-                            'phrase': phrase_text,
-                            'phrase_type': img_phrases[phrase_id]['phrase_type'],
+                        related_imgs[img_id]['instances'].append({
+                            'instance_id': instance_id,
+                            'instance': instance_text,
+                            'instance_type': img_instances[instance_id]['instance_type'],
                         })
             if related_imgs:  # Save only if there are related images.
                 related_imgs = dict(sorted(related_imgs.items(), key=lambda kv: kv[1]["item_num"], reverse=True))
