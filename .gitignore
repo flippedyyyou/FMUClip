@@ -11,3 +11,4 @@ Df/coco/retain_dog_train.txt
 build/*
 tmp*
 .DS_Store
+third_party
