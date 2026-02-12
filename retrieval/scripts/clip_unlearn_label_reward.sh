@@ -28,7 +28,7 @@ tta_momentum=0.9  #0.9998
 update_w=1.0
 
 # ========= Unlearn 参数 =========
-lambda_df=1
+lambda_df=100
 lambda_dr=0
 lambda_rdr=0
 lambda_uni=1
@@ -37,10 +37,11 @@ neg_mode="minsim"
 concept_token="apple"
 cfg_yaml=${code_path}/lavis/projects/clip/exp_flickr_unlearn_tta_llava.yaml
 runfile=${code_path}/clip_unlearn_label_reward.py
+external_test_root="/datanfs4/shenruoyan/datasets/cifar-100-python"
 
 # ========= 运行 =========
-output=${code_path}/output/clip_flickr_unlearn1k_apple_rtf${lambda_df}_rdr${lambda_rdr}_uni${lambda_uni}_epoch${max_epoch}_${date}
-export_dir=${code_path}/output/clip_flickr_unlearn1k_apple_rtf${lambda_df}_rdr${lambda_rdr}_uni${lambda_uni}_epoch${max_epoch}_${date}
+output=${code_path}/output/clip_flickr30kentities_unlearn_apple_rtf${lambda_df}_rdr${lambda_rdr}_uni${lambda_uni}_epoch${max_epoch}_${date}
+export_dir=${code_path}/output/clip_flickr30kentities_unlearn_apple_rtf${lambda_df}_rdr${lambda_rdr}_uni${lambda_uni}_epoch${max_epoch}_${date}
 
 echo "🚀 Running Unlearning rtf+rdr"
 echo "Output -> ${output}"
@@ -75,7 +76,7 @@ python ${runfile} \
     --unlearned_model_name clip_unlearned.pt \
     --unlearned_meta_name clip_unlearned_meta.json \
     --unlearned_subdir unlearned_clip \
-    --forget_train_file "data/classification/flickr30k_entities/Df/item5+/apple.txt" \
+    --forget_train_file "/datanfs4/shenruoyan/FMUClip/retrieval/Df/item5+/apple.txt" \
     --forget_test_file "/datanfs4/shenruoyan/FMUClip/Df/flickr30k/forget_apple_test.txt" \
     --external_test_dataset "cifar100" \
     --external_test_root "${external_test_root}" \

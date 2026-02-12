@@ -241,7 +241,7 @@ def _encode_image_patches(model, images: torch.Tensor):
     x = x.permute(0, 2, 1)
     x = torch.cat(
         [
-            visual.class_embedding.to(x.dtype)
+            visual.class_embedding.to(x.dtype) #CLS
             + torch.zeros(
                 x.shape[0], 1, x.shape[-1], dtype=x.dtype, device=x.device
             ),
@@ -897,7 +897,7 @@ def main():
             num_workers=args.external_test_num_workers,
             output_dir=args.output,
         )
-
+        
     if not use_original_only and args.save_unlearned_model and get_rank() == 0:
         save_dir = os.path.join(args.output, args.unlearned_subdir)
         _save_unlearned_checkpoint(

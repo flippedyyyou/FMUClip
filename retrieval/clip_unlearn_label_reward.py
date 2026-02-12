@@ -24,6 +24,7 @@ import copy
 
 import torch
 import torch.nn.functional as F
+from torchvision import datasets, transforms
 
 
 import lavis.tasks as tasks
@@ -193,6 +194,8 @@ def supervised_unlearn_train(
 
     # 以较短的一方为 epoch 基础步数
     iters_per_epoch = min(len(df_train_loader), len(dr_train_loader))
+    print("iters_per_epoch:", iters_per_epoch)
+    print("len(df_train_loader), len(dr_train_loader):", len(df_train_loader), len(dr_train_loader))
     for ep in range(max_epoch):
         model.train()
         df_iter = iter(df_train_loader)
@@ -245,14 +248,16 @@ def supervised_unlearn_train(
                 patch_feats, grid = _encode_image_patches(model, img_df)  # (B,N,D)，N 是补丁的数量
                 text_feat = _encode_text(model, concept_tokens).squeeze(0)  # (D,)
                 # (B,N) = (B,N,D) · (D,)
-                patch_sim = F.cosine_similarity(patch_feats, text_feat.unsqueeze(0), dim=-1)  # 遗忘概念文本特征和整图特征
+                patch_sim = F.cosine_similarity(patch_feats, text_feat.unsqueeze(0), dim=-1)  # 遗忘概念文本特征和各patch特征相似度
                 patch_mask = _mask_to_patch_attention(sam3_masks, grid)  # (B,N) 0/1
                 patch_num = patch_mask.sum(dim=1)  # (B,)，mask 区域有多少个 patch，保证不会因为 mask 大小影响 loss 尺度导致训练不稳
                 masked_similarity = patch_sim * patch_mask  # (B,N)
                 # # 使用指数函数来放大相似度差异，惩罚相似度较高的区域
                 # exp_similarity = torch.exp(masked_similarity)  # 使用指数函数，放大相似度差异
                 # loss_rtf = (exp_similarity.sum(dim=1) / patch_num.clamp(min=1.0)).mean()
-                loss_rtf = (masked_similarity.sum(dim=1) / patch_num).mean()
+                # print("patch_sim:", patch_sim, "patch_mask:", patch_mask, "patch_num:", patch_num)
+                # print("masked_similarity.sum(dim=1):", masked_similarity.sum(dim=1))
+                loss_rtf = (masked_similarity.sum(dim=1) / (patch_num+1)).mean()
 
                 loss_rdr = torch.tensor(0.0, device=device)
                 if reward_model is not None:
