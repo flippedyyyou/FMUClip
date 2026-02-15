@@ -1,11 +1,10 @@
 """
-Copied from third_party/MultiDelete/vl_unlearn/task_unlearn.py
+Modified based on MultiDelete/vl_unlearn/task_unlearn.py
 """
-
 
 import logging
 import os
-import wandb
+# import wandb
 
 import torch
 import torch.nn as nn
@@ -135,8 +134,8 @@ class VLUnlearnRetrievalTask(RetrievalTask):
             'train_loss_multi': loss_multi, 
             'train_loss_uni': loss_uni
         }
-        wandb.log({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
-        # logging.info({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
+        # wandb.log({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
+        logging.info({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
 
         return out
 
@@ -209,7 +208,7 @@ class VLUnlearnRetrievalTask(RetrievalTask):
             'train_loss_uni': loss
         }
         # wandb.log({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
-        # logging.info({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
+        logging.info({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
 
         return out
 
@@ -286,7 +285,7 @@ class VLUnlearnClassificationTask(MultimodalClassificationTask,BaseTask):
             'train_loss_multi': loss_multi, 
             'train_loss_uni': loss_uni
         }
-        wandb.log({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
-        # logging.info({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
+        # wandb.log({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
+        logging.info({'train_loss': loss.item(), 'train_loss_md': loss_md.item(), 'train_loss_multi': loss_multi.item(), 'train_loss_uni': loss_uni.item()})
 
         return out

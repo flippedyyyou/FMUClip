@@ -1,8 +1,12 @@
+"""
+Modified based on third_party/MultiDelete/unlearn.py
+"""
+
 import argparse
 import os
 import random
 import copy
-import wandb
+# import wandb
 
 import numpy as np
 import pandas as pd
@@ -443,6 +447,6 @@ def main():
 
     else:
         raise NotImplementedError
-x
+
 if __name__ == "__main__":
     main()

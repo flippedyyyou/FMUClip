@@ -1,8 +1,12 @@
+"""
+Modified based on MultiDelete/vl_unlearn/runner_unlearn.py
+"""
+
 import os
 import copy
 import time
 import json
-import wandb
+# import wandb
 import logging
 import datetime
 from pathlib import Path
@@ -201,7 +205,7 @@ class NewRunner(RunnerBase):
                         valid_logs[split_name] = logs
                         logging.info(f'{split_name}: {str(logs)}')
                         self.log_stats(logs, split_name)
-                        wandb.log({split_name: logs})
+                        # wandb.log({split_name: logs})
                 
                     self.log_stats(valid_logs, 'test')
                     logging.info(str(valid_logs))
@@ -319,7 +323,7 @@ class NewRunner(RunnerBase):
                         
                 test_logs[split_name] = logs
                 logging.info(f'{split_name}: {str(logs)}')
-                wandb.log({split_name: logs})
+                # wandb.log({split_name: logs})
             
             self.log_stats(test_logs, 'test')
             with open(self.output_dir / 'test', 'w') as f:

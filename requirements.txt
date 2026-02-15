@@ -15,3 +15,5 @@ pycocoevalcap
 ftfy
 dotenv
 pycocotools
+scikit-learn
+webdataset
