@@ -65,6 +65,8 @@ def parse_args():
     parser.add_argument('--lambda_rdr', type=float, default=1.0, help='coefficient for reward advantage loss')
     parser.add_argument('--sam3_mask_dir', type=str, default='', help='directory containing SAM3 binary masks')
     parser.add_argument('--sam3_mask_suffix', type=str, default='.png', help='file suffix for SAM3 masks')
+    parser.add_argument('--rtf_noise_std', type=float, default=0.08,
+                        help='std of Gaussian noise added on SAM3 foreground(mask=1) for rtf distillation')
     # external eval (e.g., CIFAR-100)
     parser.add_argument('--external_test_dataset', type=str, default='',
                         choices=['', 'cifar100'],

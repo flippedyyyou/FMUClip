@@ -32,6 +32,7 @@ lambda_df=100
 lambda_dr=0
 lambda_rdr=0
 lambda_uni=1
+rtf_noise_std=0.08
 max_epoch=10
 neg_mode="minsim"
 concept_token="apple"
@@ -69,6 +70,7 @@ python ${runfile} \
     --lambda_dr ${lambda_dr} \
     --lambda_rdr ${lambda_rdr} \
     --lambda_uni ${lambda_uni} \
+    --rtf_noise_std ${rtf_noise_std} \
     --max_epoch ${max_epoch} \
     --sam3_mask_dir ${code_path}/mask/flickr30k/item5+/apple/train \
     --sam3_mask_suffix .png \
