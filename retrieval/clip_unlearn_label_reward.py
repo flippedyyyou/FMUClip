@@ -47,7 +47,7 @@ from lavis_evaluate import setup_seeds
 from torch import nn
 
 
-from clip_unlearn_baseline import _encode_image_patches, _encode_text, _mask_to_patch_attention
+from clip_unlearn_baseline import _mask_to_patch_attention
 
 
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -176,6 +176,8 @@ def supervised_unlearn_train(
     sam3_mask_dir=None,
     sam3_mask_suffix=".png",
     reward_model=None,
+    rtf_noise_std=0.08,
+    rtf_distill_temp=1.0,
 ):
     device = model.device
     mse = nn.MSELoss()
@@ -183,7 +185,6 @@ def supervised_unlearn_train(
     if not sam3_mask_dir:
         raise ValueError(
             "sam3_mask_dir must be provided to compute attention-guided loss.")
-    concept_tokens = _tokenize_texts([concept_token]).to(device)
     clip_model = _resolve_clip_model(model)
     visual = clip_model.visual if hasattr(clip_model, "visual") else None
     if visual is None or not hasattr(visual, "image_size"):
@@ -244,20 +245,30 @@ def supervised_unlearn_train(
                     df_image_paths, sam3_mask_dir, sam3_mask_suffix, image_size)  # (B, H, W)
                 sam3_masks = sam3_masks.to(device, non_blocking=True)
 
-                # grid 是每边 patch 数（比如 ViT-L/14 输入 336 时通常 grid=24，N=576
-                patch_feats, grid = _encode_image_patches(model, img_df)  # (B,N,D)，N 是补丁的数量
-                text_feat = _encode_text(model, concept_tokens).squeeze(0)  # (D,)
-                # (B,N) = (B,N,D) · (D,)
-                patch_sim = F.cosine_similarity(patch_feats, text_feat.unsqueeze(0), dim=-1)  # 遗忘概念文本特征和各patch特征相似度
+
+                # 负向蒸馏：
+                # 分布1：当前训练模型在原图上的 logits 分布
+                # 分布2：冻结 teacher 在 SAM3 前景(mask=1)加噪图上的 logits 分布
+                df_fg_mask = (sam3_masks > 0.3).unsqueeze(1).to(img_df.dtype)  # (B,1,H,W), binary
+                # 按前景(mask=1)像素和归一化噪声，降低不同掩码面积带来的波动
+                fg_sum = df_fg_mask.flatten(1).sum(dim=1).clamp(min=1.0)  # (B,)
+                noise_scale = (rtf_noise_std / torch.sqrt(fg_sum)).view(-1, 1, 1, 1)  # (B,1,1,1)
+                noisy_df = img_df + noise_scale * torch.randn_like(img_df) * df_fg_mask
+
+                sim_i2t_df_u, sim_t2i_df_u, _, _ = _get_logits_and_feats(
+                    model, img_df, txt_df
+                )
+                with torch.no_grad():
+                    sim_i2t_df_t_noisy, sim_t2i_df_t_noisy, _, _ = _get_logits_and_feats(
+                        teacher, noisy_df, txt_df
+                    )
+
+                loss_rtf = mse(sim_i2t_df_u, sim_i2t_df_t_noisy) + mse(sim_t2i_df_u, sim_t2i_df_t_noisy)
+
+                # 继续复用 patch_mask 构造背景图，用于 reward 分支
+                with torch.no_grad():
+                    grid = visual.conv1(img_df[:1]).shape[-1]
                 patch_mask = _mask_to_patch_attention(sam3_masks, grid)  # (B,N) 0/1
-                patch_num = patch_mask.sum(dim=1)  # (B,)，mask 区域有多少个 patch，保证不会因为 mask 大小影响 loss 尺度导致训练不稳
-                masked_similarity = patch_sim * patch_mask  # (B,N)
-                # # 使用指数函数来放大相似度差异，惩罚相似度较高的区域
-                # exp_similarity = torch.exp(masked_similarity)  # 使用指数函数，放大相似度差异
-                # loss_rtf = (exp_similarity.sum(dim=1) / patch_num.clamp(min=1.0)).mean()
-                # print("patch_sim:", patch_sim, "patch_mask:", patch_mask, "patch_num:", patch_num)
-                # print("masked_similarity.sum(dim=1):", masked_similarity.sum(dim=1))
-                loss_rtf = (masked_similarity.sum(dim=1) / (patch_num+1)).mean()
 
                 loss_rdr = torch.tensor(0.0, device=device)
                 if reward_model is not None:
@@ -503,6 +514,8 @@ def main():
             sam3_mask_dir=getattr(args, "sam3_mask_dir", None),
             sam3_mask_suffix=getattr(args, "sam3_mask_suffix", ".png"),
             reward_model=reward_model,
+            rtf_noise_std=getattr(args, "rtf_noise_std", 0.08),
+            rtf_distill_temp=getattr(args, "rtf_distill_temp", 1.0),
         )
     else:
         logging.info(

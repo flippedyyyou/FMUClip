@@ -118,6 +118,9 @@ def _evaluate_cifar100_forget_retain(
     total_forget = 0
     correct_retain = 0
     total_retain = 0
+    per_sample_results = []
+    topk = min(10, len(class_names))
+    sample_index = 0
 
     model.eval()
     with torch.no_grad():
@@ -128,6 +131,38 @@ def _evaluate_cifar100_forget_retain(
             img_features = img_features / img_features.norm(dim=-1, keepdim=True)
             logits = logit_scale * (img_features @ text_features.t())
             preds = logits.argmax(dim=1)
+            topk_scores, topk_indices = torch.topk(logits, k=topk, dim=1)
+
+            labels_cpu = labels.detach().cpu().tolist()
+            preds_cpu = preds.detach().cpu().tolist()
+            topk_scores_cpu = topk_scores.detach().cpu().tolist()
+            topk_indices_cpu = topk_indices.detach().cpu().tolist()
+
+            for i, (label_idx, pred_idx, one_topk_idx, one_topk_score) in enumerate(
+                zip(labels_cpu, preds_cpu, topk_indices_cpu, topk_scores_cpu)
+            ):
+                top10_predictions = []
+                for cls_idx, cls_score in zip(one_topk_idx, one_topk_score):
+                    top10_predictions.append(
+                        {
+                            "class_index": int(cls_idx),
+                            "class_name": class_names[int(cls_idx)],
+                            "score": float(cls_score),
+                        }
+                    )
+
+                per_sample_results.append(
+                    {
+                        "sample_index": int(sample_index + i),
+                        "label_index": int(label_idx),
+                        "label_name": class_names[int(label_idx)],
+                        "pred_index": int(pred_idx),
+                        "pred_name": class_names[int(pred_idx)],
+                        "pred_score": float(one_topk_score[0]),
+                        "top10_predictions": top10_predictions,
+                    }
+                )
+            sample_index += len(labels_cpu)
 
             forget_mask = labels == forget_idx
             retain_mask = ~forget_mask
@@ -156,10 +191,23 @@ def _evaluate_cifar100_forget_retain(
 
     os.makedirs(output_dir, exist_ok=True)
     out_path = os.path.join(output_dir, "results_cifar100_forget_retain.json")
+    detail_out_path = os.path.join(output_dir, "results_cifar100_test_predictions_top10.json")
     with open(out_path, "w", encoding="utf-8") as fp:
         json.dump(results, fp, indent=4)
+    with open(detail_out_path, "w", encoding="utf-8") as fp:
+        json.dump(
+            {
+                "dataset": "cifar100",
+                "num_samples": len(per_sample_results),
+                "predictions": per_sample_results,
+            },
+            fp,
+            indent=4,
+            ensure_ascii=False,
+        )
     logging.info(f"[CIFAR100] {results}")
     logging.info(f"[CIFAR100] Saved results to: {out_path}")
+    logging.info(f"[CIFAR100] Saved detailed predictions to: {detail_out_path}")
 
 
 # 读取图片路径
