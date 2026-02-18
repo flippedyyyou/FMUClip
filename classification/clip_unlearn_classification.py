@@ -322,7 +322,11 @@ def supervised_unlearn_train(
                         teacher, img_dr, dr_text_tokens
                     )
                 loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + mse(sim_t2i_dr_u, sim_t2i_dr_t)
-                loss_uni = mse(img_dr_u, img_dr_t) + mse(txt_dr_u, txt_dr_t)
+                # Use ClipErase-style CE on retain pairs as the uniformity term.
+                retain_targets = torch.arange(img_dr.size(0), device=device)
+                uni_ce_i2t = F.cross_entropy(sim_i2t_dr_u, retain_targets)
+                uni_ce_t2i = F.cross_entropy(sim_t2i_dr_u, retain_targets)
+                loss_uni = uni_ce_i2t + uni_ce_t2i
 
                 loss = lambda_attn * loss_attn + lambda_keep * loss_keep + lambda_syn * loss_syn + lambda_uni * loss_uni
 
