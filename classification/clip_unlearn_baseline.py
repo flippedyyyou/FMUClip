@@ -16,7 +16,7 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision import datasets, transforms
 
 from lavis.models.clip_models.model import load_openai_model
-from lavis.models.clip_models.tokenizer import tokenize
+
 
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 if _CURRENT_DIR not in sys.path:
@@ -32,23 +32,14 @@ from classification_utils import (
     _load_forget_jsonl,
     _build_indices_from_list,
     _iter_labels,
-    _split_eval_indices,
     _compute_text_features,
-    _evaluate_and_dump
+    _evaluate_and_dump,
+    _tokenize_texts
 )
 
 
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
-TRAIN_FRACTION = 0.7
-TEST_FRACTION = 0.3
-MAX_TEST_PER_CLASS = 50
-
-
-def _tokenize_texts(texts: Sequence[str], device: torch.device) -> torch.Tensor:
-    if isinstance(texts, torch.Tensor):
-        return texts.to(device)
-    return tokenize(texts).to(device)
 
 
 def _select_neg_texts_by_minsim(
@@ -126,7 +117,7 @@ def build_datasets(
     else:
         raise ValueError(f"Unsupported dataset: {dataset_name}")
 
-    forget_indices = forget_indices or set()
+    forget_indices = set(forget_indices or set())
     forget_classes = forget_classes or set()
 
     total_indices = list(range(len(base)))
@@ -146,6 +137,89 @@ def build_datasets(
 
     return df_dataset, dr_dataset, class_names
 
+
+def build_cifar100_test_datasets(
+    data_root: str,
+    image_size: int,
+    class_names: Sequence[str],
+    forget_classes: Set[int],
+) -> Tuple[Dataset, Dataset]:
+    tfm = transforms.Compose(
+        [
+            transforms.Resize(image_size),
+            transforms.CenterCrop(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD),
+        ]
+    )
+    test_base = datasets.CIFAR100(root=data_root, train=False, transform=tfm, download=False)
+    test_labels: Sequence[int] = getattr(test_base, "targets")
+
+    df_test_indices = [idx for idx, label in enumerate(test_labels) if int(label) in forget_classes]
+    dr_test_indices = [idx for idx, label in enumerate(test_labels) if int(label) not in forget_classes]
+
+    df_test_dataset = ClassificationDataset(
+        test_base,
+        class_names,
+        df_test_indices,
+        use_index_path=True,
+    )
+    dr_test_dataset = ClassificationDataset(
+        test_base,
+        class_names,
+        dr_test_indices,
+        use_index_path=True,
+    )
+    return df_test_dataset, dr_test_dataset
+
+def _compute_class_stats(
+    model,
+    dataset: Dataset,
+    class_names: Sequence[str],
+    device: torch.device,
+    batch_size: int,
+    num_workers: int,
+    topk: int = 5,
+) -> dict:
+    loader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True,
+        drop_last=False,
+    )
+    text_features = _compute_text_features(model, class_names, device)
+    model.eval()
+
+    per_class = {idx: {"total": 0, "correct": 0, "cos_sum": 0.0} for idx in range(len(class_names))}
+    with torch.no_grad():
+        for batch in loader:
+            images = batch["image"].to(device, non_blocking=True)
+            labels = batch["label"].to(device, non_blocking=True)
+
+            logits, image_features = _get_logits_with_text_features(model, images, text_features)
+            preds = logits.argmax(dim=1)
+            cos_vals = F.cosine_similarity(image_features, text_features[labels], dim=1)
+
+            for i in range(labels.numel()):
+                label_idx = int(labels[i].item())
+                per_class[label_idx]["total"] += 1
+                per_class[label_idx]["correct"] += int(preds[i].item() == label_idx)
+                per_class[label_idx]["cos_sum"] += float(cos_vals[i].item())
+
+    results = {}
+    for idx, stats in per_class.items():
+        total = stats["total"]
+        if total == 0:
+            continue
+        results[idx] = {
+            "class_name": class_names[idx],
+            "cosine_similarity_avg": stats["cos_sum"] / total,
+            "accuracy": stats["correct"] / total,
+            "count": total,
+        }
+    return results
 
 def supervised_unlearn_train(
     model,
@@ -358,7 +432,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--max_epoch", type=int, default=1)
-    parser.add_argument("--log_interval", type=int, default=50)
+    parser.add_argument("--log_interval", type=int, default=10)
     parser.add_argument("--lr", type=float, default=1e-6)
     parser.add_argument("--weight_decay", type=float, default=5e-4)
     parser.add_argument("--neg_mode", choices=["shuffle", "minsim", "simrange"], default=None)
@@ -384,19 +458,12 @@ def main() -> None:
     for param in teacher.parameters():
         param.requires_grad = False
 
-    base_dataset = (
-        datasets.CIFAR100(root=args.data_root, train=True, download=False)
-        if args.dataset == "cifar100"
-        else datasets.ImageNet(root=args.data_root, split="train")
-    )
     # 1. 加载 JSONL (获取索引和类别集)
     forget_indices_list, forget_classes_set = _load_forget_jsonl(args.forget_list)
-    forget_indices = set(forget_indices_list)
 
-    # 2. 打印一下信息确认读取正确
-    logging.info(f"Loaded {len(forget_indices)} forget indices from {args.forget_list}.")
+    logging.info(f"Loaded {len(forget_indices_list)} forget indices from {args.forget_list}.")
+    logging.info("Loaded %d forget classes from JSONL: %s", len(forget_classes_set), sorted(forget_classes_set))
 
-    # 3. 构建数据集 (传入类别集用于过滤保留集)
     df_dataset, dr_dataset, class_names = build_datasets(
         args.dataset,
         args.data_root,
@@ -404,50 +471,25 @@ def main() -> None:
         forget_indices=forget_indices_list,
         forget_classes=forget_classes_set,
     )
+    df_train_dataset = df_dataset
+    dr_train_dataset = dr_dataset
 
-    # 执行划分：训练/测试 = 70%/30%，且每个类别测试样本上限为 50
-    df_train_indices, df_test_indices = _split_eval_indices(
-        df_dataset,
-        train_fraction=TRAIN_FRACTION,
-        test_fraction=TEST_FRACTION,
-        max_test_per_class=MAX_TEST_PER_CLASS,
-    )
-    dr_train_indices, dr_test_indices = _split_eval_indices(
-        dr_dataset,
-        train_fraction=TRAIN_FRACTION,
-        test_fraction=TEST_FRACTION,
-        max_test_per_class=MAX_TEST_PER_CLASS,
-        max_train_count=len(df_train_indices),
-    )
-    logging.info(
-        "Retain train set is capped by forget train size: %d",
-        len(df_train_indices),
-    )
-
-    df_train_dataset = ClassificationDataset(
-        df_dataset.dataset,
-        df_dataset.class_names,
-        df_train_indices,
-        use_index_path=df_dataset.use_index_path,
-    )
-    df_test_dataset = ClassificationDataset(
-        df_dataset.dataset,
-        df_dataset.class_names,
-        df_test_indices,
-        use_index_path=df_dataset.use_index_path,
-    )
-    dr_train_dataset = ClassificationDataset(
-        dr_dataset.dataset,
-        dr_dataset.class_names,
-        dr_train_indices,
-        use_index_path=dr_dataset.use_index_path,
-    )
-    dr_test_dataset = ClassificationDataset(
-        dr_dataset.dataset,
-        dr_dataset.class_names,
-        dr_test_indices,
-        use_index_path=dr_dataset.use_index_path,
-    )
+    if args.dataset == "cifar100":
+        if not forget_classes_set:
+            raise ValueError("No forget class loaded from JSONL, cannot build CIFAR100 test split.")
+        df_test_dataset, dr_test_dataset = build_cifar100_test_datasets(
+            args.data_root,
+            image_size=model.visual.image_size if isinstance(model.visual.image_size, int) else model.visual.image_size[0],
+            class_names=class_names,
+            forget_classes=forget_classes_set,
+        )
+        logging.info(
+            "CIFAR100 test split ready: forget=%d, retain=%d",
+            len(df_test_dataset),
+            len(dr_test_dataset),
+        )
+    else:
+        raise ValueError("This baseline currently supports CIFAR100 test-split evaluation only.")
 
     df_loader = DataLoader(
         df_train_dataset,
@@ -526,8 +568,8 @@ def main() -> None:
     )
     logging.info("Saved model: %s", model_path)
 
-    df_jsonl = os.path.join(args.output, "topk_df.jsonl")
-    dr_jsonl = os.path.join(args.output, "topk_dr.jsonl")
+    df_jsonl = os.path.join(args.output, "topk_cifar100_test_forget.jsonl")
+    dr_jsonl = os.path.join(args.output, "topk_cifar100_test_retain.jsonl")
     df_acc = _evaluate_and_dump(
         model,
         df_test_dataset,
@@ -548,10 +590,49 @@ def main() -> None:
         num_workers=args.num_workers,
         topk=5,
     )
-    logging.info("Forget accuracy: %.4f", df_acc)
-    logging.info("Retain accuracy: %.4f", dr_acc)
-    logging.info("Saved top-k results: %s, %s", df_jsonl, dr_jsonl)
+    logging.info("遗忘集准确率: %.4f", df_acc)
+    logging.info("保留集准确率: %.4f", dr_acc)
+    logging.info("已保存最匹配结果: %s, %s", df_jsonl, dr_jsonl)
 
+
+    forget_labels = sorted(forget_classes_set)
+    retain_labels = sorted(set(range(len(class_names))) - set(forget_labels))
+    retain_stats = _compute_class_stats(
+        model,
+        dr_test_dataset,
+        class_names,
+        device,
+        batch_size=args.batch_size,
+        num_workers=args.num_workers,
+        topk=5,
+    )
+    forget_stats = _compute_class_stats(
+        model,
+        df_test_dataset,
+        class_names,
+        device,
+        batch_size=args.batch_size,
+        num_workers=args.num_workers,
+        topk=5,
+    )
+    logging.info("Saved top-k results: %s, %s", df_jsonl, dr_jsonl)
+    metrics_path = os.path.join(args.output, "class_metrics_cifar100_test.json")
+    with open(metrics_path, "w", encoding="utf-8") as handle:
+        json.dump(
+            {
+                "dataset": "cifar100_test",
+                "forget_count": len(df_test_dataset),
+                "retain_count": len(dr_test_dataset),
+                "forget_accuracy": df_acc,
+                "retain_accuracy": dr_acc,
+                "retain_classes": [retain_stats[idx] for idx in retain_labels if idx in retain_stats],
+                "forget_classes": [forget_stats[idx] for idx in forget_labels if idx in forget_stats],
+            },
+            handle,
+            ensure_ascii=False,
+            indent=2,
+        )
+    logging.info("已保存分类统计结果: %s", metrics_path)
 
 if __name__ == "__main__":
     main()

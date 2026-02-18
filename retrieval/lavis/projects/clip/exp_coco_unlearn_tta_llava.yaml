@@ -1,0 +1,44 @@
+# =========================================================
+#  CLIP Unlearning TTA on Flickr30k
+#  用于 clip_unlearn_policy.py
+# =========================================================
+
+model:
+  arch: clip
+  model_type: ViT-L-14-336
+
+datasets:
+  coco_retrieval:
+    vis_processor:
+      train:
+        name: "clip_image_train"
+        image_size: 336
+      eval:
+        name: "clip_image_eval"
+        image_size: 336
+    text_processor:
+      train:
+        name: "blip_caption"
+      eval:
+        name: "blip_caption"
+
+run:
+  task: retrieval
+
+  # ======= Dataloader =======
+  num_workers: 4
+  batch_size_train: 4
+  batch_size_eval: 1
+  test_splits: ["test"]
+
+  # ======= Distributed =======
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: False
+  use_dist_eval_sampler: False
+
+  # ======= Misc =======
+  seed: 42
+  output_dir: "/datanfs4/shenruoyan/FMUClip/output/clip/Retrieval_COCO_unlearn"
+  evaluate: True

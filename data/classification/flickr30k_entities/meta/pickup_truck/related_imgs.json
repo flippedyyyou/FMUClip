@@ -1,0 +1,74 @@
+{
+  "4724988408": {
+    "item_num": 16,
+    "instances": [
+      {
+        "instance_id": "195537",
+        "instance": "a white pickup truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2705104779": {
+    "item_num": 12,
+    "instances": [
+      {
+        "instance_id": "67309",
+        "instance": "the back window of a red pickup truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "81125088": {
+    "item_num": 11,
+    "instances": [
+      {
+        "instance_id": "279177",
+        "instance": "the bed of a dirty pickup truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2952839389": {
+    "item_num": 10,
+    "instances": [
+      {
+        "instance_id": "83696",
+        "instance": "a pickup truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3697902123": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "137659",
+        "instance": "a pickup truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3721843907": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "139548",
+        "instance": "the tailgate of a pickup truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  }
+}

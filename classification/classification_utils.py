@@ -8,6 +8,7 @@ from typing import Iterable, List, Optional, Sequence, Set, Tuple
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
+from lavis.models.clip_models.tokenizer import tokenize
 
 
 
@@ -29,12 +30,6 @@ def _setup_logging(output_dir: str) -> None:
         format="%(asctime)s | %(levelname)s | %(message)s",
         handlers=[logging.FileHandler(log_path), logging.StreamHandler()],
     )
-
-
-def _encode_text_features(model, text_tokens: torch.Tensor) -> torch.Tensor:
-    feats = model.encode_text(text_tokens)
-    feats = feats / feats.norm(dim=-1, keepdim=True)
-    return feats
 
 
 def _encode_image_features(model, images: torch.Tensor) -> torch.Tensor:
@@ -179,6 +174,11 @@ def _split_eval_indices(
     return train_indices, test_indices
 
 
+def _tokenize_texts(texts: Sequence[str], device: torch.device) -> torch.Tensor:
+    if isinstance(texts, torch.Tensor):
+        return texts.to(device)
+    return tokenize(texts).to(device)
+
 def _compute_text_features(
     model,
     class_names: Sequence[str],
@@ -189,6 +189,11 @@ def _compute_text_features(
         text_features = _encode_text_features(model, tokens)
     return text_features
 
+
+def _encode_text_features(model, text_tokens: torch.Tensor) -> torch.Tensor:
+    feats = model.encode_text(text_tokens)
+    feats = feats / feats.norm(dim=-1, keepdim=True)
+    return feats
 
 def _evaluate_and_dump(
     model,

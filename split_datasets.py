@@ -7,7 +7,8 @@ from typing import Iterable
 
 from utils.flickr30k_entities_utils import get_sentence_data as parse_flickr30k_sentence
 from utils.flickr30k_entities_utils import get_annotations as parse_flickr30k_annotations
-from classification.datasets.cifar100 import LABEL_NAMES
+# from classification.datasets.cifar100 import LABEL_NAMES
+from multi_label.coco_labels.coco import LABEL_NAMES
 from utils.io import load_json, save_json, save_txt
 from pycocotools.coco import COCO
 
@@ -19,12 +20,14 @@ OUTPUT_PATH = 'data'
 
 # Classification
 
-cifar_concepts = list(LABEL_NAMES.values())
-for concept in cifar_concepts:
+# cifar_concepts = list(LABEL_NAMES.values())
+coco_concepts = list(LABEL_NAMES.values())
+# for concept in cifar_concepts:
+#     concept = concept.replace('_', ' ')
+for concept in coco_concepts:
     concept = concept.replace('_', ' ')
-
-customizd_concepts = ['dog', 'horse', 'apple']
-all_concepts = set(cifar_concepts + customizd_concepts)
+customizd_concepts = []
+all_concepts = set(coco_concepts + customizd_concepts)
 
 
 class DatasetProcessor:
@@ -102,11 +105,13 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
 
         meta_info = {}
         for concept in tqdm(all_concepts, desc="Processing concepts"):
+            concept_phrase = concept.replace("_", " ")
             related_imgs = {}
+            item_buckets = {i: [] for i in range(1, 8)}
             for img_id, img_instances in instances.items():
                 for instance_id in img_instances.keys():
                     instance_text = img_instances[instance_id]['instance']
-                    if self._concept_in_phrase(concept, instance_text):
+                    if self._concept_in_phrase(concept_phrase, instance_text):
                         if img_id not in related_imgs:
                             related_imgs[img_id] = {
                                 'item_num': len(img_instances),
@@ -117,39 +122,38 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
                             'instance': instance_text,
                             'instance_type': img_instances[instance_id]['instance_type'],
                         })
-            if related_imgs:  # Save only if there are related images.
-                related_imgs = dict(sorted(related_imgs.items(), key=lambda kv: kv[1]["item_num"], reverse=True))
-                save_json(related_imgs, os.path.join(self.output_path, 'classification',
-                                                     f'flickr30k_entities/meta/{concept.replace(" ", "_")}/related_imgs.json'))
-                concept_meta_info = {
-                    'all_concepts': {
-                        'num': len(related_imgs),
-                        'img_ids': list(related_imgs.keys()),
-                    },
-                    'ge_3': {
-                        'num': sum(1 for info in related_imgs.values() if info['item_num'] >= 3),
-                        'img_ids': [img_id for img_id, info in related_imgs.items() if info['item_num'] >= 3],
-                    },
-                    'ge_5': {
-                        'num': sum(1 for info in related_imgs.values() if info['item_num'] >= 5),
-                        'img_ids': [img_id for img_id, info in related_imgs.items() if info['item_num'] >= 5],
-                    },
-                    'ge_10': {
-                        'num': sum(1 for info in related_imgs.values() if info['item_num'] >= 10),
-                        'img_ids': [img_id for img_id, info in related_imgs.items() if info['item_num'] >= 10],
-                    },
-                    'ge_20': {
-                        'num': sum(1 for info in related_imgs.values() if info['item_num'] >= 20),
-                        'img_ids': [img_id for img_id, info in related_imgs.items() if info['item_num'] >= 20],
-                    }
-                }
-                meta_info[concept.replace(" ", "_")] = concept_meta_info
+            if related_imgs:
+                related_imgs = dict(sorted(related_imgs.items(), key=lambda kv:kv[1]["item_num"], reverse=True))
+                save_json(related_imgs, os.path.join(self.output_path, 'classification', f'flickr30k_entities/meta/{concept.replace(" ","_")}/related_imgs.json'))
 
-                # TODO: Modify here to save different splits
-                # Save ge_5 concepts for quick training
-                ge_5_img_ids = concept_meta_info['ge_5']['img_ids']
-                save_txt([f'{img_id}.jpg' for img_id in ge_5_img_ids], os.path.join(self.output_path, 'classification',
-                                                                                    f'flickr30k_entities/Df/item5+/{concept.replace(" ", "_")}.txt'))
+                for img_id, info in related_imgs.items():
+                    item_num = info["item_num"]
+                    if 1 <= item_num <= 7:
+                        item_buckets[item_num].append(img_id)
+
+                concept_meta_info = {
+                    'all_concepts':{
+                        'num': len(related_imgs),
+                        'img_ids':list(related_imgs.keys()),
+                    },
+                }
+                for item_num in range(1, 8):
+                    concept_meta_info[f'item{item_num}'] = {
+                        'num': len(item_buckets[item_num]),
+                        'img_ids': item_buckets[item_num],
+                    }
+
+                meta_info[concept.replace(" ","_")] = concept_meta_info
+
+                for item_num in range(1, 8):
+                    save_txt(
+                        [f'{img_id}.jpg' for img_id in item_buckets[item_num]],
+                        os.path.join(
+                            self.output_path,
+                            'classification',
+                            f'flickr30k_entities/Df/item{item_num}/{concept.replace(" ", "_")}.txt'
+                        ),
+                    )
 
         ordered_meta_info = dict(sorted(meta_info.items()))
         save_json(ordered_meta_info, os.path.join(self.output_path,
@@ -158,6 +162,9 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
 
 
 class COCO2017InstancesProcessor(DatasetProcessor):
+    def _load_target_concepts(self):
+        return [name for _, name in sorted(LABEL_NAMES.items())]
+
     def convert_ids_to_instances(self, ann_file: str):
         coco = COCO(ann_file)
 
@@ -187,57 +194,59 @@ class COCO2017InstancesProcessor(DatasetProcessor):
             instances = self.convert_ids_to_instances(ann_file)
             save_json(instances, os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/instances.json'))
         else:
-            load_json(os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/instances.json'))
+            instances = load_json(os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/instances.json'))
 
+        target_concepts = self._load_target_concepts()
         meta_info = {}
-        for concept in tqdm(all_concepts, desc="Processing coco concepts"):
+        for concept in tqdm(target_concepts, desc="Processing coco concepts"):
+            concept_phrase = concept.replace("_", " ")
             related_imgs = {}
+            item_buckets = {i: [] for i in range(1, 8)}
             for img_id, img_instances in instances.items():
                 instance_nums = len(img_instances)
                 for instance_id, instance_name in img_instances.items():
-                    if self._concept_in_phrase(concept, instance_name):
+                    if self._concept_in_phrase(concept_phrase, instance_name):
                         if img_id not in related_imgs:
                             related_imgs[img_id]={
                                 "item_num": instance_nums,
                                 "instances": []
                             }
-                            related_imgs[img_id]["instances"].append({
-                                "instance_id": instance_id,
-                                "instance_name": instance_name
-                            })
+                        related_imgs[img_id]["instances"].append({
+                            "instance_id": instance_id,
+                            "instance_name": instance_name
+                        })
             if related_imgs:
                 related_imgs = dict(sorted(related_imgs.items(), key=lambda kv:kv[1]["item_num"], reverse=True))
                 save_json(related_imgs, os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/{concept.replace(" ","_")}/related_imgs.json'))
+
+                for img_id, info in related_imgs.items():
+                    item_num = info["item_num"]
+                    if 1 <= item_num <= 7:
+                        item_buckets[item_num].append(img_id)
 
                 concept_meta_info = {
                     'all_concepts':{
                         'num': len(related_imgs),
                         'img_ids':list(related_imgs.keys()),
                     },
-                    'ge_3':{
-                        'num':sum(1 for info in related_imgs.values() if info['item_num']>=3),
-                        'img_ids': [img_id for img_id, info in related_imgs.items() if info['item_num']>=3],
-                    },
-                    'ge_5':{
-                        'num':sum(1 for info in related_imgs.values() if info['item_num']>=5),
-                        'img_ids': [img_id for img_id, info in related_imgs.items() if info['item_num']>=5],
-                    },
-                    'ge_10':{
-                        'num':sum(1 for info in related_imgs.values() if info['item_num']>=10),
-                        'img_ids': [img_id for img_id, info in related_imgs.items() if info['item_num']>=10],
-                    },
-                    'ge_20':{
-                        'num':sum(1 for info in related_imgs.values() if info['item_num']>=20),
-                        'img_ids': [img_id for img_id, info in related_imgs.items() if info['item_num']>=20],
-                    }
                 }
+                for item_num in range(1, 8):
+                    concept_meta_info[f'item{item_num}'] = {
+                        'num': len(item_buckets[item_num]),
+                        'img_ids': item_buckets[item_num],
+                    }
+
                 meta_info[concept.replace(" ","_")] = concept_meta_info
 
-                # TODO: Modify here to save different splits
-                # Save ge_5 concepts for quick training
-                ge_5_img_ids = concept_meta_info['ge_5']['img_ids']
-                save_txt([f'{img_id}.jpg' for img_id in ge_5_img_ids], os.path.join(self.output_path, 'classification',
-                                                                                    f'coco2017_instances/Df/item5+/{concept.replace(" ", "_")}.txt'))
+                for item_num in range(1, 8):
+                    save_txt(
+                        [f'{img_id}.jpg' for img_id in item_buckets[item_num]],
+                        os.path.join(
+                            self.output_path,
+                            'classification',
+                            f'coco2017_instances/Df/item{item_num}/{concept.replace(" ", "_")}.txt'
+                        ),
+                    )
         ordered_meta_info = dict(sorted(meta_info.items()))
         save_json(ordered_meta_info, os.path.join(self.output_path,
                   'classification', f'coco2017_instances/meta/meta_info.json'))
@@ -245,16 +254,16 @@ class COCO2017InstancesProcessor(DatasetProcessor):
 
 
 if __name__ == "__main__":
-    flickr30k_dataset = Flikr30kEntitiesProcessor(
-        raw_dataset_path=FLICKR30K_ENTITIES_PATH,
-        output_path=OUTPUT_PATH,
-        all_concepts=all_concepts,
-    )
-    flickr30k_dataset.split_for_classification()
-
-    # coco2017_datasets = COCO2017InstancesProcessor(
-    #     raw_dataset_path=COCO2017_PATH,
+    # flickr30k_dataset = Flikr30kEntitiesProcessor(
+    #     raw_dataset_path=FLICKR30K_ENTITIES_PATH,
     #     output_path=OUTPUT_PATH,
     #     all_concepts=all_concepts,
     # )
-    # coco2017_datasets.split_for_classification()
+    # flickr30k_dataset.split_for_classification()
+
+    coco2017_datasets = COCO2017InstancesProcessor(
+        raw_dataset_path=COCO2017_PATH,
+        output_path=OUTPUT_PATH,
+        all_concepts=all_concepts,
+    )
+    coco2017_datasets.split_for_classification()

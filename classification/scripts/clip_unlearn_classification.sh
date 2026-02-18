@@ -6,21 +6,21 @@ code_path=$(cd "$(dirname "$0")/.." && pwd)
 # ====== CIFAR100 Unlearning config ======
 DATA_ROOT="/datanfs4/shenruoyan/datasets/cifar-100-python"
 FORGET_LIST="/datanfs4/shenruoyan/FMUClip/classification/data_split/cifar100_forget0_complete.jsonl"
-SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/classification/mask/cifar100/train/cifar100_forget0_10percent"
+SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/classification/mask/cifar100/train/cifar100_forget0_complete"
 
 # ====== Hyperparameters ======
-BATCH_SIZE=4
-MAX_EPOCH=10
+BATCH_SIZE=8
+MAX_EPOCH=20
 LR=1e-6
 WEIGHT_DECAY=5e-4
 SAMPLE_K=5
-LAMBDA_ATTN=0.5
+LAMBDA_ATTN=3
 LAMBDA_SYN=0
-LAMBDA_KEEP=0
-LAMBDA_UNI=100
+LAMBDA_KEEP=2
+LAMBDA_UNI=3
 CONCEPT_TOKEN=apple
 
-OUTPUT_DIR="${code_path}/output/clip_cifar100_unlearn_rtf${LAMBDA_ATTN}_rdr${LAMBDA_SYN}_uni${LAMBDA_UNI}_${CONCEPT_TOKEN}_$(date +%m%d%H%M)"
+OUTPUT_DIR="${code_path}/output/clip_cifar100_unlearn_rtf${LAMBDA_ATTN}_keep${LAMBDA_KEEP}_uni${LAMBDA_UNI}_BS${BATCH_SIZE}_${CONCEPT_TOKEN}_cifar100_testsplit_$(date +%m%d%H%M)"
 
 python "${code_path}/clip_unlearn_classification.py" \
   --dict-path "/datanfs4/shenruoyan/FMUClip/classification/datasets/cifar100.py" \
