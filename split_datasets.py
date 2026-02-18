@@ -8,7 +8,7 @@ from typing import Iterable
 from utils.flickr30k_entities_utils import get_sentence_data as parse_flickr30k_sentence
 from utils.flickr30k_entities_utils import get_annotations as parse_flickr30k_annotations
 # from classification.datasets.cifar100 import LABEL_NAMES
-from multi_label.coco_labels.coco import LABEL_NAMES
+from finegrained.coco_labels.coco import LABEL_NAMES
 from utils.io import load_json, save_json, save_txt
 from pycocotools.coco import COCO
 
