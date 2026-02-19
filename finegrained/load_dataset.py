@@ -184,6 +184,7 @@ class COCODataSet(Dataset):
             }
         return {
             "image": image,
+            "image_path": image_path,
             "label": full_label,
             "forget_label": forget_label,
             "retain_label": retain_label,

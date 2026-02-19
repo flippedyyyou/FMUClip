@@ -30,6 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--train_split", type=str, default="train")
     parser.add_argument("--val_split", type=str, default="val")
     parser.add_argument("--train_item_folder", type=str, default="item3")
+    parser.add_argument("--retain_item_folder", type=str, default="item1")
     parser.add_argument("--test_item_folder", type=str, default="item1")
 
     parser.add_argument(
@@ -49,6 +50,19 @@ def build_parser() -> argparse.ArgumentParser:
     parser.set_defaults(shuffle_train=True)
     parser.add_argument("--drop_last", action="store_true")
     parser.add_argument("--return_meta", action="store_true")
+    parser.add_argument(
+        "--method",
+        choices=["cliperase"],
+        default="cliperase",
+        help="Training method when not using --original_eval.",
+    )
+    parser.add_argument("--max_epoch", type=int, default=1)
+    parser.add_argument("--log_interval", type=int, default=50)
+    parser.add_argument("--lr", type=float, default=1e-6)
+    parser.add_argument("--weight_decay", type=float, default=5e-4)
+    parser.add_argument("--lambda_df", type=float, default=3.0)
+    parser.add_argument("--lambda_dr", type=float, default=1.0)
+    parser.add_argument("--lambda_uni", type=float, default=3.0)
     parser.add_argument("--original_eval", action="store_true", help="Only run original CLIP evaluation on test sets.")
     parser.add_argument(
         "--clip_model_path",
@@ -61,6 +75,12 @@ def build_parser() -> argparse.ArgumentParser:
         type=str,
         default="ViT-L-14-336",
         help="CLIP architecture name (used by open_clip fallback).",
+    )
+    parser.add_argument(
+        "--clip_pretrained",
+        type=str,
+        default="openai",
+        help="Pretrained tag for open_clip (e.g. openai, laion2b_s34b_b79k).",
     )
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--output_dir", type=str, default="finegrained/output")
