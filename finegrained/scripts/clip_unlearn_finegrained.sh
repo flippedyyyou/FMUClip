@@ -6,6 +6,7 @@ DEVICE="cuda"
 FORGET_CLASSES=banana
 COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
 DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances"
+SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/mask"
 CLIP_ARCH="ViT-L-14-336"
 CLIP_PRETRAINED="openai"
 CLIP_MODEL_PATH="/datanfs4/shenruoyan/checkpoints/clip/ViT-L-14-336px.pt"
@@ -14,19 +15,21 @@ NUM_WORKERS=4
 MAX_EPOCH=20
 LR=1e-6
 WEIGHT_DECAY=5e-4
-LAMBDA_DF=3
-LAMBDA_DR=1
-LAMBDA_UNI=3
-METHOD="cliperase"
+LAMBDA_RTF=3
+LAMBDA_KEEP=1
+LAMBDA_CE=3
+SAMPLE_K=5
 RETAIN_TOPK=5
-OUTPUT_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/output/baselines/${METHOD}_${FORGET_CLASSES}2_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
+METHOD="ours"
 
-python /datanfs4/shenruoyan/FMUClip/finegrained/clip_finegrained_baseline.py \
-  --method "${METHOD}" \
+OUTPUT_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/output/unlearn/${METHOD}_${FORGET_CLASSES}4_A${LAMBDA_RTF}_K${LAMBDA_KEEP}_C${LAMBDA_CE}_$(date +%m%d%H%M)"
+
+python /datanfs4/shenruoyan/FMUClip/finegrained/clip_unlearn_finegrained.py \
   --forget_classes "${FORGET_CLASSES}" \
   --coco_root "${COCO_ROOT}" \
   --df_root "${DF_ROOT}" \
-  --train_item_folder item2 \
+  --sam3_mask_dir "${SAM3_MASK_DIR}" \
+  --train_item_folder item4 \
   --retain_item_folder item1 \
   --test_item_folder item1 \
   --clip_arch "${CLIP_ARCH}" \
@@ -39,8 +42,9 @@ python /datanfs4/shenruoyan/FMUClip/finegrained/clip_finegrained_baseline.py \
   --lr "${LR}" \
   --log_interval 10 \
   --weight_decay "${WEIGHT_DECAY}" \
-  --lambda_df "${LAMBDA_DF}" \
-  --lambda_dr "${LAMBDA_DR}" \
-  --lambda_uni "${LAMBDA_UNI}" \
+  --lambda_rtf "${LAMBDA_RTF}" \
+  --lambda_keep "${LAMBDA_KEEP}" \
+  --lambda_ce "${LAMBDA_CE}" \
+  --sample_k "${SAMPLE_K}" \
   --retain_topk "${RETAIN_TOPK}" \
   --device "${DEVICE}"

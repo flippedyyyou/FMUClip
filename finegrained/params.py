@@ -63,6 +63,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--lambda_df", type=float, default=3.0)
     parser.add_argument("--lambda_dr", type=float, default=1.0)
     parser.add_argument("--lambda_uni", type=float, default=3.0)
+    parser.add_argument("--retain_topk", type=int, default=5)
     parser.add_argument("--original_eval", action="store_true", help="Only run original CLIP evaluation on test sets.")
     parser.add_argument(
         "--clip_model_path",

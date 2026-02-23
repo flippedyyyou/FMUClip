@@ -415,6 +415,79 @@ def _dump_topk_results(
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def _compute_topk_retain_classes(
+    df_dataset: COCODataSet,
+    forget_indices: Sequence[int],
+    k: int,
+) -> List[int]:
+    if k <= 0:
+        return []
+    forget_set = set(forget_indices)
+    counts = np.zeros(len(LABEL_NAMES), dtype=np.int64)
+    for target in df_dataset.targets:
+        for idx in np.where(target > 0.5)[0]:
+            if idx in forget_set:
+                continue
+            counts[idx] += 1
+    topk = np.argsort(-counts) # 返回数组值从大到小的索引值
+    topk = [int(i) for i in topk if counts[int(i)] > 0 and i not in forget_set]
+    for idx in topk[:k]:
+        print(f"Retain class: {LABEL_NAMES[idx]} with count: {counts[idx]}")
+    return topk[:k]
+
+
+def _evaluate_single_class_accuracy(
+    model,
+    data_loader,
+    text_features: torch.Tensor,
+    class_index: int,
+    device: torch.device,
+) -> float:
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for batch in data_loader:
+            images = batch["image"].to(device, non_blocking=True)
+            labels = batch["label"].to(device, non_blocking=True)
+
+            mask = (labels.sum(dim=1) == 1) & (labels[:, class_index] > 0.5)
+            if not mask.any():
+                continue
+
+            image_features = model.encode_image(images)
+            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+            logits = model.logit_scale.exp() * (image_features @ text_features.t())
+            preds = logits.argmax(dim=1)
+
+            correct += int((preds[mask] == class_index).sum().item())
+            total += int(mask.sum().item())
+    return float(correct / total) if total > 0 else 0.0
+
+
+def _evaluate_topk_retain_accuracy(
+    model,
+    data_loader,
+    text_features: torch.Tensor,
+    class_names: Sequence[str],
+    device: torch.device,
+    retain_indices: Sequence[int],
+) -> Dict[str, float]:
+    if not retain_indices:
+        return {}
+    results: Dict[str, float] = {}
+    for idx in retain_indices:
+        acc = _evaluate_single_class_accuracy(
+            model=model,
+            data_loader=data_loader,
+            text_features=text_features,
+            class_index=idx,
+            device=device,
+        )
+        results[class_names[idx]] = acc
+    return results
+
+
 def _average_precision_binary(y_true: np.ndarray, y_score: np.ndarray) -> float:
     positives = int(y_true.sum())
     if positives == 0:
@@ -495,6 +568,7 @@ def run_original_eval(
     tokenize_fn: Callable[[Sequence[str]], torch.Tensor] = None,
     image_size: int = None,
     backend: str = None,
+    retain_topk_indices: Sequence[int] = None,
 ) -> None:
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     if model is None or tokenize_fn is None or image_size is None or backend is None:
@@ -508,6 +582,13 @@ def run_original_eval(
     # multi_label_loader = build_train_dataloader(args, transform=eval_transform)
     class_names = _build_class_name_list()
     forget_indices, retain_indices = _build_forget_retain_indices(args.forget_classes)
+    if retain_topk_indices is None and args.retain_topk > 0:
+        df_dataset, _ = _build_train_datasets(args, transform=eval_transform)
+        retain_topk_indices = _compute_topk_retain_classes(
+            df_dataset=df_dataset,
+            forget_indices=forget_indices,
+            k=args.retain_topk,
+        )
     text_features = _encode_text_features(model, class_names, tokenize_fn, device)
 
     forget_acc = _evaluate_single_accuracy(
@@ -544,6 +625,17 @@ def run_original_eval(
         # "forget_map": multi_map["forget_map"],
         # "retain_map": multi_map["retain_map"],
     }
+    if retain_topk_indices:
+        topk_acc = _evaluate_topk_retain_accuracy(
+            model=model,
+            data_loader=retain_loader,
+            text_features=text_features,
+            class_names=class_names,
+            device=device,
+            retain_indices=retain_topk_indices,
+        )
+        metrics["retain_topk_classes"] = [class_names[i] for i in retain_topk_indices]
+        metrics["retain_topk_accuracy"] = topk_acc
     metrics_path = os.path.join(args.output_dir, "original_eval_metrics.json")
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(metrics, f, ensure_ascii=False, indent=2)
@@ -603,6 +695,11 @@ def run_cliperase(args) -> None:
 
     class_names = _build_class_name_list()
     forget_indices, retain_indices = _build_forget_retain_indices(args.forget_classes)
+    retain_topk_indices = _compute_topk_retain_classes(
+        df_dataset=df_dataset,
+        forget_indices=forget_indices,
+        k=args.retain_topk,
+    )
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     scaler = torch.cuda.amp.GradScaler(init_scale=1024)
@@ -644,6 +741,7 @@ def run_cliperase(args) -> None:
         tokenize_fn=tokenize_fn,
         image_size=image_size,
         backend=backend,
+        retain_topk_indices=retain_topk_indices,
     )
 
 
