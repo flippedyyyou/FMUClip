@@ -75,12 +75,8 @@ def _encode_image_patches(model, images: torch.Tensor) -> Tuple[torch.Tensor, in
         x = visual.transformer(x)
 
     x = x.permute(1, 0, 2)
-    # Keep semantics closer to CLIP grad-cam penultimate activations:
-    # do not pass through final ln_post head; only project if needed for text-space matching.
-    if visual.proj is not None:
-        x = x @ visual.proj
+    # Keep penultimate-layer patch tokens in visual hidden space.
     patch_feats = x[:, 1:, :]
-    patch_feats = patch_feats / patch_feats.norm(dim=-1, keepdim=True)
     return patch_feats, grid
 
 
@@ -89,6 +85,22 @@ def _mask_to_patch_attention(mask_tensor: torch.Tensor, grid_size: int) -> torch
     mask_resized = F.interpolate(mask_tensor, size=(grid_size, grid_size), mode="nearest")
     patch_mask = (mask_resized.squeeze(1) > 0.5).float()
     return patch_mask.flatten(1)
+
+
+def _masked_max_mean_pool(
+    patch_feats: torch.Tensor,
+    patch_mask: torch.Tensor,
+) -> torch.Tensor:
+    pooled = []
+    for i in range(patch_feats.size(0)):
+        m = patch_mask[i] > 0.5
+        feats = patch_feats[i][m]
+        if feats.numel() == 0:
+            feats = patch_feats[i]
+        max_pool = feats.max(dim=0).values
+        mean_pool = feats.mean(dim=0)
+        pooled.append(0.5 * (max_pool + mean_pool))
+    return torch.stack(pooled, dim=0)
 
 
 def _build_mask_index(mask_root: str, mask_suffix: str) -> Dict[str, str]:
@@ -177,12 +189,28 @@ def supervised_unlearn_train(
                 patch_feats, grid = _encode_image_patches(model, img_df)
                 df_text_feats = model.encode_text(df_tokens)
                 df_text_feats = df_text_feats / df_text_feats.norm(dim=-1, keepdim=True)
-
-                patch_sim = F.cosine_similarity(patch_feats, df_text_feats.unsqueeze(1), dim=-1)
                 patch_attn = _mask_to_patch_attention(sam3_masks, grid)
-                attn_sum = patch_attn.sum(dim=1)
-                masked_similarity = patch_sim * patch_attn
-                loss_rtf = (masked_similarity.sum(dim=1) / attn_sum.clamp(min=1.0)).mean()
+                pooled_patch_feats = _masked_max_mean_pool(patch_feats, patch_attn)
+
+                if getattr(model.visual, "proj", None) is not None:
+                    pooled_patch_feats = pooled_patch_feats @ model.visual.proj
+                pooled_patch_feats = pooled_patch_feats / pooled_patch_feats.norm(dim=-1, keepdim=True)
+
+                # Contrastive objective for masked regional features:
+                # 1) positive text is the paired forget target text in current batch
+                # 2) negatives include other batch forget texts + retain text pool
+                contrast_text_feats = torch.cat([df_text_feats, text_pool_features], dim=0)
+                logit_scale = model.logit_scale.exp()
+                labels = torch.arange(img_df.size(0), device=device)
+
+                logits_i2t = logit_scale * (pooled_patch_feats @ contrast_text_feats.t())
+                loss_rtf_i2t = F.cross_entropy(logits_i2t, labels)
+
+                logits_t2i = logit_scale * (df_text_feats @ pooled_patch_feats.t())
+                loss_rtf_t2i = F.cross_entropy(logits_t2i, labels)
+
+                loss_rtf = - 0.5 * (loss_rtf_i2t + loss_rtf_t2i)
+                print("loss_rtf:", loss_rtf.item())
 
                 # syn_mask = 1.0 - (sam3_masks > 0.5).float()
                 # syn_img = img_df * syn_mask.unsqueeze(1)
