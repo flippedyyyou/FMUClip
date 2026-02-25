@@ -23,11 +23,13 @@ from finegrained.clip_finegrained_baseline import (
     _build_train_datasets,
     _compute_topk_retain_classes,
     _encode_text_features,
+    _evaluate_single_accuracy,
     _get_logits_and_feats,
     _labels_to_texts,
     _load_clip_backend,
     run_original_eval,
 )
+from finegrained.load_dataset import build_test_dataloaders
 from finegrained.params import build_parser as build_base_parser
 
 
@@ -65,7 +67,7 @@ def _encode_image_patches(model, images: torch.Tensor) -> Tuple[torch.Tensor, in
     blocks = getattr(visual.transformer, "resblocks", None)
     if blocks is not None and len(blocks) > 0:
         if len(blocks) >= 2:
-            for blk in blocks[:-1]:
+            for blk in blocks[:1]:
                 x = blk(x)
         else:
             x = blocks[0](x)
@@ -77,7 +79,7 @@ def _encode_image_patches(model, images: torch.Tensor) -> Tuple[torch.Tensor, in
     x = x.permute(1, 0, 2)
     # Keep penultimate-layer patch tokens in visual hidden space.
     patch_feats = x[:, 1:, :]
-    return patch_feats, grid
+    return patch_feats, grid 
 
 
 def _mask_to_patch_attention(mask_tensor: torch.Tensor, grid_size: int) -> torch.Tensor:
@@ -137,13 +139,12 @@ def _build_text_pool(class_names: Sequence[str], retain_indices: Sequence[int]) 
     return [f"a photo of {class_names[idx].replace('_', ' ')}" for idx in retain_indices]
 
 
-def supervised_unlearn_train(
+def train_one_epoch(
     model,
     teacher,
     tokenizer_fn,
     df_loader,
     dr_loader,
-    text_pool_tokens: torch.Tensor,
     mask_index: Dict[str, str],
     class_names: Sequence[str],
     forget_indices: Sequence[int],
@@ -155,113 +156,129 @@ def supervised_unlearn_train(
     lambda_keep: float,
     lambda_ce: float,
     sample_k: int,
+    epoch_idx: int,
     max_epoch: int,
     log_interval: int,
-) -> None:
+) -> Dict[str, float]:
     device = _get_model_device(model)
     mse = nn.MSELoss()
     iters_per_epoch = min(len(df_loader), len(dr_loader))
+    model.train()
+    df_iter = iter(df_loader)
+    dr_iter = iter(dr_loader)
+    with torch.no_grad():
+        text_pool_features = _encode_text_features(
+            model,
+            _build_text_pool(class_names, retain_indices),
+            tokenizer_fn,
+            device,
+        )
 
-    for ep in range(max_epoch):
-        model.train()
-        df_iter = iter(df_loader)
-        dr_iter = iter(dr_loader)
-        with torch.no_grad():
-            text_pool_features = _encode_text_features(model, _build_text_pool(class_names, retain_indices), tokenizer_fn, device)
+    running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0}
+    for it in range(iters_per_epoch):
+        df_s = next(df_iter)
+        dr_s = next(dr_iter)
 
-        running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0}
-        for it in range(iters_per_epoch):
-            df_s = next(df_iter)
-            dr_s = next(dr_iter)
+        img_df = df_s["image"].to(device, non_blocking=True)
+        img_dr = dr_s["image"].to(device, non_blocking=True)
+        df_paths = df_s["image_path"]
 
-            img_df = df_s["image"].to(device, non_blocking=True)
-            img_dr = dr_s["image"].to(device, non_blocking=True)
-            df_paths = df_s["image_path"]
+        txt_df = _labels_to_texts(df_s["label"], class_names, forget_indices)
+        txt_dr = _labels_to_texts(dr_s["label"], class_names, retain_indices)
+        df_tokens = tokenizer_fn(txt_df).to(device)
+        dr_tokens = tokenizer_fn(txt_dr).to(device)
 
-            txt_df = _labels_to_texts(df_s["label"], class_names, forget_indices)
-            txt_dr = _labels_to_texts(dr_s["label"], class_names, retain_indices)
-            df_tokens = tokenizer_fn(txt_df).to(device)
-            dr_tokens = tokenizer_fn(txt_dr).to(device)
+        optimizer.zero_grad(set_to_none=True)
+        with torch.amp.autocast(device_type="cuda", enabled=True):
+            sam3_masks = _load_sam3_masks(df_paths, mask_index, img_df.shape[-1]).to(device, non_blocking=True)
+            patch_feats, grid = _encode_image_patches(model, img_df)
+            df_text_feats = model.encode_text(df_tokens)
+            df_text_feats = df_text_feats / df_text_feats.norm(dim=-1, keepdim=True)
+            patch_attn = _mask_to_patch_attention(sam3_masks, grid)
+            pooled_patch_feats = _masked_max_mean_pool(patch_feats, patch_attn)
 
-            optimizer.zero_grad(set_to_none=True)
-            with torch.amp.autocast(device_type="cuda", enabled=True):
-                sam3_masks = _load_sam3_masks(df_paths, mask_index, img_df.shape[-1]).to(device, non_blocking=True)
-                patch_feats, grid = _encode_image_patches(model, img_df)
-                df_text_feats = model.encode_text(df_tokens)
-                df_text_feats = df_text_feats / df_text_feats.norm(dim=-1, keepdim=True)
-                patch_attn = _mask_to_patch_attention(sam3_masks, grid)
-                pooled_patch_feats = _masked_max_mean_pool(patch_feats, patch_attn)
+            if getattr(model.visual, "proj", None) is not None:
+                pooled_patch_feats = pooled_patch_feats @ model.visual.proj
+            pooled_patch_feats = pooled_patch_feats / pooled_patch_feats.norm(dim=-1, keepdim=True)
 
-                if getattr(model.visual, "proj", None) is not None:
-                    pooled_patch_feats = pooled_patch_feats @ model.visual.proj
-                pooled_patch_feats = pooled_patch_feats / pooled_patch_feats.norm(dim=-1, keepdim=True)
+            contrast_text_feats = torch.cat([df_text_feats, text_pool_features], dim=0)
+            logit_scale = model.logit_scale.exp()
+            labels = torch.arange(img_df.size(0), device=device)
 
-                # Contrastive objective for masked regional features:
-                # 1) positive text is the paired forget target text in current batch
-                # 2) negatives include other batch forget texts + retain text pool
-                contrast_text_feats = torch.cat([df_text_feats, text_pool_features], dim=0)
-                logit_scale = model.logit_scale.exp()
-                labels = torch.arange(img_df.size(0), device=device)
+            logits_i2t = logit_scale * (pooled_patch_feats @ contrast_text_feats.t())
+            loss_rtf_i2t = F.cross_entropy(logits_i2t, labels)
 
-                logits_i2t = logit_scale * (pooled_patch_feats @ contrast_text_feats.t())
-                loss_rtf_i2t = F.cross_entropy(logits_i2t, labels)
+            logits_t2i = logit_scale * (df_text_feats @ pooled_patch_feats.t())
+            loss_rtf_t2i = F.cross_entropy(logits_t2i, labels)
 
-                logits_t2i = logit_scale * (df_text_feats @ pooled_patch_feats.t())
-                loss_rtf_t2i = F.cross_entropy(logits_t2i, labels)
+            loss_rtf = -0.5 * (loss_rtf_i2t + loss_rtf_t2i)
 
-                loss_rtf = - 0.5 * (loss_rtf_i2t + loss_rtf_t2i)
-                print("loss_rtf:", loss_rtf.item())
+            sim_i2t_dr_u, sim_t2i_dr_u, _, _ = _get_logits_and_feats(model, img_dr, dr_tokens)
+            with torch.no_grad():
+                sim_i2t_dr_t, sim_t2i_dr_t, _, _ = _get_logits_and_feats(teacher, img_dr, dr_tokens)
+            loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + mse(sim_t2i_dr_u, sim_t2i_dr_t)
 
-                # syn_mask = 1.0 - (sam3_masks > 0.5).float()
-                # syn_img = img_df * syn_mask.unsqueeze(1)
+            retain_targets = torch.arange(img_dr.size(0), device=device)
+            loss_ce = F.cross_entropy(sim_i2t_dr_u, retain_targets) + F.cross_entropy(sim_t2i_dr_u, retain_targets)
 
-                # syn_img_feats = model.encode_image(syn_img)
-                # syn_img_feats = syn_img_feats / syn_img_feats.norm(dim=-1, keepdim=True)
-                # clip_scores = model.logit_scale.exp() * (syn_img_feats @ text_pool_features.t())
-                # clip_probs = torch.softmax(clip_scores, dim=-1)
-                # cur_k = min(sample_k, clip_scores.size(1))
-                # topk_probs, indices = torch.topk(clip_probs, cur_k, dim=-1, largest=True)
-                # adv = topk_probs.detach()
+            loss = (
+                lambda_rtf * loss_rtf
+                + lambda_keep * loss_keep
+                + lambda_ce * loss_ce
+            )
 
-                # sim_i2t_syn_u = model.logit_scale.exp() * (syn_img_feats @ text_pool_features.t())
-                # rep_output = torch.repeat_interleave(sim_i2t_syn_u, cur_k, dim=0)
-                # text_index = indices.flatten()
-                # ce = F.cross_entropy(rep_output, text_index, reduction="none").view(img_df.size(0), cur_k)
-                # loss_syn = (adv * ce).mean()
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
 
-                sim_i2t_dr_u, sim_t2i_dr_u, img_dr_u, txt_dr_u = _get_logits_and_feats(model, img_dr, dr_tokens)
-                with torch.no_grad():
-                    sim_i2t_dr_t, sim_t2i_dr_t, img_dr_t, txt_dr_t = _get_logits_and_feats(teacher, img_dr, dr_tokens)
-                loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + mse(sim_t2i_dr_u, sim_t2i_dr_t)
+        running["rtf"] += float(loss_rtf.detach().item())
+        running["keep"] += float(loss_keep.detach().item())
+        running["ce"] += float(loss_ce.detach().item())
+        running["tot"] += float(loss.detach().item())
 
-                retain_targets = torch.arange(img_dr.size(0), device=device)
-                loss_ce = F.cross_entropy(sim_i2t_dr_u, retain_targets) + F.cross_entropy(sim_t2i_dr_u, retain_targets)
+        if (it + 1) % log_interval == 0:
+            t = it + 1
+            print(
+                f"[Unlearn EP {epoch_idx + 1}/{max_epoch}] it={t}/{iters_per_epoch} "
+                f"rtf={running['rtf']/t:.4f} "
+                f"keep={running['keep']/t:.4f} ce={running['ce']/t:.4f} "
+                f"total={running['tot']/t:.4f}"
+            )
 
-                loss = (
-                    lambda_rtf * loss_rtf
-                    # + lambda_syn * loss_syn
-                    + lambda_keep * loss_keep
-                    + lambda_ce * loss_ce
-                )
+    denom = float(max(iters_per_epoch, 1))
+    return {
+        "loss_rtf": running["rtf"] / denom,
+        "loss_keep": running["keep"] / denom,
+        "loss_ce": running["ce"] / denom,
+        "loss_total": running["tot"] / denom,
+    }
 
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
 
-            running["rtf"] += float(loss_rtf.detach().item())
-            # running["syn"] += float(loss_syn.detach().item())
-            running["keep"] += float(loss_keep.detach().item())
-            running["ce"] += float(loss_ce.detach().item())
-            running["tot"] += float(loss.detach().item())
+def _evaluate_for_selection(
+    model: torch.nn.Module,
+    args,
+    tokenize_fn,
+    image_size: int,
+    class_names: Sequence[str],
+) -> Dict[str, float]:
+    device = _get_model_device(model)
+    eval_transform = _build_eval_transform(image_size)
+    prev_return_meta = args.return_meta
+    args.return_meta = True
+    forget_loader, retain_loader = build_test_dataloaders(args, transform=eval_transform)
+    args.return_meta = prev_return_meta
 
-            if (it + 1) % log_interval == 0:
-                t = it + 1
-                print(
-                    f"[Unlearn EP {ep+1}/{max_epoch}] it={t}/{iters_per_epoch} "
-                    f"rtf={running['rtf']/t:.4f}"
-                    f"keep={running['keep']/t:.4f} ce={running['ce']/t:.4f} "
-                    f"total={running['tot']/t:.4f}"
-                )
+    text_features = _encode_text_features(model, class_names, tokenize_fn, device)
+    forget_acc = _evaluate_single_accuracy(model, forget_loader, text_features, device)
+    retain_acc = _evaluate_single_accuracy(model, retain_loader, text_features, device)
+    score = (1.0 - forget_acc) + retain_acc
+    return {
+        "forget_success": 1.0 - float(forget_acc),
+        "retain_accuracy": float(retain_acc),
+        "selection_score": float(score),
+        "forget_test_size": len(forget_loader.dataset),
+        "retain_test_size": len(retain_loader.dataset),
+    }
 
 
 def build_parser():
@@ -318,8 +335,6 @@ def main() -> None:
 
     class_names = _build_class_name_list()
     forget_indices, retain_indices = _build_forget_retain_indices(args.forget_classes)
-    text_pool = _build_text_pool(class_names, retain_indices)
-    text_pool_tokens = tokenize_fn(text_pool).to(device)
 
     mask_index = _build_mask_index(args.sam3_mask_dir, args.sam3_mask_suffix)
     if not mask_index:
@@ -328,40 +343,92 @@ def main() -> None:
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     scaler = torch.cuda.amp.GradScaler(init_scale=1024)
 
-    supervised_unlearn_train(
-        model=model,
-        teacher=teacher,
-        tokenizer_fn=tokenize_fn,
-        df_loader=df_loader,
-        dr_loader=dr_loader,
-        text_pool_tokens=text_pool_tokens,
-        mask_index=mask_index,
-        class_names=class_names,
-        forget_indices=forget_indices,
-        retain_indices=retain_indices,
-        optimizer=optimizer,
-        scaler=scaler,
-        lambda_rtf=args.lambda_rtf,
-        # lambda_syn=args.lambda_syn,
-        lambda_keep=args.lambda_keep,
-        lambda_ce=args.lambda_ce,
-        sample_k=args.sample_k,
-        max_epoch=args.max_epoch,
-        log_interval=args.log_interval,
-    )
-
     os.makedirs(args.output_dir, exist_ok=True)
     ckpt_path = os.path.join(args.output_dir, "clip_unlearn_finegrained.pth")
-    torch.save(
-        {
-            "model": model.state_dict(),
-            "clip_arch": args.clip_arch,
-            "clip_pretrained": args.clip_pretrained,
-        },
-        ckpt_path,
+    config_path = os.path.join(args.output_dir, "config.json")
+    best_score = float("-inf")
+    best_epoch = -1
+    best_metrics = None
+
+    for ep in range(args.max_epoch):
+        train_stats = train_one_epoch(
+            model=model,
+            teacher=teacher,
+            tokenizer_fn=tokenize_fn,
+            df_loader=df_loader,
+            dr_loader=dr_loader,
+            mask_index=mask_index,
+            class_names=class_names,
+            forget_indices=forget_indices,
+            retain_indices=retain_indices,
+            optimizer=optimizer,
+            scaler=scaler,
+            lambda_rtf=args.lambda_rtf,
+            lambda_keep=args.lambda_keep,
+            lambda_ce=args.lambda_ce,
+            sample_k=args.sample_k,
+            epoch_idx=ep,
+            max_epoch=args.max_epoch,
+            log_interval=args.log_interval,
+        )
+
+        eval_metrics = _evaluate_for_selection(
+            model=model,
+            args=args,
+            tokenize_fn=tokenize_fn,
+            image_size=image_size,
+            class_names=class_names,
+        )
+        cur_score = eval_metrics["selection_score"]
+        print(
+            f"[Eval EP {ep + 1}/{args.max_epoch}] "
+            f"forget_success={eval_metrics['forget_success']:.4f} "
+            f"retain_acc={eval_metrics['retain_accuracy']:.4f} "
+            f"score={cur_score:.4f}"
+        )
+
+        if cur_score > best_score:
+            best_score = cur_score
+            best_epoch = ep + 1
+            best_metrics = eval_metrics
+            torch.save(
+                {
+                    "model": model.state_dict(),
+                    "clip_arch": args.clip_arch,
+                    "clip_pretrained": args.clip_pretrained,
+                    "best_epoch": best_epoch,
+                    "best_score": best_score,
+                    "best_forget_success": eval_metrics["forget_success"],
+                    "best_retain_accuracy": eval_metrics["retain_accuracy"],
+                },
+                ckpt_path,
+            )
+            save_cfg = dict(vars(args))
+            save_cfg.update(
+                {
+                    "best_epoch": best_epoch,
+                    "best_score": best_score,
+                    "best_forget_success": eval_metrics["forget_success"],
+                    "best_retain_accuracy": eval_metrics["retain_accuracy"],
+                    "selection_metric": "forget_success + retain_accuracy",
+                    "train_stats_at_best_epoch": train_stats,
+                }
+            )
+            with open(config_path, "w", encoding="utf-8") as f:
+                json.dump(save_cfg, f, ensure_ascii=False, indent=2)
+            print(f"[Best Updated] epoch={best_epoch} score={best_score:.4f} -> overwrite checkpoint/config")
+
+    if best_epoch < 0:
+        raise RuntimeError("No epoch completed successfully, no best checkpoint saved.")
+
+    best_ckpt = torch.load(ckpt_path, map_location=device)
+    model.load_state_dict(best_ckpt["model"], strict=True)
+    print(
+        f"Final best epoch: {best_epoch}, "
+        f"forget_success={best_metrics['forget_success']:.4f}, "
+        f"retain_acc={best_metrics['retain_accuracy']:.4f}, "
+        f"score={best_score:.4f}"
     )
-    with open(os.path.join(args.output_dir, "config.json"), "w", encoding="utf-8") as f:
-        json.dump(vars(args), f, ensure_ascii=False, indent=2)
 
     retain_topk_indices = _compute_topk_retain_classes(df_dataset, forget_indices, args.retain_topk)
     run_original_eval(
