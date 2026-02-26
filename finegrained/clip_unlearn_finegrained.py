@@ -344,7 +344,7 @@ def main() -> None:
     scaler = torch.cuda.amp.GradScaler(init_scale=1024)
 
     os.makedirs(args.output_dir, exist_ok=True)
-    ckpt_path = os.path.join(args.output_dir, "clip_unlearn_finegrained.pth")
+    ckpt_path = os.path.join(args.output_dir, "clip_unlearn_finegrained.pt")
     config_path = os.path.join(args.output_dir, "config.json")
     best_score = float("-inf")
     best_epoch = -1

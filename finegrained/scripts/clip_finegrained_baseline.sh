@@ -3,7 +3,7 @@ set -euo pipefail
 export CUDA_VISIBLE_DEVICES=0
 
 DEVICE="cuda"
-FORGET_CLASSES=banana
+FORGET_CLASSES=bird
 COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
 DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances"
 CLIP_ARCH="ViT-L-14-336"
@@ -19,14 +19,14 @@ LAMBDA_DR=1
 LAMBDA_UNI=3
 METHOD="cliperase"
 RETAIN_TOPK=5
-OUTPUT_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/output/baselines/${METHOD}_${FORGET_CLASSES}3_100images_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
+OUTPUT_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/output/baselines/${METHOD}_${FORGET_CLASSES}2_100images_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
 
 python /datanfs4/shenruoyan/FMUClip/finegrained/clip_finegrained_baseline.py \
-  --method "${METHOD}" \
+  --original_eval \
   --forget_classes "${FORGET_CLASSES}" \
   --coco_root "${COCO_ROOT}" \
   --df_root "${DF_ROOT}" \
-  --train_item_folder item3 \
+  --train_item_folder item2 \
   --retain_item_folder item1 \
   --test_item_folder item1 \
   --clip_arch "${CLIP_ARCH}" \

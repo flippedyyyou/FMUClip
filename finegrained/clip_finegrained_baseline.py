@@ -619,7 +619,7 @@ def run_original_eval(
         "forget_classes": list(args.forget_classes),
         "forget_test_size": len(forget_loader.dataset),
         "retain_test_size": len(retain_loader.dataset),
-        "forget_accuracy": forget_acc,
+        "forget_success": 1.0 - forget_acc,
         "retain_accuracy": retain_acc,
         # "multi_label_eval_size": len(multi_label_loader.dataset),
         # "forget_map": multi_map["forget_map"],
