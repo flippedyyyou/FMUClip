@@ -29,6 +29,8 @@ python /datanfs4/shenruoyan/FMUClip/finegrained/clip_finegrained_baseline.py \
   --train_item_folder item2 \
   --retain_item_folder item1 \
   --test_item_folder item1 \
+  --test_item_format json \
+  --test_max_per_class 100 \
   --clip_arch "${CLIP_ARCH}" \
   --clip_pretrained "${CLIP_PRETRAINED}" \
   --clip_model_path "${CLIP_MODEL_PATH}" \

@@ -1,4 +1,5 @@
 import os
+import json
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 import numpy as np
@@ -39,6 +40,37 @@ def _read_txt_image_list(txt_path: str) -> List[str]:
     return items
 
 
+def _read_json_image_list_and_bbox(json_path: str) -> Tuple[List[str], Dict[str, List[float]]]:
+    items: List[str] = []
+    bbox_map: Dict[str, List[float]] = {}
+    if not os.path.exists(json_path):
+        return items, bbox_map
+
+    with open(json_path, "r", encoding="utf-8") as f:
+        payload = json.load(f)
+
+    for row in payload.get("images", []):
+        file_name = row.get("file_name")
+        if not file_name:
+            img_id = row.get("img_id")
+            if img_id is None:
+                continue
+            file_name = f"{img_id}.jpg"
+        file_name = os.path.basename(str(file_name))
+        bbox = row.get("bbox")
+        if not bbox or len(bbox) != 4:
+            continue
+        bbox = [float(v) for v in bbox]
+        if file_name in bbox_map:
+            raise ValueError(
+                f"Duplicate image '{file_name}' found in {json_path}. "
+                "split_datasets should ensure uniqueness per concept json."
+            )
+        items.append(file_name)
+        bbox_map[file_name] = bbox
+    return items, bbox_map
+
+
 def _unique_keep_order(items: Sequence[str]) -> List[str]:
     seen: Set[str] = set()
     out: List[str] = []
@@ -63,6 +95,30 @@ def _load_images_from_df_lists(
     return _unique_keep_order(images)
 
 
+def _load_images_and_bbox_from_df_lists(
+    df_root: str,
+    split: str,
+    item_folder: str,
+    class_names: Sequence[str],
+    list_format: str = "txt",
+) -> Tuple[List[str], Dict[str, List[float]]]:
+    images: List[str] = []
+    bbox_map: Dict[str, List[float]] = {}
+    if list_format == "txt":
+        return _load_images_from_df_lists(df_root, split, item_folder, class_names), bbox_map
+    if list_format != "json":
+        raise ValueError(f"Unsupported list format: {list_format}")
+
+    for class_name in class_names:
+        json_path = os.path.join(df_root, split, "Df", item_folder, f"{_normalize_name(class_name)}.json")
+        class_images, class_bbox_map = _read_json_image_list_and_bbox(json_path)
+        images.extend(class_images)
+        for file_name, bbox in class_bbox_map.items():
+            if file_name not in bbox_map:
+                bbox_map[file_name] = bbox
+    return _unique_keep_order(images), bbox_map
+
+
 def _build_forget_mask(forget_class_names: Sequence[str]) -> torch.Tensor:
     mask = torch.zeros(len(LABEL_NAMES), dtype=torch.float32)
     name_to_idx = {_normalize_name(v): k for k, v in LABEL_NAMES.items()}
@@ -71,6 +127,60 @@ def _build_forget_mask(forget_class_names: Sequence[str]) -> torch.Tensor:
             raise ValueError(f"Unknown forget class name: {name}")
         mask[name_to_idx[name]] = 1.0
     return mask
+
+
+def _class_name_to_idx_map() -> Dict[str, int]:
+    return {_normalize_name(v): k for k, v in sorted(LABEL_NAMES.items())}
+
+
+def _load_test_samples_from_df_lists(
+    df_root: str,
+    split: str,
+    item_folder: str,
+    class_names: Sequence[str],
+    list_format: str = "txt",
+    max_per_class: int = 100,
+) -> List[Dict[str, object]]:
+    samples: List[Dict[str, object]] = []
+    name_to_idx = _class_name_to_idx_map()
+
+    for class_name in class_names:
+        norm_class = _normalize_name(class_name)
+        if norm_class not in name_to_idx:
+            continue
+        class_idx = int(name_to_idx[norm_class])
+
+        if list_format == "txt":
+            txt_path = os.path.join(df_root, split, "Df", item_folder, f"{norm_class}.txt")
+            class_files = _read_txt_image_list(txt_path)
+            class_files = _unique_keep_order(class_files)[: max(0, int(max_per_class))]
+            for file_name in class_files:
+                samples.append(
+                    {
+                        "file_name": os.path.basename(file_name),
+                        "eval_class_idx": class_idx,
+                        "bbox": None,
+                    }
+                )
+            continue
+
+        if list_format == "json":
+            json_path = os.path.join(df_root, split, "Df", item_folder, f"{norm_class}.json")
+            class_files, class_bbox_map = _read_json_image_list_and_bbox(json_path)
+            class_files = class_files[: max(0, int(max_per_class))]
+            for file_name in class_files:
+                samples.append(
+                    {
+                        "file_name": os.path.basename(file_name),
+                        "eval_class_idx": class_idx,
+                        "bbox": class_bbox_map.get(file_name),
+                    }
+                )
+            continue
+
+        raise ValueError(f"Unsupported list format: {list_format}")
+
+    return samples
 
 
 class COCODataSet(Dataset):
@@ -91,6 +201,9 @@ class COCODataSet(Dataset):
         return_meta: bool = False,
         filter_missing_images: bool = True,
         selected_files: Optional[Sequence[str]] = None,
+        selected_samples: Optional[Sequence[Dict[str, object]]] = None,
+        selected_bboxes: Optional[Dict[str, Sequence[float]]] = None,
+        apply_bbox_crop: bool = False,
         forget_class_names: Optional[Sequence[str]] = None,
     ) -> None:
         if annotation_file is None:
@@ -106,6 +219,7 @@ class COCODataSet(Dataset):
         self.image_root = image_root
         self.transform = transform
         self.return_meta = return_meta
+        self.apply_bbox_crop = apply_bbox_crop
         self.num_classes = len(LABEL_NAMES)
         forget_class_names = forget_class_names or []
         self.forget_mask = _build_forget_mask(forget_class_names) if forget_class_names else torch.zeros(self.num_classes)
@@ -128,19 +242,19 @@ class COCODataSet(Dataset):
         self.image_ids: List[int] = []
         self.file_names: List[str] = []
         self.targets: List[np.ndarray] = []
-        selected_set = None
-        if selected_files is not None:
-            selected_set = {os.path.basename(x) for x in selected_files}
+        self.eval_class_indices: List[int] = []
+        self.sample_bboxes: List[Optional[List[float]]] = []
+        self.file_name_to_bbox: Dict[str, List[float]] = {
+            os.path.basename(k): [float(v) for v in vals]
+            for k, vals in (selected_bboxes or {}).items()
+            if vals is not None and len(vals) == 4
+        }
+        target_cache: Dict[int, np.ndarray] = {}
 
-        for img_id in self.coco.getImgIds():
-            img_info = self.coco.loadImgs([img_id])[0]
-            file_name = img_info["file_name"]
-            if selected_set is not None and file_name not in selected_set:
-                continue
-            image_path = os.path.join(self.image_root, file_name)
-            if filter_missing_images and (not os.path.exists(image_path)):
-                continue
-
+        def _build_target(img_id: int) -> np.ndarray:
+            cached = target_cache.get(img_id)
+            if cached is not None:
+                return cached
             target = np.zeros(self.num_classes, dtype=np.float32)
             ann_ids = self.coco.getAnnIds(imgIds=[img_id], iscrowd=None)
             anns = self.coco.loadAnns(ann_ids)
@@ -148,10 +262,56 @@ class COCODataSet(Dataset):
                 class_idx = self.cat_id_to_class_idx.get(ann["category_id"])
                 if class_idx is not None:
                     target[class_idx] = 1.0
+            target_cache[img_id] = target
+            return target
 
-            self.image_ids.append(img_id)
-            self.file_names.append(file_name)
-            self.targets.append(target)
+        if selected_samples is not None:
+            file_to_img_id: Dict[str, int] = {}
+            for img_id in self.coco.getImgIds():
+                img_info = self.coco.loadImgs([img_id])[0]
+                file_to_img_id[img_info["file_name"]] = img_id
+
+            for sample in selected_samples:
+                file_name = os.path.basename(str(sample.get("file_name", "")))
+                if not file_name:
+                    continue
+                img_id = file_to_img_id.get(file_name)
+                if img_id is None:
+                    continue
+                image_path = os.path.join(self.image_root, file_name)
+                if filter_missing_images and (not os.path.exists(image_path)):
+                    continue
+
+                bbox = sample.get("bbox")
+                bbox_out = None
+                if bbox is not None and len(bbox) == 4:
+                    bbox_out = [float(v) for v in bbox]
+                eval_idx = int(sample.get("eval_class_idx", -1))
+
+                self.image_ids.append(img_id)
+                self.file_names.append(file_name)
+                self.targets.append(_build_target(img_id).copy())
+                self.eval_class_indices.append(eval_idx)
+                self.sample_bboxes.append(bbox_out)
+        else:
+            selected_set = None
+            if selected_files is not None:
+                selected_set = {os.path.basename(x) for x in selected_files}
+
+            for img_id in self.coco.getImgIds():
+                img_info = self.coco.loadImgs([img_id])[0]
+                file_name = img_info["file_name"]
+                if selected_set is not None and file_name not in selected_set:
+                    continue
+                image_path = os.path.join(self.image_root, file_name)
+                if filter_missing_images and (not os.path.exists(image_path)):
+                    continue
+
+                self.image_ids.append(img_id)
+                self.file_names.append(file_name)
+                self.targets.append(_build_target(img_id).copy())
+                self.eval_class_indices.append(-1)
+                self.sample_bboxes.append(None)
 
     def __len__(self) -> int:
         return len(self.image_ids)
@@ -162,6 +322,17 @@ class COCODataSet(Dataset):
         image_path = os.path.join(self.image_root, file_name)
 
         image = Image.open(image_path).convert("RGB")
+        bbox = self.sample_bboxes[index]
+        if bbox is None:
+            bbox = self.file_name_to_bbox.get(file_name)
+        if self.apply_bbox_crop and bbox is not None:
+            x, y, w, h = [float(v) for v in bbox]
+            x1 = max(0, int(np.floor(x)))
+            y1 = max(0, int(np.floor(y)))
+            x2 = min(image.width, int(np.ceil(x + w)))
+            y2 = min(image.height, int(np.ceil(y + h)))
+            if x2 > x1 and y2 > y1:
+                image = image.crop((x1, y1, x2, y2))
         if self.transform is not None:
             image = self.transform(image)
         else:
@@ -171,6 +342,12 @@ class COCODataSet(Dataset):
         forget_mask = self.forget_mask
         forget_label = full_label * forget_mask
         retain_label = full_label * (1.0 - forget_mask)
+        bbox_tensor = torch.tensor(
+            bbox if bbox is not None else [0.0, 0.0, 0.0, 0.0],
+            dtype=torch.float32,
+        )
+        has_bbox = torch.tensor(bbox is not None, dtype=torch.bool)
+        eval_class_idx = torch.tensor(self.eval_class_indices[index], dtype=torch.long)
 
         if self.return_meta:
             return {
@@ -178,6 +355,9 @@ class COCODataSet(Dataset):
                 "label": full_label,
                 "forget_label": forget_label,
                 "retain_label": retain_label,
+                "bbox": bbox_tensor,
+                "has_bbox": has_bbox,
+                "eval_class_idx": eval_class_idx,
                 "image_id": image_id,
                 "file_name": file_name,
                 "image_path": image_path,
@@ -188,6 +368,9 @@ class COCODataSet(Dataset):
             "label": full_label,
             "forget_label": forget_label,
             "retain_label": retain_label,
+            "bbox": bbox_tensor,
+            "has_bbox": has_bbox,
+            "eval_class_idx": eval_class_idx,
         }
 
 
@@ -202,6 +385,9 @@ class COCODataLoader(DataLoader):
         return_meta: bool = False,
         filter_missing_images: bool = True,
         selected_files: Optional[Sequence[str]] = None,
+        selected_samples: Optional[Sequence[Dict[str, object]]] = None,
+        selected_bboxes: Optional[Dict[str, Sequence[float]]] = None,
+        apply_bbox_crop: bool = False,
         forget_class_names: Optional[Sequence[str]] = None,
         batch_size: int = 32,
         shuffle: bool = True,
@@ -218,6 +404,9 @@ class COCODataLoader(DataLoader):
             return_meta=return_meta,
             filter_missing_images=filter_missing_images,
             selected_files=selected_files,
+            selected_samples=selected_samples,
+            selected_bboxes=selected_bboxes,
+            apply_bbox_crop=apply_bbox_crop,
             forget_class_names=forget_class_names,
         )
         super().__init__(
@@ -267,18 +456,23 @@ def build_test_datasets(args, transform=None) -> Tuple[COCODataSet, COCODataSet]
     forget_set = set(forget_class_names)
     retain_class_names = [c for c in all_class_names if c not in forget_set]
 
-    forget_test_files = _load_images_from_df_lists(
+    forget_test_samples = _load_test_samples_from_df_lists(
         df_root=args.df_root,
         split=args.val_split,
         item_folder=args.test_item_folder,
         class_names=forget_class_names,
+        list_format=args.test_item_format,
+        max_per_class=args.test_max_per_class,
     )
-    retain_test_files = _load_images_from_df_lists(
+    retain_test_samples = _load_test_samples_from_df_lists(
         df_root=args.df_root,
         split=args.val_split,
         item_folder=args.test_item_folder,
         class_names=retain_class_names,
+        list_format=args.test_item_format,
+        max_per_class=args.test_max_per_class,
     )
+    apply_bbox_crop = args.test_item_format == "json"
 
     forget_dataset = COCODataSet(
         annotation_file=args.val_annotation_file,
@@ -286,7 +480,8 @@ def build_test_datasets(args, transform=None) -> Tuple[COCODataSet, COCODataSet]
         split=args.val_split,
         transform=transform,
         return_meta=args.return_meta,
-        selected_files=forget_test_files,
+        selected_samples=forget_test_samples,
+        apply_bbox_crop=apply_bbox_crop,
         forget_class_names=forget_class_names,
     )
     retain_dataset = COCODataSet(
@@ -295,7 +490,8 @@ def build_test_datasets(args, transform=None) -> Tuple[COCODataSet, COCODataSet]
         split=args.val_split,
         transform=transform,
         return_meta=args.return_meta,
-        selected_files=retain_test_files,
+        selected_samples=retain_test_samples,
+        apply_bbox_crop=apply_bbox_crop,
         forget_class_names=forget_class_names,
     )
     return forget_dataset, retain_dataset

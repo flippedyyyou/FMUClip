@@ -18,7 +18,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--df_root",
         type=str,
         default="/home/shenruoyan/FMUClip/data/classification/coco2017_instances",
-        help="Root folder containing train/val Df txt lists.",
+        help="Root folder containing train/val Df lists (txt/json).",
     )
     parser.add_argument(
         "--coco_root",
@@ -32,6 +32,19 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--train_item_folder", type=str, default="item3")
     parser.add_argument("--retain_item_folder", type=str, default="item1")
     parser.add_argument("--test_item_folder", type=str, default="item1")
+    parser.add_argument(
+        "--test_item_format",
+        type=str,
+        default="txt",
+        choices=["txt", "json"],
+        help="Test list format under Df/item*: txt image list or json with bbox.",
+    )
+    parser.add_argument(
+        "--test_max_per_class",
+        type=int,
+        default=100,
+        help="Maximum number of test samples per concept.",
+    )
 
     parser.add_argument(
         "--forget_classes",

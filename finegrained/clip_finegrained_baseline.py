@@ -339,15 +339,21 @@ def _evaluate_single_accuracy(
         for batch in data_loader:
             images = batch["image"].to(device, non_blocking=True)
             labels = batch["label"].to(device, non_blocking=True)
-            image_paths = batch.get("image_path")
+            eval_class_idx = batch.get("eval_class_idx")
+            if eval_class_idx is not None:
+                eval_class_idx = eval_class_idx.to(device, non_blocking=True)
 
             image_features = model.encode_image(images)
             image_features = image_features / image_features.norm(dim=-1, keepdim=True)
             logits = model.logit_scale.exp() * (image_features @ text_features.t())
             pred_global = logits.argmax(dim=1)
-            valid_mask = labels.sum(dim=1) == 1
-            if valid_mask.any():
+            if eval_class_idx is not None and (eval_class_idx >= 0).any():
+                valid_mask = eval_class_idx >= 0
+                gt_global = eval_class_idx
+            else:
+                valid_mask = labels.sum(dim=1) == 1
                 gt_global = labels.argmax(dim=1)
+            if valid_mask.any():
                 batch_correct = (pred_global[valid_mask] == gt_global[valid_mask]).sum().item()
                 correct += int(batch_correct)
                 total += int(valid_mask.sum().item())
@@ -372,19 +378,26 @@ def _dump_topk_results(
             images = batch["image"].to(device, non_blocking=True)
             labels = batch["label"].to(device, non_blocking=True)
             image_paths = batch.get("image_path")
+            eval_class_idx = batch.get("eval_class_idx")
+            if eval_class_idx is not None:
+                eval_class_idx = eval_class_idx.to(device, non_blocking=True)
 
             image_features = model.encode_image(images)
             image_features = image_features / image_features.norm(dim=-1, keepdim=True)
             logits = model.logit_scale.exp() * (image_features @ text_features.t())
 
-            valid_mask = labels.sum(dim=1) == 1
+            if eval_class_idx is not None and (eval_class_idx >= 0).any():
+                valid_mask = eval_class_idx >= 0
+                gt_global = eval_class_idx
+            else:
+                valid_mask = labels.sum(dim=1) == 1
+                gt_global = labels.argmax(dim=1)
             if not valid_mask.any():
                 continue
 
             k = min(topk, logits.size(1))
             topk_scores, topk_indices = logits.topk(k, dim=1)
             pred_global = logits.argmax(dim=1)
-            gt_global = labels.argmax(dim=1)
 
             for i in range(images.size(0)):
                 if not valid_mask[i]:
@@ -450,8 +463,14 @@ def _evaluate_single_class_accuracy(
         for batch in data_loader:
             images = batch["image"].to(device, non_blocking=True)
             labels = batch["label"].to(device, non_blocking=True)
+            eval_class_idx = batch.get("eval_class_idx")
+            if eval_class_idx is not None:
+                eval_class_idx = eval_class_idx.to(device, non_blocking=True)
 
-            mask = (labels.sum(dim=1) == 1) & (labels[:, class_index] > 0.5)
+            if eval_class_idx is not None and (eval_class_idx >= 0).any():
+                mask = eval_class_idx == class_index
+            else:
+                mask = (labels.sum(dim=1) == 1) & (labels[:, class_index] > 0.5)
             if not mask.any():
                 continue
 

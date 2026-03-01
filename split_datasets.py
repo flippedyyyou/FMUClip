@@ -165,6 +165,9 @@ class COCO2017InstancesProcessor(DatasetProcessor):
     def _load_target_concepts(self):
         return [name for _, name in sorted(LABEL_NAMES.items())]
 
+    def _normalize_concept_name(self, name: str) -> str:
+        return name.strip().replace(" ", "_")
+
     def convert_ids_to_instances(self, ann_file: str):
         coco = COCO(ann_file)
 
@@ -185,10 +188,46 @@ class COCO2017InstancesProcessor(DatasetProcessor):
                 image_id_to_instance_names[file_name][ann["category_id"]] = cat_id_to_name[ann["category_id"]]
 
         return image_id_to_instance_names
+    
+    def convert_ids_to_largest_bbox_by_concept(self, ann_file: str):
+        coco = COCO(ann_file)
+
+        cat_id_to_name = {
+            cat["id"]: self._normalize_concept_name(cat["name"])
+            for cat in coco.loadCats(coco.getCatIds())
+        }
+
+        image_id_to_largest_bbox = {}
+        for img_id in coco.getImgIds()[:]:
+            file_name = coco.loadImgs(img_id)[0]["file_name"].replace(".jpg", "")
+            ann_ids = coco.getAnnIds(imgIds=img_id, iscrowd=False)
+            anns = coco.loadAnns(ann_ids)
+
+            concept_to_bbox = {}
+            for ann in anns:
+                concept_name = cat_id_to_name.get(ann["category_id"])
+                if concept_name is None:
+                    continue
+                bbox = ann.get("bbox")
+                if not bbox or len(bbox) != 4:
+                    continue
+                # Use bbox area only (w * h), not COCO mask area.
+                area = float(bbox[2]) * float(bbox[3])
+                prev = concept_to_bbox.get(concept_name)
+                if prev is None or area > prev["area"]:
+                    concept_to_bbox[concept_name] = {
+                        "bbox": [float(v) for v in bbox],
+                        "area": area,
+                    }
+
+            image_id_to_largest_bbox[file_name] = concept_to_bbox
+
+        return image_id_to_largest_bbox
 
     def split_for_classification(self):
         ann_file = os.path.join(COCO2017_PATH, "annotations/instances_train2017.json")
         print("Splitting COCO2017 Instances dataset for classification...")
+        enable_item1_bbox_export = os.path.basename(ann_file) == "instances_val2017.json"
         instances = {}
         if not os.path.exists(os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/instances.json')):
             instances = self.convert_ids_to_instances(ann_file)
@@ -196,10 +235,24 @@ class COCO2017InstancesProcessor(DatasetProcessor):
         else:
             instances = load_json(os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/instances.json'))
 
+        instances_largest_bbox = {}
+        if enable_item1_bbox_export:
+            bbox_cache_path = os.path.join(
+                self.output_path,
+                "classification",
+                "coco2017_instances/meta/instances_largest_bbox_area.json",
+            )
+            if not os.path.exists(bbox_cache_path):
+                instances_largest_bbox = self.convert_ids_to_largest_bbox_by_concept(ann_file)
+                save_json(instances_largest_bbox, bbox_cache_path)
+            else:
+                instances_largest_bbox = load_json(bbox_cache_path)
+
         target_concepts = self._load_target_concepts()
         meta_info = {}
         for concept in tqdm(target_concepts, desc="Processing coco concepts"):
             concept_phrase = concept.replace("_", " ")
+            concept_key = concept.replace(" ", "_")
             related_imgs = {}
             item_buckets = {i: [] for i in range(1, 8)}
             for img_id, img_instances in instances.items():
@@ -217,7 +270,7 @@ class COCO2017InstancesProcessor(DatasetProcessor):
                         })
             if related_imgs:
                 related_imgs = dict(sorted(related_imgs.items(), key=lambda kv:kv[1]["item_num"], reverse=True))
-                save_json(related_imgs, os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/{concept.replace(" ","_")}/related_imgs.json'))
+                save_json(related_imgs, os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/{concept_key}/related_imgs.json'))
 
                 for img_id, info in related_imgs.items():
                     item_num = info["item_num"]
@@ -236,7 +289,7 @@ class COCO2017InstancesProcessor(DatasetProcessor):
                         'img_ids': item_buckets[item_num],
                     }
 
-                meta_info[concept.replace(" ","_")] = concept_meta_info
+                meta_info[concept_key] = concept_meta_info
 
                 for item_num in range(1, 8):
                     save_txt(
@@ -244,7 +297,36 @@ class COCO2017InstancesProcessor(DatasetProcessor):
                         os.path.join(
                             self.output_path,
                             'classification',
-                            f'coco2017_instances/Df/item{item_num}/{concept.replace(" ", "_")}.txt'
+                            f'coco2017_instances/Df/item{item_num}/{concept_key}.txt'
+                        ),
+                    )
+
+                if enable_item1_bbox_export:
+                    # Keep original txt behavior; add item1-side json with item1-7 images + largest bbox for this concept.
+                    item1_bbox_records = []
+                    for item_num in range(1, 8):
+                        for img_id in item_buckets[item_num]:
+                            bbox_info = instances_largest_bbox.get(img_id, {}).get(concept_key)
+                            if bbox_info is None:
+                                continue
+                            item1_bbox_records.append({
+                                "img_id": img_id,
+                                "file_name": f"{img_id}.jpg",
+                                "source_item": item_num,
+                                "bbox": bbox_info["bbox"],
+                                "area": bbox_info["area"],
+                            })
+
+                    save_json(
+                        {
+                            "concept": concept_key,
+                            "num": len(item1_bbox_records),
+                            "images": item1_bbox_records,
+                        },
+                        os.path.join(
+                            self.output_path,
+                            "classification",
+                            f"coco2017_instances/Df/item1/{concept_key}.json",
                         ),
                     )
         ordered_meta_info = dict(sorted(meta_info.items()))

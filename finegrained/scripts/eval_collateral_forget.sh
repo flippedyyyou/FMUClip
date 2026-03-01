@@ -1,0 +1,20 @@
+python /home/shenruoyan/FMUClip/finegrained/eval_collateral_forget.py \
+  --forget_classes banana \
+  --coco_root /datanfs4/shenruoyan/datasets/coco2017 \
+  --df_root /datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances \
+  --train_item_folder item2 \
+  --retain_item_folder item1 \
+  --test_item_folder item1 \
+  --test_item_format json \
+  --test_max_per_class 100 \
+  --clip_arch ViT-L-14-336 \
+  --clip_pretrained openai \
+  --before_ckpt /path/to/before_ckpt.pth \
+  --after_ckpt /path/to/after_ckpt.pth \
+  --cooccur_topk 10 \
+  --semsim_topk 10 \
+  --group_source train_df \
+  --batch_size 16 \
+  --num_workers 4 \
+  --device cuda \
+  --output_dir /datanfs4/shenruoyan/FMUClip/finegrained/output/collateral_eval
