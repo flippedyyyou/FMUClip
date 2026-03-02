@@ -17,6 +17,8 @@ dotenv.load_dotenv()
 COCO2017_PATH = os.getenv("COCO2017_PATH")
 FLICKR30K_ENTITIES_PATH = os.getenv("FLICKR30K_ENTITIES_PATH")
 OUTPUT_PATH = 'data'
+ITEM1_JSON_MIN_SAMPLES = 60
+ITEM1_JSON_MAX_SAMPLES = 70
 
 # Classification
 
@@ -225,7 +227,7 @@ class COCO2017InstancesProcessor(DatasetProcessor):
         return image_id_to_largest_bbox
 
     def split_for_classification(self):
-        ann_file = os.path.join(COCO2017_PATH, "annotations/instances_train2017.json")
+        ann_file = os.path.join(COCO2017_PATH, "annotations/instances_val2017.json")
         print("Splitting COCO2017 Instances dataset for classification...")
         enable_item1_bbox_export = os.path.basename(ann_file) == "instances_val2017.json"
         instances = {}
@@ -254,7 +256,7 @@ class COCO2017InstancesProcessor(DatasetProcessor):
             concept_phrase = concept.replace("_", " ")
             concept_key = concept.replace(" ", "_")
             related_imgs = {}
-            item_buckets = {i: [] for i in range(1, 8)}
+            item_buckets = {i: [] for i in range(1, 10)}
             for img_id, img_instances in instances.items():
                 instance_nums = len(img_instances)
                 for instance_id, instance_name in img_instances.items():
@@ -283,7 +285,7 @@ class COCO2017InstancesProcessor(DatasetProcessor):
                         'img_ids':list(related_imgs.keys()),
                     },
                 }
-                for item_num in range(1, 8):
+                for item_num in range(1, 10):
                     concept_meta_info[f'item{item_num}'] = {
                         'num': len(item_buckets[item_num]),
                         'img_ids': item_buckets[item_num],
@@ -291,7 +293,7 @@ class COCO2017InstancesProcessor(DatasetProcessor):
 
                 meta_info[concept_key] = concept_meta_info
 
-                for item_num in range(1, 8):
+                for item_num in range(1, 10):
                     save_txt(
                         [f'{img_id}.jpg' for img_id in item_buckets[item_num]],
                         os.path.join(
@@ -304,7 +306,7 @@ class COCO2017InstancesProcessor(DatasetProcessor):
                 if enable_item1_bbox_export:
                     # Keep original txt behavior; add item1-side json with item1-7 images + largest bbox for this concept.
                     item1_bbox_records = []
-                    for item_num in range(1, 8):
+                    for item_num in range(1, 10):
                         for img_id in item_buckets[item_num]:
                             bbox_info = instances_largest_bbox.get(img_id, {}).get(concept_key)
                             if bbox_info is None:
@@ -316,6 +318,13 @@ class COCO2017InstancesProcessor(DatasetProcessor):
                                 "bbox": bbox_info["bbox"],
                                 "area": bbox_info["area"],
                             })
+                    if len(item1_bbox_records) > ITEM1_JSON_MAX_SAMPLES:
+                        item1_bbox_records = item1_bbox_records[:ITEM1_JSON_MAX_SAMPLES]
+                    if 0 < len(item1_bbox_records) < ITEM1_JSON_MIN_SAMPLES:
+                        base_records = list(item1_bbox_records)
+                        need = ITEM1_JSON_MIN_SAMPLES - len(item1_bbox_records)
+                        for i in range(need):
+                            item1_bbox_records.append(base_records[i % len(base_records)])
 
                     save_json(
                         {
