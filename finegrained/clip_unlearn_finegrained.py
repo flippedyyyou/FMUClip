@@ -33,7 +33,7 @@ from finegrained.load_dataset import build_test_dataloaders
 from finegrained.params import build_parser as build_base_parser
 
 
-DEFAULT_MASK_DIR = "/home/shenruoyan/FMUClip/finegrained/mask"
+DEFAULT_MASK_DIR = "finegrained/mask"
 
 
 def _get_model_device(model: torch.nn.Module) -> torch.device:
@@ -395,7 +395,6 @@ def main() -> None:
                 {
                     "model": model.state_dict(),
                     "clip_arch": args.clip_arch,
-                    "clip_pretrained": args.clip_pretrained,
                     "best_epoch": best_epoch,
                     "best_score": best_score,
                     "best_forget_success": eval_metrics["forget_success"],
