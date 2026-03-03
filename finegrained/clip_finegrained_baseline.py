@@ -27,9 +27,7 @@ CLIP_STD = (0.26862954, 0.26130258, 0.27577711)
 
 def _load_clip_backend(args, device: torch.device):
     # args.clip_model_path 这里建议传 "ViT-B-32" 这种 model_name
-    # args.clip_pretrained 建议传 "openai" 或 "laion2b_s34b_b79k" 这种 pretrained tag
     model_name = getattr(args, "clip_arch", "ViT-B-32")
-    pretrained = getattr(args, "clip_pretrained", "openai")
 
     model, _, preprocess = open_clip.create_model_and_transforms(
         model_name,
@@ -822,7 +820,6 @@ def run_cliperase(args) -> None:
                 {
                     "model": model.state_dict(),
                     "clip_arch": args.clip_arch,
-                    "clip_pretrained": args.clip_pretrained,
                     "best_epoch": best_epoch,
                     "best_score": best_score,
                     "best_forget_success": eval_metrics["forget_success"],

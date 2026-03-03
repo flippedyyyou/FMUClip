@@ -18,3 +18,4 @@ pycocotools
 scikit-learn
 webdataset
 grad-cam
+open-clip-torch

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+set -a
+source .env
+set +a
+
 export CUDA_VISIBLE_DEVICES=3
 
 DEVICE="cuda"
@@ -7,9 +12,7 @@ FORGET_CLASSES=bird
 COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
 DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances"
 SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/mask"
-CLIP_ARCH="ViT-L-14-336"
-CLIP_PRETRAINED="openai"
-CLIP_MODEL_PATH="/datanfs4/shenruoyan/checkpoints/clip/ViT-L-14-336px.pt"
+CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
 BATCH_SIZE=4
 NUM_WORKERS=4
 MAX_EPOCH=50
@@ -36,8 +39,6 @@ python /datanfs4/shenruoyan/FMUClip/finegrained/clip_unlearn_finegrained.py \
   --test_item_format json \
   --test_max_per_class 50 \
   --clip_arch "${CLIP_ARCH}" \
-  --clip_pretrained "${CLIP_PRETRAINED}" \
-  --clip_model_path "${CLIP_MODEL_PATH}" \
   --output_dir "${OUTPUT_DIR}" \
   --batch_size "${BATCH_SIZE}" \
   --num_workers "${NUM_WORKERS}" \

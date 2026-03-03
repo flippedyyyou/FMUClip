@@ -395,7 +395,6 @@ def main() -> None:
                 {
                     "model": model.state_dict(),
                     "clip_arch": args.clip_arch,
-                    "clip_pretrained": args.clip_pretrained,
                     "best_epoch": best_epoch,
                     "best_score": best_score,
                     "best_forget_success": eval_metrics["forget_success"],

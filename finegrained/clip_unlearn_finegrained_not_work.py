@@ -27,7 +27,7 @@ from finegrained.clip_finegrained_baseline import (
     _get_logits_and_feats,
     _labels_to_texts,
     _load_clip_backend,
-    run_eval,
+    run_original_eval,
 )
 from finegrained.load_dataset import build_test_dataloaders
 from finegrained.params import build_parser as build_base_parser
@@ -468,7 +468,6 @@ def main() -> None:
                 {
                     "model": model.state_dict(),
                     "clip_arch": args.clip_arch,
-                    "clip_pretrained": args.clip_pretrained,
                     "best_epoch": best_epoch,
                     "best_score": best_score,
                     "best_forget_success": eval_metrics["forget_success"],
@@ -504,7 +503,7 @@ def main() -> None:
     )
 
     retain_topk_indices = _compute_topk_retain_classes(df_dataset, forget_indices, args.retain_topk)
-    run_eval(
+    run_original_eval(
         args,
         model=model,
         tokenize_fn=tokenize_fn,
