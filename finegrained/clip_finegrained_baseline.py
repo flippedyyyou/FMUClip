@@ -31,7 +31,6 @@ def _load_clip_backend(args, device: torch.device):
 
     model, _, preprocess = open_clip.create_model_and_transforms(
         model_name,
-        pretrained=pretrained,
         device=device
     )
     tokenize_fn = open_clip.get_tokenizer(model_name)
