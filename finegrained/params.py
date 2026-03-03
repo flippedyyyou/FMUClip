@@ -113,6 +113,4 @@ def parse_args():
     )
     args.train_image_root = os.path.join(args.coco_root, f"{args.train_split}2017")
     args.val_image_root = os.path.join(args.coco_root, f"{args.val_split}2017")
-    if args.original_eval and not args.clip_model_path:
-        raise ValueError("`--clip_model_path` is required when `--original_eval` is enabled.")
     return args

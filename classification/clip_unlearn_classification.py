@@ -29,7 +29,6 @@ from torch import nn
 from torch.utils.data import DataLoader, Dataset
 from torchvision import datasets, transforms
 
-from clip_unlearn_reward import get_reward_model
 from lavis.models.clip_models.model import load_openai_model
 from lavis.models.clip_models.tokenizer import tokenize
 import importlib.util
@@ -70,13 +69,17 @@ def _encode_image_patches(model, images: torch.Tensor) -> Tuple[torch.Tensor, in
     x = x + visual.positional_embedding.to(x.dtype)
     x = visual.ln_pre(x)
     x = x.permute(1, 0, 2)
-    x = visual.transformer(x)
+    blocks = getattr(visual.transformer, "resblocks", None)
+    if blocks is not None and len(blocks) > 0:
+        if len(blocks) >= 2:
+            for blk in blocks[:-1]:
+                x = blk(x)
+        else:
+            x = blocks[0](x)
+    else:
+        x = visual.transformer(x)
     x = x.permute(1, 0, 2)
-    x = visual.ln_post(x)
-    if visual.proj is not None:
-        x = x @ visual.proj
     patch_feats = x[:, 1:, :]
-    patch_feats = patch_feats / patch_feats.norm(dim=-1, keepdim=True)
     return patch_feats, grid
 
 
@@ -101,9 +104,25 @@ def _mask_to_patch_attention(mask_tensor: torch.Tensor, grid_size: int) -> torch
     return patch_mask.flatten(1)
 
 
+def _masked_max_mean_pool(
+    patch_feats: torch.Tensor,
+    patch_mask: torch.Tensor,
+) -> torch.Tensor:
+    pooled = []
+    for i in range(patch_feats.size(0)):
+        m = patch_mask[i] > 0.5
+        feats = patch_feats[i][m]
+        if feats.numel() == 0:
+            feats = patch_feats[i]
+        max_pool = feats.max(dim=0).values
+        mean_pool = feats.mean(dim=0)
+        pooled.append(0.5 * (max_pool + mean_pool))
+    return torch.stack(pooled, dim=0)
+
+
 def _build_text_pool(class_names: Sequence[str], retain_labels: Iterable[int]) -> List[str]:
     unique_labels = sorted(set(retain_labels))
-    return [class_names[label] for label in unique_labels]
+    return [f"a photo of {class_names[label].replace('_', ' ')}" for label in unique_labels]
 
 
 def _compute_class_stats(
@@ -219,27 +238,23 @@ def build_cifar100_test_datasets(
 def supervised_unlearn_train(
     model,
     teacher,
-    reward_model,
     df_loader,
     dr_loader,
     text_pool: List[str],
-    text_pool_tokens: torch.Tensor,
     optimizer,
     scaler,
     sam3_mask_dir: str,
     sam3_mask_suffix: str,
     label_mapping: dict,  # 修改点：传入加载好的字典映射
-    lambda_attn: float,
-    lambda_syn: float,
+    lambda_rtf: float,
     lambda_keep: float,
-    lambda_uni: float,
+    lambda_ce: float,
     max_epoch: int,
     log_interval: int,
 ) -> None:
     device = model.device
     mse = nn.MSELoss()
 
-    reward_model.set_text_features(captions=text_pool)
     iters_per_epoch = min(len(df_loader), len(dr_loader))
 
     for ep in range(max_epoch):
@@ -247,9 +262,10 @@ def supervised_unlearn_train(
         df_iter = iter(df_loader)
         dr_iter = iter(dr_loader)
         with torch.no_grad():
+            text_pool_tokens = _tokenize_texts(text_pool, device)
             text_pool_features = _encode_text_features(model, text_pool_tokens)
 
-        running = {"attn": 0.0, "syn": 0.0, "keep": 0.0, "uni": 0.0, "tot": 0.0}
+        running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0}
         for it in range(iters_per_epoch):
             df_s = next(df_iter)
             dr_s = next(dr_iter)
@@ -269,50 +285,27 @@ def supervised_unlearn_train(
                 sam3_masks = _load_sam3_masks(df_image_paths, sam3_mask_dir, sam3_mask_suffix, img_df.shape[-1])
                 sam3_masks = sam3_masks.to(device, non_blocking=True)
 
-                # 2. 计算 Attention Loss：使用对应类别的文本特征
+                # 2. 计算 RTF Loss：使用对应类别的文本特征与 retain 文本池做对比
                 patch_feats, grid = _encode_image_patches(model, img_df)
-                # 编码 batch 中每个样本对应的类别文本特征
                 df_text_feats = _encode_text_features(model, concept_tokens)
-
-                # 计算每个 patch 与其对应类别文本特征的相似度
-                patch_sim = F.cosine_similarity(patch_feats, df_text_feats.unsqueeze(1), dim=-1)
                 patch_attn = _mask_to_patch_attention(sam3_masks, grid)
-                attn_sum = patch_attn.sum(dim=1)
-                masked_similarity = patch_sim * patch_attn
-                # exp_similarity = torch.exp(masked_similarity)
-                loss_attn = (masked_similarity.sum(dim=1) / attn_sum.clamp(min=1.0)).mean()
+                pooled_patch_feats = _masked_max_mean_pool(patch_feats, patch_attn)
 
-                sam3_binary = (sam3_masks > 0.5).float()
-                syn_mask = 1.0 - sam3_binary
-                syn_img = img_df * syn_mask.unsqueeze(1)
+                clip_model = _resolve_clip_model(model)
+                if getattr(clip_model.visual, "proj", None) is not None:
+                    pooled_patch_feats = pooled_patch_feats @ clip_model.visual.proj
+                pooled_patch_feats = pooled_patch_feats / pooled_patch_feats.norm(dim=-1, keepdim=True)
 
-                reward_target = reward_model.clip_model.visual.image_size
-                if isinstance(reward_target, (tuple, list)):
-                    reward_target = reward_target[0]
-                reward_img = syn_img
-                if reward_img.shape[-1] != reward_target:
-                    reward_img = F.interpolate(
-                        reward_img,
-                        size=reward_target,
-                        mode="bicubic",
-                        align_corners=True,
-                    )
-                reward_model.set_image_features(images=reward_img)
-                clip_scores = reward_model.clipscore_weight * (
-                    reward_model.image_features @ reward_model.text_features.t()
-                )
-                clip_probs = torch.softmax(clip_scores, dim=-1)
-                sample_k = min(reward_model.sample_k, clip_scores.size(1))
-                topk_probs, indices = torch.topk(clip_probs, sample_k, dim=-1, largest=True)
-                adv = topk_probs.detach()
+                contrast_text_feats = torch.cat([df_text_feats, text_pool_features], dim=0)
+                logit_scale = clip_model.logit_scale.exp()
+                forget_targets = torch.arange(img_df.size(0), device=device)
 
-                sim_i2t_syn_u, img_syn_u = _get_logits_with_text_features(
-                    model, syn_img, text_pool_features
-                )
-                rep_output = torch.repeat_interleave(sim_i2t_syn_u, sample_k, dim=0)
-                text_index = indices.flatten()
-                ce = F.cross_entropy(rep_output, text_index, reduction="none").view(img_df.size(0), sample_k)
-                loss_syn = (adv * ce).mean()
+                logits_i2t = logit_scale * (pooled_patch_feats @ contrast_text_feats.t())
+                loss_rtf_i2t = F.cross_entropy(logits_i2t, forget_targets)
+
+                logits_t2i = logit_scale * (df_text_feats @ pooled_patch_feats.t())
+                loss_rtf_t2i = F.cross_entropy(logits_t2i, forget_targets)
+                loss_rtf = -0.5 * (loss_rtf_i2t + loss_rtf_t2i)
 
                 sim_i2t_dr_u, sim_t2i_dr_u, img_dr_u, txt_dr_u = _get_logits_and_feats(
                     model, img_dr, dr_text_tokens
@@ -322,35 +315,31 @@ def supervised_unlearn_train(
                         teacher, img_dr, dr_text_tokens
                     )
                 loss_keep = mse(sim_i2t_dr_u, sim_i2t_dr_t) + mse(sim_t2i_dr_u, sim_t2i_dr_t)
-                # Use ClipErase-style CE on retain pairs as the uniformity term.
                 retain_targets = torch.arange(img_dr.size(0), device=device)
-                uni_ce_i2t = F.cross_entropy(sim_i2t_dr_u, retain_targets)
-                uni_ce_t2i = F.cross_entropy(sim_t2i_dr_u, retain_targets)
-                loss_uni = uni_ce_i2t + uni_ce_t2i
+                loss_ce = F.cross_entropy(sim_i2t_dr_u, retain_targets) + F.cross_entropy(sim_t2i_dr_u, retain_targets)
 
-                loss = lambda_attn * loss_attn + lambda_keep * loss_keep + lambda_syn * loss_syn + lambda_uni * loss_uni
+                loss = lambda_rtf * loss_rtf + lambda_keep * loss_keep + lambda_ce * loss_ce
 
             scaler.scale(loss).backward()
             scaler.step(optimizer)
             scaler.update()
 
-            running["attn"] += float(loss_attn.detach().item())
-            running["syn"] += float(loss_syn.detach().item())
-            running["keep"] += float(loss_syn.detach().item())
-            running["uni"] += float(loss_uni.detach().item())
+            running["rtf"] += float(loss_rtf.detach().item())
+            running["keep"] += float(loss_keep.detach().item())
+            running["ce"] += float(loss_ce.detach().item())
             running["tot"] += float(loss.detach().item())
 
             if (it + 1) % log_interval == 0:
                 t = it + 1
                 logging.info(
-                    "EP %d/%d it=%d/%d attn=%.4f syn=%.4f uni=%.4f total=%.4f",
+                    "EP %d/%d it=%d/%d rtf=%.4f keep=%.4f ce=%.4f total=%.4f",
                     ep + 1,
                     max_epoch,
                     t,
                     iters_per_epoch,
-                    running["attn"] / t,
-                    running["syn"] / t,
-                    running["uni"] / t,
+                    running["rtf"] / t,
+                    running["keep"] / t,
+                    running["ce"] / t,
                     running["tot"] / t,
                 )
 
@@ -458,12 +447,6 @@ def main() -> None:
 
     retain_labels = list(_iter_labels(dr_train_dataset.dataset, dr_train_dataset.indices))
     text_pool = _build_text_pool(class_names, retain_labels)
-    text_pool_tokens = _tokenize_texts(text_pool, device)
-
-    args.multiple_reward_models = 0
-    args.sample_k = args.sample_k
-    reward_model = get_reward_model(device, args)
-
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     scaler = torch.cuda.amp.GradScaler(init_scale=1024)
 
@@ -471,20 +454,17 @@ def main() -> None:
     supervised_unlearn_train(
         model,
         teacher,
-        reward_model,
         df_loader,
         dr_loader,
         text_pool,
-        text_pool_tokens,
         optimizer,
         scaler,
         sam3_mask_dir=args.sam3_mask_dir,
         sam3_mask_suffix=args.sam3_mask_suffix,
         label_mapping=label_mapping,  # 传入加载的字典
-        lambda_attn=args.lambda_attn,
-        lambda_syn=args.lambda_syn,
+        lambda_rtf=args.lambda_attn,
         lambda_keep=args.lambda_keep,
-        lambda_uni=args.lambda_uni,
+        lambda_ce=args.lambda_uni,
         max_epoch=args.max_epoch,
         log_interval=50,
     )

@@ -61,13 +61,11 @@ def _read_json_image_list_and_bbox(json_path: str) -> Tuple[List[str], Dict[str,
         if not bbox or len(bbox) != 4:
             continue
         bbox = [float(v) for v in bbox]
-        if file_name in bbox_map:
-            raise ValueError(
-                f"Duplicate image '{file_name}' found in {json_path}. "
-                "split_datasets should ensure uniqueness per concept json."
-            )
         items.append(file_name)
-        bbox_map[file_name] = bbox
+        # Allow duplicated samples in json (used for per-concept sample count padding).
+        # Keep a single bbox per file for crop lookup.
+        if file_name not in bbox_map:
+            bbox_map[file_name] = bbox
     return items, bbox_map
 
 

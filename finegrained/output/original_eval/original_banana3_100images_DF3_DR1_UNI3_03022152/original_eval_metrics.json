@@ -1,0 +1,12 @@
+{
+  "backend": "open_clip",
+  "clip_model_path": "/datanfs4/shenruoyan/checkpoints/clip/ViT-L-14-336px.pt",
+  "clip_arch": "ViT-L-14-336",
+  "forget_classes": [
+    "banana"
+  ],
+  "forget_test_size": 50,
+  "retain_test_size": 3950,
+  "forget_success": 0.0,
+  "retain_accuracy": 0.8118987341772151
+}

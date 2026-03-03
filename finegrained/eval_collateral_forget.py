@@ -131,17 +131,15 @@ def _collect_logits_and_labels(
     data_loader,
     text_features: torch.Tensor,
     device: torch.device,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     all_logits: List[np.ndarray] = []
     all_labels: List[np.ndarray] = []
-    all_eval_class_idx: List[np.ndarray] = []
 
     model.eval()
     with torch.no_grad():
         for batch in data_loader:
             images = batch["image"].to(device, non_blocking=True)
             labels = batch["label"].to(device, non_blocking=True)
-            eval_class_idx = batch.get("eval_class_idx")
 
             image_features = model.encode_image(images)
             image_features = image_features / image_features.norm(dim=-1, keepdim=True)
@@ -149,36 +147,20 @@ def _collect_logits_and_labels(
 
             all_logits.append(logits.detach().cpu().numpy())
             all_labels.append(labels.detach().cpu().numpy())
-            if eval_class_idx is None:
-                all_eval_class_idx.append(np.full((labels.size(0),), -1, dtype=np.int64))
-            else:
-                all_eval_class_idx.append(eval_class_idx.detach().cpu().numpy().astype(np.int64))
 
     if not all_logits:
-        return (
-            np.zeros((0, text_features.size(0)), dtype=np.float32),
-            np.zeros((0, text_features.size(0)), dtype=np.float32),
-            np.zeros((0,), dtype=np.int64),
-        )
-    return (
-        np.concatenate(all_logits, axis=0),
-        np.concatenate(all_labels, axis=0),
-        np.concatenate(all_eval_class_idx, axis=0),
-    )
+        return np.zeros((0, text_features.size(0)), dtype=np.float32), np.zeros((0, text_features.size(0)), dtype=np.float32)
+    return np.concatenate(all_logits, axis=0), np.concatenate(all_labels, axis=0)
 
 
 def _single_class_accuracy_from_logits(
     logits: np.ndarray,
     labels: np.ndarray,
     class_idx: int,
-    eval_class_idx: np.ndarray = None,
 ) -> float:
     if logits.size == 0:
         return float("nan")
-    if eval_class_idx is not None and eval_class_idx.shape[0] == logits.shape[0] and (eval_class_idx >= 0).any():
-        valid = eval_class_idx == class_idx
-    else:
-        valid = (labels.sum(axis=1) == 1) & (labels[:, class_idx] > 0.5)
+    valid = (labels.sum(axis=1) == 1) & (labels[:, class_idx] > 0.5)
     if valid.sum() == 0:
         return float("nan")
     preds = logits.argmax(axis=1)
@@ -189,11 +171,10 @@ def _group_accuracy_from_logits(
     logits: np.ndarray,
     labels: np.ndarray,
     class_indices: Sequence[int],
-    eval_class_idx: np.ndarray = None,
 ) -> float:
     accs: List[float] = []
     for idx in class_indices:
-        a = _single_class_accuracy_from_logits(logits, labels, idx, eval_class_idx=eval_class_idx)
+        a = _single_class_accuracy_from_logits(logits, labels, idx)
         if not np.isnan(a):
             accs.append(a)
     if not accs:
@@ -225,12 +206,11 @@ def _per_class_metrics_from_logits(
     logits: np.ndarray,
     labels: np.ndarray,
     class_indices: Sequence[int],
-    eval_class_idx: np.ndarray = None,
 ) -> Dict[int, Dict[str, float]]:
     out: Dict[int, Dict[str, float]] = {}
     for idx in class_indices:
         out[int(idx)] = {
-            "accuracy": _single_class_accuracy_from_logits(logits, labels, int(idx), eval_class_idx=eval_class_idx),
+            "accuracy": _single_class_accuracy_from_logits(logits, labels, int(idx)),
             "AP": _single_class_ap_from_logits(logits, labels, int(idx)),
         }
     return out
@@ -366,12 +346,11 @@ def _evaluate_groups(
     logits: np.ndarray,
     labels: np.ndarray,
     groups: Dict[str, List[int]],
-    eval_class_idx: np.ndarray = None,
 ) -> Dict[str, Dict[str, float]]:
     out: Dict[str, Dict[str, float]] = {}
     for gname, idxs in groups.items():
         out[gname] = {
-            "accuracy": _group_accuracy_from_logits(logits, labels, idxs, eval_class_idx=eval_class_idx),
+            "accuracy": _group_accuracy_from_logits(logits, labels, idxs),
             "mAP": _group_map_from_logits(logits, labels, idxs),
             "num_classes": len(idxs),
         }
@@ -516,13 +495,11 @@ def main():
 
     before_text = _encode_text_features(before_model, class_names, before_tokenize, device)
     after_text = _encode_text_features(after_model, class_names, after_tokenize, device)
-    before_logits, labels, eval_class_idx = _collect_logits_and_labels(
-        before_model, retain_loader, before_text, device
-    )
-    after_logits, _, _ = _collect_logits_and_labels(after_model, retain_loader, after_text, device)
+    before_logits, labels = _collect_logits_and_labels(before_model, retain_loader, before_text, device)
+    after_logits, _ = _collect_logits_and_labels(after_model, retain_loader, after_text, device)
 
-    before_metrics = _evaluate_groups(before_logits, labels, groups, eval_class_idx=eval_class_idx)
-    after_metrics = _evaluate_groups(after_logits, labels, groups, eval_class_idx=eval_class_idx)
+    before_metrics = _evaluate_groups(before_logits, labels, groups)
+    after_metrics = _evaluate_groups(after_logits, labels, groups)
     drop_metrics = _add_drop(before_metrics, after_metrics)
 
     idx_to_name = {i: n for i, n in enumerate(class_names)}
@@ -533,12 +510,8 @@ def main():
             name_to_groups.setdefault(int(i), []).append(gname)
 
     class_indices_union = _flatten_unique([groups["cooccur"], groups["semsim"], groups["norm_mean"]])
-    per_class_before = _per_class_metrics_from_logits(
-        before_logits, labels, class_indices_union, eval_class_idx=eval_class_idx
-    )
-    per_class_after = _per_class_metrics_from_logits(
-        after_logits, labels, class_indices_union, eval_class_idx=eval_class_idx
-    )
+    per_class_before = _per_class_metrics_from_logits(before_logits, labels, class_indices_union)
+    per_class_after = _per_class_metrics_from_logits(after_logits, labels, class_indices_union)
     per_class_drop = _add_per_class_drop(per_class_before, per_class_after)
 
     per_class_rows: List[Dict[str, object]] = []
