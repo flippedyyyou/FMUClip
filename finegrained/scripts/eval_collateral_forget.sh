@@ -1,17 +1,19 @@
-CUDA_VISIBLE_DEVICES=2 python /datanfs4/shenruoyan/FMUClip/finegrained/eval_collateral_forget.py \
-  --forget_classes bird \
+set -euo pipefail
+
+set -a
+source .env
+set +a
+
+CUDA_VISIBLE_DEVICES= python /datanfs4/shenruoyan/FMUClip/finegrained/eval_collateral_forget.py \
+  --forget_classes banana \
   --coco_root /datanfs4/shenruoyan/datasets/coco2017 \
   --df_root /datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances \
   --train_item_folder item3 \
   --retain_item_folder item1 \
   --test_item_folder item1 \
-  --clip_arch ViT-L-14-336 \
-  --clip_pretrained openai \
-  --before_ckpt /datanfs4/shenruoyan/checkpoints/clip/ViT-L-14-336px.pt \
-  --after_ckpt /datanfs4/shenruoyan/FMUClip/finegrained/output/baselines/cliperase_bird2_all_DF3_DR0_UNI0_02241623/clip_finegrained_cliperase.pth \
-  --cooccur_topk 10 \
-  --semsim_topk 10 \
-  --norm_mean_topk 10 \
+  --clip_arch "local-dir:${OPENCLIP_PATH}" \
+  --after_ckpt /datanfs4/shenruoyan/FMUClip/finegrained/output/baselines/cliperase_banana3_100images_DF3_DR1_UNI3_03040200/clip_finegrained_cliperase.pth \
+  --cooccur_eval_k 5 \
   --group_source train_df \
   --batch_size 16 \
   --num_workers 4 \

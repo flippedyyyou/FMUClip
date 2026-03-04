@@ -1,0 +1,26 @@
+{
+  "backend": "open_clip",
+  "clip_model_path": "",
+  "clip_arch": "local-dir:/datanfs4/shenruoyan/checkpoints/timm/vit_large_patch14_clip_336.openai",
+  "forget_classes": [
+    "banana"
+  ],
+  "forget_test_size": 100,
+  "retain_test_size": 7900,
+  "forget_success": 0.06999999999999995,
+  "retain_accuracy": 0.7473417721518988,
+  "retain_topk_classes": [
+    "person",
+    "apple",
+    "bowl",
+    "orange",
+    "dining_table"
+  ],
+  "retain_topk_accuracy": {
+    "person": 0.17,
+    "apple": 0.95,
+    "bowl": 0.38,
+    "orange": 0.92,
+    "dining_table": 0.07
+  }
+}

@@ -13,12 +13,18 @@ if _PROJECT_ROOT not in sys.path:
 
 from finegrained.clip_finegrained_baseline import (
     _average_precision_binary,
+    _build_test_dataloaders_from_folders,
+    _build_val_joint_multilabel_loader,
     _build_class_name_list,
     _build_eval_transform,
     _build_forget_retain_indices,
     _build_train_datasets,
+    _compute_topk_retain_classes,
     _compute_map_for_indices,
     _encode_text_features,
+    _evaluate_joint_multilabel_ap,
+    _evaluate_single_accuracy,
+    _evaluate_topk_retain_accuracy,
     _load_clip_backend,
 )
 from finegrained.load_dataset import build_test_dataloaders
@@ -27,26 +33,19 @@ from finegrained.params import build_parser as build_base_parser
 
 def build_parser():
     parser = build_base_parser()
-    parser.description = "Evaluate collateral forgetting (CoOccur / SemSim / Both) before vs after."
-    parser.add_argument("--before_ckpt", type=str, required=True, help="Path to checkpoint before unlearning.")
+    parser.description = "Evaluate collateral forgetting before vs after (co-occurrence top/bottom + original_eval metrics)."
+    parser.add_argument(
+        "--before_ckpt",
+        type=str,
+        default="",
+        help="Optional. Deprecated for collateral eval; before model is initialized from --clip_arch.",
+    )
     parser.add_argument("--after_ckpt", type=str, required=True, help="Path to checkpoint after unlearning.")
     parser.add_argument(
-        "--cooccur_topk",
+        "--cooccur_eval_k",
         type=int,
-        default=10,
-        help="Top-K non-target classes by co-occurrence frequency.",
-    )
-    parser.add_argument(
-        "--semsim_topk",
-        type=int,
-        default=10,
-        help="Top-K non-target classes by text semantic similarity.",
-    )
-    parser.add_argument(
-        "--norm_mean_topk",
-        type=int,
-        default=10,
-        help="Top-K non-target classes by mean of min-max normalized co-occurrence and semantic similarity.",
+        default=5,
+        help="Evaluate top-K and bottom-K non-target classes ranked by co-occurrence frequency.",
     )
     parser.add_argument(
         "--group_source",
@@ -104,9 +103,17 @@ def _maybe_strip_prefix(state_dict: Dict[str, torch.Tensor], prefix: str) -> Dic
     return out
 
 
-def _load_model_with_ckpt(args, ckpt_path: str, device: torch.device):
+def _load_before_model_from_arch(args, device: torch.device):
+    model, tokenize_fn, image_size, backend = _load_clip_backend(args, device)
+    model = model.float().to(device).eval()
+    return model, tokenize_fn, image_size, backend
+
+
+def _load_after_model_from_ckpt(args, ckpt_path: str, device: torch.device):
     model, tokenize_fn, image_size, backend = _load_clip_backend(args, device)
     model = model.float().to(device)
+    if not ckpt_path:
+        raise ValueError("`--after_ckpt` is required to load the after-unlearning model.")
 
     raw = _safe_torch_load(ckpt_path, device)
     if isinstance(raw, torch.jit.ScriptModule):
@@ -115,6 +122,7 @@ def _load_model_with_ckpt(args, ckpt_path: str, device: torch.device):
         return raw, tokenize_fn, image_size, backend
     if not isinstance(raw, dict):
         raise ValueError(f"Checkpoint format not supported for {ckpt_path}: {type(raw)}")
+
     state_dict = _extract_state_dict(raw)
     state_dict = _maybe_strip_prefix(state_dict, "module.")
     missing, unexpected = model.load_state_dict(state_dict, strict=False)
@@ -252,6 +260,93 @@ def _rank_cooccur_classes(
         c = int(counts[idx_i])
         ranked.append((idx_i, c))
     return ranked
+
+
+def _pick_bottomk_indices(ranked: Sequence[Tuple[int, float]], k: int) -> List[int]:
+    if k <= 0:
+        return []
+    picked = list(reversed(ranked[-k:]))
+    return [int(idx) for idx, _ in picked]
+
+
+def _evaluate_original_style_metrics(
+    model: torch.nn.Module,
+    args,
+    tokenize_fn,
+    image_size: int,
+    backend: str,
+) -> Dict[str, object]:
+    device = _get_model_device(model)
+    class_names = _build_class_name_list()
+    forget_indices, _ = _build_forget_retain_indices(args.forget_classes)
+    eval_transform = _build_eval_transform(image_size)
+
+    forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
+    df_dataset, _ = _build_train_datasets(args, transform=eval_transform)
+    retain_topk_indices = _compute_topk_retain_classes(
+        df_dataset=df_dataset,
+        forget_indices=forget_indices,
+        k=args.retain_topk,
+    )
+    text_features = _encode_text_features(model, class_names, tokenize_fn, device)
+
+    forget_acc = _evaluate_single_accuracy(
+        model=model,
+        data_loader=forget_loader,
+        text_features=text_features,
+        device=device,
+    )
+    retain_acc = _evaluate_single_accuracy(
+        model=model,
+        data_loader=retain_loader,
+        text_features=text_features,
+        device=device,
+    )
+    joint_loader = _build_val_joint_multilabel_loader(
+        args=args,
+        transform=eval_transform,
+        forget_indices=forget_indices,
+        retain_topk_indices=retain_topk_indices,
+    )
+    joint_ap_metrics = _evaluate_joint_multilabel_ap(
+        model=model,
+        data_loader=joint_loader,
+        text_features=text_features,
+        class_names=class_names,
+        forget_indices=forget_indices,
+        retain_topk_indices=retain_topk_indices,
+        device=device,
+    )
+
+    metrics: Dict[str, object] = {
+        "backend": backend,
+        "clip_model_path": args.clip_model_path,
+        "clip_arch": args.clip_arch,
+        "forget_classes": list(args.forget_classes),
+        "forget_test_size": len(forget_loader.dataset),
+        "retain_test_size": len(retain_loader.dataset),
+        "joint_multilabel_val_size": joint_ap_metrics["eval_size"],
+        "joint_multilabel_max_per_class": int(getattr(args, "joint_multilabel_max_per_class", 0)),
+        "forget_success": 1.0 - float(forget_acc),
+        "retain_accuracy": float(retain_acc),
+        "forget_map": float(joint_ap_metrics["forget_map"]),
+        "forget_class_ap": dict(joint_ap_metrics["forget_class_ap"]),
+        "retain_topk_ap": dict(joint_ap_metrics["retain_topk_ap"]),
+        "other_map": float(joint_ap_metrics["other_map"]),
+        "other_classes": list(joint_ap_metrics["other_classes"]),
+    }
+    if retain_topk_indices:
+        topk_acc = _evaluate_topk_retain_accuracy(
+            model=model,
+            data_loader=retain_loader,
+            text_features=text_features,
+            class_names=class_names,
+            device=device,
+            retain_indices=retain_topk_indices,
+        )
+        metrics["retain_topk_classes"] = [class_names[i] for i in retain_topk_indices]
+        metrics["retain_topk_accuracy"] = topk_acc
+    return metrics
 
 
 def _rank_semsim_classes(
@@ -415,7 +510,7 @@ def _write_text_report(
     lines: List[str] = []
     lines.append("Collateral Forgetting Evaluation")
     lines.append("")
-    for g in ["cooccur", "semsim", "norm_mean"]:
+    for g in before_metrics.keys():
         classes = groups_named.get(g, [])
         b = before_metrics[g]
         a = after_metrics[g]
@@ -463,8 +558,24 @@ def main():
     class_names = _build_class_name_list()
     forget_indices, _ = _build_forget_retain_indices(args.forget_classes)
 
-    before_model, before_tokenize, image_size, backend = _load_model_with_ckpt(args, args.before_ckpt, device)
-    after_model, after_tokenize, _, _ = _load_model_with_ckpt(args, args.after_ckpt, device)
+    before_model, before_tokenize, image_size, backend = _load_before_model_from_arch(args, device)
+    after_model, after_tokenize, _, _ = _load_after_model_from_ckpt(args, args.after_ckpt, device)
+
+    # 1) Metrics aligned with run_original_eval for before/after checkpoints.
+    before_original_eval = _evaluate_original_style_metrics(
+        model=before_model,
+        args=args,
+        tokenize_fn=before_tokenize,
+        image_size=image_size,
+        backend=backend,
+    )
+    after_original_eval = _evaluate_original_style_metrics(
+        model=after_model,
+        args=args,
+        tokenize_fn=after_tokenize,
+        image_size=image_size,
+        backend=backend,
+    )
 
     cooccur_ranked = _rank_cooccur_classes(
         args,
@@ -472,20 +583,12 @@ def main():
         num_classes=len(class_names),
         image_size=image_size,
     )
-    semsim_ranked = _rank_semsim_classes(
-        before_model,
-        before_tokenize,
-        class_names=class_names,
-        forget_indices=forget_indices,
-        device=device,
-    )
-    groups, rankings, score_maps = _build_groups_and_rankings(
-        cooccur_ranked=cooccur_ranked,
-        semsim_ranked=semsim_ranked,
-        cooccur_topk=args.cooccur_topk,
-        semsim_topk=args.semsim_topk,
-        norm_mean_topk=args.norm_mean_topk,
-    )
+    cooccur_eval_k = int(args.cooccur_eval_k)
+    groups = {
+        "cooccur_top": _pick_topk_indices(cooccur_ranked, cooccur_eval_k),
+        "cooccur_bottom": _pick_bottomk_indices(cooccur_ranked, cooccur_eval_k),
+    }
+    rankings = {"cooccur": cooccur_ranked}
 
     eval_transform = _build_eval_transform(image_size)
     prev_return_meta = args.return_meta
@@ -509,7 +612,7 @@ def main():
         for i in idxs:
             name_to_groups.setdefault(int(i), []).append(gname)
 
-    class_indices_union = _flatten_unique([groups["cooccur"], groups["semsim"], groups["norm_mean"]])
+    class_indices_union = _flatten_unique([groups["cooccur_top"], groups["cooccur_bottom"]])
     per_class_before = _per_class_metrics_from_logits(before_logits, labels, class_indices_union)
     per_class_after = _per_class_metrics_from_logits(after_logits, labels, class_indices_union)
     per_class_drop = _add_per_class_drop(per_class_before, per_class_after)
@@ -538,9 +641,9 @@ def main():
     )
     row_by_class_idx = {int(r["class_index"]): r for r in per_class_rows}
     groupwise_rows: Dict[str, List[Dict[str, object]]] = {}
-    for g in ["cooccur", "semsim", "norm_mean"]:
+    for g in ["cooccur_top", "cooccur_bottom"]:
         rows: List[Dict[str, object]] = []
-        for idx, score in rankings[g]:
+        for idx, score in rankings["cooccur"]:
             if idx not in set(groups[g]):
                 continue
             base = row_by_class_idx.get(int(idx))
@@ -556,23 +659,32 @@ def main():
         before_logits[:, forget_indices].max(axis=1),
     )
 
+    original_eval_drop = {
+        "forget_success_drop": float(before_original_eval["forget_success"]) - float(after_original_eval["forget_success"]),
+        "retain_accuracy_drop": float(before_original_eval["retain_accuracy"]) - float(after_original_eval["retain_accuracy"]),
+        "forget_map_drop": float(before_original_eval["forget_map"]) - float(after_original_eval["forget_map"]),
+        "other_map_drop": float(before_original_eval["other_map"]) - float(after_original_eval["other_map"]),
+    }
+
     metrics = {
         "backend": backend,
         "clip_arch": args.clip_arch,
         "clip_pretrained": args.clip_pretrained,
         "forget_classes": list(args.forget_classes),
+        "before_model_source": "clip_arch",
+        "before_clip_arch": args.clip_arch,
         "before_ckpt": args.before_ckpt,
         "after_ckpt": args.after_ckpt,
         "eval_retain_size": int(labels.shape[0]),
         "group_source": args.group_source,
-        "cooccur_topk": args.cooccur_topk,
-        "semsim_topk": args.semsim_topk,
-        "norm_mean_topk": args.norm_mean_topk,
+        "cooccur_eval_k": cooccur_eval_k,
         "groups": groups_named,
         "group_rankings": {
-            k: [{"class": idx_to_name[idx], "score": float(score)} for idx, score in v]
-            for k, v in rankings.items()
+            "cooccur": [{"class": idx_to_name[idx], "score": float(score)} for idx, score in rankings["cooccur"]]
         },
+        "original_eval_before": before_original_eval,
+        "original_eval_after": after_original_eval,
+        "original_eval_drop": original_eval_drop,
         "before": before_metrics,
         "after": after_metrics,
         "drop": drop_metrics,
@@ -581,21 +693,6 @@ def main():
         "debug": {
             "cooccur_ranked_top20": [
                 {"class": idx_to_name[idx], "count": score} for idx, score in cooccur_ranked[:20]
-            ],
-            "semsim_ranked_top20": [
-                {"class": idx_to_name[idx], "similarity": score} for idx, score in semsim_ranked[:20]
-            ],
-            "norm_mean_ranked_top20": [
-                {"class": idx_to_name[idx], "score": score} for idx, score in rankings["norm_mean"][:20]
-            ],
-            "score_norm_preview_top20": [
-                {
-                    "class": idx_to_name[idx],
-                    "cooccur_norm": float(score_maps["cooccur_norm"].get(idx, 0.0)),
-                    "semsim_norm": float(score_maps["semsim_norm"].get(idx, 0.0)),
-                    "norm_mean": float(score_maps["norm_mean"].get(idx, 0.0)),
-                }
-                for idx, _ in rankings["norm_mean"][:20]
             ],
             "forget_presence_ap_on_retain_eval": float(semsim_ap) if not np.isnan(semsim_ap) else None,
         },
@@ -629,12 +726,19 @@ def main():
     print(f"Saved to: {out_path}")
     print(f"Saved to: {txt_out_path}")
     print(f"Saved to: {per_class_path}")
-    for g in ["cooccur", "semsim", "norm_mean"]:
+    print(
+        "Original-eval metrics (before -> after): "
+        f"forget_success {before_original_eval['forget_success']:.4f}->{after_original_eval['forget_success']:.4f}, "
+        f"retain_accuracy {before_original_eval['retain_accuracy']:.4f}->{after_original_eval['retain_accuracy']:.4f}, "
+        f"forget_map {before_original_eval['forget_map']:.4f}->{after_original_eval['forget_map']:.4f}, "
+        f"other_map {before_original_eval['other_map']:.4f}->{after_original_eval['other_map']:.4f}"
+    )
+    for g in ["cooccur_top", "cooccur_bottom"]:
         b = before_metrics[g]
         a = after_metrics[g]
         d = drop_metrics[g]
-        class_names = groups_named.get(g, [])
-        print(f"[{g}] classes: {', '.join(class_names) if class_names else '(empty)'}")
+        group_cls = groups_named.get(g, [])
+        print(f"[{g}] classes: {', '.join(group_cls) if group_cls else '(empty)'}")
         print(
             f"[{g}] n={b['num_classes']} "
             f"acc: {b['accuracy']:.4f} -> {a['accuracy']:.4f} (drop {d['accuracy_drop']:.4f}), "

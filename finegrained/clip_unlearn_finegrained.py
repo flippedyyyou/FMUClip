@@ -18,6 +18,7 @@ if _PROJECT_ROOT not in sys.path:
 
 from finegrained.clip_finegrained_baseline import (
     _build_class_name_list,
+    _build_test_dataloaders_from_folders,
     _build_eval_transform,
     _build_forget_retain_indices,
     _build_train_datasets,
@@ -29,7 +30,6 @@ from finegrained.clip_finegrained_baseline import (
     _load_clip_backend,
     run_original_eval,
 )
-from finegrained.load_dataset import build_test_dataloaders
 from finegrained.params import build_parser as build_base_parser
 
 
@@ -263,10 +263,7 @@ def _evaluate_for_selection(
 ) -> Dict[str, float]:
     device = _get_model_device(model)
     eval_transform = _build_eval_transform(image_size)
-    prev_return_meta = args.return_meta
-    args.return_meta = True
-    forget_loader, retain_loader = build_test_dataloaders(args, transform=eval_transform)
-    args.return_meta = prev_return_meta
+    forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
 
     text_features = _encode_text_features(model, class_names, tokenize_fn, device)
     forget_acc = _evaluate_single_accuracy(model, forget_loader, text_features, device)
@@ -430,7 +427,7 @@ def main() -> None:
     )
 
     retain_topk_indices = _compute_topk_retain_classes(df_dataset, forget_indices, args.retain_topk)
-    run_original_eval(
+    final_eval_metrics = run_original_eval(
         args,
         model=model,
         tokenize_fn=tokenize_fn,
@@ -438,6 +435,19 @@ def main() -> None:
         backend=backend,
         retain_topk_indices=retain_topk_indices,
     )
+    final_cfg = dict(vars(args))
+    final_cfg.update(
+        {
+            "best_epoch": best_epoch,
+            "best_score": best_score,
+            "best_forget_success": best_metrics["forget_success"],
+            "best_retain_accuracy": best_metrics["retain_accuracy"],
+            "selection_metric": "forget_success + retain_accuracy",
+            "final_original_eval": final_eval_metrics,
+        }
+    )
+    with open(config_path, "w", encoding="utf-8") as f:
+        json.dump(final_cfg, f, ensure_ascii=False, indent=2)
 
 
 if __name__ == "__main__":

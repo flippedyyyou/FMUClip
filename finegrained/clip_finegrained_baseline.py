@@ -6,10 +6,13 @@ from typing import Callable, Dict, List, Sequence, Tuple
 
 import numpy as np
 import torch
+from sklearn.metrics import average_precision_score
 from torchvision import transforms
 import open_clip
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
+from PIL import Image
 
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.dirname(_CURRENT_DIR)
@@ -17,12 +20,13 @@ if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
 from finegrained.coco_labels.coco import LABEL_NAMES
-from finegrained.load_dataset import COCODataSet, build_test_dataloaders
+from finegrained.load_dataset import COCODataSet
 from finegrained.params import parse_args
 
 
 CLIP_MEAN = (0.48145466, 0.4578275, 0.40821073)
 CLIP_STD = (0.26862954, 0.26130258, 0.27577711)
+IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".bmp")
 
 
 def _load_clip_backend(args, device: torch.device):
@@ -54,6 +58,100 @@ def _build_eval_transform(image_size: int):
 
 def _build_class_name_list() -> List[str]:
     return [name for _, name in sorted(LABEL_NAMES.items())]
+
+
+def _resolve_test_images_root(args) -> str:
+    explicit = getattr(args, "test_images_root", None)
+    if explicit:
+        return explicit
+    return os.path.join(args.df_root, args.val_split, "test_images")
+
+
+class _FolderClassEvalDataset(Dataset):
+    def __init__(self, samples: Sequence[Tuple[str, int]], num_classes: int, transform):
+        self.samples = list(samples)
+        self.num_classes = int(num_classes)
+        self.transform = transform
+
+    def __len__(self) -> int:
+        return len(self.samples)
+
+    def __getitem__(self, index: int):
+        image_path, class_idx = self.samples[index]
+        with Image.open(image_path) as img:
+            img = img.convert("RGB")
+        image = self.transform(img)
+
+        label = torch.zeros(self.num_classes, dtype=torch.float32)
+        label[class_idx] = 1.0
+        return {
+            "image": image,
+            "label": label,
+            "eval_class_idx": torch.tensor(class_idx, dtype=torch.long),
+            "image_path": image_path,
+        }
+
+
+def _build_test_dataloaders_from_folders(args, transform):
+    class_names = _build_class_name_list()
+    name_to_idx = {name: idx for idx, name in enumerate(class_names)}
+    test_images_root = _resolve_test_images_root(args)
+
+    if not os.path.isdir(test_images_root):
+        raise FileNotFoundError(f"test_images root not found: {test_images_root}")
+
+    forget_names = {_normalize_name(x) for x in args.forget_classes}
+    unknown = [n for n in sorted(forget_names) if n not in name_to_idx]
+    if unknown:
+        raise ValueError(f"Unknown forget classes: {unknown}")
+    forget_idx_set = {name_to_idx[n] for n in forget_names}
+
+    forget_samples: List[Tuple[str, int]] = []
+    retain_samples: List[Tuple[str, int]] = []
+
+    for class_name, class_idx in name_to_idx.items():
+        class_dir = os.path.join(test_images_root, class_name)
+        if not os.path.isdir(class_dir):
+            continue
+        image_paths = []
+        for fname in sorted(os.listdir(class_dir)):
+            fpath = os.path.join(class_dir, fname)
+            if not os.path.isfile(fpath):
+                continue
+            if not fname.lower().endswith(IMAGE_EXTS):
+                continue
+            image_paths.append(fpath)
+
+        dst = forget_samples if class_idx in forget_idx_set else retain_samples
+        dst.extend((p, class_idx) for p in image_paths)
+
+    forget_dataset = _FolderClassEvalDataset(
+        samples=forget_samples,
+        num_classes=len(class_names),
+        transform=transform,
+    )
+    retain_dataset = _FolderClassEvalDataset(
+        samples=retain_samples,
+        num_classes=len(class_names),
+        transform=transform,
+    )
+    forget_loader = DataLoader(
+        forget_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.num_workers,
+        pin_memory=args.pin_memory,
+        drop_last=False,
+    )
+    retain_loader = DataLoader(
+        retain_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.num_workers,
+        pin_memory=args.pin_memory,
+        drop_last=False,
+    )
+    return forget_loader, retain_loader
 
 
 def _build_forget_retain_indices(forget_classes: Sequence[str]) -> Tuple[List[int], List[int]]:
@@ -516,21 +614,7 @@ def _average_precision_binary(y_true: np.ndarray, y_score: np.ndarray) -> float:
     positives = int(y_true.sum())
     if positives == 0:
         return float("nan")
-
-    order = np.argsort(-y_score)
-    y_true_sorted = y_true[order]
-    tp = np.cumsum(y_true_sorted)
-    fp = np.cumsum(1 - y_true_sorted)
-
-    precision = tp / np.maximum(tp + fp, 1)
-    recall = tp / positives
-
-    mrec = np.concatenate(([0.0], recall, [1.0]))
-    mpre = np.concatenate(([0.0], precision, [0.0]))
-    for i in range(mpre.size - 2, -1, -1):
-        mpre[i] = max(mpre[i], mpre[i + 1])
-    idx = np.where(mrec[1:] != mrec[:-1])[0]
-    return float(np.sum((mrec[idx + 1] - mrec[idx]) * mpre[idx + 1]))
+    return float(average_precision_score(y_true, y_score))
 
 
 def _compute_map_for_indices(
@@ -548,16 +632,99 @@ def _compute_map_for_indices(
     return float(np.mean(ap_values))
 
 
-def _evaluate_multi_label_map(
+def _build_val_joint_multilabel_loader(
+    args,
+    transform,
+    forget_indices: Sequence[int],
+    retain_topk_indices: Sequence[int],
+):
+    if not forget_indices or not retain_topk_indices:
+        return DataLoader(
+            COCODataSet(
+                annotation_file=args.val_annotation_file,
+                image_root=args.val_image_root,
+                split=args.val_split,
+                transform=transform,
+                return_meta=args.return_meta,
+                selected_files=[],
+                forget_class_names=args.forget_classes,
+            ),
+            batch_size=args.batch_size,
+            shuffle=False,
+            num_workers=args.num_workers,
+            pin_memory=args.pin_memory,
+            drop_last=False,
+        )
+
+    full_dataset = COCODataSet(
+        annotation_file=args.val_annotation_file,
+        image_root=args.val_image_root,
+        split=args.val_split,
+        transform=transform,
+        return_meta=args.return_meta,
+        forget_class_names=args.forget_classes,
+    )
+
+    forget_idx_arr = np.array(list(forget_indices), dtype=np.int64)
+    topk_idx_arr = np.array(list(retain_topk_indices), dtype=np.int64)
+    selected_files: List[str] = []
+    max_per_class = int(getattr(args, "joint_multilabel_max_per_class", 0))
+    cap_indices = sorted(set(int(i) for i in forget_indices) | set(int(i) for i in retain_topk_indices))
+    cap_counts = {idx: 0 for idx in cap_indices}
+
+    for file_name, target in zip(full_dataset.file_names, full_dataset.targets):
+        has_forget = bool(np.any(target[forget_idx_arr] > 0.5))
+        has_topk_retain = bool(np.any(target[topk_idx_arr] > 0.5))
+        if not (has_forget and has_topk_retain):
+            continue
+
+        if max_per_class > 0 and cap_indices:
+            present_cap_indices = [idx for idx in cap_indices if target[idx] > 0.5]
+            if not present_cap_indices:
+                continue
+            if not any(cap_counts[idx] < max_per_class for idx in present_cap_indices):
+                continue
+            selected_files.append(file_name)
+            for idx in present_cap_indices:
+                if cap_counts[idx] < max_per_class:
+                    cap_counts[idx] += 1
+            continue
+
+        selected_files.append(file_name)
+
+    subset_dataset = COCODataSet(
+        annotation_file=args.val_annotation_file,
+        image_root=args.val_image_root,
+        split=args.val_split,
+        transform=transform,
+        return_meta=args.return_meta,
+        selected_files=selected_files,
+        forget_class_names=args.forget_classes,
+    )
+
+    return DataLoader(
+        subset_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.num_workers,
+        pin_memory=args.pin_memory,
+        drop_last=False,
+    )
+
+
+def _evaluate_joint_multilabel_ap(
     model,
     data_loader,
     text_features: torch.Tensor,
+    class_names: Sequence[str],
     forget_indices: Sequence[int],
+    retain_topk_indices: Sequence[int],
     device: torch.device,
-) -> Dict[str, float]:
+) -> Dict[str, object]:
     model.eval()
     all_scores: List[np.ndarray] = []
     all_labels: List[np.ndarray] = []
+    per_class_ap: Dict[int, float] = {}
 
     with torch.no_grad():
         for batch in data_loader:
@@ -572,18 +739,95 @@ def _evaluate_multi_label_map(
             all_labels.append(labels.detach().cpu().numpy())
 
     if not all_scores:
-        return {"forget_map": 0.0, "retain_map": 0.0}
+        return {
+            "eval_size": 0,
+            "forget_map": 0.0,
+            "forget_class_ap": {},
+            "retain_topk_ap": {},
+            "other_map": 0.0,
+            "other_classes": [],
+        }
 
-    scores = np.concatenate(all_scores, axis=0)
-    gt = np.concatenate(all_labels, axis=0)
+    scores = np.concatenate(all_scores, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C]，C为数据集的全部候选集类别数
+    gt = np.concatenate(all_labels, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C], 0/1 二值标签矩阵
+    present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist() # 只保留“出现过正样本”的类计算 AP，避免某些完全没有正样本的类导致 AP 计算出 NaN
 
-    forget_set = set(forget_indices)
-    present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist()
-    retain_indices = [idx for idx in present_classes if idx not in forget_set]
+    for class_idx in present_classes:
+        ap = _average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
+        if not np.isnan(ap):
+            per_class_ap[int(class_idx)] = float(ap)
 
-    forget_map = _compute_map_for_indices(gt, scores, forget_indices)
-    retain_map = _compute_map_for_indices(gt, scores, retain_indices)
-    return {"forget_map": forget_map, "retain_map": retain_map}
+    forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
+    forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap}
+    retain_topk_ap = {
+        class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap
+    }
+
+    excluded = set(forget_indices) | set(retain_topk_indices)
+    other_indices = [idx for idx in present_classes if idx not in excluded]
+    other_map = _compute_map_for_indices(gt, scores, other_indices)
+
+    return {
+        "eval_size": int(gt.shape[0]),
+        "forget_map": float(np.mean(forget_aps)) if forget_aps else 0.0,
+        "forget_class_ap": forget_class_ap,
+        "retain_topk_ap": retain_topk_ap,
+        "other_map": other_map,
+        "other_classes": [class_names[idx] for idx in other_indices],
+    }
+
+
+def _dump_joint_multilabel_results(
+    model,
+    data_loader,
+    text_features: torch.Tensor,
+    class_names: Sequence[str],
+    device: torch.device,
+    out_path: str,
+    topk: int = 5,
+) -> None:
+    model.eval()
+    rows = []
+
+    with torch.no_grad():
+        for batch in data_loader:
+            images = batch["image"].to(device, non_blocking=True)
+            labels = batch["label"].to(device, non_blocking=True)
+            image_paths = batch.get("image_path")
+
+            image_features = model.encode_image(images)
+            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+            logits = model.logit_scale.exp() * (image_features @ text_features.t())
+
+            k = min(topk, logits.size(1))
+            topk_scores, topk_indices = logits.topk(k, dim=1)
+            pred_global = logits.argmax(dim=1)
+
+            for i in range(images.size(0)):
+                gt_indices = torch.nonzero(labels[i] > 0.5).flatten().tolist()
+                if not gt_indices:
+                    continue
+                image_path = image_paths[i] if image_paths is not None else None
+                pred_idx = int(pred_global[i].item())
+                rows.append(
+                    {
+                        "image_path": image_path,
+                        "gt": [class_names[int(idx)] for idx in gt_indices],
+                        "pred_name": class_names[pred_idx],
+                        "top5": [
+                            {
+                                "name": class_names[int(topk_indices[i, j].item())],
+                                "score": float(topk_scores[i, j].item()),
+                            }
+                            for j in range(k)
+                        ],
+                    }
+                )
+
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        for row in rows:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
 def run_original_eval(
@@ -593,17 +837,13 @@ def run_original_eval(
     image_size: int = None,
     backend: str = None,
     retain_topk_indices: Sequence[int] = None,
-) -> None:
+) -> Dict[str, object]:
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     if model is None or tokenize_fn is None or image_size is None or backend is None:
         model, tokenize_fn, image_size, backend = _load_clip_backend(args, device)
     eval_transform = _build_eval_transform(image_size)
 
-    prev_return_meta = args.return_meta
-    args.return_meta = True
-    forget_loader, retain_loader = build_test_dataloaders(args, transform=eval_transform)
-    args.return_meta = prev_return_meta
-    # multi_label_loader = build_train_dataloader(args, transform=eval_transform)
+    forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
     class_names = _build_class_name_list()
     forget_indices, retain_indices = _build_forget_retain_indices(args.forget_classes)
     if retain_topk_indices is None and args.retain_topk > 0:
@@ -614,6 +854,12 @@ def run_original_eval(
             k=args.retain_topk,
         )
     text_features = _encode_text_features(model, class_names, tokenize_fn, device)
+    joint_multilabel_loader = _build_val_joint_multilabel_loader(
+        args=args,
+        transform=eval_transform,
+        forget_indices=forget_indices,
+        retain_topk_indices=retain_topk_indices or [],
+    )
 
     forget_acc = _evaluate_single_accuracy(
         model=model,
@@ -627,13 +873,15 @@ def run_original_eval(
         text_features=text_features,
         device=device,
     )
-    # multi_map = _evaluate_multi_label_map(
-    #     model=model,
-    #     data_loader=multi_label_loader,
-    #     text_features=text_features,
-    #     forget_indices=forget_indices,
-    #     device=device,
-    # )
+    joint_ap_metrics = _evaluate_joint_multilabel_ap(
+        model=model,
+        data_loader=joint_multilabel_loader,
+        text_features=text_features,
+        class_names=class_names,
+        forget_indices=forget_indices,
+        retain_topk_indices=retain_topk_indices or [],
+        device=device,
+    )
 
     os.makedirs(args.output_dir, exist_ok=True)
     metrics = {
@@ -643,11 +891,15 @@ def run_original_eval(
         "forget_classes": list(args.forget_classes),
         "forget_test_size": len(forget_loader.dataset),
         "retain_test_size": len(retain_loader.dataset),
+        "joint_multilabel_val_size": joint_ap_metrics["eval_size"],
+        "joint_multilabel_max_per_class": int(getattr(args, "joint_multilabel_max_per_class", 0)),
         "forget_success": 1.0 - forget_acc,
         "retain_accuracy": retain_acc,
-        # "multi_label_eval_size": len(multi_label_loader.dataset),
-        # "forget_map": multi_map["forget_map"],
-        # "retain_map": multi_map["retain_map"],
+        "forget_map": joint_ap_metrics["forget_map"],
+        "forget_class_ap": joint_ap_metrics["forget_class_ap"],
+        "retain_topk_ap": joint_ap_metrics["retain_topk_ap"],
+        "other_map": joint_ap_metrics["other_map"],
+        "other_classes": joint_ap_metrics["other_classes"],
     }
     if retain_topk_indices:
         topk_acc = _evaluate_topk_retain_accuracy(
@@ -666,6 +918,7 @@ def run_original_eval(
 
     forget_topk_path = os.path.join(args.output_dir, "forget_test_topk.jsonl")
     retain_topk_path = os.path.join(args.output_dir, "retain_test_topk.jsonl")
+    joint_map_topk_path = os.path.join(args.output_dir, "joint_multilabel_val_topk.jsonl")
     _dump_topk_results(
         model=model,
         data_loader=forget_loader,
@@ -682,12 +935,23 @@ def run_original_eval(
         device=device,
         out_path=retain_topk_path,
     )
+    _dump_joint_multilabel_results(
+        model=model,
+        data_loader=joint_multilabel_loader,
+        text_features=text_features,
+        class_names=class_names,
+        device=device,
+        out_path=joint_map_topk_path,
+    )
 
     print(f"Forget test accuracy: {forget_acc:.4f}")
     print(f"Retain test accuracy: {retain_acc:.4f}")
-    # print(f"Forget mAP (multi-label): {multi_map['forget_map']:.4f}")
-    # print(f"Retain mAP (multi-label): {multi_map['retain_map']:.4f}")
+    print(f"Joint multi-label val size: {joint_ap_metrics['eval_size']}")
+    print(f"Forget AP (mean over forget classes): {joint_ap_metrics['forget_map']:.4f}")
+    print(f"Top-{args.retain_topk} retain AP: {joint_ap_metrics['retain_topk_ap']}")
+    print(f"Other classes mAP: {joint_ap_metrics['other_map']:.4f}")
     print(f"Saved metrics to: {metrics_path}")
+    return metrics
 
 
 def _evaluate_for_selection(
@@ -699,10 +963,7 @@ def _evaluate_for_selection(
 ) -> Dict[str, float]:
     device = _get_model_device(model)
     eval_transform = _build_eval_transform(image_size)
-    prev_return_meta = args.return_meta
-    args.return_meta = True
-    forget_loader, retain_loader = build_test_dataloaders(args, transform=eval_transform)
-    args.return_meta = prev_return_meta
+    forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
 
     text_features = _encode_text_features(model, class_names, tokenize_fn, device)
     forget_acc = _evaluate_single_accuracy(
@@ -854,7 +1115,7 @@ def run_cliperase(args) -> None:
         f"score={best_score:.4f}"
     )
 
-    run_original_eval(
+    final_eval_metrics = run_original_eval(
         args,
         model=model,
         tokenize_fn=tokenize_fn,
@@ -862,6 +1123,20 @@ def run_cliperase(args) -> None:
         backend=backend,
         retain_topk_indices=retain_topk_indices,
     )
+    final_cfg = dict(vars(args))
+    final_cfg.update(
+        {
+            "best_epoch": best_epoch,
+            "best_score": best_score,
+            "best_forget_success": best_metrics["forget_success"],
+            "best_retain_accuracy": best_metrics["retain_accuracy"],
+            "selection_metric": "forget_success + retain_accuracy",
+            "eval_interval_epoch": eval_interval,
+            "final_original_eval": final_eval_metrics,
+        }
+    )
+    with open(config_path, "w", encoding="utf-8") as f:
+        json.dump(final_cfg, f, ensure_ascii=False, indent=2)
 
 
 def main() -> None:

@@ -1,237 +1,76 @@
+from __future__ import annotations
+
 import argparse
 import json
+import random
+import re
+import shutil
+from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
-import time
+from typing import Dict, Iterable, List, Sequence, Set, Tuple
 
-import requests
-from requests.adapters import HTTPAdapter
-import urllib
-from urllib3.util.retry import Retry
-
-WIKIDATA_API = "https://www.wikidata.org/w/api.php"
-COMMONS_API = "https://commons.wikimedia.org/w/api.php"
-_SESSION = requests.Session()
-_SESSION.headers.update({
-    "User-Agent": "FMUClip-WikidataFetcher/1.0 (contact: you@example.com)",
-    "Accept": "application/json",
-})
-
-retry = Retry(
-    total=10,
-    connect=10,
-    read=10,
-    backoff_factor=1.2,
-    status_forcelist=[429, 500, 502, 503, 504],
-    allowed_methods=["GET"],
-    respect_retry_after_header=True,
+DEFAULT_EVAL_DIR = Path(
+    "/home/shenruoyan/FMUClip/finegrained/output/original_eval/original_banana3_100images_DF3_DR1_UNI3_03022152"
 )
-adapter = HTTPAdapter(max_retries=retry, pool_connections=50, pool_maxsize=50)
-_SESSION.mount("https://", adapter)
-_SESSION.mount("http://", adapter)
+DEFAULT_TEST_IMAGES_DIR = Path(
+    "/home/shenruoyan/FMUClip/data/classification/coco2017_instances/val/test_images"
+)
+DEFAULT_IMAGENET_ROOT = Path("/datanfs4/shenruoyan/datasets/imagenet-1000/imagenet1k")
+DEFAULT_ITEM1_DIR = Path(
+    "/home/shenruoyan/FMUClip/data/classification/coco2017_instances/val/Df/item1"
+)
+DEFAULT_DATASET_NAME = "imagenet1k"
 
-def http_get_json(url: str, timeout: int = 30, max_retries: int = 10, retry_backoff_sec: float = 1.5):
-    # requests 的 timeout 可以拆成 (connect, read)，握手慢就加大 connect
-    resp = _SESSION.get(url, timeout=(max(15, timeout), max(30, timeout)))
-    resp.raise_for_status()
-    return resp.json()
+IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 
-
-def wbsearchentities(query: str, limit: int = 5, timeout: int = 20, max_retries: int = 5):
-    params = {
-        "action": "wbsearchentities",
-        "search": query,
-        "language": "en",
-        "format": "json",
-        "limit": str(limit),
-    }
-    url = WIKIDATA_API + "?" + urllib.parse.urlencode(params)
-    return http_get_json(url, timeout=timeout, max_retries=max_retries).get("search", [])
-
-
-def wbgetentities(entity_id: str, timeout: int = 20, max_retries: int = 5):
-    params = {
-        "action": "wbgetentities",
-        "ids": entity_id,
-        "props": "claims|labels",
-        "languages": "en",
-        "format": "json",
-    }
-    url = WIKIDATA_API + "?" + urllib.parse.urlencode(params)
-    return http_get_json(url, timeout=timeout, max_retries=max_retries).get("entities", {}).get(entity_id, {})
-
-
-def extract_p18_file_titles(entity_obj):
-    out = []
-    claims = entity_obj.get("claims", {})
-    for c in claims.get("P18", []):
-        try:
-            fname = c["mainsnak"]["datavalue"]["value"]
-            if fname:
-                out.append("File:" + fname if not fname.startswith("File:") else fname)
-        except Exception:
-            continue
-    return out
+# You can extend this mapping on your server if some labels cannot be matched.
+COCO_TO_IMAGENET_HINTS: Dict[str, List[str]] = {
+    "airplane": ["airliner", "warplane", "aircraft"],
+    "cell_phone": ["cellular telephone", "mobile phone"],
+    "couch": ["sofa"],
+    "dining_table": ["dining table", "table"],
+    "fire_hydrant": ["fire hydrant"],
+    "hair_drier": ["hair dryer", "hair drier", "blow dryer"],
+    "handbag": ["purse", "handbag"],
+    "hot_dog": ["hotdog", "hot dog"],
+    "motorcycle": ["motor scooter", "moped", "motorcycle"],
+    "potted_plant": ["pot", "flowerpot", "plant"],
+    "remote": ["remote control", "remote"],
+    "sports_ball": ["ball"],
+    "stop_sign": ["stop sign"],
+    "teddy_bear": ["teddy", "toy bear", "bear"],
+    "toothbrush": ["toothbrush"],
+    "traffic_light": ["traffic light", "stoplight"],
+    "tv": ["television", "tv", "monitor"],
+    "wine_glass": ["wine glass", "goblet"],
+}
 
 
-def extract_p373_category(entity_obj):
-    claims = entity_obj.get("claims", {})
-    for c in claims.get("P373", []):
-        try:
-            return c["mainsnak"]["datavalue"]["value"]
-        except Exception:
-            continue
-    return None
+@dataclass(frozen=True)
+class MisclassifiedItem:
+    image_id: str
+    label: str
+    pred_name: str
 
 
-def commons_category_file_titles(category: str, limit: int = 200, timeout: int = 20, max_retries: int = 5):
-    titles = []
-    cmcontinue = None
-    while len(titles) < limit:
-        params = {
-            "action": "query",
-            "list": "categorymembers",
-            "cmtitle": "Category:" + category,
-            "cmnamespace": "6",
-            "cmlimit": "50",
-            "format": "json",
-        }
-        if cmcontinue:
-            params["cmcontinue"] = cmcontinue
-        url = COMMONS_API + "?" + urllib.parse.urlencode(params)
-        data = http_get_json(url, timeout=timeout, max_retries=max_retries)
-        for m in data.get("query", {}).get("categorymembers", []):
-            t = m.get("title")
-            if t and t.startswith("File:"):
-                titles.append(t)
-                if len(titles) >= limit:
-                    break
-        cmcontinue = data.get("continue", {}).get("cmcontinue")
-        if not cmcontinue:
-            break
-    return titles
+def normalize_name(name: str) -> str:
+    s = name.strip().lower().replace("_", " ")
+    s = re.sub(r"[^a-z0-9 ]+", " ", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
 
 
-def commons_search_file_titles(query: str, limit: int = 200, timeout: int = 20, max_retries: int = 5):
-    titles = []
-    sroffset = 0
-    while len(titles) < limit:
-        params = {
-            "action": "query",
-            "list": "search",
-            "srsearch": f'intitle:{query} filetype:bitmap',
-            "srnamespace": "6",
-            "srlimit": "50",
-            "sroffset": str(sroffset),
-            "format": "json",
-        }
-        url = COMMONS_API + "?" + urllib.parse.urlencode(params)
-        data = http_get_json(url, timeout=timeout, max_retries=max_retries)
-        batch = data.get("query", {}).get("search", [])
-        if not batch:
-            break
-        for m in batch:
-            t = m.get("title")
-            if t and t.startswith("File:"):
-                titles.append(t)
-                if len(titles) >= limit:
-                    break
-        sroffset += len(batch)
-        if len(batch) < 50:
-            break
-    return titles
+def extract_image_id_from_path(image_path: str) -> str:
+    # Example: /.../000000575205.jpg -> 000000575205
+    return Path(image_path).stem
 
 
-def commons_file_url(file_title: str):
-    # Redirects to the raw file URL.
-    return "https://commons.wikimedia.org/wiki/Special:FilePath/" + urllib.parse.quote(
-        file_title.replace("File:", ""), safe=""
-    )
+def parse_eval_jsonl_files(eval_dir: Path, eval_files: Sequence[str]) -> List[MisclassifiedItem]:
+    items: List[MisclassifiedItem] = []
 
-
-def download_file(
-    url: str,
-    out_path: Path,
-    timeout: int = 30,
-    max_retries: int = 5,
-    retry_backoff_sec: float = 1.5,
-):
-    last_err = None
-    for i in range(max_retries):
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": "FMUClip-WikidataFetcher/1.0"})
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                data = resp.read()
-            out_path.write_bytes(data)
-            return
-        except (TimeoutError, urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
-            last_err = e
-            if i < max_retries - 1:
-                time.sleep(retry_backoff_sec * (2 ** i))
-                continue
-            raise
-    if last_err is not None:
-        raise last_err
-    raise RuntimeError("Unexpected download_file failure")
-
-
-def unique_keep_order(items):
-    seen = set()
-    out = []
-    for x in items:
-        if x in seen:
-            continue
-        seen.add(x)
-        out.append(x)
-    return out
-
-
-def build_candidate_titles(
-    concept: str,
-    search_entities: int,
-    need_num: int,
-    sleep_sec: float,
-    timeout_sec: int,
-    max_retries: int,
-):
-    q = concept.replace("_", " ")
-    entity_hits = wbsearchentities(q, limit=search_entities, timeout=timeout_sec, max_retries=max_retries)
-    file_titles = []
-    chosen_qids = []
-    for hit in entity_hits:
-        qid = hit.get("id")
-        if not qid:
-            continue
-        chosen_qids.append(qid)
-        ent = wbgetentities(qid, timeout=timeout_sec, max_retries=max_retries)
-        file_titles.extend(extract_p18_file_titles(ent))
-        cat = extract_p373_category(ent)
-        if cat:
-            file_titles.extend(
-                commons_category_file_titles(
-                    cat,
-                    limit=300,
-                    timeout=timeout_sec,
-                    max_retries=max_retries,
-                )
-            )
-        time.sleep(sleep_sec)
-
-    if len(file_titles) < need_num:
-        file_titles.extend(
-            commons_search_file_titles(
-                q,
-                limit=500,
-                timeout=timeout_sec,
-                max_retries=max_retries,
-            )
-        )
-    return unique_keep_order(file_titles), chosen_qids
-
-
-def load_pred_rows_by_label(prediction_dir: Path):
-    rows = {}
-    for name in ["forget_test_topk.jsonl", "retain_test_topk.jsonl"]:
-        p = prediction_dir / name
+    for file_name in eval_files:
+        p = eval_dir / file_name
         if not p.exists():
             continue
         with p.open("r", encoding="utf-8") as f:
@@ -239,244 +78,371 @@ def load_pred_rows_by_label(prediction_dir: Path):
                 line = line.strip()
                 if not line:
                     continue
-                r = json.loads(line)
-                label = r.get("label")
-                if not label:
+                row = json.loads(line)
+                label = str(row.get("label", "")).strip()
+                pred_name = str(row.get("pred_name", "")).strip()
+                image_path = str(row.get("image_path", "")).strip()
+                if not label or not pred_name or not image_path:
                     continue
-                rows.setdefault(label, []).append(r)
-    return rows
-
-
-def main():
-    parser = argparse.ArgumentParser("Fetch concept images from Wikidata/Commons.")
-    parser.add_argument(
-        "--concept_json_dir",
-        type=str,
-        default="/home/shenruoyan/FMUClip/data/classification/coco2017_instances/val/Df/item1",
-    )
-    parser.add_argument(
-        "--output_root",
-        type=str,
-        default="/home/shenruoyan/FMUClip/data/classification/coco2017_instances/val/test_images",
-    )
-    parser.add_argument(
-        "--prediction_dir",
-        type=str,
-        default="/home/shenruoyan/FMUClip/finegrained/output/original_eval/original_banana3_100images_DF3_DR1_UNI3_03022152",
-        help="Directory containing retain_test_topk.jsonl and forget_test_topk.jsonl.",
-    )
-    parser.add_argument(
-        "--mode",
-        type=str,
-        default="replace_wrong_only",
-        choices=["replace_wrong_only", "full_fetch"],
-        help="replace_wrong_only: only replace mispredicted samples in existing test_images; "
-        "full_fetch: refetch full set for each concept.",
-    )
-    parser.add_argument("--num_per_concept", type=int, default=50)
-    parser.add_argument("--search_entities", type=int, default=5)
-    parser.add_argument("--sleep_sec", type=float, default=0.2)
-    parser.add_argument("--clear_output_dir", action="store_true")
-    parser.add_argument("--timeout_sec", type=int, default=30)
-    parser.add_argument("--max_retries", type=int, default=6)
-    parser.add_argument("--continue_on_concept_error", action="store_true")
-    args = parser.parse_args()
-
-    concept_dir = Path(args.concept_json_dir)
-    out_root = Path(args.output_root)
-    out_root.mkdir(parents=True, exist_ok=True)
-
-    concept_files = sorted(concept_dir.glob("*.json"))
-    summary = []
-    pred_rows_by_label = {}
-    if args.mode == "replace_wrong_only":
-        pred_rows_by_label = load_pred_rows_by_label(Path(args.prediction_dir))
-
-    for jf in concept_files:
-        concept = jf.stem
-        out_dir = out_root / concept
-        out_dir.mkdir(parents=True, exist_ok=True)
-        if args.clear_output_dir and args.mode == "full_fetch":
-            for p in out_dir.glob("*"):
-                if p.is_file():
-                    p.unlink()
-
-        if args.mode == "replace_wrong_only":
-            rows = pred_rows_by_label.get(concept, [])
-            wrong_indices = [i for i, r in enumerate(rows) if r.get("pred_name") != concept]
-            files = sorted([p for p in out_dir.iterdir() if p.is_file()])
-            if not rows:
-                summary.append(
-                    {
-                        "concept": concept,
-                        "saved": 0,
-                        "target": 0,
-                        "failed_downloads": 0,
-                        "candidate_titles": 0,
-                        "qids": [],
-                        "note": "no_prediction_rows",
-                    }
-                )
-                print(f"[{concept}] no prediction rows, skipped")
-                continue
-            if len(files) != len(rows):
-                summary.append(
-                    {
-                        "concept": concept,
-                        "saved": 0,
-                        "target": len(wrong_indices),
-                        "failed_downloads": 0,
-                        "candidate_titles": 0,
-                        "qids": [],
-                        "note": f"file_count_mismatch files={len(files)} rows={len(rows)}",
-                    }
-                )
-                print(f"[{concept}] file_count mismatch, skipped")
-                continue
-            if not wrong_indices:
-                summary.append(
-                    {
-                        "concept": concept,
-                        "saved": 0,
-                        "target": 0,
-                        "failed_downloads": 0,
-                        "candidate_titles": 0,
-                        "qids": [],
-                        "note": "no_wrong_samples",
-                    }
-                )
-                print(f"[{concept}] no wrong samples")
-                continue
-
-            try:
-                file_titles, chosen_qids = build_candidate_titles(
-                    concept,
-                    args.search_entities,
-                    len(wrong_indices),
-                    args.sleep_sec,
-                    args.timeout_sec,
-                    args.max_retries,
-                )
-            except Exception as e:
-                summary.append(
-                    {
-                        "concept": concept,
-                        "saved": 0,
-                        "target": len(wrong_indices),
-                        "failed_downloads": 0,
-                        "candidate_titles": 0,
-                        "qids": [],
-                        "note": f"candidate_fetch_error: {type(e).__name__}: {e}",
-                    }
-                )
-                print(f"[{concept}] candidate fetch failed: {e}")
-                if args.continue_on_concept_error:
+                if label == pred_name:
                     continue
-                raise
-            saved = 0
-            failed = 0
-            for ft in file_titles:
-                if saved >= len(wrong_indices):
-                    break
-                ext = Path(ft.replace("File:", "")).suffix.lower()
-                if ext not in {".jpg", ".jpeg", ".png", ".webp"}:
-                    continue
-                slot = wrong_indices[saved]
-                dst = files[slot]
-                try:
-                    download_file(
-                        commons_file_url(ft),
-                        dst,
-                        timeout=args.timeout_sec,
-                        max_retries=args.max_retries,
+                image_id = extract_image_id_from_path(image_path)
+                items.append(
+                    MisclassifiedItem(
+                        image_id=image_id,
+                        label=label,
+                        pred_name=pred_name,
                     )
-                    saved += 1
-                except Exception:
-                    failed += 1
-                time.sleep(args.sleep_sec)
+                )
 
-            summary.append(
-                {
-                    "concept": concept,
-                    "saved": saved,
-                    "target": len(wrong_indices),
-                    "failed_downloads": failed,
-                    "candidate_titles": len(file_titles),
-                    "qids": chosen_qids,
-                    "note": "replace_wrong_only",
-                }
-            )
-            print(f"[{concept}] replaced={saved}/{len(wrong_indices)} candidates={len(file_titles)}")
+    return items
+
+
+def deduplicate_items(items: Iterable[MisclassifiedItem]) -> List[MisclassifiedItem]:
+    # Deduplicate by (image_id, label), because an image id can appear under multiple labels.
+    seen = set()
+    out: List[MisclassifiedItem] = []
+    for it in items:
+        key = (it.image_id, it.label)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(it)
+    return out
+
+
+def find_target_files(test_images_dir: Path, image_id: str, label: str) -> List[Path]:
+    label_dir = test_images_dir / label
+    targets: List[Path] = []
+
+    if label_dir.exists() and label_dir.is_dir():
+        for p in label_dir.iterdir():
+            if p.is_file() and p.suffix.lower() in IMAGE_EXTS and p.stem.endswith(f"_{image_id}"):
+                targets.append(p)
+
+    if targets:
+        return sorted(targets)
+
+    # Fallback: global search if class folder matching failed.
+    pattern = f"*_{image_id}.*"
+    for p in test_images_dir.rglob(pattern):
+        if p.is_file() and p.suffix.lower() in IMAGE_EXTS:
+            targets.append(p)
+
+    return sorted(set(targets))
+
+
+def parse_imagenet_dir_aliases(dir_name: str) -> List[str]:
+    # Example: "000_tench, Tinca tinca"
+    # Name part after the first underscore: "tench, Tinca tinca"
+    if "_" in dir_name:
+        name_part = dir_name.split("_", 1)[1]
+    else:
+        name_part = dir_name
+    raw_aliases = [x.strip() for x in name_part.split(",") if x.strip()]
+    aliases = [normalize_name(x) for x in raw_aliases]
+    return [a for a in aliases if a]
+
+
+def build_imagenet_index(imagenet_root: Path) -> Tuple[Dict[str, List[Path]], Dict[Path, List[Path]]]:
+    alias_to_dirs: Dict[str, List[Path]] = defaultdict(list)
+    dir_to_images: Dict[Path, List[Path]] = {}
+
+    for class_dir in sorted(imagenet_root.iterdir()):
+        if not class_dir.is_dir():
             continue
 
-        # full_fetch mode
-        try:
-            file_titles, chosen_qids = build_candidate_titles(
-                concept,
-                args.search_entities,
-                args.num_per_concept,
-                args.sleep_sec,
-                args.timeout_sec,
-                args.max_retries,
-            )
-        except Exception as e:
-            summary.append(
+        aliases = parse_imagenet_dir_aliases(class_dir.name)
+        for a in aliases:
+            alias_to_dirs[a].append(class_dir)
+
+        imgs = [p for p in class_dir.iterdir() if p.is_file() and p.suffix.lower() in IMAGE_EXTS]
+        if imgs:
+            dir_to_images[class_dir] = sorted(imgs)
+
+    return alias_to_dirs, dir_to_images
+
+
+def match_imagenet_dirs_for_label(label: str, alias_to_dirs: Dict[str, List[Path]]) -> List[Path]:
+    norm_label = normalize_name(label)
+    candidates: List[str] = [norm_label]
+    candidates.extend(normalize_name(x) for x in COCO_TO_IMAGENET_HINTS.get(label, []))
+
+    matched: List[Path] = []
+    seen = set()
+
+    # Pass 1: exact alias match.
+    for c in candidates:
+        for d in alias_to_dirs.get(c, []):
+            if d not in seen:
+                matched.append(d)
+                seen.add(d)
+
+    if matched:
+        return matched
+
+    # Pass 2: fuzzy contains match.
+    all_aliases = list(alias_to_dirs.keys())
+    for c in candidates:
+        for a in all_aliases:
+            if not c:
+                continue
+            if c in a or a in c:
+                for d in alias_to_dirs[a]:
+                    if d not in seen:
+                        matched.append(d)
+                        seen.add(d)
+
+    return matched
+
+
+def choose_source_images(
+    label: str,
+    needed: int,
+    alias_to_dirs: Dict[str, List[Path]],
+    dir_to_images: Dict[Path, List[Path]],
+    rng: random.Random,
+) -> List[Path]:
+    class_dirs = match_imagenet_dirs_for_label(label, alias_to_dirs)
+    pool: List[Path] = []
+    for d in class_dirs:
+        pool.extend(dir_to_images.get(d, []))
+
+    if not pool:
+        return []
+
+    if needed <= len(pool):
+        rng.shuffle(pool)
+        return pool[:needed]
+
+    # If needed exceeds available unique images, sample with replacement.
+    return [rng.choice(pool) for _ in range(needed)]
+
+
+def replace_images_for_misclassified_items(
+    test_images_dir: Path,
+    items: Sequence[MisclassifiedItem],
+    alias_to_dirs: Dict[str, List[Path]],
+    dir_to_images: Dict[Path, List[Path]],
+    rng: random.Random,
+    dry_run: bool = False,
+) -> Dict[str, object]:
+    by_label: Dict[str, List[MisclassifiedItem]] = defaultdict(list)
+    for it in items:
+        by_label[it.label].append(it)
+
+    replaced = 0
+    missing_target = 0
+    missing_source = 0
+    unresolved_labels: Dict[str, int] = defaultdict(int)
+    details: List[Dict[str, str]] = []
+
+    for label, label_items in sorted(by_label.items()):
+        # Build all target paths for this label first.
+        target_records: List[Tuple[MisclassifiedItem, Path]] = []
+        for it in label_items:
+            targets = find_target_files(test_images_dir, it.image_id, it.label)
+            if not targets:
+                missing_target += 1
+                continue
+            # Usually one match. If multiple, replace all matches for consistency.
+            for t in targets:
+                target_records.append((it, t))
+
+        if not target_records:
+            continue
+
+        sources = choose_source_images(
+            label=label,
+            needed=len(target_records),
+            alias_to_dirs=alias_to_dirs,
+            dir_to_images=dir_to_images,
+            rng=rng,
+        )
+        if not sources:
+            unresolved_labels[label] += len(target_records)
+            missing_source += len(target_records)
+            continue
+
+        for (item, target_path), src_path in zip(target_records, sources):
+            if not dry_run:
+                shutil.copy2(src_path, target_path)
+            replaced += 1
+            details.append(
                 {
-                    "concept": concept,
-                    "saved": 0,
-                    "target": args.num_per_concept,
-                    "failed_downloads": 0,
-                    "candidate_titles": 0,
-                    "qids": [],
-                    "note": f"candidate_fetch_error: {type(e).__name__}: {e}",
+                    "label": label,
+                    "image_id": item.image_id,
+                    "pred_name": item.pred_name,
+                    "target": str(target_path),
+                    "source": str(src_path),
                 }
             )
-            print(f"[{concept}] candidate fetch failed: {e}")
-            if args.continue_on_concept_error:
-                continue
-            raise
 
-        saved = 0
-        failed = 0
-        for ft in file_titles:
-            if saved >= args.num_per_concept:
-                break
-            ext = Path(ft.replace("File:", "")).suffix.lower()
-            if ext not in {".jpg", ".jpeg", ".png", ".webp"}:
-                continue
-            dst = out_dir / f"{saved + 1:03d}_{Path(ft.replace('File:', '')).stem}{ext}"
-            try:
-                download_file(
-                    commons_file_url(ft),
-                    dst,
-                    timeout=args.timeout_sec,
-                    max_retries=args.max_retries,
-                )
-                saved += 1
-            except Exception:
-                failed += 1
-            time.sleep(args.sleep_sec)
+    replaced_pairs = sorted({(d["label"], d["image_id"]) for d in details})
 
-        summary.append(
-            {
-                "concept": concept,
-                "saved": saved,
-                "target": args.num_per_concept,
-                "failed_downloads": failed,
-                "candidate_titles": len(file_titles),
-                "qids": chosen_qids,
-            }
+    return {
+        "total_misclassified_items": len(items),
+        "replaced": replaced,
+        "missing_target": missing_target,
+        "missing_source": missing_source,
+        "unresolved_labels": dict(sorted(unresolved_labels.items())),
+        "replaced_label_image_ids": [[label, image_id] for label, image_id in replaced_pairs],
+        "details": details,
+    }
+
+
+def update_item1_dataset_fields(
+    item1_dir: Path,
+    dataset_name: str,
+    replaced_label_image_ids: Sequence[Sequence[str]],
+    dry_run: bool = False,
+) -> Dict[str, int]:
+    updated_files = 0
+    skipped = 0
+    touched_items = 0
+
+    replaced_by_label: Dict[str, Set[str]] = defaultdict(set)
+    for pair in replaced_label_image_ids:
+        if len(pair) != 2:
+            continue
+        label, image_id = str(pair[0]), str(pair[1])
+        replaced_by_label[label].add(image_id)
+
+    for json_file in sorted(item1_dir.glob("*.json")):
+        try:
+            with json_file.open("r", encoding="utf-8") as f:
+                data = json.load(f)
+        except (OSError, json.JSONDecodeError):
+            skipped += 1
+            continue
+
+        if not isinstance(data, dict):
+            skipped += 1
+            continue
+
+        images = data.get("images")
+        if not isinstance(images, list):
+            skipped += 1
+            continue
+
+        # Match by file name first (e.g., "airplane.json" -> label "airplane").
+        candidate_ids = replaced_by_label.get(json_file.stem, set())
+        if not candidate_ids:
+            # Fallback to concept field if present.
+            concept = str(data.get("concept", "")).strip()
+            candidate_ids = replaced_by_label.get(concept, set())
+        if not candidate_ids:
+            continue
+
+        changed = False
+        for idx, item in enumerate(images):
+            if not isinstance(item, dict):
+                continue
+            image_id = str(item.get("img_id", "")).strip()
+            if image_id not in candidate_ids:
+                continue
+            images[idx] = {"dataset": dataset_name, **{k: v for k, v in item.items() if k != "dataset"}}
+            touched_items += 1
+            changed = True
+
+        if changed and not dry_run:
+            with json_file.open("w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+                f.write("\n")
+
+        if changed:
+            updated_files += 1
+
+    return {"updated_files": updated_files, "touched_items": touched_items, "skipped": skipped}
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "1) Replace misclassified test images with semantically matched ImageNet images; "
+            "2) Update dataset fields in item1 JSON files."
         )
-        print(f"[{concept}] saved={saved}/{args.num_per_concept} candidates={len(file_titles)}")
+    )
+    parser.add_argument("--eval-dir", type=Path, default=DEFAULT_EVAL_DIR)
+    parser.add_argument(
+        "--eval-files",
+        nargs="+",
+        default=["retain_test_topk.jsonl", "forget_test_topk.jsonl"],
+        help="JSONL files under --eval-dir to scan for label!=pred_name.",
+    )
+    parser.add_argument("--test-images-dir", type=Path, default=DEFAULT_TEST_IMAGES_DIR)
+    parser.add_argument("--imagenet-root", type=Path, default=DEFAULT_IMAGENET_ROOT)
+    parser.add_argument("--item1-dir", type=Path, default=DEFAULT_ITEM1_DIR)
+    parser.add_argument("--dataset-name", default=DEFAULT_DATASET_NAME)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--report-path",
+        type=Path,
+        default=None,
+        help="Optional output path for JSON report.",
+    )
+    parser.add_argument("--dry-run", action="store_true", help="Do not write files.")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+
+    if not args.eval_dir.exists():
+        raise FileNotFoundError(f"eval dir not found: {args.eval_dir}")
+    if not args.test_images_dir.exists():
+        raise FileNotFoundError(f"test_images dir not found: {args.test_images_dir}")
+    if not args.imagenet_root.exists():
+        raise FileNotFoundError(f"imagenet root not found: {args.imagenet_root}")
+    if not args.item1_dir.exists():
+        raise FileNotFoundError(f"item1 dir not found: {args.item1_dir}")
+
+    rng = random.Random(args.seed)
+
+    raw_items = parse_eval_jsonl_files(args.eval_dir, args.eval_files)
+    items = deduplicate_items(raw_items)
+
+    alias_to_dirs, dir_to_images = build_imagenet_index(args.imagenet_root)
+
+    replace_report = replace_images_for_misclassified_items(
+        test_images_dir=args.test_images_dir,
+        items=items,
+        alias_to_dirs=alias_to_dirs,
+        dir_to_images=dir_to_images,
+        rng=rng,
+        dry_run=args.dry_run,
+    )
+
+    json_report = update_item1_dataset_fields(
+        item1_dir=args.item1_dir,
+        dataset_name=args.dataset_name,
+        replaced_label_image_ids=replace_report.get("replaced_label_image_ids", []),
+        dry_run=args.dry_run,
+    )
 
     report = {
-        "num_concepts": len(summary),
-        "num_full": sum(1 for x in summary if x["saved"] >= x["target"]),
-        "summary": summary,
+        "dry_run": args.dry_run,
+        "eval_dir": str(args.eval_dir),
+        "eval_files": list(args.eval_files),
+        "test_images_dir": str(args.test_images_dir),
+        "imagenet_root": str(args.imagenet_root),
+        "item1_dir": str(args.item1_dir),
+        "dataset_name": args.dataset_name,
+        "replace_report": replace_report,
+        "json_report": json_report,
     }
-    rep_path = out_root / "_wikidata_fetch_report.json"
-    rep_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"report: {rep_path}")
+
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+
+    if args.report_path is not None:
+        if not args.dry_run:
+            args.report_path.parent.mkdir(parents=True, exist_ok=True)
+            args.report_path.write_text(
+                json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+        else:
+            print(f"[dry-run] report not written: {args.report_path}")
 
 
 if __name__ == "__main__":

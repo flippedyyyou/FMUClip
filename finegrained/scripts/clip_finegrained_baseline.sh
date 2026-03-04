@@ -22,7 +22,7 @@ LAMBDA_DR=1
 LAMBDA_UNI=3
 METHOD="original"
 RETAIN_TOPK=5
-OUTPUT_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/output/original_eval/${METHOD}_${FORGET_CLASSES}3_100images_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
+OUTPUT_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/output/original_eval/${METHOD}_${FORGET_CLASSES}3_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
 
 python /datanfs4/shenruoyan/FMUClip/finegrained/clip_finegrained_baseline.py \
   --original_eval \
@@ -34,6 +34,7 @@ python /datanfs4/shenruoyan/FMUClip/finegrained/clip_finegrained_baseline.py \
   --test_item_folder item1 \
   --test_item_format json \
   --test_max_per_class 50 \
+  --joint_multilabel_max_per_class 50 \
   --clip_arch "${CLIP_ARCH}" \
   --output_dir "${OUTPUT_DIR}" \
   --batch_size "${BATCH_SIZE}" \

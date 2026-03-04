@@ -227,9 +227,9 @@ class COCO2017InstancesProcessor(DatasetProcessor):
         return image_id_to_largest_bbox
 
     def split_for_classification(self):
-        ann_file = os.path.join(COCO2017_PATH, "annotations/instances_val2017.json")
+        ann_file = os.path.join(COCO2017_PATH, "annotations/instances_train2017.json")
         print("Splitting COCO2017 Instances dataset for classification...")
-        enable_item1_bbox_export = os.path.basename(ann_file) == "instances_val2017.json"
+        enable_item1_bbox_export = os.path.basename(ann_file) == "instances_train2017.json"
         instances = {}
         if not os.path.exists(os.path.join(self.output_path, 'classification', f'coco2017_instances/meta/instances.json')):
             instances = self.convert_ids_to_instances(ann_file)
@@ -317,6 +317,7 @@ class COCO2017InstancesProcessor(DatasetProcessor):
                                 "source_item": item_num,
                                 "bbox": bbox_info["bbox"],
                                 "area": bbox_info["area"],
+                                "dataset": "coco2017_instances",
                             })
                     if len(item1_bbox_records) > ITEM1_JSON_MAX_SAMPLES:
                         item1_bbox_records = item1_bbox_records[:ITEM1_JSON_MAX_SAMPLES]
