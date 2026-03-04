@@ -750,7 +750,7 @@ def _evaluate_joint_multilabel_ap(
 
     scores = np.concatenate(all_scores, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C]，C为数据集的全部候选集类别数
     gt = np.concatenate(all_labels, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C], 0/1 二值标签矩阵
-    present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist() # 只保留“出现过正样本”的类计算 AP，避免某些完全没有正样本的类导致 AP 计算出 NaN
+    present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist() # 只保留“出现过”的类计算 AP，避免某些完全没有正样本的类导致 AP 计算出 NaN
 
     for class_idx in present_classes:
         ap = _average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
@@ -823,6 +823,234 @@ def _dump_joint_multilabel_results(
                         ],
                     }
                 )
+
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        for row in rows:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+def _collect_eval_cache(
+    model,
+    data_loader,
+    text_features: torch.Tensor,
+    device: torch.device,
+) -> Dict[str, object]:
+    model.eval()
+    all_logits: List[np.ndarray] = []
+    all_labels: List[np.ndarray] = []
+    all_eval_idx: List[np.ndarray] = []
+    all_paths: List[str] = []
+
+    with torch.no_grad():
+        for batch in data_loader:
+            images = batch["image"].to(device, non_blocking=True)
+            labels = batch["label"].to(device, non_blocking=True)
+            eval_class_idx = batch.get("eval_class_idx")
+            image_paths = batch.get("image_path")
+
+            image_features = model.encode_image(images)
+            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+            logits = model.logit_scale.exp() * (image_features @ text_features.t())
+
+            all_logits.append(logits.detach().cpu().numpy())
+            all_labels.append(labels.detach().cpu().numpy())
+            if eval_class_idx is None:
+                all_eval_idx.append(np.full((labels.size(0),), -1, dtype=np.int64))
+            else:
+                all_eval_idx.append(eval_class_idx.detach().cpu().numpy().astype(np.int64))
+
+            if image_paths is None:
+                all_paths.extend([None] * labels.size(0))
+            else:
+                all_paths.extend(list(image_paths))
+
+    if not all_logits:
+        num_classes = int(text_features.size(0))
+        return {
+            "logits": np.zeros((0, num_classes), dtype=np.float32),
+            "labels": np.zeros((0, num_classes), dtype=np.float32),
+            "eval_idx": np.zeros((0,), dtype=np.int64),
+            "image_paths": [],
+        }
+
+    return {
+        "logits": np.concatenate(all_logits, axis=0),
+        "labels": np.concatenate(all_labels, axis=0),
+        "eval_idx": np.concatenate(all_eval_idx, axis=0),
+        "image_paths": all_paths,
+    }
+
+
+def _single_accuracy_from_cache(cache: Dict[str, object]) -> float:
+    logits = cache["logits"]
+    labels = cache["labels"]
+    eval_idx = cache["eval_idx"]
+    if logits.shape[0] == 0:
+        return 0.0
+
+    if np.any(eval_idx >= 0):
+        valid = eval_idx >= 0
+        gt = eval_idx
+    else:
+        valid = labels.sum(axis=1) == 1
+        gt = labels.argmax(axis=1)
+    if valid.sum() == 0:
+        return 0.0
+    pred = logits.argmax(axis=1)
+    return float((pred[valid] == gt[valid]).mean())
+
+
+def _single_class_accuracy_from_cache(cache: Dict[str, object], class_index: int) -> float:
+    logits = cache["logits"]
+    labels = cache["labels"]
+    eval_idx = cache["eval_idx"]
+    if logits.shape[0] == 0:
+        return 0.0
+
+    if np.any(eval_idx >= 0):
+        mask = eval_idx == class_index
+    else:
+        mask = (labels.sum(axis=1) == 1) & (labels[:, class_index] > 0.5)
+    if mask.sum() == 0:
+        return 0.0
+    pred = logits.argmax(axis=1)
+    return float((pred[mask] == class_index).mean())
+
+
+def _topk_retain_accuracy_from_cache(
+    cache: Dict[str, object],
+    class_names: Sequence[str],
+    retain_indices: Sequence[int],
+) -> Dict[str, float]:
+    out: Dict[str, float] = {}
+    for idx in retain_indices:
+        out[class_names[idx]] = _single_class_accuracy_from_cache(cache, int(idx))
+    return out
+
+
+def _joint_multilabel_ap_from_cache(
+    cache: Dict[str, object],
+    class_names: Sequence[str],
+    forget_indices: Sequence[int],
+    retain_topk_indices: Sequence[int],
+) -> Dict[str, object]:
+    scores = cache["logits"]
+    gt = cache["labels"]
+    if scores.shape[0] == 0:
+        return {
+            "eval_size": 0,
+            "forget_map": 0.0,
+            "forget_class_ap": {},
+            "retain_topk_ap": {},
+            "other_map": 0.0,
+            "other_classes": [],
+        }
+
+    present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist()
+    per_class_ap: Dict[int, float] = {}
+    for class_idx in present_classes:
+        ap = _average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
+        if not np.isnan(ap):
+            per_class_ap[int(class_idx)] = float(ap)
+
+    forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
+    forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap}
+    retain_topk_ap = {
+        class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap
+    }
+    excluded = set(forget_indices) | set(retain_topk_indices)
+    other_indices = [idx for idx in present_classes if idx not in excluded]
+    other_map = _compute_map_for_indices(gt, scores, other_indices)
+    return {
+        "eval_size": int(gt.shape[0]),
+        "forget_map": float(np.mean(forget_aps)) if forget_aps else 0.0,
+        "forget_class_ap": forget_class_ap,
+        "retain_topk_ap": retain_topk_ap,
+        "other_map": other_map,
+        "other_classes": [class_names[idx] for idx in other_indices],
+    }
+
+
+def _dump_topk_results_from_cache(
+    cache: Dict[str, object],
+    class_names: Sequence[str],
+    out_path: str,
+    topk: int = 5,
+) -> None:
+    logits = cache["logits"]
+    labels = cache["labels"]
+    eval_idx = cache["eval_idx"]
+    image_paths = cache["image_paths"]
+    rows: List[Dict[str, object]] = []
+    if logits.shape[0] > 0:
+        if np.any(eval_idx >= 0):
+            valid_mask = eval_idx >= 0
+            gt_global = eval_idx
+        else:
+            valid_mask = labels.sum(axis=1) == 1
+            gt_global = labels.argmax(axis=1)
+
+        pred_global = logits.argmax(axis=1)
+        k = min(topk, logits.shape[1])
+        topk_indices = np.argsort(-logits, axis=1)[:, :k]
+        topk_scores = np.take_along_axis(logits, topk_indices, axis=1)
+
+        for i in range(logits.shape[0]):
+            if not bool(valid_mask[i]):
+                continue
+            label_idx = int(gt_global[i])
+            pred_idx = int(pred_global[i])
+            rows.append(
+                {
+                    "image_path": image_paths[i] if i < len(image_paths) else None,
+                    "label": class_names[label_idx],
+                    "pred_name": class_names[pred_idx],
+                    "top5": [
+                        {"name": class_names[int(topk_indices[i, j])], "score": float(topk_scores[i, j])}
+                        for j in range(k)
+                    ],
+                }
+            )
+
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        for row in rows:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+def _dump_joint_multilabel_results_from_cache(
+    cache: Dict[str, object],
+    class_names: Sequence[str],
+    out_path: str,
+    topk: int = 5,
+) -> None:
+    logits = cache["logits"]
+    labels = cache["labels"]
+    image_paths = cache["image_paths"]
+    rows: List[Dict[str, object]] = []
+    if logits.shape[0] > 0:
+        pred_global = logits.argmax(axis=1)
+        k = min(topk, logits.shape[1])
+        topk_indices = np.argsort(-logits, axis=1)[:, :k]
+        topk_scores = np.take_along_axis(logits, topk_indices, axis=1)
+
+        for i in range(logits.shape[0]):
+            gt_indices = np.where(labels[i] > 0.5)[0].tolist()
+            if not gt_indices:
+                continue
+            pred_idx = int(pred_global[i])
+            rows.append(
+                {
+                    "image_path": image_paths[i] if i < len(image_paths) else None,
+                    "gt": [class_names[int(idx)] for idx in gt_indices],
+                    "pred_name": class_names[pred_idx],
+                    "top5": [
+                        {"name": class_names[int(topk_indices[i, j])], "score": float(topk_scores[i, j])}
+                        for j in range(k)
+                    ],
+                }
+            )
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
