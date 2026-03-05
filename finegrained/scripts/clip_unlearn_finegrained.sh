@@ -10,15 +10,16 @@ FORGET_CLASSES=banana
 COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
 DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances"
 SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/mask"
+RETAIN_CACHE_PATH="/datanfs4/shenruoyan/FMUClip/finegrained/mask/coco/item3/retain_cache_${FORGET_CLASSES}.pt"
 CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
 BATCH_SIZE=4
 NUM_WORKERS=4
 MAX_EPOCH=20
 LR=5e-6
 WEIGHT_DECAY=3e-4
-LAMBDA_RTF=5
+LAMBDA_RTF=2
 LAMBDA_KEEP=0
-LAMBDA_CE=0
+LAMBDA_CE=1
 SAMPLE_K=5
 RETAIN_TOPK=5
 METHOD="ours"
@@ -31,8 +32,8 @@ python /datanfs4/shenruoyan/FMUClip/finegrained/clip_unlearn_finegrained.py \
   --coco_root "${COCO_ROOT}" \
   --df_root "${DF_ROOT}" \
   --sam3_mask_dir "${SAM3_MASK_DIR}" \
+  --retain_cache_path "${RETAIN_CACHE_PATH}" \
   --train_item_folder item3 \
-  --retain_item_folder item1 \
   --test_item_folder item1 \
   --test_item_format json \
   --test_max_per_class 50 \
