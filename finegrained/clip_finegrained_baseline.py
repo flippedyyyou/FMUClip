@@ -722,8 +722,8 @@ def _evaluate_joint_multilabel_ap(
     device: torch.device,
 ) -> Dict[str, object]:
     model.eval()
-    all_scores: List[np.ndarray] = []
-    all_labels: List[np.ndarray] = []
+    all_scores: List[np.ndarray] = [] # 每个元素 [B, C]，最后拼接成 [N, C]
+    all_labels: List[np.ndarray] = [] # 每个元素 [B, C]，最后拼接成 [N, C]
     per_class_ap: Dict[int, float] = {}
 
     with torch.no_grad():
@@ -758,9 +758,9 @@ def _evaluate_joint_multilabel_ap(
             per_class_ap[int(class_idx)] = float(ap)
 
     forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
-    forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap}
-    retain_topk_ap = {
-        class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap
+    forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap} # 最多 F 项
+    retain_topk_ap = { # 最多 K 项
+        class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap 
     }
 
     excluded = set(forget_indices) | set(retain_topk_indices)
@@ -1089,18 +1089,20 @@ def run_original_eval(
         retain_topk_indices=retain_topk_indices or [],
     )
 
-    forget_acc = _evaluate_single_accuracy(
+    forget_cache = _collect_eval_cache(
         model=model,
         data_loader=forget_loader,
         text_features=text_features,
         device=device,
     )
-    retain_acc = _evaluate_single_accuracy(
+    retain_cache = _collect_eval_cache(
         model=model,
         data_loader=retain_loader,
         text_features=text_features,
         device=device,
     )
+    forget_acc = _single_accuracy_from_cache(forget_cache)
+    retain_acc = _single_accuracy_from_cache(retain_cache)
     joint_ap_metrics = _evaluate_joint_multilabel_ap(
         model=model,
         data_loader=joint_multilabel_loader,
@@ -1130,16 +1132,15 @@ def run_original_eval(
         "other_classes": joint_ap_metrics["other_classes"],
     }
     if retain_topk_indices:
-        topk_acc = _evaluate_topk_retain_accuracy(
-            model=model,
-            data_loader=retain_loader,
-            text_features=text_features,
+        topk_acc = _topk_retain_accuracy_from_cache(
+            cache=retain_cache,
             class_names=class_names,
-            device=device,
             retain_indices=retain_topk_indices,
         )
+        topk_acc_mean = float(np.mean(list(topk_acc.values()))) if topk_acc else 0.0
         metrics["retain_topk_classes"] = [class_names[i] for i in retain_topk_indices]
         metrics["retain_topk_accuracy"] = topk_acc
+        metrics["retain_topk_accuracy_mean"] = topk_acc_mean
     metrics_path = os.path.join(args.output_dir, "original_eval_metrics.json")
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(metrics, f, ensure_ascii=False, indent=2)
@@ -1174,6 +1175,8 @@ def run_original_eval(
 
     print(f"Forget test accuracy: {forget_acc:.4f}")
     print(f"Retain test accuracy: {retain_acc:.4f}")
+    if retain_topk_indices:
+        print(f"Retain top-{args.retain_topk} accuracy mean: {metrics['retain_topk_accuracy_mean']:.4f}")
     print(f"Joint multi-label val size: {joint_ap_metrics['eval_size']}")
     print(f"Forget AP (mean over forget classes): {joint_ap_metrics['forget_map']:.4f}")
     print(f"Top-{args.retain_topk} retain AP: {joint_ap_metrics['retain_topk_ap']}")
@@ -1194,18 +1197,20 @@ def _evaluate_for_selection(
     forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
 
     text_features = _encode_text_features(model, class_names, tokenize_fn, device)
-    forget_acc = _evaluate_single_accuracy(
+    forget_cache = _collect_eval_cache(
         model=model,
         data_loader=forget_loader,
         text_features=text_features,
         device=device,
     )
-    retain_acc = _evaluate_single_accuracy(
+    retain_cache = _collect_eval_cache(
         model=model,
         data_loader=retain_loader,
         text_features=text_features,
         device=device,
     )
+    forget_acc = _single_accuracy_from_cache(forget_cache)
+    retain_acc = _single_accuracy_from_cache(retain_cache)
     return {
         "forget_success": 1.0 - float(forget_acc),
         "retain_accuracy": float(retain_acc),
