@@ -160,7 +160,20 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
         ordered_meta_info = dict(sorted(meta_info.items()))
         save_json(ordered_meta_info, os.path.join(self.output_path,
                   'classification', f'flickr30k_entities/meta/meta_info.json'))
-
+    
+    def get_top_instances(self, n: int = None):
+        meta_dir = os.path.join(self.output_path, 'classification', 'flickr30k_entities/meta')
+        concept_instance_counts = {}
+        for concept in os.listdir(meta_dir):
+            if os.path.isdir(os.path.join(meta_dir, concept)):
+                meta_info = load_json(os.path.join(meta_dir, concept, 'related_imgs.json'))
+                count = len(meta_info)
+                concept_instance_counts[concept] = count
+        concept_instance_counts = sorted(concept_instance_counts.items(), key=lambda kv: kv[1], reverse=True)
+        if n is not None:
+            concept_instance_counts = concept_instance_counts[:n]
+        return dict(concept_instance_counts)
+        
 
 
 class COCO2017InstancesProcessor(DatasetProcessor):
@@ -343,19 +356,24 @@ class COCO2017InstancesProcessor(DatasetProcessor):
         save_json(ordered_meta_info, os.path.join(self.output_path,
                   'classification', f'coco2017_instances/meta/meta_info.json'))
 
-
+def get_flickr_30k_instances():
+    # Count top instances in Flickr30K Entities for potential use
+    sentence_path = os.path.join(FLICKR30K_ENTITIES_PATH, 'annotations/Sentences')
+    instance_counter = {}
 
 if __name__ == "__main__":
-    # flickr30k_dataset = Flikr30kEntitiesProcessor(
-    #     raw_dataset_path=FLICKR30K_ENTITIES_PATH,
-    #     output_path=OUTPUT_PATH,
-    #     all_concepts=all_concepts,
-    # )
-    # flickr30k_dataset.split_for_classification()
-
-    coco2017_datasets = COCO2017InstancesProcessor(
-        raw_dataset_path=COCO2017_PATH,
+    flickr30k_dataset = Flikr30kEntitiesProcessor(
+        raw_dataset_path=FLICKR30K_ENTITIES_PATH,
         output_path=OUTPUT_PATH,
         all_concepts=all_concepts,
     )
-    coco2017_datasets.split_for_classification()
+    top_instances = flickr30k_dataset.get_top_instances(30)
+    print(top_instances)
+
+    # coco2017_datasets = COCO2017InstancesProcessor(
+    #     raw_dataset_path=COCO2017_PATH,
+    #     output_path=OUTPUT_PATH,
+    #     all_concepts=all_concepts,
+    # )
+    # coco2017_datasets.split_for_classification()
+
