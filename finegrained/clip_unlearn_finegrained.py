@@ -20,11 +20,13 @@ from finegrained.clip_finegrained_baseline import (
     _build_test_dataloaders_from_folders,
     _build_eval_transform,
     _build_forget_retain_indices,
+    _collect_eval_cache,
     _compute_topk_retain_classes,
     _encode_text_features,
-    _evaluate_single_accuracy,
     _labels_to_texts,
     _load_clip_backend,
+    _single_accuracy_from_cache,
+    _topk_retain_accuracy_from_cache,
     run_original_eval,
 )
 from finegrained.load_dataset import COCODataSet
@@ -101,7 +103,28 @@ def _get_model_device(model: torch.nn.Module) -> torch.device:
         return torch.device("cpu")
 
 
-def _encode_image_patches(model, images: torch.Tensor) -> Tuple[torch.Tensor, int]:
+def _resolve_block_stop(n_blocks: int, layer: int) -> int:
+    """
+    Convert layer hyperparameter to "run first k blocks" count.
+    - layer > 0: 1-based index (1..N)
+    - layer < 0: python-style from tail (-1..-N)
+    Returns:
+        k in [1, n_blocks]
+    """
+    if n_blocks <= 0:
+        raise ValueError("No transformer blocks found in visual encoder.")
+    if layer == 0:
+        raise ValueError("`layer` must not be 0. Use 1..N or -1..-N.")
+    if layer > 0:
+        k = layer
+    else:
+        k = n_blocks + layer + 1
+    if k < 1 or k > n_blocks:
+        raise ValueError(f"`layer` out of range: got {layer}, valid is 1..{n_blocks} or -1..{-n_blocks}.")
+    return k
+
+
+def _encode_image_patches(model, images: torch.Tensor, layer: int) -> Tuple[torch.Tensor, int]:
     visual = model.visual
     if not hasattr(visual, "conv1"):
         raise AttributeError("Visual encoder does not expose conv1, cannot extract patch features.")
@@ -121,14 +144,12 @@ def _encode_image_patches(model, images: torch.Tensor) -> Tuple[torch.Tensor, in
     x = visual.ln_pre(x)
     x = x.permute(1, 0, 2)
 
-    # Use penultimate transformer-layer tokens: input to the last block.
+    # Use tokens after the selected transformer depth (controlled by --layer).
     blocks = getattr(visual.transformer, "resblocks", None)
     if blocks is not None and len(blocks) > 0:
-        if len(blocks) >= 2:
-            for blk in blocks[:1]:
-                x = blk(x)
-        else:
-            x = blocks[0](x)
+        stop_k = _resolve_block_stop(len(blocks), layer)
+        for blk in blocks[:stop_k]:
+            x = blk(x)
     else:
         # Fallback when block list is not exposed by backend implementation.
         print("Warning: visual transformer blocks not found, using output tokens of ln_pre as patch features.")
@@ -363,6 +384,95 @@ def _build_text_pool(class_names: Sequence[str], retain_indices: Sequence[int]) 
     return [f"a photo of {class_names[idx].replace('_', ' ')}" for idx in retain_indices]
 
 
+class _ForwardCapture:
+    """Capture one module output tensor from the latest forward."""
+
+    def __init__(self, module: torch.nn.Module):
+        self.tensor: Optional[torch.Tensor] = None
+        self._handle = module.register_forward_hook(self._hook)
+
+    def _hook(self, _module, _inputs, output):
+        self.tensor = output
+
+    def clear(self) -> None:
+        self.tensor = None
+
+    def close(self) -> None:
+        if self._handle is not None:
+            self._handle.remove()
+            self._handle = None
+
+
+def _get_gradcam_layer(model, layer: int) -> torch.nn.Module:
+    visual = model.visual
+    blocks = getattr(getattr(visual, "transformer", None), "resblocks", None)
+    if blocks is None or len(blocks) == 0:
+        raise AttributeError("Cannot find visual.transformer.resblocks for Grad-CAM patch selection.")
+    block_idx = _resolve_block_stop(len(blocks), layer) - 1
+    target_block = blocks[block_idx]
+    # Match clip_example.py style (layer_norm1 / ln_1) when possible.
+    if hasattr(target_block, "ln_1"):
+        return target_block.ln_1
+    if hasattr(target_block, "layer_norm1"):
+        return target_block.layer_norm1
+    return target_block
+
+
+def _tokens_without_cls(x: torch.Tensor) -> torch.Tensor:
+    if x.ndim != 3:
+        raise ValueError(f"Unexpected token tensor rank: {x.ndim}, expected 3.")
+    # OpenCLIP transformer blocks usually use [L, B, C]. Convert to [B, L, C].
+    if x.shape[0] > x.shape[1]:
+        x = x.permute(1, 0, 2)
+    return x[:, 1:, :]
+
+
+def _gradcam_positive_patch_selection(
+    token_acts: torch.Tensor,
+    token_grads: torch.Tensor,
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    acts = _tokens_without_cls(token_acts)
+    grads = _tokens_without_cls(token_grads)
+    # Grad-CAM token importance: mean gradient over tokens as channel weights.
+    weights = grads.mean(dim=1, keepdim=True)
+    cam_scores = (acts * weights).sum(dim=-1)
+    pos_mask = (cam_scores > 0).float()
+
+    # If no positive token exists, keep the single most contributing token.
+    empty_mask = pos_mask.sum(dim=1) < 0.5
+    if empty_mask.any():
+        top_idx = cam_scores.argmax(dim=1)
+        pos_mask[empty_mask] = 0.0
+        pos_mask[empty_mask, top_idx[empty_mask]] = 1.0
+    return acts, pos_mask
+
+
+def _select_retain_targets_from_cache(
+    image_paths: Sequence[str],
+    retain_labels: torch.Tensor,
+    class_names: Sequence[str],
+    retain_cache_entries: Dict[str, Dict[str, object]],
+) -> Tuple[torch.Tensor, List[str]]:
+    valid_indices: List[int] = []
+    texts: List[str] = []
+    for i, path in enumerate(image_paths):
+        candidate_indices = torch.nonzero(retain_labels[i] > 0.5).flatten().tolist()
+        if not candidate_indices:
+            continue
+        stem = os.path.splitext(os.path.basename(path))[0]
+        entry = retain_cache_entries.get(stem)
+        if entry is None:
+            continue
+        cls_idx = int(entry.get("class_idx", -1))
+        if cls_idx not in set(int(x) for x in candidate_indices):
+            continue
+        valid_indices.append(i)
+        texts.append(f"a photo of {class_names[cls_idx].replace('_', ' ')}")
+    if not valid_indices:
+        return torch.empty((0,), dtype=torch.long), []
+    return torch.tensor(valid_indices, dtype=torch.long), texts
+
+
 def train_one_epoch(
     model,
     tokenizer_fn,
@@ -380,6 +490,7 @@ def train_one_epoch(
     lambda_keep: float,
     lambda_ce: float,
     sample_k: int,
+    layer: int,
     epoch_idx: int,
     max_epoch: int,
     log_interval: int,
@@ -424,7 +535,7 @@ def train_one_epoch(
                 target_size=img_df.shape[-1],
                 forget_indices=forget_indices,
             ).to(device, non_blocking=True)
-            patch_feats, grid = _encode_image_patches(model, img_df)
+            patch_feats, grid = _encode_image_patches(model, img_df, layer=layer)
             df_text_feats = model.encode_text(df_tokens)
             df_text_feats = df_text_feats / df_text_feats.norm(dim=-1, keepdim=True)
             # Forget loss uses patch features pooled by forget-class mask on the same image.
@@ -476,10 +587,8 @@ def train_one_epoch(
             else:
                 loss_ce = torch.zeros((), device=device, dtype=loss_rtf.dtype)
 
-            loss_keep = torch.zeros((), device=device, dtype=loss_rtf.dtype)
             loss = (
                 lambda_rtf * loss_rtf
-                + lambda_keep * loss_keep
                 + lambda_ce * loss_ce
             )
 
@@ -488,7 +597,6 @@ def train_one_epoch(
         scaler.update()
 
         running["rtf"] += float(loss_rtf.detach().item())
-        running["keep"] += float(loss_keep.detach().item())
         running["ce"] += float(loss_ce.detach().item())
         running["tot"] += float(loss.detach().item())
 
@@ -504,7 +612,155 @@ def train_one_epoch(
     denom = float(max(iters_per_epoch, 1))
     return {
         "loss_rtf": running["rtf"] / denom,
-        "loss_keep": running["keep"] / denom,
+        "loss_ce": running["ce"] / denom,
+        "loss_total": running["tot"] / denom,
+    }
+
+
+def train_one_epoch_gradcam(
+    model,
+    tokenizer_fn,
+    train_loader,
+    mask_index: Dict[str, List[Dict[str, object]]],
+    retain_cache_entries: Dict[str, Dict[str, object]],
+    retain_mask_tensor_cache: Dict[Tuple[str, int], torch.Tensor],
+    class_names: Sequence[str],
+    forget_indices: Sequence[int],
+    retain_indices: Sequence[int],
+    optimizer,
+    scaler,
+    lambda_rtf: float,
+    # lambda_syn: float,
+    lambda_keep: float,
+    lambda_ce: float,
+    sample_k: int,
+    layer: int,
+    epoch_idx: int,
+    max_epoch: int,
+    log_interval: int,
+) -> Dict[str, float]:
+    del mask_index, retain_mask_tensor_cache, sample_k
+    device = _get_model_device(model)
+    iters_per_epoch = len(train_loader)
+    model.train()
+    train_iter = iter(train_loader)
+    with torch.no_grad():
+        text_pool_features = _encode_text_features(
+            model,
+            _build_text_pool(class_names, retain_indices),
+            tokenizer_fn,
+            device,
+        )
+    gradcam_layer = _get_gradcam_layer(model, layer=layer)
+    layer_capture = _ForwardCapture(gradcam_layer)
+
+    running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0}
+    try:
+        for it in range(iters_per_epoch):
+            train_s = next(train_iter)
+            img_df = train_s["image"].to(device, non_blocking=True)
+            df_paths = train_s["image_path"]
+            txt_df = _labels_to_texts(train_s["forget_label"], class_names, forget_indices)
+
+            retain_idx_cpu, retain_texts = _select_retain_targets_from_cache(
+                image_paths=df_paths,
+                retain_labels=train_s["retain_label"],
+                class_names=class_names,
+                retain_cache_entries=retain_cache_entries,
+            )
+
+            optimizer.zero_grad(set_to_none=True)
+            with torch.amp.autocast(device_type="cuda", enabled=True):
+                df_tokens = tokenizer_fn(txt_df).to(device)
+                df_text_feats = model.encode_text(df_tokens)
+                df_text_feats = df_text_feats / df_text_feats.norm(dim=-1, keepdim=True)
+
+                # Layer-selectable Grad-CAM (clip_example.py style): use target logit gradients
+                # to keep only positively contributing patch tokens for forget targets.
+                layer_capture.clear()
+                df_img_feats = model.encode_image(img_df)
+                df_img_feats = df_img_feats / df_img_feats.norm(dim=-1, keepdim=True)
+                if layer_capture.tensor is None:
+                    raise RuntimeError("Grad-CAM forward capture failed on forget branch.")
+                df_score = (df_img_feats * df_text_feats).sum(dim=-1).sum()
+                df_grads = torch.autograd.grad(df_score, layer_capture.tensor, retain_graph=True)[0]
+                df_patch_feats, df_pos_mask = _gradcam_positive_patch_selection(layer_capture.tensor, df_grads)
+
+                pooled_patch_feats = _masked_max_mean_pool(df_patch_feats, df_pos_mask)
+                if getattr(model.visual, "proj", None) is not None:
+                    pooled_patch_feats = pooled_patch_feats @ model.visual.proj
+                pooled_patch_feats = pooled_patch_feats / pooled_patch_feats.norm(dim=-1, keepdim=True)
+
+                contrast_text_feats = torch.cat([df_text_feats, text_pool_features], dim=0)
+                logit_scale = model.logit_scale.exp()
+                labels = torch.arange(img_df.size(0), device=device)
+                logits_i2t = logit_scale * (pooled_patch_feats @ contrast_text_feats.t())
+                logits_t2i = logit_scale * (df_text_feats @ pooled_patch_feats.t())
+                loss_rtf = -0.5 * (
+                    F.cross_entropy(logits_i2t, labels) + F.cross_entropy(logits_t2i, labels)
+                )
+
+                if retain_idx_cpu.numel() > 0:
+                    retain_idx = retain_idx_cpu.to(device, non_blocking=True)
+                    retain_imgs = img_df.index_select(0, retain_idx)
+                    dr_tokens = tokenizer_fn(retain_texts).to(device)
+                    dr_text_feats = model.encode_text(dr_tokens)
+                    dr_text_feats = dr_text_feats / dr_text_feats.norm(dim=-1, keepdim=True)
+
+                    # Retain branch does the opposite: use retain-cache top class as target
+                    # and keep patches with positive contribution to that class.
+                    layer_capture.clear()
+                    dr_img_feats = model.encode_image(retain_imgs)
+                    dr_img_feats = dr_img_feats / dr_img_feats.norm(dim=-1, keepdim=True)
+                    if layer_capture.tensor is None:
+                        raise RuntimeError("Grad-CAM forward capture failed on retain branch.")
+                    dr_score = (dr_img_feats * dr_text_feats).sum(dim=-1).sum()
+                    dr_grads = torch.autograd.grad(dr_score, layer_capture.tensor, retain_graph=True)[0]
+                    dr_patch_feats, dr_pos_mask = _gradcam_positive_patch_selection(layer_capture.tensor, dr_grads)
+
+                    retain_pooled_patch_feats = _masked_max_mean_pool(dr_patch_feats, dr_pos_mask)
+                    if getattr(model.visual, "proj", None) is not None:
+                        retain_pooled_patch_feats = retain_pooled_patch_feats @ model.visual.proj
+                    retain_pooled_patch_feats = retain_pooled_patch_feats / retain_pooled_patch_feats.norm(
+                        dim=-1, keepdim=True
+                    )
+                    retain_targets = torch.arange(retain_pooled_patch_feats.size(0), device=device)
+                    retain_logits_i2t = logit_scale * (retain_pooled_patch_feats @ dr_text_feats.t())
+                    retain_logits_t2i = logit_scale * (dr_text_feats @ retain_pooled_patch_feats.t())
+                    loss_ce = 0.5 * (
+                        F.cross_entropy(retain_logits_i2t, retain_targets)
+                        + F.cross_entropy(retain_logits_t2i, retain_targets)
+                    )
+                else:
+                    loss_ce = torch.zeros((), device=device, dtype=loss_rtf.dtype)
+
+                loss = (
+                    lambda_rtf * loss_rtf
+                    + lambda_ce * loss_ce
+                )
+
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+
+            running["rtf"] += float(loss_rtf.detach().item())
+            running["ce"] += float(loss_ce.detach().item())
+            running["tot"] += float(loss.detach().item())
+
+            if (it + 1) % log_interval == 0:
+                t = it + 1
+                print(
+                    f"[Unlearn EP {epoch_idx + 1}/{max_epoch}] it={t}/{iters_per_epoch} "
+                    f"rtf={running['rtf']/t:.4f} "
+                    f"keep={running['keep']/t:.4f} ce={running['ce']/t:.4f} "
+                    f"total={running['tot']/t:.4f}"
+                )
+    finally:
+        layer_capture.close()
+
+    denom = float(max(iters_per_epoch, 1))
+    return {
+        "loss_rtf": running["rtf"] / denom,
         "loss_ce": running["ce"] / denom,
         "loss_total": running["tot"] / denom,
     }
@@ -516,18 +772,29 @@ def _evaluate_for_selection(
     tokenize_fn,
     image_size: int,
     class_names: Sequence[str],
+    retain_topk_indices: Sequence[int],
 ) -> Dict[str, float]:
     device = _get_model_device(model)
     eval_transform = _build_eval_transform(image_size)
     forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
 
     text_features = _encode_text_features(model, class_names, tokenize_fn, device)
-    forget_acc = _evaluate_single_accuracy(model, forget_loader, text_features, device)
-    retain_acc = _evaluate_single_accuracy(model, retain_loader, text_features, device)
-    score = (1.0 - forget_acc) + retain_acc
+    forget_cache = _collect_eval_cache(model, forget_loader, text_features, device)
+    retain_cache = _collect_eval_cache(model, retain_loader, text_features, device)
+    forget_acc = _single_accuracy_from_cache(forget_cache)
+    retain_acc = _single_accuracy_from_cache(retain_cache)
+    retain_topk_class_acc = _topk_retain_accuracy_from_cache(
+        cache=retain_cache,
+        class_names=class_names,
+        retain_indices=retain_topk_indices,
+    )
+    retain_topk_acc = float(np.mean(list(retain_topk_class_acc.values()))) if retain_topk_class_acc else 0.0
+    score = (1.0 - forget_acc) + retain_topk_acc + retain_acc
     return {
         "forget_success": 1.0 - float(forget_acc),
         "retain_accuracy": float(retain_acc),
+        "retain_topk_accuracy": float(retain_topk_acc),
+        "retain_topk_class_accuracy": retain_topk_class_acc,
         "selection_score": float(score),
         "forget_test_size": len(forget_loader.dataset),
         "retain_test_size": len(retain_loader.dataset),
@@ -537,10 +804,17 @@ def _evaluate_for_selection(
 def build_parser():
     parser = build_base_parser()
     parser.description = "Finegrained CLIP unlearning (SAM3-mask guided), COCO split logic."
+    parser.set_defaults(method="ours")
     parser.add_argument("--lambda_rtf", type=float, default=3.0)
     parser.add_argument("--lambda_keep", type=float, default=1.0)
     parser.add_argument("--lambda_ce", type=float, default=3.0)
     parser.add_argument("--sample_k", type=int, default=5)
+    parser.add_argument(
+        "--layer",
+        type=int,
+        default=1,
+        help="Target layer for `ours`/`gradcam`: 1..N (1-based) or -1..-N (from last block).",
+    )
     parser.add_argument("--sam3_mask_dir", type=str, default=DEFAULT_MASK_DIR)
     parser.add_argument("--sam3_mask_suffix", type=str, default=".png")
     parser.add_argument("--retain_cache_path", type=str, default="")
@@ -578,6 +852,7 @@ def main() -> None:
 
     class_names = _build_class_name_list()
     forget_indices, retain_indices = _build_forget_retain_indices(args.forget_classes)
+    retain_topk_indices = _compute_topk_retain_classes(df_dataset, forget_indices, args.retain_topk)
 
     class_name_to_idx = _build_class_name_to_idx(class_names)
     mask_index = _build_mask_index(args.sam3_mask_dir, args.sam3_mask_suffix, class_name_to_idx)
@@ -605,8 +880,15 @@ def main() -> None:
     best_epoch = -1
     best_metrics = None
 
+    if args.method == "ours":
+        train_epoch_fn = train_one_epoch
+    elif args.method == "gradcam":
+        train_epoch_fn = train_one_epoch_gradcam
+    else:
+        raise NotImplementedError(f"Unknown method for unlearn training: {args.method}")
+
     for ep in range(args.max_epoch):
-        train_stats = train_one_epoch(
+        train_stats = train_epoch_fn(
             model=model,
             tokenizer_fn=tokenize_fn,
             train_loader=train_loader,
@@ -622,6 +904,7 @@ def main() -> None:
             lambda_keep=args.lambda_keep,
             lambda_ce=args.lambda_ce,
             sample_k=args.sample_k,
+            layer=args.layer,
             epoch_idx=ep,
             max_epoch=args.max_epoch,
             log_interval=args.log_interval,
@@ -633,12 +916,14 @@ def main() -> None:
             tokenize_fn=tokenize_fn,
             image_size=image_size,
             class_names=class_names,
+            retain_topk_indices=retain_topk_indices,
         )
         cur_score = eval_metrics["selection_score"]
         print(
             f"[Eval EP {ep + 1}/{args.max_epoch}] "
             f"forget_success={eval_metrics['forget_success']:.4f} "
             f"retain_acc={eval_metrics['retain_accuracy']:.4f} "
+            f"retain_topk_acc={eval_metrics['retain_topk_accuracy']:.4f} "
             f"score={cur_score:.4f}"
         )
 
@@ -654,6 +939,7 @@ def main() -> None:
                     "best_score": best_score,
                     "best_forget_success": eval_metrics["forget_success"],
                     "best_retain_accuracy": eval_metrics["retain_accuracy"],
+                    "best_retain_topk_accuracy": eval_metrics["retain_topk_accuracy"],
                 },
                 ckpt_path,
             )
@@ -664,7 +950,8 @@ def main() -> None:
                     "best_score": best_score,
                     "best_forget_success": eval_metrics["forget_success"],
                     "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                    "selection_metric": "forget_success + retain_accuracy",
+                    "best_retain_topk_accuracy": eval_metrics["retain_topk_accuracy"],
+                    "selection_metric": "forget_success + retain_topk_accuracy + retain_accuracy",
                     "train_stats_at_best_epoch": train_stats,
                 }
             )
@@ -681,10 +968,10 @@ def main() -> None:
         f"Final best epoch: {best_epoch}, "
         f"forget_success={best_metrics['forget_success']:.4f}, "
         f"retain_acc={best_metrics['retain_accuracy']:.4f}, "
+        f"retain_topk_acc={best_metrics['retain_topk_accuracy']:.4f}, "
         f"score={best_score:.4f}"
     )
 
-    retain_topk_indices = _compute_topk_retain_classes(df_dataset, forget_indices, args.retain_topk)
     final_eval_metrics = run_original_eval(
         args,
         model=model,
@@ -700,7 +987,8 @@ def main() -> None:
             "best_score": best_score,
             "best_forget_success": best_metrics["forget_success"],
             "best_retain_accuracy": best_metrics["retain_accuracy"],
-            "selection_metric": "forget_success + retain_accuracy",
+            "best_retain_topk_accuracy": best_metrics["retain_topk_accuracy"],
+            "selection_metric": "forget_success + retain_topk_accuracy + retain_accuracy",
             "final_original_eval": final_eval_metrics,
         }
     )

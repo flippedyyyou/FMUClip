@@ -65,7 +65,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--return_meta", action="store_true")
     parser.add_argument(
         "--method",
-        choices=["cliperase"],
+        choices=["cliperase", "ours", "gradcam"],
         default="cliperase",
         help="Training method when not using --original_eval.",
     )

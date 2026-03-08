@@ -3,11 +3,11 @@ set -euo pipefail
 
 export CUDA_VISIBLE_DEVICES=2
 
-FORGET_CLASSES="banana"
+FORGET_CLASSES="airplane"
 COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
 DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances"
 TRAIN_SPLIT="train"
-TRAIN_ITEM_FOLDER="item3"
+TRAIN_ITEM_FOLDER="item5"
 BPE_PATH="/datanfs4/shenruoyan/FMUClip/sam3/sam3/assets/bpe_simple_vocab_16e6.txt.gz"
 CHECKPOINT="/datanfs4/shenruoyan/checkpoints/sam3/sam3.pt"
 CONF_THRESH="0.1"

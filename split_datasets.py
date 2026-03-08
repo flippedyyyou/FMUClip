@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import random
 import dotenv
 from tqdm import tqdm
 from typing import Iterable
@@ -81,6 +82,21 @@ class DatasetProcessor:
         return re.search(pattern, phrase_text) is not None
     
 class Flikr30kEntitiesProcessor(DatasetProcessor):
+    def _load_target_concepts(self):
+        return [name for _, name in sorted(LABEL_NAMES.items())]
+
+    def _normalize_concept_name(self, name: str) -> str:
+        return name.strip().replace(" ", "_")
+
+    def _split_train_test_ids(self, img_ids, train_ratio: float = 0.7):
+        ids = list(img_ids)
+        if not ids:
+            return [], []
+        rng = random.Random(42)
+        rng.shuffle(ids)
+        split_idx = int(len(ids) * train_ratio)
+        return ids[:split_idx], ids[split_idx:]
+
     def split_for_classification(self):
         print("Splitting Flickr30K Entities dataset for classification...")
         # annotations_path = os.path.join(FLICKR30K_ENTITIES_PATH, 'annotations/Annotations')
@@ -105,18 +121,21 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
             instances = load_json(os.path.join(self.output_path, 'classification',
                                 'flickr30k_entities/meta/instances.json'))
 
+        target_concepts = self._load_target_concepts()
         meta_info = {}
-        for concept in tqdm(all_concepts, desc="Processing concepts"):
+        for concept in tqdm(target_concepts, desc="Processing flickr30k concepts"):
             concept_phrase = concept.replace("_", " ")
+            concept_key = self._normalize_concept_name(concept)
             related_imgs = {}
-            item_buckets = {i: [] for i in range(1, 8)}
+            item_buckets = {i: [] for i in range(1, 10)}
             for img_id, img_instances in instances.items():
+                instance_nums = len(img_instances)
                 for instance_id in img_instances.keys():
                     instance_text = img_instances[instance_id]['instance']
                     if self._concept_in_phrase(concept_phrase, instance_text):
                         if img_id not in related_imgs:
                             related_imgs[img_id] = {
-                                'item_num': len(img_instances),
+                                'item_num': instance_nums,
                                 'instances': []
                             }
                         related_imgs[img_id]['instances'].append({
@@ -126,7 +145,7 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
                         })
             if related_imgs:
                 related_imgs = dict(sorted(related_imgs.items(), key=lambda kv:kv[1]["item_num"], reverse=True))
-                save_json(related_imgs, os.path.join(self.output_path, 'classification', f'flickr30k_entities/meta/{concept.replace(" ","_")}/related_imgs.json'))
+                save_json(related_imgs, os.path.join(self.output_path, 'classification', f'flickr30k_entities/meta/{concept_key}/related_imgs.json'))
 
                 for img_id, info in related_imgs.items():
                     item_num = info["item_num"]
@@ -139,21 +158,45 @@ class Flikr30kEntitiesProcessor(DatasetProcessor):
                         'img_ids':list(related_imgs.keys()),
                     },
                 }
-                for item_num in range(1, 8):
+                for item_num in range(1, 10):
+                    train_img_ids, test_img_ids = self._split_train_test_ids(item_buckets[item_num], train_ratio=0.7)
                     concept_meta_info[f'item{item_num}'] = {
                         'num': len(item_buckets[item_num]),
                         'img_ids': item_buckets[item_num],
+                        'train_num': len(train_img_ids),
+                        'train_img_ids': train_img_ids,
+                        'test_num': len(test_img_ids),
+                        'test_img_ids': test_img_ids,
                     }
 
-                meta_info[concept.replace(" ","_")] = concept_meta_info
+                meta_info[concept_key] = concept_meta_info
 
-                for item_num in range(1, 8):
+                for item_num in range(1, 10):
+                    train_img_ids = concept_meta_info[f'item{item_num}']['train_img_ids']
+                    test_img_ids = concept_meta_info[f'item{item_num}']['test_img_ids']
+
                     save_txt(
                         [f'{img_id}.jpg' for img_id in item_buckets[item_num]],
                         os.path.join(
                             self.output_path,
                             'classification',
-                            f'flickr30k_entities/Df/item{item_num}/{concept.replace(" ", "_")}.txt'
+                            f'flickr30k_entities/Df/item{item_num}/{concept_key}.txt'
+                        ),
+                    )
+                    save_txt(
+                        [f'{img_id}.jpg' for img_id in train_img_ids],
+                        os.path.join(
+                            self.output_path,
+                            'classification',
+                            f'flickr30k_entities/Df/item{item_num}/{concept_key}_train.txt'
+                        ),
+                    )
+                    save_txt(
+                        [f'{img_id}.jpg' for img_id in test_img_ids],
+                        os.path.join(
+                            self.output_path,
+                            'classification',
+                            f'flickr30k_entities/Df/item{item_num}/{concept_key}_test.txt'
                         ),
                     )
 
