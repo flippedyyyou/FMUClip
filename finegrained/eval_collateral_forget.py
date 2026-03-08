@@ -5,7 +5,6 @@ from typing import Dict, List, Sequence, Tuple
 
 import numpy as np
 import torch
-from torch.utils.data import ConcatDataset, DataLoader, Dataset
 
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.dirname(_CURRENT_DIR)
@@ -23,6 +22,9 @@ from finegrained.clip_finegrained_baseline import (
     _compute_topk_retain_classes,
     _compute_map_for_indices,
     _encode_text_features,
+    _evaluate_joint_multilabel_ap,
+    _evaluate_single_accuracy,
+    _evaluate_topk_retain_accuracy,
     _load_clip_backend,
 )
 from finegrained.load_dataset import build_test_dataloaders
@@ -130,204 +132,6 @@ def _load_after_model_from_ckpt(args, ckpt_path: str, device: torch.device):
         print(f"[Warn] Unexpected keys when loading {ckpt_path}: {len(unexpected)}")
     model.eval()
     return model, tokenize_fn, image_size, backend
-
-
-class _TaggedDataset(Dataset):
-    def __init__(self, dataset: Dataset, tag: str):
-        self.dataset = dataset
-        self.tag = tag
-
-    def __len__(self) -> int:
-        return len(self.dataset)
-
-    def __getitem__(self, index: int):
-        item = dict(self.dataset[index])
-        item["_source_tag"] = self.tag
-        return item
-
-
-def _build_tagged_eval_loader(
-    args,
-    eval_transform,
-    forget_indices: Sequence[int],
-    retain_topk_indices: Sequence[int],
-):
-    forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
-    joint_loader = _build_val_joint_multilabel_loader(
-        args=args,
-        transform=eval_transform,
-        forget_indices=forget_indices,
-        retain_topk_indices=retain_topk_indices,
-    )
-
-    tagged = ConcatDataset(
-        [
-            _TaggedDataset(forget_loader.dataset, "forget"),
-            _TaggedDataset(retain_loader.dataset, "retain"),
-            _TaggedDataset(joint_loader.dataset, "joint"),
-        ]
-    )
-    merged_loader = DataLoader(
-        tagged,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_memory,
-        drop_last=False,
-    )
-    return merged_loader, forget_loader, retain_loader, joint_loader
-
-
-def _collect_tagged_logits_cache(
-    model: torch.nn.Module,
-    tagged_loader,
-    text_features: torch.Tensor,
-    device: torch.device,
-) -> Dict[str, Dict[str, object]]:
-    slots = {
-        "forget": {"logits": [], "labels": [], "eval_idx": [], "paths": []},
-        "retain": {"logits": [], "labels": [], "eval_idx": [], "paths": []},
-        "joint": {"logits": [], "labels": [], "eval_idx": [], "paths": []},
-    }
-
-    model.eval()
-    with torch.no_grad():
-        for batch in tagged_loader:
-            images = batch["image"].to(device, non_blocking=True)
-            labels = batch["label"].to(device, non_blocking=True)
-            eval_class_idx = batch.get("eval_class_idx")
-            image_paths = batch.get("image_path")
-            source_tags = batch.get("_source_tag")
-
-            image_features = model.encode_image(images)
-            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            logits = model.logit_scale.exp() * (image_features @ text_features.t())
-
-            logits_np = logits.detach().cpu().numpy()
-            labels_np = labels.detach().cpu().numpy()
-            if eval_class_idx is None:
-                eval_idx_np = np.full((labels.size(0),), -1, dtype=np.int64)
-            else:
-                eval_idx_np = eval_class_idx.detach().cpu().numpy().astype(np.int64)
-
-            for i in range(labels.size(0)):
-                tag = str(source_tags[i])
-                if tag not in slots:
-                    continue
-                slots[tag]["logits"].append(logits_np[i])
-                slots[tag]["labels"].append(labels_np[i])
-                slots[tag]["eval_idx"].append(eval_idx_np[i])
-                if image_paths is None:
-                    slots[tag]["paths"].append(None)
-                else:
-                    slots[tag]["paths"].append(image_paths[i])
-
-    out: Dict[str, Dict[str, object]] = {}
-    num_classes = int(text_features.size(0))
-    for tag, rec in slots.items():
-        if rec["logits"]:
-            out[tag] = {
-                "logits": np.stack(rec["logits"], axis=0),
-                "labels": np.stack(rec["labels"], axis=0),
-                "eval_idx": np.asarray(rec["eval_idx"], dtype=np.int64),
-                "image_paths": list(rec["paths"]),
-            }
-        else:
-            out[tag] = {
-                "logits": np.zeros((0, num_classes), dtype=np.float32),
-                "labels": np.zeros((0, num_classes), dtype=np.float32),
-                "eval_idx": np.zeros((0,), dtype=np.int64),
-                "image_paths": [],
-            }
-    return out
-
-
-def _single_accuracy_from_cache(cache: Dict[str, object]) -> float:
-    logits = cache["logits"]
-    labels = cache["labels"]
-    eval_idx = cache["eval_idx"]
-    if logits.shape[0] == 0:
-        return 0.0
-    if np.any(eval_idx >= 0):
-        valid = eval_idx >= 0
-        gt = eval_idx
-    else:
-        valid = labels.sum(axis=1) == 1
-        gt = labels.argmax(axis=1)
-    if valid.sum() == 0:
-        return 0.0
-    pred = logits.argmax(axis=1)
-    return float((pred[valid] == gt[valid]).mean())
-
-
-def _single_class_accuracy_from_cache(cache: Dict[str, object], class_idx: int) -> float:
-    logits = cache["logits"]
-    labels = cache["labels"]
-    eval_idx = cache["eval_idx"]
-    if logits.shape[0] == 0:
-        return 0.0
-    if np.any(eval_idx >= 0):
-        mask = eval_idx == class_idx
-    else:
-        mask = (labels.sum(axis=1) == 1) & (labels[:, class_idx] > 0.5)
-    if mask.sum() == 0:
-        return 0.0
-    pred = logits.argmax(axis=1)
-    return float((pred[mask] == class_idx).mean())
-
-
-def _topk_retain_accuracy_from_cache(
-    retain_cache: Dict[str, object],
-    class_names: Sequence[str],
-    retain_topk_indices: Sequence[int],
-) -> Dict[str, float]:
-    out: Dict[str, float] = {}
-    for idx in retain_topk_indices:
-        out[class_names[idx]] = _single_class_accuracy_from_cache(retain_cache, int(idx))
-    return out
-
-
-def _joint_multilabel_ap_from_cache(
-    joint_cache: Dict[str, object],
-    class_names: Sequence[str],
-    forget_indices: Sequence[int],
-    retain_topk_indices: Sequence[int],
-) -> Dict[str, object]:
-    scores = joint_cache["logits"]
-    gt = joint_cache["labels"]
-    if scores.shape[0] == 0:
-        return {
-            "eval_size": 0,
-            "forget_map": 0.0,
-            "forget_class_ap": {},
-            "retain_topk_ap": {},
-            "other_map": 0.0,
-            "other_classes": [],
-        }
-
-    present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist()
-    per_class_ap: Dict[int, float] = {}
-    for class_idx in present_classes:
-        ap = _average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
-        if not np.isnan(ap):
-            per_class_ap[int(class_idx)] = float(ap)
-
-    forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
-    forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap}
-    retain_topk_ap = {
-        class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap
-    }
-    excluded = set(forget_indices) | set(retain_topk_indices)
-    other_indices = [idx for idx in present_classes if idx not in excluded]
-    other_map = _compute_map_for_indices(gt, scores, other_indices)
-    return {
-        "eval_size": int(gt.shape[0]),
-        "forget_map": float(np.mean(forget_aps)) if forget_aps else 0.0,
-        "forget_class_ap": forget_class_ap,
-        "retain_topk_ap": retain_topk_ap,
-        "other_map": other_map,
-        "other_classes": [class_names[idx] for idx in other_indices],
-    }
 
 
 def _collect_logits_and_labels(
@@ -466,24 +270,52 @@ def _pick_bottomk_indices(ranked: Sequence[Tuple[int, float]], k: int) -> List[i
 
 
 def _evaluate_original_style_metrics(
+    model: torch.nn.Module,
     args,
+    tokenize_fn,
+    image_size: int,
     backend: str,
-    class_names: Sequence[str],
-    forget_indices: Sequence[int],
-    retain_topk_indices: Sequence[int],
-    cache_by_tag: Dict[str, Dict[str, object]],
 ) -> Dict[str, object]:
-    forget_cache = cache_by_tag["forget"]
-    retain_cache = cache_by_tag["retain"]
-    joint_cache = cache_by_tag["joint"]
+    device = _get_model_device(model)
+    class_names = _build_class_name_list()
+    forget_indices, _ = _build_forget_retain_indices(args.forget_classes)
+    eval_transform = _build_eval_transform(image_size)
 
-    forget_acc = _single_accuracy_from_cache(forget_cache)
-    retain_acc = _single_accuracy_from_cache(retain_cache)
-    joint_ap_metrics = _joint_multilabel_ap_from_cache(
-        joint_cache=joint_cache,
+    forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
+    df_dataset, _ = _build_train_datasets(args, transform=eval_transform)
+    retain_topk_indices = _compute_topk_retain_classes(
+        df_dataset=df_dataset,
+        forget_indices=forget_indices,
+        k=args.retain_topk,
+    )
+    text_features = _encode_text_features(model, class_names, tokenize_fn, device)
+
+    forget_acc = _evaluate_single_accuracy(
+        model=model,
+        data_loader=forget_loader,
+        text_features=text_features,
+        device=device,
+    )
+    retain_acc = _evaluate_single_accuracy(
+        model=model,
+        data_loader=retain_loader,
+        text_features=text_features,
+        device=device,
+    )
+    joint_loader = _build_val_joint_multilabel_loader(
+        args=args,
+        transform=eval_transform,
+        forget_indices=forget_indices,
+        retain_topk_indices=retain_topk_indices,
+    )
+    joint_ap_metrics = _evaluate_joint_multilabel_ap(
+        model=model,
+        data_loader=joint_loader,
+        text_features=text_features,
         class_names=class_names,
         forget_indices=forget_indices,
         retain_topk_indices=retain_topk_indices,
+        device=device,
     )
 
     metrics: Dict[str, object] = {
@@ -491,8 +323,8 @@ def _evaluate_original_style_metrics(
         "clip_model_path": args.clip_model_path,
         "clip_arch": args.clip_arch,
         "forget_classes": list(args.forget_classes),
-        "forget_test_size": int(forget_cache["labels"].shape[0]),
-        "retain_test_size": int(retain_cache["labels"].shape[0]),
+        "forget_test_size": len(forget_loader.dataset),
+        "retain_test_size": len(retain_loader.dataset),
         "joint_multilabel_val_size": joint_ap_metrics["eval_size"],
         "joint_multilabel_max_per_class": int(getattr(args, "joint_multilabel_max_per_class", 0)),
         "forget_success": 1.0 - float(forget_acc),
@@ -504,10 +336,13 @@ def _evaluate_original_style_metrics(
         "other_classes": list(joint_ap_metrics["other_classes"]),
     }
     if retain_topk_indices:
-        topk_acc = _topk_retain_accuracy_from_cache(
-            retain_cache=retain_cache,
+        topk_acc = _evaluate_topk_retain_accuracy(
+            model=model,
+            data_loader=retain_loader,
+            text_features=text_features,
             class_names=class_names,
-            retain_topk_indices=retain_topk_indices,
+            device=device,
+            retain_indices=retain_topk_indices,
         )
         metrics["retain_topk_classes"] = [class_names[i] for i in retain_topk_indices]
         metrics["retain_topk_accuracy"] = topk_acc
@@ -726,6 +561,22 @@ def main():
     before_model, before_tokenize, image_size, backend = _load_before_model_from_arch(args, device)
     after_model, after_tokenize, _, _ = _load_after_model_from_ckpt(args, args.after_ckpt, device)
 
+    # 1) Metrics aligned with run_original_eval for before/after checkpoints.
+    before_original_eval = _evaluate_original_style_metrics(
+        model=before_model,
+        args=args,
+        tokenize_fn=before_tokenize,
+        image_size=image_size,
+        backend=backend,
+    )
+    after_original_eval = _evaluate_original_style_metrics(
+        model=after_model,
+        args=args,
+        tokenize_fn=after_tokenize,
+        image_size=image_size,
+        backend=backend,
+    )
+
     cooccur_ranked = _rank_cooccur_classes(
         args,
         forget_indices=forget_indices,
@@ -740,46 +591,15 @@ def main():
     rankings = {"cooccur": cooccur_ranked}
 
     eval_transform = _build_eval_transform(image_size)
-    df_dataset, _ = _build_train_datasets(args, transform=eval_transform)
-    retain_topk_indices = _compute_topk_retain_classes(
-        df_dataset=df_dataset,
-        forget_indices=forget_indices,
-        k=args.retain_topk,
-    )
-    tagged_loader, _, _, _ = _build_tagged_eval_loader(
-        args=args,
-        eval_transform=eval_transform,
-        forget_indices=forget_indices,
-        retain_topk_indices=retain_topk_indices,
-    )
+    prev_return_meta = args.return_meta
+    args.return_meta = True
+    _, retain_loader = build_test_dataloaders(args, transform=eval_transform)
+    args.return_meta = prev_return_meta
 
     before_text = _encode_text_features(before_model, class_names, before_tokenize, device)
-    before_cache = _collect_tagged_logits_cache(before_model, tagged_loader, before_text, device)
     after_text = _encode_text_features(after_model, class_names, after_tokenize, device)
-    after_cache = _collect_tagged_logits_cache(after_model, tagged_loader, after_text, device)
-
-    # 1) Metrics aligned with run_original_eval for before/after checkpoints.
-    before_original_eval = _evaluate_original_style_metrics(
-        args=args,
-        backend=backend,
-        class_names=class_names,
-        forget_indices=forget_indices,
-        retain_topk_indices=retain_topk_indices,
-        cache_by_tag=before_cache,
-    )
-    after_original_eval = _evaluate_original_style_metrics(
-        args=args,
-        backend=backend,
-        class_names=class_names,
-        forget_indices=forget_indices,
-        retain_topk_indices=retain_topk_indices,
-        cache_by_tag=after_cache,
-    )
-
-    # Reuse retain split logits cached in the single forward pass.
-    before_logits = before_cache["retain"]["logits"]
-    labels = before_cache["retain"]["labels"]
-    after_logits = after_cache["retain"]["logits"]
+    before_logits, labels = _collect_logits_and_labels(before_model, retain_loader, before_text, device)
+    after_logits, _ = _collect_logits_and_labels(after_model, retain_loader, after_text, device)
 
     before_metrics = _evaluate_groups(before_logits, labels, groups)
     after_metrics = _evaluate_groups(after_logits, labels, groups)

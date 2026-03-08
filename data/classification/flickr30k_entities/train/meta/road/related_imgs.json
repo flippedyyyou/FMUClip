@@ -1,0 +1,4115 @@
+{
+  "2392760448": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "46081",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2612949583": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "61614",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3139389284": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "96138",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1089181217": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "2137",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3353400143": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "112050",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3056569684": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "90670",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2606433181": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "61200",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4972635204": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "224919",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2858439751": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "77174",
+        "instance": "a wet road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2934325103": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "82420",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1664475761": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "18331",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3014080715": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "87334",
+        "instance": "road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "224766705": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "36656",
+        "instance": "a line of off road vehicles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3565917449": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "128220",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2500354186": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "53490",
+        "instance": "a dirty road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3525841965": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "124859",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5365075444": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "234613",
+        "instance": "a dusty road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95734036": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "284161",
+        "instance": "a mountain road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3183060123": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "99163",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4809864612": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "205379",
+        "instance": "road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3208188198": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "101197",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4621091937": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "183480",
+        "instance": "the side of a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3560081723": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "127617",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2894008505": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "79655",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5499892202": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "237571",
+        "instance": "a dusty road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4899635195": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "216538",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "583087629": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "243758",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2165677531": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "31870",
+        "instance": "both sides of the road look",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3061422245": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "90901",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4871282511": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "213424",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4702734830": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "192912",
+        "instance": "a paved road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3523920786": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "124687",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4537322302": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "176320",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4550700462": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "177457",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3855173636": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "145743",
+        "instance": "road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4895859008": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "216060",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "161905204": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "17682",
+        "instance": "paved road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "307321761": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "91539",
+        "instance": "a rural road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2479162876": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "52517",
+        "instance": "the dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2938349830": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "82755",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "522486784": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "231439",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2822290399": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "74860",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2321865325": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "41535",
+        "instance": "the gravel road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "50735095": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "228134",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4204912347": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "159129",
+        "instance": "a snowy road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "336460583": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "113054",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4649909865": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "186698",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3425918361": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "117328",
+        "instance": "a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4839470790": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "209487",
+        "instance": "the sidewalk of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3323076458": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "109390",
+        "instance": "a dirty road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4607606901": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "182170",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3273091032": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "106038",
+        "instance": "road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2308978137": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "40643",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "36422830": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "133640",
+        "instance": "road trail",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3796854356": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "142938",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2498093487": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "53455",
+        "instance": "the road of a busy street",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3162442331": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "97448",
+        "instance": "the brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4474053436": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "171350",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2704379125": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "67129",
+        "instance": "a county road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "439001264": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "165939",
+        "instance": "an empty road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3661230589": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "134925",
+        "instance": "the middle of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2736263067": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "69368",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2711802560": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "67995",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "471354289": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "194062",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2468466969": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "51703",
+        "instance": "a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4622326549": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "183673",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2866016431": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "77675",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4334910609": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "163795",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2811001948": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "74322",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2838920834": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "76070",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8000298212": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "277572",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4524407264": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "175416",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3500136982": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "122984",
+        "instance": "a sloping road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3453313865": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "119304",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "78347259": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "275943",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4114589329": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "156078",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3128514681": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "95484",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3705430840": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "138176",
+        "instance": "a paved road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3317992490": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "108977",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2557972410": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "57980",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1944813674": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "23712",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "11214470": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "3123",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2428094795": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "48709",
+        "instance": "paved road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3216762979": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "101848",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2744600462": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "69881",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5583280537": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "239066",
+        "instance": "the shoulder of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4897113571": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "216188",
+        "instance": "a red brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "695100510": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "262283",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "742073622": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "269549",
+        "instance": "the middle of the road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "269548",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4719923434": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "195078",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3468346269": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "120323",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3539552261": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "125966",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7760220072": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "274722",
+        "instance": "the dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6338704": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "253103",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2380765956": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "45318",
+        "instance": "a rural road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3730260112": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "140165",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2320420111": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "41480",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2252036322": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "36983",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2164363131": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "31825",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "187245342": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "22360",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2594459477": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "60220",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1944949081": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "23730",
+        "instance": "a city road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2937178897": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "82591",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6413464907": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "254040",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2863466964": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "77525",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "405331006": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "153491",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2943023421": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "83150",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4780479274": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "201985",
+        "instance": "an empty road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2156726763": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "31571",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2521213787": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "54903",
+        "instance": "narrow road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "54904",
+        "instance": "an off road track",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "110595925": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "2666",
+        "instance": "a curved road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2452686995": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "50713",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "95734035": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "284155",
+        "instance": "the side of a snowy road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4767434218": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "200820",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "448252603": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "172027",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8125199349": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "279319",
+        "instance": "an autumn road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "252151991": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "54931",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4557557135": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "178264",
+        "instance": "the road signs",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4722128127": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "195377",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4225726986": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "159576",
+        "instance": "a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "347922862": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "121406",
+        "instance": "road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3971893411": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "150378",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5506395415": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "237850",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4620131873": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "183411",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6187926673": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "249522",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6778846856": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "257983",
+        "instance": "a two-lane road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "122190424": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "5515",
+        "instance": "a paved road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3859858162": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "146085",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2587696611": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "59846",
+        "instance": "both sides of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2061397486": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "26422",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "24761526": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "52341",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7284206940": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "267920",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "160210792": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "17296",
+        "instance": "dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2231977553": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "35817",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "567526452": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "240710",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2565302802": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "58398",
+        "instance": "road workers",
+        "instance_type": [
+          "people"
+        ]
+      },
+      {
+        "instance_id": "58399",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3202793609": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "100655",
+        "instance": "a sandy road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2065875490": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "26653",
+        "instance": "the edge of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "178249309": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "20366",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3264397357": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "105526",
+        "instance": "a winding road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8013541498": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "277702",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3286620180": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "107056",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2554531876": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "57775",
+        "instance": "a rural road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1814086703": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "21278",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7296139106": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "268106",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3395382573": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "115172",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3503483247": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "123269",
+        "instance": "a busy road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2845839808": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "76508",
+        "instance": "a rocky road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "755045922": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "271274",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "24187380": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "47934",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3016178284": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "87490",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2230347683": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "35569",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "628282183": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "251640",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4439029503": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "168103",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2169709244": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "32079",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4982224135": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "225971",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1764955991": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "20072",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2050067751": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "25875",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3084472304": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "92141",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4909512111": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "217206",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2545282421": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "57207",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "57210",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1549878731": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "16122",
+        "instance": "the shoulder of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4910904772": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "217344",
+        "instance": "a narrow road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3604314527": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "130894",
+        "instance": "wet road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4274395288": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "161292",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4807464371": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "204892",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1928319708": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "23373",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5384744603": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "235108",
+        "instance": "a stone paved road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2825483885": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "75018",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "75016",
+        "instance": "a country road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3367758711": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "113411",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4950626600": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "222365",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3610830444": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "131449",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "22143604": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "34583",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4484642726": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "172283",
+        "instance": "the middle of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "102860573": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "818",
+        "instance": "road construction",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2586028627": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "59784",
+        "instance": "a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7151591119": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "266080",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3597210806": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "130441",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5243894354": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "232026",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4668665781": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "188482",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "160566014": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "17404",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "13327175": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "8870",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "516500358": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "230187",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4461953198": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "170452",
+        "instance": "a country road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3831987297": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "144860",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7729602624": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "274269",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6167267993": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "249097",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4638560669": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "185457",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "732001349": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "268415",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2604462733": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "61056",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4932212272": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "219896",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4934376497": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "220162",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4815579590": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "206334",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1223671563": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "5554",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "294098577": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "82993",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2764336070": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "71385",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4738567166": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "197361",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "122202217": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "5525",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4487408903": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "172581",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2969134945": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "84588",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5248756214": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "232134",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2401201668": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "46581",
+        "instance": "a crowded cobblestone road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3508522093": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "123637",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "431664339": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "162836",
+        "instance": "a paved road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7657583000": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "272823",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "272829",
+        "instance": "the siding of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2508850304": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "54179",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2077346067": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "27273",
+        "instance": "a road dealth",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "48509840": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "210585",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4749074780": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "198328",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "542179694": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "236187",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4898694629": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "216389",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2236756644": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "36057",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2278776373": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "38608",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4931227978": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "219650",
+        "instance": "road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "572149383": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "241656",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3284955091": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "106894",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2595568972": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "60356",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8159685070": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "279783",
+        "instance": "road race bikers",
+        "instance_type": [
+          "people"
+        ]
+      },
+      {
+        "instance_id": "279785",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6065327187": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "247303",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2775057954": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "72312",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4346213739": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "164151",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "358114269": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "129290",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3323394468": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "109394",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5225747391": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "231477",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "231480",
+        "instance": "the middle of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3410629379": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "116151",
+        "instance": "a road scene",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "116150",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4558172302": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "178364",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "178368",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3301021288": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "107905",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5710348031": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "241430",
+        "instance": "a long , thick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4664359066": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "188216",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4431086360": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "167502",
+        "instance": "road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7432995570": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "269813",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2537000363": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "56210",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "479807833": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "203753",
+        "instance": "an off road motorbike",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1075716537": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "1804",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "530661899": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "233330",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1353176657": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "9650",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4059413955": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "153709",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2975096608": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "84968",
+        "instance": "a road race",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4820349542": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "206960",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2567962271": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "58586",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "384465575": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "145312",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1457898867": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "13612",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4677118878": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "189540",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3704698586": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "138113",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2881685775": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "78718",
+        "instance": "a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5371507831": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "234777",
+        "instance": "the side of a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3702634572": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "137995",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4563267532": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "178793",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6303698580": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "252103",
+        "instance": "an off road course",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2094076980": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "28316",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4864024799": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "212668",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4072394356": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "154221",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4679761535": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "189829",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4752074992": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "198695",
+        "instance": "a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "418396886": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "158377",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8004084961": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "277619",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2613920405": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "61665",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "61659",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2353830402": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "43623",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2440052951": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "49627",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4735812382": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "197036",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "445861800": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "170210",
+        "instance": "a main road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4759622514": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "199798",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3014986976": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "87409",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2598093366": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "60537",
+        "instance": "a road construction site",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4564857014": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "178976",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "271177682": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "67985",
+        "instance": "a counry road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4938897545": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "220840",
+        "instance": "a road race",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3082934678": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "92000",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8180474484": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "280136",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4673985219": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "189204",
+        "instance": "a cobblestone road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4540798718": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "176532",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "405961988": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "153719",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7283701780": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "267912",
+        "instance": "the unpaved the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "31292211": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "95520",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2402301574": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "46636",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5162402452": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "230115",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "225110635": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "36878",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3338474677": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "110721",
+        "instance": "a main road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4788161255": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "202886",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "6150843883": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "248711",
+        "instance": "the challenge of an off-road course",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3241627311": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "103545",
+        "instance": "road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "23473996": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "43291",
+        "instance": "a road block",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "961220478": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "284326",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2547291721": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "57312",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "57313",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4256497108": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "160482",
+        "instance": "the side of a country road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3202804141": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "100687",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4830293194": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "208359",
+        "instance": "a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4731609129": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "196520",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4255627436": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "160438",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4901767295": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "216719",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4675539672": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "189361",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4956455528": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "223051",
+        "instance": "between two roads",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4915015674": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "217925",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7357208586": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "268924",
+        "instance": "a windy road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2244613488": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "36470",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5261346652": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "232378",
+        "instance": "road safety vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6315830428": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "252405",
+        "instance": "a road bike",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3180051207": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "98893",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2588763665": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "59895",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2761119252": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "71186",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3577928139": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "128978",
+        "instance": "the top of an orange road traffic cone",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4442382200": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "168602",
+        "instance": "the middle of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2569653795": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "58672",
+        "instance": "a \" road closed ahead \" sign",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6426218107": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "254193",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "85139806": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "281550",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1305564994": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "8132",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "205404905": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "26027",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4803943201": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "204473",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "475594565": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "199166",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2442581927": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "49760",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2036080069": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "25381",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5408196820": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "235813",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3072938154": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "91525",
+        "instance": "a major road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "141118204": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "11796",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4679881654": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "189844",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3046902524": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "89895",
+        "instance": "a dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2826039666": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "75085",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1001896054": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "108",
+        "instance": "a main road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4344503313": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "164106",
+        "instance": "a snow-covered road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "164107",
+        "instance": "a snowy road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4560100704": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "178575",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "7808530252": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "275563",
+        "instance": "leesville road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3674521435": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "136039",
+        "instance": "an off road course",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "136040",
+        "instance": "off-road bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2573811416": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "58987",
+        "instance": "dirt road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3769598031": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "141824",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "488797425": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "214988",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2441815792": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "49694",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8004090394": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "277625",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3330675488": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "110005",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3638374272": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "133311",
+        "instance": "a rural road",
+        "instance_type": [
+          "scene"
+        ]
+      },
+      {
+        "instance_id": "133310",
+        "instance": "a gravel road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4890379428": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "215364",
+        "instance": "a road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4795267435": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "203457",
+        "instance": "a brick road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "32774948": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "106395",
+        "instance": "the side of the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3677734351": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "136252",
+        "instance": "the road",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "5683406436": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "240874",
+        "instance": "off-road bike rider",
+        "instance_type": [
+          "people"
+        ]
+      }
+    ]
+  }
+}

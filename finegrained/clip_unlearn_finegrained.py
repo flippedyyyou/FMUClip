@@ -29,8 +29,8 @@ from finegrained.clip_finegrained_baseline import (
     _topk_retain_accuracy_from_cache,
     run_original_eval,
 )
-from finegrained.load_dataset import COCODataSet
-from finegrained.params import build_parser as build_base_parser
+from finegrained.load_dataset import get_finegrained_dataset_cls
+from finegrained.params import build_parser as build_base_parser, resolve_dataset_paths
 
 
 DEFAULT_MASK_DIR = "finegrained/mask"
@@ -78,6 +78,7 @@ def _load_images_from_df_lists(
 
 
 def _build_single_train_dataset(args, transform):
+    dataset_cls = get_finegrained_dataset_cls(args.dataset)
     forget_class_names = [_normalize_name(x) for x in args.forget_classes]
     train_files = _load_images_from_df_lists(
         df_root=args.df_root,
@@ -85,7 +86,7 @@ def _build_single_train_dataset(args, transform):
         item_folder=args.train_item_folder,
         class_names=forget_class_names,
     )
-    return COCODataSet(
+    return dataset_cls(
         annotation_file=args.train_annotation_file,
         image_root=args.train_image_root,
         split=args.train_split,
@@ -824,15 +825,7 @@ def build_parser():
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
-
-    args.train_annotation_file = os.path.join(
-        args.coco_root, "annotations", f"instances_{args.train_split}2017.json"
-    )
-    args.val_annotation_file = os.path.join(
-        args.coco_root, "annotations", f"instances_{args.val_split}2017.json"
-    )
-    args.train_image_root = os.path.join(args.coco_root, f"{args.train_split}2017")
-    args.val_image_root = os.path.join(args.coco_root, f"{args.val_split}2017")
+    args = resolve_dataset_paths(args)
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     model, tokenize_fn, image_size, backend = _load_clip_backend(args, device)

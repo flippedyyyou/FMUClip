@@ -1,0 +1,804 @@
+{
+  "2409312675": {
+    "item_num": 2,
+    "instances": [
+      {
+        "instance_id": "46966",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "46663846": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "188349",
+        "instance": "a work truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3271061953": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "105906",
+        "instance": "a crowded truck bed",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "241374292": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "47653",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3721843907": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "139548",
+        "instance": "the tailgate of a pickup truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "98235403": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "284892",
+        "instance": "a concrete truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4667954426": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "188407",
+        "instance": "a yellow penske truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4942974885": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "221452",
+        "instance": "a pink toy truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "508432819": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "228485",
+        "instance": "monster truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2873431806": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "78158",
+        "instance": "the red truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4431234782": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "167516",
+        "instance": "a moving truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3566225740": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "128232",
+        "instance": "a convoy of military trucks",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3020786031": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "88012",
+        "instance": "a blue truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2542282004": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "56969",
+        "instance": "a red truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4205559091": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "159139",
+        "instance": "a yellow truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3070739413": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "91408",
+        "instance": "a truck driver",
+        "instance_type": [
+          "people"
+        ]
+      },
+      {
+        "instance_id": "91411",
+        "instance": "the truck door",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "91410",
+        "instance": "the cab of a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "221510405": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "34635",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7405895310": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "269438",
+        "instance": "a hand truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4809690215": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "205349",
+        "instance": "an ice cream truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4802006144": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "204284",
+        "instance": "a parked white cargo truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "493274225": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "219963",
+        "instance": "a red truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7333560206": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "268588",
+        "instance": "2 small dump trucks",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "268587",
+        "instance": "a large truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "164200567": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "18018",
+        "instance": "a red food truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "226630666": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "37769",
+        "instance": "the truck open",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "125382282": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "6452",
+        "instance": "the back of another truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4795241726": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "203447",
+        "instance": "their truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "493272889": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "219941",
+        "instance": "a red pick up truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3503483247": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "123266",
+        "instance": "a red truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3697902123": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "137659",
+        "instance": "a pickup truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4671529065": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "188897",
+        "instance": "a white ice cream truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "188898",
+        "instance": "the truck window",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2704407589": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "67134",
+        "instance": "a red truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "493276179": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "219972",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "11391827": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "3528",
+        "instance": "the back of a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "136493345": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "10155",
+        "instance": "a water truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3084472304": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "92146",
+        "instance": "bsr trucks",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3965771582": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "149993",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4518349470": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "174975",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "174974",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4665595084": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "188294",
+        "instance": "a no truck sign",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7290145346": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "268004",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1466307485": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "13971",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3504945641": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "123442",
+        "instance": "two garbage trucks",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "123441",
+        "instance": "two green garbage trucks",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "123440",
+        "instance": "green trash trucks",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "123444",
+        "instance": "a large green truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2837695157": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "75914",
+        "instance": "a toy truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2889335946": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "79228",
+        "instance": "a cement truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4168953376": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "157812",
+        "instance": "a food truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3316628110": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "108893",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "108901",
+        "instance": "the bed of a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "542179694": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "236185",
+        "instance": "a ladder truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2295216243": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "39692",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3512780285": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "123844",
+        "instance": "delivery truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5438152388": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "236576",
+        "instance": "the monster truck rally",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "236568",
+        "instance": "this monster truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2504991916": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "53892",
+        "instance": "a potato chip truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3441132495": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "118500",
+        "instance": "a muddy truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4532878470": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "176063",
+        "instance": "a blue truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4803481099": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "204372",
+        "instance": "a small truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4875054703": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "213863",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4841210334": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "209626",
+        "instance": "a flatbed truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2183877589": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "32765",
+        "instance": "a white truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1365040902": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "10167",
+        "instance": "a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2661294969": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "64648",
+        "instance": "the back of a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5261346652": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "232376",
+        "instance": "a dump truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2890120770": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "79323",
+        "instance": "the back of a truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6845811278": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "259099",
+        "instance": "the truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  }
+}

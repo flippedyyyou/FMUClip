@@ -11,14 +11,14 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Sequence, Set, Tuple
 
 DEFAULT_EVAL_DIR = Path(
-    "/home/shenruoyan/FMUClip/finegrained/output/original_eval/original_banana3_100images_DF3_DR1_UNI3_03022152"
+    "/datanfs4/shenruoyan/FMUClip/finegrained/output/original_eval/original_banana3_100images_DF3_DR1_UNI3_03022152"
 )
 DEFAULT_TEST_IMAGES_DIR = Path(
-    "/home/shenruoyan/FMUClip/data/classification/coco2017_instances/val/test_images"
+    "/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances/val/test_images"
 )
 DEFAULT_IMAGENET_ROOT = Path("/datanfs4/shenruoyan/datasets/imagenet-1000/imagenet1k")
 DEFAULT_ITEM1_DIR = Path(
-    "/home/shenruoyan/FMUClip/data/classification/coco2017_instances/val/Df/item1"
+    "/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances/val/Df/item1"
 )
 DEFAULT_DATASET_NAME = "imagenet1k"
 
@@ -268,6 +268,7 @@ def replace_images_for_misclassified_items(
             if not dry_run:
                 shutil.copy2(src_path, target_path)
             replaced += 1
+            print(f"Replaced: {target_path} <= {src_path} (label={label}, pred={item.pred_name})")
             details.append(
                 {
                     "label": label,
@@ -431,8 +432,6 @@ def main() -> None:
         "replace_report": replace_report,
         "json_report": json_report,
     }
-
-    print(json.dumps(report, ensure_ascii=False, indent=2))
 
     if args.report_path is not None:
         if not args.dry_run:

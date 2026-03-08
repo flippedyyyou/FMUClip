@@ -1,0 +1,3057 @@
+{
+  "4586137415": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "180599",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4927312317": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "219152",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6272230270": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "251278",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3721404396": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "139462",
+        "instance": "a bicycle helmet",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4528455325": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "175751",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6186146093": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "249473",
+        "instance": "a bicycle tire",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2937942758": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "82710",
+        "instance": "many bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4743546717": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "197860",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2864634088": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "77601",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2976350388": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "85084",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2921670682": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "81476",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "95734036": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "284163",
+        "instance": "bicycle trek",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3459871361": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "119810",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3565917449": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "128219",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2137789511": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "30696",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3453019315": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "119273",
+        "instance": "a bicycle outside",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "8118985445": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "279268",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2944025729": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "83263",
+        "instance": "bicycle rider",
+        "instance_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "4820596540": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "206995",
+        "instance": "a pink bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "990890291": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "285084",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2467326012": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "51627",
+        "instance": "an unusual bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3197247245": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "100228",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "52226520": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "231416",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3081182021": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "91891",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3839004579": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "145092",
+        "instance": "a bicycle stunt",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1483784737": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "14554",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4507759454": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "173933",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5661996549": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "240545",
+        "instance": "the tire of a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3817884749": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "143921",
+        "instance": "a yellow bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1143373711": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "3626",
+        "instance": "a bicycle rider",
+        "instance_type": [
+          "people"
+        ]
+      },
+      {
+        "instance_id": "3630",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2909811789": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "0",
+        "instance": "a bicycle stunt jump",
+        "instance_type": [
+          "notvisual"
+        ]
+      },
+      {
+        "instance_id": "80691",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1595227547": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "17158",
+        "instance": "a blue bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2860524742": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "77367",
+        "instance": "a bicycle helmet",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4951185210": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "222502",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4633636089": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "184786",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4953325348": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "222703",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "640203018": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "253913",
+        "instance": "a very small bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2176147758": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "32413",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4791513183": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "203142",
+        "instance": "a black bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4932685389": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "219936",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3671933270": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "135801",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3156991513": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "97193",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "187245342": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "22357",
+        "instance": "a red bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3712463209": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "138759",
+        "instance": "the rear wheel of an overturned bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4542565918": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "176649",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3320154278": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "109175",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6208818853": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "250113",
+        "instance": "a bicycle tire",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3496410435": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "122572",
+        "instance": "a tandem bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3765374230": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "141716",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "131840964": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "8486",
+        "instance": "child 's playing a bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "8112171798": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "279169",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5583280537": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "239065",
+        "instance": "a broken down bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "506432952": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "227844",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "363715836": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "133212",
+        "instance": "a bicycle race",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "133213",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6743911073": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "257401",
+        "instance": "their bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "257399",
+        "instance": "a bicycle race",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7602898434": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "272045",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3343197133": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "111152",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "199463720": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "24713",
+        "instance": "woman ride bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4731580287": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "196517",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "196515",
+        "instance": "a bicycle race",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2623496164": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "62202",
+        "instance": "the bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3635577874": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "133000",
+        "instance": "a turquoise bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3490874218": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "122217",
+        "instance": "a bicycle high",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7703165508": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "273666",
+        "instance": "a bunch of bicycle riders",
+        "instance_type": [
+          "people"
+        ]
+      },
+      {
+        "instance_id": "273671",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4941418868": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "221219",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "363792435": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "133248",
+        "instance": "their bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4698189420": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "192490",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2520909293": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "54867",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6540658813": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "255416",
+        "instance": "a bicycle tire",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "255415",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "498492764": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "226128",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "200278000": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "24827",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3225058391": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "102493",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3182405529": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "99004",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "215797019": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "31604",
+        "instance": "a 3-wheeled bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "608257195": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "247731",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3903095674": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "147554",
+        "instance": "a bicycle crate",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3710073758": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "138515",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4486982499": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "172527",
+        "instance": "a white bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1457762320": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "13603",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5962278982": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "246066",
+        "instance": "a bicycle rim",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6661187447": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "256612",
+        "instance": "a yellow bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4979134930": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "225486",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "530950375": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "233362",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4495921495": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "173142",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2887798667": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "0",
+        "instance": "a bicycle trick",
+        "instance_type": [
+          "notvisual"
+        ]
+      }
+    ]
+  },
+  "2825483885": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "75014",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4632504882": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "184721",
+        "instance": "a red bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2835793460": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "75732",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2907073768": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "80543",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2295920018": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "39742",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3676460610": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "136121",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7360542406": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "268975",
+        "instance": "several overturned bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2064792226": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "26602",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "628282183": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "251637",
+        "instance": "a bicycle repair",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2956895529": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "84006",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3201943535": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "100568",
+        "instance": "a bicycle chain",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4699585469": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "192593",
+        "instance": "the seat of a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "192590",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2932519416": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "0",
+        "instance": "a bodyless bicycle jump",
+        "instance_type": [
+          "notvisual"
+        ]
+      }
+    ]
+  },
+  "2890385480": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "79335",
+        "instance": "a small bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "110595925": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "2668",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3308018795": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "108305",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4565079276": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "179009",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4940921321": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "221120",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2873252292": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "78148",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2998024845": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "86351",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2892395757": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "79484",
+        "instance": "funky bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "298611438": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "85631",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "409001107": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "154943",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4385122946": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "165769",
+        "instance": "his broken bicycle chain",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "165772",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3696698390": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "137579",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3470129475": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "120457",
+        "instance": "his bicycle high",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "120453",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4463229405": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "170512",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5199369569": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "230874",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "465394708": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "187244",
+        "instance": "a bicycle cart",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3590294974": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "129943",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2234681386": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "35971",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4466830443": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "170849",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3460358347": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "119820",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "288908971": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "79212",
+        "instance": "the back of a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3386375153": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "114630",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "245460010": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "50834",
+        "instance": "their bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4737733413": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "197265",
+        "instance": "hat bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "27782020": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "72479",
+        "instance": "a brightly decorated bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4507050262": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "173872",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3560503470": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "127633",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "568765229": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "240966",
+        "instance": "bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5506994278": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "237885",
+        "instance": "a large bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "128395625": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "7208",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3451984463": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "119227",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6342418836": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "253270",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3487378989": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "121985",
+        "instance": "the spokes of his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7822651508": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "275807",
+        "instance": "his bicycle downhill",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "384465575": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "145317",
+        "instance": "their bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7764208980": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "274789",
+        "instance": "their bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5783690677": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "242895",
+        "instance": "a bunch of bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3525514625": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "124833",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3517023411": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "124166",
+        "instance": "bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4913055468": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "217603",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3501908484": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "123176",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4750675492": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "198492",
+        "instance": "near bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2987775031": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "85761",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "8131954252": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "279372",
+        "instance": "a silver bicycle helmet",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4815579590": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "206331",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5067768316": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "227982",
+        "instance": "bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1483574454": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "14549",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "14547",
+        "instance": "black bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3000959758": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "86486",
+        "instance": "bicycles cross",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3068994801": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "91251",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4435598180": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "167853",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4358650450": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "164766",
+        "instance": "a parked bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "268293751": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "65925",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2504007911": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "53818",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2217258342": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "34814",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3527590601": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "125074",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2765029348": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "71399",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3046286572": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "89840",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2846853277": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "76627",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2353830402": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "43622",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3240351042": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "103434",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4830367822": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "208393",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "208394",
+        "instance": "a bicycle seat",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "363701716": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "133195",
+        "instance": "bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7433123648": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "269827",
+        "instance": "their bicycle attire",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "269821",
+        "instance": "a bicycle race",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "349877184": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "122881",
+        "instance": "their bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2070831281": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "26866",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4671668474": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "188939",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "418396886": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "158371",
+        "instance": "a bicycle race",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "158372",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4296835667": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "162093",
+        "instance": "her bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3455019076": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "119433",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "119435",
+        "instance": "bicycle racing gear",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4358211815": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "164708",
+        "instance": "bicycle police",
+        "instance_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "529453295": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "233123",
+        "instance": "a row of bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3558370311": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "127470",
+        "instance": "a bicycle stunt",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2524084967": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "55143",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4677106896": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "189515",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3121498699": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "95016",
+        "instance": "a pink bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "95019",
+        "instance": "the seat of a pink bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1124448967": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "3223",
+        "instance": "three parked bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3528902357": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "125144",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "387466573": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "146575",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "146576",
+        "instance": "a bicycle shop",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4620203846": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "183418",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3330654550": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "109996",
+        "instance": "a bicycle race ride",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6225843702": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "250552",
+        "instance": "his bicycle hop",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3474985382": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "120988",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3019917636": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "87917",
+        "instance": "blue bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4820349542": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "206955",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1039360778": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "1026",
+        "instance": "her bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2678747865": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "65688",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4352519219": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "164522",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "461085759": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "182446",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "496418696": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "223825",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3987123697": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "150996",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "128395441": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "7198",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4717058364": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "194455",
+        "instance": "their bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7474397194": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "270305",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6170429974": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "249148",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4091988557": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "155021",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "700718201": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "263839",
+        "instance": "the wheel of his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3674521435": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "136036",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "136040",
+        "instance": "off-road bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2982881046": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "0",
+        "instance": "a bicycle trick",
+        "instance_type": [
+          "notvisual"
+        ]
+      },
+      {
+        "instance_id": "85477",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3657503733": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "134770",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3748481499": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "141141",
+        "instance": "her bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "274604264": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "70016",
+        "instance": "a bicycle helmet",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4568930518": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "179400",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4888243690": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "215029",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4591624033": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "181150",
+        "instance": "her bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4634886147": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "184977",
+        "instance": "some bicycles outdoors",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3562903245": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "0",
+        "instance": "a bicycle trick",
+        "instance_type": [
+          "notvisual"
+        ]
+      },
+      {
+        "instance_id": "127922",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3234401637": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "103120",
+        "instance": "two bicycle riders",
+        "instance_type": [
+          "people"
+        ]
+      }
+    ]
+  },
+  "3262793378": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "105357",
+        "instance": "bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "537960889": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "234959",
+        "instance": "bicycle helmet",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "8038838476": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "278057",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4862877623": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "212526",
+        "instance": "a red bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "154257460": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "15962",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4782269293": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "202222",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4544609414": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "176849",
+        "instance": "her bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4697417481": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "192425",
+        "instance": "a bicycle repairman",
+        "instance_type": [
+          "people"
+        ]
+      },
+      {
+        "instance_id": "192428",
+        "instance": "several bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4675918984": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "189390",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4443434749": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "168736",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2052102628": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "25950",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "248698033": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "52941",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1478294229": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "14370",
+        "instance": "a black bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "14371",
+        "instance": "a closeup of a bicycle rider",
+        "instance_type": [
+          "people"
+        ]
+      },
+      {
+        "instance_id": "14373",
+        "instance": "a bicycle peddal",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4200402256": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "158941",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7067778185": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "264966",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "264972",
+        "instance": "the front tire of a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4653558158": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "187171",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2253091968": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "37093",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3503414651": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "123245",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      },
+      {
+        "instance_id": "123248",
+        "instance": "a bicycle ride",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2992226950": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "86026",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "1257692349": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "6504",
+        "instance": "a display of bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2033696343": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "25291",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7567595412": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "271466",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3560502528": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "127625",
+        "instance": "bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "86341446": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "282261",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2088748696": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "27929",
+        "instance": "one parked bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4484638832": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "172273",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "213435930": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "30531",
+        "instance": "this bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2789110209": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "73057",
+        "instance": "his bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "7357208586": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "268923",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "8041003011": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "278114",
+        "instance": "different colored spandex clothing ride expensive bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4623000836": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "183808",
+        "instance": "a couple bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "3556037801": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "127285",
+        "instance": "the wheel of a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4059698218": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "153727",
+        "instance": "her bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5682364328": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "240865",
+        "instance": "a bicycle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4808499261": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "205159",
+        "instance": "some bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "6647904677": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "256492",
+        "instance": "their bicycles",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  }
+}

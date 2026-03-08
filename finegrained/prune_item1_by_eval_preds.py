@@ -3,7 +3,7 @@ import argparse
 import glob
 import json
 import os
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from typing import Dict, List, Set
 
@@ -111,12 +111,28 @@ def update_item1(item1_dir: str, keep_map: Dict[str, List[PredEntry]]) -> None:
         with open(json_path, "r", encoding="utf-8") as f:
             obj = json.load(f)
 
-        keep_coco_names = {e.coco_file_name for e in kept_entries}
         images = obj.get("images", [])
-        filtered_images = [im for im in images if im.get("file_name") in keep_coco_names]
-        if len(filtered_images) != len(kept_entries):
+        target_count = len(kept_entries)
+        # Keep exact multiplicity requested by kept_entries to avoid over-keeping
+        # when item1 json contains duplicated file_name rows.
+        need_counts = Counter(e.coco_file_name for e in kept_entries)
+        filtered_images: List[dict] = []
+        for im in images:
+            file_name = im.get("file_name")
+            if not file_name:
+                continue
+            if need_counts[file_name] <= 0:
+                continue
+            filtered_images.append(im)
+            need_counts[file_name] -= 1
+            if len(filtered_images) == target_count:
+                break
+
+        if len(filtered_images) != target_count:
+            missing = sum(v for v in need_counts.values() if v > 0)
             raise RuntimeError(
-                f"{cls}: filtered item1 json has {len(filtered_images)} entries, expected {len(kept_entries)}."
+                f"{cls}: filtered item1 json has {len(filtered_images)} entries, "
+                f"expected {target_count}, missing={missing}."
             )
 
         obj["num"] = len(filtered_images)
@@ -156,17 +172,17 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Prune item1/single_train_images to target size per class using eval predictions.")
     parser.add_argument(
         "--eval-dir",
-        default="/home/shenruoyan/FMUClip/finegrained/output/original_eval/original_train_150images_DF3_DR1_UNI3_03041613",
+        default="/datanfs4/shenruoyan/FMUClip/finegrained/output/original_eval/flickr30k_entities/original_table5_DF3_DR1_UNI3_03082352",
     )
     parser.add_argument(
         "--item1-dir",
-        default="/home/shenruoyan/FMUClip/data/classification/coco2017_instances/train/Df/item1",
+        default="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/val/Df/item1",
     )
     parser.add_argument(
         "--single-dir",
-        default="/home/shenruoyan/FMUClip/data/classification/coco2017_instances/train/single_train_images",
+        default="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/val/test_images",
     )
-    parser.add_argument("--target-per-class", type=int, default=100)
+    parser.add_argument("--target-per-class", type=int, default=50)
     args = parser.parse_args()
 
     pred_groups = read_predictions(args.eval_dir)

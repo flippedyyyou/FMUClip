@@ -1,0 +1,1563 @@
+{
+  "4827152692": {
+    "item_num": 2,
+    "instances": [
+      {
+        "instance_id": "207909",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3537920947": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "125831",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "17185253": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "19372",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2958912940": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "84160",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4612743950": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "182734",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2038335029": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "25436",
+        "instance": "bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2324565145": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "41675",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3371112436": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "113631",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2094369401": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "28328",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3578736330": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "129088",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "33465647": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "111435",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "212574396": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "30149",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4511060196": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "174315",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "133087820": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "8812",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "325576658": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "104769",
+        "instance": "a blue bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1160034462": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "4187",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2799871904": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "73658",
+        "instance": "a wooden bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "599235529": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "246427",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "141186473": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "11835",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2498897831": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "53468",
+        "instance": "a purple bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2512586304": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "54409",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3434868661": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "118040",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "540873795": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "235840",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3509682519": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "123693",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "114941694": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "3894",
+        "instance": "a concrete bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2605095722": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "61078",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3067467271": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "91144",
+        "instance": "benches",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2651455205": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "63935",
+        "instance": "a blue bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1262077938": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "6569",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4649915901": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "186705",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3169394115": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "97948",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4953536921": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "222766",
+        "instance": "white bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4429660": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "167332",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4623589654": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "183904",
+        "instance": "benches",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "861608773": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "282105",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4471667766": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "171259",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4896173039": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "216096",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2274602044": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "38353",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4545323253": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "176906",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4827600483": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "207964",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3956420030": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "149504",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4746901297": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "198135",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3714551959": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "138914",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3273757324": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "106111",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4650782222": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "186781",
+        "instance": "a stone bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4772317885": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "201320",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4932279867": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "219902",
+        "instance": "a gray bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2061144717": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "26411",
+        "instance": "benches",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4747450681": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "198160",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4683808691": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "190138",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5501805647": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "237656",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4862281139": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "212429",
+        "instance": "a white bench",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "212435",
+        "instance": "a bench outside",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4775597702": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "201629",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5964699090": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "246093",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3038755837": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "89299",
+        "instance": "bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2251707859": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "36944",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4801216793": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "204189",
+        "instance": "a stone bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "561940436": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "239894",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "373394550": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "140405",
+        "instance": "a padded bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2257332250": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "37359",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "269898095": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "66828",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "573594802": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "242047",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4716605063": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "194355",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2843553836": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "76323",
+        "instance": "a stone bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3032519316": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "88976",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4357165525": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "164665",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3230602641": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "102858",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1280221720": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "7101",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2380519648": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "45290",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4606399898": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "182066",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4725046541": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "195630",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3742002550": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "140759",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4710517021": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "193783",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "193782",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2435482148": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "49257",
+        "instance": "a picnic bench",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "49258",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4876356155": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "213973",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3056595980": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "90673",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2656110989": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "64291",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3481411830": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "121489",
+        "instance": "a bench of a old building",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "3527184455": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "124984",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2885768735": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "78995",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "969779007": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "284528",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "227181630": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "38175",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3191828851": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "99911",
+        "instance": "wooden bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3398883858": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "115522",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "115524",
+        "instance": "a bench outside",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4701188650": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "192773",
+        "instance": "bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1920465": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "23181",
+        "instance": "a piano bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "456166613": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "178632",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4926937516": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "219085",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4100944178": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "155462",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "214774826": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "31114",
+        "instance": "brown benches",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "213093138": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "30365",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "361831875": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "131931",
+        "instance": "a stone bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "283252248": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "75511",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3539612893": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "125970",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3197391293": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "100235",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3537201804": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "125768",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4720969701": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "195218",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "195219",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4954782761": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "222908",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2469878877": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "51807",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4735401323": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "196997",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "450425195": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "173641",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3442519111": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "118655",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6795107714": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "258238",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7278633600": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "267842",
+        "instance": "the bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3823691082": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "144185",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2038662925": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "25445",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2226233759": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "35255",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2572601229": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "58773",
+        "instance": "a shoe store 's bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4691655395": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "191617",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "492104206": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "218461",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3800627437": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "143161",
+        "instance": "a picnic bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5921625277": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "245298",
+        "instance": "park benches",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4865999008": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "212874",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "212877",
+        "instance": "a bench outside",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2525455265": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "55222",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "14580804": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "13621",
+        "instance": "benches",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "13623",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "44129946": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "166883",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4820694014": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "207004",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6078286671": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "247647",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2447289477": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "50354",
+        "instance": "a white bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3925292151": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "148351",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4587229099": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "180650",
+        "instance": "benches outdoors",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4463998783": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "170585",
+        "instance": "a park bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4750902396": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "198528",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4868909807": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "213170",
+        "instance": "benches",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1481393167": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "14482",
+        "instance": "a bench",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2387419639": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "45717",
+        "instance": "benches",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

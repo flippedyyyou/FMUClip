@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 import numpy as np
@@ -8,11 +9,40 @@ from PIL import Image
 from pycocotools.coco import COCO
 from torch.utils.data import DataLoader, Dataset
 
-from finegrained.coco_labels.coco import LABEL_NAMES
+# from finegrained.coco_labels.coco import LABEL_NAMES
+from finegrained.flickr30k_labels.flickr30k import LABEL_NAMES
 
 
 def _normalize_name(name: str) -> str:
     return name.strip().replace(" ", "_")
+
+
+def _plural_pattern(word: str) -> str:
+    if word == "man":
+        return "(?:man|men)"
+    if word == "woman":
+        return "(?:woman|women)"
+    if word.endswith("y") and len(word) > 1 and word[-2] not in "aeiou":
+        return f"(?:{re.escape(word)}|{re.escape(word[:-1])}ies)"
+    if word.endswith(("s", "x", "z", "ch", "sh")):
+        return f"(?:{re.escape(word)}|{re.escape(word)}es)"
+    return f"(?:{re.escape(word)}|{re.escape(word)}s)"
+
+
+def _concept_in_phrase(concept: str, phrase_text: str) -> bool:
+    non_word_re = re.compile(r"[^\w]+", re.UNICODE)
+    concept = non_word_re.sub(" ", concept.lower()).strip()
+    phrase_text = non_word_re.sub(" ", phrase_text.lower()).strip()
+    if not concept or not phrase_text:
+        return False
+    tokens = concept.split()
+    if len(tokens) == 1:
+        core = _plural_pattern(tokens[0])
+    else:
+        core = r"\s+".join(re.escape(t) for t in tokens[:-1])
+        core = core + r"\s+" + _plural_pattern(tokens[-1])
+    pattern = r"\b" + core + r"\b"
+    return re.search(pattern, phrase_text) is not None
 
 
 def _pil_to_tensor(image: Image.Image) -> torch.Tensor:
@@ -370,6 +400,183 @@ class COCODataSet(Dataset):
             "has_bbox": has_bbox,
             "eval_class_idx": eval_class_idx,
         }
+
+
+class FlickrDataSet(Dataset):
+    """
+    Flickr30k Entities multi-label dataset built from phrase-level instances.
+    """
+
+    def __init__(
+        self,
+        annotation_file: Optional[str] = None,
+        image_root: Optional[str] = None,
+        split: str = "train",
+        transform=None,
+        return_meta: bool = False,
+        filter_missing_images: bool = True,
+        selected_files: Optional[Sequence[str]] = None,
+        selected_samples: Optional[Sequence[Dict[str, object]]] = None,
+        selected_bboxes: Optional[Dict[str, Sequence[float]]] = None,
+        apply_bbox_crop: bool = False,
+        forget_class_names: Optional[Sequence[str]] = None,
+    ) -> None:
+        if annotation_file is None:
+            raise ValueError("FlickrDataSet requires `annotation_file` (instances.json path).")
+        if image_root is None:
+            raise ValueError("FlickrDataSet requires `image_root`.")
+
+        self.annotation_file = annotation_file
+        self.image_root = image_root
+        self.transform = transform
+        self.return_meta = return_meta
+        self.apply_bbox_crop = apply_bbox_crop
+        self.num_classes = len(LABEL_NAMES)
+        forget_class_names = forget_class_names or []
+        self.forget_mask = _build_forget_mask(forget_class_names) if forget_class_names else torch.zeros(self.num_classes)
+
+        with open(self.annotation_file, "r", encoding="utf-8") as f:
+            instances_payload = json.load(f)
+
+        self.idx_to_name: Dict[int, str] = dict(sorted(LABEL_NAMES.items()))
+        self.name_to_idx: Dict[str, int] = {
+            _normalize_name(name): idx for idx, name in self.idx_to_name.items()
+        }
+
+        target_cache: Dict[str, np.ndarray] = {}
+
+        def _build_target_from_instances(file_stem: str) -> np.ndarray:
+            cached = target_cache.get(file_stem)
+            if cached is not None:
+                return cached
+            target = np.zeros(self.num_classes, dtype=np.float32)
+            image_instances = instances_payload.get(file_stem, {})
+            for _, ins in image_instances.items():
+                phrase = str(ins.get("instance", "")).strip().lower()
+                if not phrase:
+                    continue
+                for class_idx, class_name in self.idx_to_name.items():
+                    if _concept_in_phrase(class_name.replace("_", " "), phrase):
+                        target[int(class_idx)] = 1.0
+            target_cache[file_stem] = target
+            return target
+
+        self.file_names: List[str] = []
+        self.targets: List[np.ndarray] = []
+        self.eval_class_indices: List[int] = []
+        self.sample_bboxes: List[Optional[List[float]]] = []
+        self.file_name_to_bbox: Dict[str, List[float]] = {
+            os.path.basename(k): [float(v) for v in vals]
+            for k, vals in (selected_bboxes or {}).items()
+            if vals is not None and len(vals) == 4
+        }
+
+        if selected_samples is not None:
+            for sample in selected_samples:
+                file_name = os.path.basename(str(sample.get("file_name", "")))
+                if not file_name:
+                    continue
+                file_stem = os.path.splitext(file_name)[0]
+                if file_stem not in instances_payload:
+                    continue
+                image_path = os.path.join(self.image_root, file_name)
+                if filter_missing_images and (not os.path.exists(image_path)):
+                    continue
+
+                bbox = sample.get("bbox")
+                bbox_out = None
+                if bbox is not None and len(bbox) == 4:
+                    bbox_out = [float(v) for v in bbox]
+                eval_idx = int(sample.get("eval_class_idx", -1))
+
+                self.file_names.append(file_name)
+                self.targets.append(_build_target_from_instances(file_stem).copy())
+                self.eval_class_indices.append(eval_idx)
+                self.sample_bboxes.append(bbox_out)
+        else:
+            selected_set = None
+            if selected_files is not None:
+                selected_set = {os.path.basename(x) for x in selected_files}
+
+            for file_stem in instances_payload.keys():
+                file_name = f"{file_stem}.jpg"
+                if selected_set is not None and file_name not in selected_set:
+                    continue
+                image_path = os.path.join(self.image_root, file_name)
+                if filter_missing_images and (not os.path.exists(image_path)):
+                    continue
+                self.file_names.append(file_name)
+                self.targets.append(_build_target_from_instances(file_stem).copy())
+                self.eval_class_indices.append(-1)
+                self.sample_bboxes.append(None)
+
+    def __len__(self) -> int:
+        return len(self.file_names)
+
+    def __getitem__(self, index: int):
+        file_name = self.file_names[index]
+        image_path = os.path.join(self.image_root, file_name)
+
+        image = Image.open(image_path).convert("RGB")
+        bbox = self.sample_bboxes[index]
+        if bbox is None:
+            bbox = self.file_name_to_bbox.get(file_name)
+        if self.apply_bbox_crop and bbox is not None:
+            x, y, w, h = [float(v) for v in bbox]
+            x1 = max(0, int(np.floor(x)))
+            y1 = max(0, int(np.floor(y)))
+            x2 = min(image.width, int(np.ceil(x + w)))
+            y2 = min(image.height, int(np.ceil(y + h)))
+            if x2 > x1 and y2 > y1:
+                image = image.crop((x1, y1, x2, y2))
+        if self.transform is not None:
+            image = self.transform(image)
+        else:
+            image = _pil_to_tensor(image)
+
+        full_label = torch.from_numpy(self.targets[index].copy())
+        forget_mask = self.forget_mask
+        forget_label = full_label * forget_mask
+        retain_label = full_label * (1.0 - forget_mask)
+        bbox_tensor = torch.tensor(
+            bbox if bbox is not None else [0.0, 0.0, 0.0, 0.0],
+            dtype=torch.float32,
+        )
+        has_bbox = torch.tensor(bbox is not None, dtype=torch.bool)
+        eval_class_idx = torch.tensor(self.eval_class_indices[index], dtype=torch.long)
+
+        if self.return_meta:
+            return {
+                "image": image,
+                "label": full_label,
+                "forget_label": forget_label,
+                "retain_label": retain_label,
+                "bbox": bbox_tensor,
+                "has_bbox": has_bbox,
+                "eval_class_idx": eval_class_idx,
+                "image_id": os.path.splitext(file_name)[0],
+                "file_name": file_name,
+                "image_path": image_path,
+            }
+        return {
+            "image": image,
+            "image_path": image_path,
+            "label": full_label,
+            "forget_label": forget_label,
+            "retain_label": retain_label,
+            "bbox": bbox_tensor,
+            "has_bbox": has_bbox,
+            "eval_class_idx": eval_class_idx,
+        }
+
+
+def get_finegrained_dataset_cls(dataset_name: str):
+    normalized = str(dataset_name).strip().lower()
+    if normalized in {"coco", "coco2017", "coco2017_instances"}:
+        return COCODataSet
+    if normalized in {"flickr", "flickr30k", "flickr30k_entities"}:
+        return FlickrDataSet
+    raise ValueError(f"Unsupported dataset: {dataset_name}")
 
 
 class COCODataLoader(DataLoader):

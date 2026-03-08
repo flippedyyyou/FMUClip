@@ -15,6 +15,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Hyperparameters for COCO multi-label data loading.")
 
     parser.add_argument(
+        "--dataset",
+        type=str,
+        default="coco2017_instances",
+        choices=["coco2017_instances", "flickr30k_entities"],
+        help="Finegrained dataset backend.",
+    )
+    parser.add_argument(
         "--df_root",
         type=str,
         default="/home/shenruoyan/FMUClip/data/classification/coco2017_instances",
@@ -25,6 +32,18 @@ def build_parser() -> argparse.ArgumentParser:
         type=str,
         default="/datanfs4/shenruoyan/datasets/coco2017",
         help="COCO root folder containing annotations/, train2017/, val2017/.",
+    )
+    parser.add_argument(
+        "--flickr_instances_file",
+        type=str,
+        default="",
+        help="Path to Flickr30k Entities instances json (e.g. .../train/meta/instances.json).",
+    )
+    parser.add_argument(
+        "--flickr_image_root",
+        type=str,
+        default="",
+        help="Path to Flickr30k images root directory.",
     )
 
     parser.add_argument("--train_split", type=str, default="train")
@@ -111,15 +130,33 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def resolve_dataset_paths(args):
+    if args.dataset == "coco2017_instances":
+        args.train_annotation_file = os.path.join(
+            args.coco_root, "annotations", f"instances_{args.train_split}2017.json"
+        )
+        args.val_annotation_file = os.path.join(
+            args.coco_root, "annotations", f"instances_{args.val_split}2017.json"
+        )
+        args.train_image_root = os.path.join(args.coco_root, f"{args.train_split}2017")
+        args.val_image_root = os.path.join(args.coco_root, f"{args.val_split}2017")
+        return args
+
+    if args.dataset == "flickr30k_entities":
+        if not args.flickr_instances_file:
+            raise ValueError("`--flickr_instances_file` is required when --dataset=flickr30k_entities.")
+        if not args.flickr_image_root:
+            raise ValueError("`--flickr_image_root` is required when --dataset=flickr30k_entities.")
+        args.train_annotation_file = args.flickr_instances_file
+        args.val_annotation_file = args.flickr_instances_file
+        args.train_image_root = args.flickr_image_root
+        args.val_image_root = args.flickr_image_root
+        return args
+
+    raise ValueError(f"Unsupported dataset: {args.dataset}")
+
+
 def parse_args():
     args = build_parser().parse_args()
-
-    args.train_annotation_file = os.path.join(
-        args.coco_root, "annotations", f"instances_{args.train_split}2017.json"
-    )
-    args.val_annotation_file = os.path.join(
-        args.coco_root, "annotations", f"instances_{args.val_split}2017.json"
-    )
-    args.train_image_root = os.path.join(args.coco_root, f"{args.train_split}2017")
-    args.val_image_root = os.path.join(args.coco_root, f"{args.val_split}2017")
+    args = resolve_dataset_paths(args)
     return args

@@ -1,0 +1,2983 @@
+{
+  "3522349685": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "124603",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3025315215": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "88250",
+        "instance": "a large orange tube",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2739331794": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "69655",
+        "instance": "an orange motorcycle",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4572718747": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "179827",
+        "instance": "an orange backpack",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3225296260": {
+    "item_num": 3,
+    "instances": [
+      {
+        "instance_id": "102514",
+        "instance": "an orange car",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4755693778": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "199094",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2336616258": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "42472",
+        "instance": "an orange plaid shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3019923691": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "87925",
+        "instance": "an orange collar",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "292887910": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "82049",
+        "instance": "orange ball",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2667015110": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "65057",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1491192153": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "15000",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "70512144": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "264616",
+        "instance": "orange reflective suits",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "64327797": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "254214",
+        "instance": "the orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2131762850": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "30415",
+        "instance": "an orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4913618585": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "217646",
+        "instance": "orange cone",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "217648",
+        "instance": "orange cones",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "512031915": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "229332",
+        "instance": "an orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2310108346": {
+    "item_num": 4,
+    "instances": [
+      {
+        "instance_id": "40710",
+        "instance": "a brownish-orange sweater",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "25817944": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "59561",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "84509412": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "281382",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2788652511": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "73029",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3179278412": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "98804",
+        "instance": "orange pants",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2039175551": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "25451",
+        "instance": "a orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "509030798": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "228637",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4982800224": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "225998",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2943384009": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "83186",
+        "instance": "a orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4844407687": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "209859",
+        "instance": "an orange dress",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "837893113": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "281228",
+        "instance": "an orange toy",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "25589701": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "58039",
+        "instance": "an orange safety vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2536939367": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "56083",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "56086",
+        "instance": "reflective orange gear",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2946016853": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "83389",
+        "instance": "an orange tunnel",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "149150776": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "14767",
+        "instance": "an orange outfit",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2542282004": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "56968",
+        "instance": "orange suits",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2863458991": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "77517",
+        "instance": "orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2993167183": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "86100",
+        "instance": "an orange uniform",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2783150873": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "72765",
+        "instance": "a orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3014546644": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "87349",
+        "instance": "an orange leash",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2818419321": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "74702",
+        "instance": "orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "542317719": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "236234",
+        "instance": "an orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6878448810": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "260167",
+        "instance": "an orange table",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2332986053": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "42241",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1017675163": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "557",
+        "instance": "an orange leotard",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3826476033": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "144460",
+        "instance": "orange backpack",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2536853135": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "56012",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6674943607": {
+    "item_num": 5,
+    "instances": [
+      {
+        "instance_id": "256767",
+        "instance": "orange shorts",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2994179598": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "86197",
+        "instance": "a orange jersey",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3130064588": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "95543",
+        "instance": "an orange deck",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2130986011": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "30370",
+        "instance": "an orange goggles",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "30368",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2326664830": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "41866",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "358779007": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "129845",
+        "instance": "an orange cloth",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4932186395": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "219888",
+        "instance": "an orange dress",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "283999555": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "76136",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4868221252": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "213070",
+        "instance": "orange life jackets",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "5408199015": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "235826",
+        "instance": "an orange hooded sweatshirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3944497603": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "149053",
+        "instance": "orange clothing",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "486852199": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "213125",
+        "instance": "orange and neon green",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "466877726": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "188516",
+        "instance": "orange construction hats",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "492587970": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "218961",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4911436510": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "217364",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "5034482827": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "227312",
+        "instance": "an orange crayon",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1355833561": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "9754",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "143680966": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "13005",
+        "instance": "an orange helmet",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "29813421": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "85417",
+        "instance": "something colored orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4578856261": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "180140",
+        "instance": "an orange bag",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2536889705": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "56070",
+        "instance": "orange safety vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2333758916": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "42300",
+        "instance": "an orange turban",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4711632810": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "193910",
+        "instance": "an orange brick wall",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "179486571": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "20589",
+        "instance": "an orange shit",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4751764329": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "198652",
+        "instance": "orange , silver , and yellow jackets",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4662948361": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "188073",
+        "instance": "an orange vehicle",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "2537611154": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "56353",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "947664583": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "283928",
+        "instance": "orange arm",
+        "instance_type": [
+          "bodyparts",
+          "people"
+        ]
+      }
+    ]
+  },
+  "3690189273": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "137044",
+        "instance": "orange and black",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "137045",
+        "instance": "an orange top",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2104009548": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "29089",
+        "instance": "an orange dress",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3268407162": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "105735",
+        "instance": "orange and white",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4871750892": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "213501",
+        "instance": "orange wall",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2083673004": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "27600",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2618322793": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "61948",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3057432536": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "90710",
+        "instance": "a orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3008686435": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "87041",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "190634565": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "22930",
+        "instance": "an orange seat",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "550119995": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "237622",
+        "instance": "an orange crane",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2300229745": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "39932",
+        "instance": "an orange fence",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4956164135": {
+    "item_num": 6,
+    "instances": [
+      {
+        "instance_id": "223001",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4913618813": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "217651",
+        "instance": "orange cones",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7428579548": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "269743",
+        "instance": "a orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3084472304": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "92145",
+        "instance": "orange clothes",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "92144",
+        "instance": "orange clean",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4148509333": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "157063",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "185571867": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "22038",
+        "instance": "orange plastic",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "5264507624": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "232421",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "7282145490": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "267892",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3517362674": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "124240",
+        "instance": "an orange bubble stick",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "539744890": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "235391",
+        "instance": "orange shorts",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4619702530": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "183378",
+        "instance": "an orange flower pot",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2537624884": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "56399",
+        "instance": "orange life preservers",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2537678956": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "56426",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3556081361": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "127302",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4886223475": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "214710",
+        "instance": "an orange wall",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3350177228": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "111747",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "135426024": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "9667",
+        "instance": "fluorescent orange clothing",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "9669",
+        "instance": "orange work gear",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "9670",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2536950059": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "56107",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "7601453166": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "272018",
+        "instance": "a orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2990563425": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "85871",
+        "instance": "an orange dirt bike",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "5793422010": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "243150",
+        "instance": "the orange blouse",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "47870024": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "202755",
+        "instance": "an orange helmet",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3760400645": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "141624",
+        "instance": "orange dress",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "5791568": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "243136",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3375549004": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "113958",
+        "instance": "orange robes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2993388841": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "86129",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4480643343": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "171916",
+        "instance": "an orange",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "171915",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4792868400": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "203248",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1549878731": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "16120",
+        "instance": "an orange ball",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2126984420": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "30191",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2536946133": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "56102",
+        "instance": "orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1570723692": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "16635",
+        "instance": "a large orange dog",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "3268443910": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "105752",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "105756",
+        "instance": "an orange u. miami t-shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1434155791": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "12858",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "12861",
+        "instance": "three large , orange drums",
+        "instance_type": [
+          "instruments"
+        ]
+      }
+    ]
+  },
+  "4914416907": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "217761",
+        "instance": "an orange cap",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2774041957": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "72143",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "22143604": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "34585",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "34587",
+        "instance": "orange vasts",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "1303644819": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "8034",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "867599993": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "282480",
+        "instance": "orange tights",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "475042270": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "198474",
+        "instance": "a large orange dog",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2981091991": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "85383",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3755306641": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "141391",
+        "instance": "an orange wall",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "175299591": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "19949",
+        "instance": "a orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3021318991": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "88040",
+        "instance": "an orange uniform",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "88044",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4455999741": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "170063",
+        "instance": "a orange coat",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3264337159": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "105511",
+        "instance": "an orange spot",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "4671295213": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "188862",
+        "instance": "an orange top",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2403078014": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "46705",
+        "instance": "orange cones",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "689359034": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "260656",
+        "instance": "5 orange outdoor toilets",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "260661",
+        "instance": "a group of 5 orange portable bathrooms",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "35158971": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "124058",
+        "instance": "orange , white and black jackets",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4980100317": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "225632",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4445485475": {
+    "item_num": 7,
+    "instances": [
+      {
+        "instance_id": "168992",
+        "instance": "an orange building",
+        "instance_type": [
+          "scene"
+        ]
+      }
+    ]
+  },
+  "1405650076": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "11544",
+        "instance": "a crate of oranges",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2797785048": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "73556",
+        "instance": "an orange jersey",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "5822092748": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "243458",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2749807618": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "70317",
+        "instance": "an orange sweater",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2933872721": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "82379",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2537615024": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "56367",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "96399948": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "284385",
+        "instance": "orange shirts",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "284382",
+        "instance": "orange and black",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3349348655": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "111623",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "58579865": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "244158",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3255620561": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "104746",
+        "instance": "orange pants",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2227179257": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "35364",
+        "instance": "a black and orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4015868140": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "151982",
+        "instance": "orange suit",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3325129757": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "109506",
+        "instance": "orange pants",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "8038092309": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "278037",
+        "instance": "orange shirts",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "427433056": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "161287",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4060147279": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "153753",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3512780285": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "123846",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "123845",
+        "instance": "orange cones",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "141559699": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "12042",
+        "instance": "an orange sweater",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4697178028": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "192381",
+        "instance": "orange hair",
+        "instance_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  },
+  "3231596071": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "102896",
+        "instance": "orange chairs",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "4751394653": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "198617",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6523865099": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "255213",
+        "instance": "a black and orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3216058223": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "101799",
+        "instance": "orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1082608010": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "2016",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "7396941510": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "269342",
+        "instance": "one orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2636663855": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "62998",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "593326301": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "245694",
+        "instance": "blue and orange uniforms",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4954628750": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "222874",
+        "instance": "an orange bowling ball",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2523934341": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "55120",
+        "instance": "an orange scarf",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3297323827": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "107671",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3939554170": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "148828",
+        "instance": "orange cords",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "365274901": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "134295",
+        "instance": "two little orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "374949614": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "141170",
+        "instance": "orange safety vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6319102651": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "252491",
+        "instance": "orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "467420499": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "189230",
+        "instance": "orange suits",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3154641421": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "97028",
+        "instance": "orange shoes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2892992529": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "79577",
+        "instance": "an orange bandanna",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4800837156": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "204104",
+        "instance": "orange cap",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "278776089": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "72981",
+        "instance": "an orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4450905295": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "169676",
+        "instance": "orange and gray hair",
+        "instance_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  },
+  "1483574454": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "14551",
+        "instance": "orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3103264875": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "93760",
+        "instance": "an orange toy",
+        "instance_type": [
+          "other"
+        ]
+      },
+      {
+        "instance_id": "93762",
+        "instance": "orange collar",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3745030498": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "140896",
+        "instance": "orange pants",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "571602538": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "241517",
+        "instance": "a orange cone",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "191003285": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "22990",
+        "instance": "an orange dress share",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "6041486114": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "247030",
+        "instance": "orange glasses",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3313232606": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "108654",
+        "instance": "orange cones",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2655267135": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "64250",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "56013036": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "239444",
+        "instance": "green and orange stripes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4697182982": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "192393",
+        "instance": "orange and yellow uniforms",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "5388634274": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "235187",
+        "instance": "tiny orange flags",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "85306254": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "281614",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4801019279": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "204140",
+        "instance": "an orange robe",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "822836318": {
+    "item_num": 8,
+    "instances": [
+      {
+        "instance_id": "280599",
+        "instance": "an orange stripe",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3262793378": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "105359",
+        "instance": "orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "31648340": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "97645",
+        "instance": "orange umbrellas",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1973993787": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "24353",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3415178926": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "116422",
+        "instance": "orange pants",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2987142183": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "85692",
+        "instance": "an orange hat",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6801523493": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "258350",
+        "instance": "orange uniforms",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1466307489": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "13979",
+        "instance": "orange safety vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4807335056": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "204874",
+        "instance": "an orange vw bug",
+        "instance_type": [
+          "animals"
+        ]
+      }
+    ]
+  },
+  "2272823323": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "38254",
+        "instance": "an orange coat",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "38258",
+        "instance": "red and orange jackets",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4730167124": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "196376",
+        "instance": "orange pants",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2536933695": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "56074",
+        "instance": "an orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2704257993": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "67117",
+        "instance": "orange wheeled skates",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2647862489": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "63810",
+        "instance": "a orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2421367904": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "48125",
+        "instance": "an orange flag",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "7198555138": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "266975",
+        "instance": "white and orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2595672128": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "60362",
+        "instance": "a orange hat",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2366020313": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "44387",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1001896054": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "105",
+        "instance": "orange uniform",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3808935147": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "143449",
+        "instance": "an orange t-shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3670492902": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "135690",
+        "instance": "orange bus",
+        "instance_type": [
+          "vehicles",
+          "scene"
+        ]
+      }
+    ]
+  },
+  "2727051596": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "68921",
+        "instance": "the orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2981951954": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "85455",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2537584620": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "56299",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "892870649": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "283071",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3182517887": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "99104",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3583321426": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "129528",
+        "instance": "an orange scarf",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "6837397383": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "258936",
+        "instance": "orange outfits",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2088052469": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "27863",
+        "instance": "fake orange noses",
+        "instance_type": [
+          "bodyparts"
+        ]
+      }
+    ]
+  },
+  "4520819002": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "175108",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2569653795": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "58673",
+        "instance": "a orange vest",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2594042571": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "60205",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4647089599": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "186367",
+        "instance": "an orange sash",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3037108254": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "89227",
+        "instance": "orange rose",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "3859203305": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "146064",
+        "instance": "an orange hat",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2840344516": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "76161",
+        "instance": "an orange lifeboat",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "230016181": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "39926",
+        "instance": "an orange jacket",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "1676898063": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "18562",
+        "instance": "an orange",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "18559",
+        "instance": "an orange shirt",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4344503313": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "164108",
+        "instance": "orange vests",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2860372882": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "77336",
+        "instance": "orange shorts",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4795267435": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "203459",
+        "instance": "orange uniforms",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "203462",
+        "instance": "an orange horn",
+        "instance_type": [
+          "instruments"
+        ]
+      }
+    ]
+  },
+  "299676757": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "86309",
+        "instance": "orange shoes",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "356981206": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "128460",
+        "instance": "orange caps",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "2537616702": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "56369",
+        "instance": "a bright orange safety vest",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "56370",
+        "instance": "an orange hat",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "4299160955": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "162177",
+        "instance": "an orange truck",
+        "instance_type": [
+          "vehicles"
+        ]
+      }
+    ]
+  },
+  "4726714032": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "195926",
+        "instance": "an orange dress",
+        "instance_type": [
+          "clothing"
+        ]
+      },
+      {
+        "instance_id": "195923",
+        "instance": "orange pumps",
+        "instance_type": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "2071830584": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "26916",
+        "instance": "orange scarf",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  },
+  "3263829326": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "105488",
+        "instance": "an orange guitar",
+        "instance_type": [
+          "instruments"
+        ]
+      }
+    ]
+  },
+  "3484625231": {
+    "item_num": 9,
+    "instances": [
+      {
+        "instance_id": "121720",
+        "instance": "orange",
+        "instance_type": [
+          "clothing"
+        ]
+      }
+    ]
+  }
+}

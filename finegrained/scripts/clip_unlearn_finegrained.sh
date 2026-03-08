@@ -6,10 +6,15 @@ set +a
 export CUDA_VISIBLE_DEVICES=2
 
 DEVICE="cuda"
+DATASET="flickr30k_entities"  # or coco2017_instances
 FORGET_CLASSES=airplane
 TRAIN_ITEM_FOLDER="item5"
-COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
-DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances"
+TRAIN_SPLIT="train"
+VAL_SPLIT="val"  # use "test" for flickr30k_entities if your df_root is train/test
+# COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
+DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities"
+FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
+FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/mask"
 RETAIN_CACHE_PATH="/datanfs4/shenruoyan/FMUClip/finegrained/mask/coco/${TRAIN_ITEM_FOLDER}/retain_cache_${FORGET_CLASSES}.pt"
 CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
@@ -28,12 +33,16 @@ LAYER=1
 OUTPUT_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/output/unlearn/${METHOD}_${FORGET_CLASSES}5_A${LAMBDA_RTF}_C${LAMBDA_CE}_LAYER${LAYER}_$(date +%m%d%H%M)"
 
 python /datanfs4/shenruoyan/FMUClip/finegrained/clip_unlearn_finegrained.py \
+  --dataset "${DATASET}" \
   --forget_classes "${FORGET_CLASSES}" \
-  --coco_root "${COCO_ROOT}" \
   --df_root "${DF_ROOT}" \
+  --flickr_instances_file "${FLICKR_INSTANCES_FILE}" \
+  --flickr_image_root "${FLICKR_IMAGE_ROOT}" \
   --sam3_mask_dir "${SAM3_MASK_DIR}" \
   --retain_cache_path "${RETAIN_CACHE_PATH}" \
   --train_item_folder "${TRAIN_ITEM_FOLDER}" \
+  --train_split "${TRAIN_SPLIT}" \
+  --val_split "${VAL_SPLIT}" \
   --test_item_folder item1 \
   --test_item_format json \
   --test_max_per_class 50 \

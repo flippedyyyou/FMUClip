@@ -19,8 +19,9 @@ _PROJECT_ROOT = os.path.dirname(_CURRENT_DIR)
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-from finegrained.coco_labels.coco import LABEL_NAMES
-from finegrained.load_dataset import COCODataSet
+from finegrained.coco_labels.coco import LABEL_NAMES as COCO_LABEL_NAMES
+from finegrained.flickr30k_labels.flickr30k import LABEL_NAMES as FLICKR30K_LABEL_NAMES
+from finegrained.load_dataset import get_finegrained_dataset_cls
 from finegrained.params import parse_args
 
 
@@ -211,6 +212,7 @@ def _load_images_from_df_lists(
 
 
 def _build_train_datasets(args, transform):
+    dataset_cls = get_finegrained_dataset_cls(args.dataset)
     forget_class_names = [_normalize_name(x) for x in args.forget_classes]
     all_class_names = [_normalize_name(v) for _, v in sorted(LABEL_NAMES.items())]
     retain_class_names = [c for c in all_class_names if c not in set(forget_class_names)]
@@ -230,7 +232,7 @@ def _build_train_datasets(args, transform):
         class_names=retain_class_names,
     )
 
-    df_dataset = COCODataSet(
+    df_dataset = dataset_cls(
         annotation_file=args.train_annotation_file,
         image_root=args.train_image_root,
         split=args.train_split,
@@ -239,7 +241,7 @@ def _build_train_datasets(args, transform):
         selected_files=forget_files,
         forget_class_names=forget_class_names,
     )
-    dr_dataset = COCODataSet(
+    dr_dataset = dataset_cls(
         annotation_file=args.train_annotation_file,
         image_root=args.train_image_root,
         split=args.train_split,
@@ -532,7 +534,7 @@ def _dump_topk_results(
 
 
 def _compute_topk_retain_classes(
-    df_dataset: COCODataSet,
+    df_dataset,
     forget_indices: Sequence[int],
     k: int,
 ) -> List[int]:
@@ -638,9 +640,10 @@ def _build_val_joint_multilabel_loader(
     forget_indices: Sequence[int],
     retain_topk_indices: Sequence[int],
 ):
+    dataset_cls = get_finegrained_dataset_cls(args.dataset)
     if not forget_indices or not retain_topk_indices:
         return DataLoader(
-            COCODataSet(
+            dataset_cls(
                 annotation_file=args.val_annotation_file,
                 image_root=args.val_image_root,
                 split=args.val_split,
@@ -656,7 +659,7 @@ def _build_val_joint_multilabel_loader(
             drop_last=False,
         )
 
-    full_dataset = COCODataSet(
+    full_dataset = dataset_cls(
         annotation_file=args.val_annotation_file,
         image_root=args.val_image_root,
         split=args.val_split,
@@ -692,7 +695,7 @@ def _build_val_joint_multilabel_loader(
 
         selected_files.append(file_name)
 
-    subset_dataset = COCODataSet(
+    subset_dataset = dataset_cls(
         annotation_file=args.val_annotation_file,
         image_root=args.val_image_root,
         split=args.val_split,
@@ -1373,6 +1376,7 @@ def run_cliperase(args) -> None:
 
 
 def main() -> None:
+    
     args = parse_args()
     if args.original_eval:
         run_original_eval(args)
