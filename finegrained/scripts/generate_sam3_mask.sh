@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+
 export CUDA_VISIBLE_DEVICES=2
 
+# Generated for COCO
 FORGET_CLASSES="airplane"
 COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
 DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances"
@@ -34,3 +36,6 @@ python /datanfs4/shenruoyan/FMUClip/finegrained/generate_sam3_mask.py \
   --bpe-path "${BPE_PATH}" \
   --checkpoint "${CHECKPOINT}" \
   --confidence-threshold "${CONF_THRESH}"
+
+# Generated for Flickr30k
+# TODO: add script for Flickr30k here

@@ -30,44 +30,6 @@ CLIP_STD = (0.26862954, 0.26130258, 0.27577711)
 IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".bmp")
 
 
-def _load_clip_backend(args, device: torch.device):
-    # args.clip_model_path 这里建议传 "ViT-B-32" 这种 model_name
-    model_name = getattr(args, "clip_arch", "ViT-B-32")
-
-    model, _, preprocess = open_clip.create_model_and_transforms(
-        model_name,
-        device=device
-    )
-    tokenize_fn = open_clip.get_tokenizer(model_name)
-
-    # open_clip 的 input size：从 preprocess 里取
-    image_size = preprocess.transforms[0].size if hasattr(preprocess, "transforms") else 224
-
-    model.eval()
-    return model, tokenize_fn, image_size, "open_clip"
-
-def _build_eval_transform(image_size: int):
-    return transforms.Compose(
-        [
-            transforms.Resize(image_size, interpolation=transforms.InterpolationMode.BICUBIC),
-            transforms.CenterCrop(image_size),
-            transforms.ToTensor(),
-            transforms.Normalize(CLIP_MEAN, CLIP_STD),
-        ]
-    )
-
-
-def _build_class_name_list() -> List[str]:
-    return [name for _, name in sorted(LABEL_NAMES.items())]
-
-
-def _resolve_test_images_root(args) -> str:
-    explicit = getattr(args, "test_images_root", None)
-    if explicit:
-        return explicit
-    return os.path.join(args.df_root, args.val_split, "test_images")
-
-
 class _FolderClassEvalDataset(Dataset):
     def __init__(self, samples: Sequence[Tuple[str, int]], num_classes: int, transform):
         self.samples = list(samples)
@@ -93,1296 +55,1365 @@ class _FolderClassEvalDataset(Dataset):
         }
 
 
-def _build_test_dataloaders_from_folders(args, transform):
-    class_names = _build_class_name_list()
-    name_to_idx = {name: idx for idx, name in enumerate(class_names)}
-    test_images_root = _resolve_test_images_root(args)
 
-    if not os.path.isdir(test_images_root):
-        raise FileNotFoundError(f"test_images root not found: {test_images_root}")
+class ClipFinegrainedBaseline:
+    def __init__(self, args):
+        self.args = args
+        if args.dataset == 'coco2017_instances':
+            self.label_names = COCO_LABEL_NAMES
+        elif args.dataset == 'flickr30k_entities':
+            self.label_names = FLICKR30K_LABEL_NAMES
+        else:
+            raise ValueError(f"Unsupported dataset: {args.dataset}")
 
-    forget_names = {_normalize_name(x) for x in args.forget_classes}
-    unknown = [n for n in sorted(forget_names) if n not in name_to_idx]
-    if unknown:
-        raise ValueError(f"Unknown forget classes: {unknown}")
-    forget_idx_set = {name_to_idx[n] for n in forget_names}
+    def _load_clip_backend(self, device: torch.device):
+        # args.clip_model_path 这里建议传 "ViT-B-32" 这种 model_name
+        model_name = getattr(self.args, "clip_arch", "ViT-B-32")
 
-    forget_samples: List[Tuple[str, int]] = []
-    retain_samples: List[Tuple[str, int]] = []
+        model, _, preprocess = open_clip.create_model_and_transforms(
+            model_name,
+            device=device
+        )
+        tokenize_fn = open_clip.get_tokenizer(model_name)
 
-    for class_name, class_idx in name_to_idx.items():
-        class_dir = os.path.join(test_images_root, class_name)
-        if not os.path.isdir(class_dir):
-            continue
-        image_paths = []
-        for fname in sorted(os.listdir(class_dir)):
-            fpath = os.path.join(class_dir, fname)
-            if not os.path.isfile(fpath):
+        # open_clip 的 input size：从 preprocess 里取
+        image_size = preprocess.transforms[0].size if hasattr(preprocess, "transforms") else 224
+
+        model.eval()
+        return model, tokenize_fn, image_size, "open_clip"
+
+    def _build_eval_transform(self, image_size: int):
+        return transforms.Compose(
+            [
+                transforms.Resize(image_size, interpolation=transforms.InterpolationMode.BICUBIC),
+                transforms.CenterCrop(image_size),
+                transforms.ToTensor(),
+                transforms.Normalize(CLIP_MEAN, CLIP_STD),
+            ]
+        )
+
+    def _build_class_name_list(self ) -> List[str]:
+        return [name for _, name in sorted(self.label_names.items())]
+
+
+    def _resolve_test_images_root(self) -> str:
+        explicit = getattr(self.args, "test_images_root", None)
+        if explicit:
+            return explicit
+        return os.path.join(self.args.df_root, self.args.val_split, "test_images")
+
+    def _build_test_dataloaders_from_folders(self, transform):
+        class_names = self._build_class_name_list()
+        name_to_idx = {name: idx for idx, name in enumerate(class_names)}
+        test_images_root = self._resolve_test_images_root()
+
+        if not os.path.isdir(test_images_root):
+            raise FileNotFoundError(f"test_images root not found: {test_images_root}")
+
+        forget_names = {self._normalize_name(x) for x in self.args.forget_classes}
+        unknown = [n for n in sorted(forget_names) if n not in name_to_idx]
+        if unknown:
+            raise ValueError(f"Unknown forget classes: {unknown}")
+        forget_idx_set = {name_to_idx[n] for n in forget_names}
+
+        forget_samples: List[Tuple[str, int]] = []
+        retain_samples: List[Tuple[str, int]] = []
+
+        for class_name, class_idx in name_to_idx.items():
+            class_dir = os.path.join(test_images_root, class_name)
+            if not os.path.isdir(class_dir):
                 continue
-            if not fname.lower().endswith(IMAGE_EXTS):
-                continue
-            image_paths.append(fpath)
+            image_paths = []
+            for fname in sorted(os.listdir(class_dir)):
+                fpath = os.path.join(class_dir, fname)
+                if not os.path.isfile(fpath):
+                    continue
+                if not fname.lower().endswith(IMAGE_EXTS):
+                    continue
+                image_paths.append(fpath)
 
-        dst = forget_samples if class_idx in forget_idx_set else retain_samples
-        dst.extend((p, class_idx) for p in image_paths)
+            dst = forget_samples if class_idx in forget_idx_set else retain_samples
+            dst.extend((p, class_idx) for p in image_paths)
 
-    forget_dataset = _FolderClassEvalDataset(
-        samples=forget_samples,
-        num_classes=len(class_names),
-        transform=transform,
-    )
-    retain_dataset = _FolderClassEvalDataset(
-        samples=retain_samples,
-        num_classes=len(class_names),
-        transform=transform,
-    )
-    forget_loader = DataLoader(
-        forget_dataset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_memory,
-        drop_last=False,
-    )
-    retain_loader = DataLoader(
-        retain_dataset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_memory,
-        drop_last=False,
-    )
-    return forget_loader, retain_loader
-
-
-def _build_forget_retain_indices(forget_classes: Sequence[str]) -> Tuple[List[int], List[int]]:
-    norm_forget = {name.strip().replace(" ", "_") for name in forget_classes}
-    all_classes = _build_class_name_list()
-    name_to_idx = {name: idx for idx, name in enumerate(all_classes)}
-
-    forget_indices = []
-    for name in norm_forget:
-        if name not in name_to_idx:
-            raise ValueError(f"Unknown forget class: {name}")
-        forget_indices.append(name_to_idx[name])
-    forget_indices = sorted(set(forget_indices))
-    retain_indices = [i for i in range(len(all_classes)) if i not in set(forget_indices)]
-    return forget_indices, retain_indices
+        forget_dataset = _FolderClassEvalDataset(
+            samples=forget_samples,
+            num_classes=len(class_names),
+            transform=transform,
+        )
+        retain_dataset = _FolderClassEvalDataset(
+            samples=retain_samples,
+            num_classes=len(class_names),
+            transform=transform,
+        )
+        forget_loader = DataLoader(
+            forget_dataset,
+            batch_size=self.args.batch_size,
+            shuffle=False,
+            num_workers=self.args.num_workers,
+            pin_memory=self.args.pin_memory,
+            drop_last=False,
+        )
+        retain_loader = DataLoader(
+            retain_dataset,
+            batch_size=self.args.batch_size,
+            shuffle=False,
+            num_workers=self.args.num_workers,
+            pin_memory=self.args.pin_memory,
+            drop_last=False,
+        )
+        return forget_loader, retain_loader
 
 
-def _normalize_name(name: str) -> str:
-    return name.strip().replace(" ", "_")
+    def _build_forget_retain_indices(self, forget_classes: Sequence[str]) -> Tuple[List[int], List[int]]:
+        norm_forget = {name.strip().replace(" ", "_") for name in forget_classes}
+        all_classes = self._build_class_name_list()
+        name_to_idx = {name: idx for idx, name in enumerate(all_classes)}
+
+        forget_indices = []
+        for name in norm_forget:
+            if name not in name_to_idx:
+                raise ValueError(f"Unknown forget class: {name}")
+            forget_indices.append(name_to_idx[name])
+        forget_indices = sorted(set(forget_indices))
+        retain_indices = [i for i in range(len(all_classes)) if i not in set(forget_indices)]
+        return forget_indices, retain_indices
 
 
-def _read_txt_image_list(txt_path: str) -> List[str]:
-    items: List[str] = []
-    if not os.path.exists(txt_path):
+    def _normalize_name(self, name: str) -> str:
+        return name.strip().replace(" ", "_")
+
+
+    def _read_txt_image_list(self, txt_path: str) -> List[str]:
+        items: List[str] = []
+        if not os.path.exists(txt_path):
+            return items
+        with open(txt_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                items.append(os.path.basename(line))
         return items
-    with open(txt_path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
+
+
+    def _unique_keep_order(self, items: Sequence[str]) -> List[str]:
+        seen = set()
+        out: List[str] = []
+        for item in items:
+            if item in seen:
                 continue
-            items.append(os.path.basename(line))
-    return items
+            seen.add(item)
+            out.append(item)
+        return out
 
 
-def _unique_keep_order(items: Sequence[str]) -> List[str]:
-    seen = set()
-    out: List[str] = []
-    for item in items:
-        if item in seen:
-            continue
-        seen.add(item)
-        out.append(item)
-    return out
+    def _load_images_from_df_lists(
+        self,
+        df_root: str,
+        split: str,
+        item_folder: str,
+        class_names: Sequence[str],
+    ) -> List[str]:
+        images: List[str] = []
+        for class_name in class_names:
+            txt_path = os.path.join(df_root, split, "Df", item_folder, f"{self._normalize_name(class_name)}.txt")
+            images.extend(self._read_txt_image_list(txt_path))
+        return self._unique_keep_order(images)
+        
+
+    def _build_train_datasets(self, transform):
+        dataset_cls = get_finegrained_dataset_cls(self.args.dataset)
+        forget_class_names = [self._normalize_name(x) for x in self.args.forget_classes]
+        all_class_names = [self._normalize_name(v) for _, v in sorted(self.label_names.items())]
+        retain_class_names = [c for c in all_class_names if c not in set(forget_class_names)]
+
+        # Forget set: item3 of forget classes
+        forget_files = self._load_images_from_df_lists(
+            df_root=self.args.df_root,
+            split=self.args.train_split,
+            item_folder=self.args.train_item_folder,
+            class_names=forget_class_names,
+        )
+        # Retain set: item1 of non-forget classes
+        retain_files = self._load_images_from_df_lists(
+            df_root=self.args.df_root,
+            split=self.args.train_split,
+            item_folder=self.args.retain_item_folder,
+            class_names=retain_class_names,
+        )
+
+        df_dataset = dataset_cls(
+            label_names=self.label_names,
+            annotation_file=self.args.train_annotation_file,
+            image_root=self.args.train_image_root,
+            split=self.args.train_split,
+            transform=transform,
+            return_meta=self.args.return_meta,
+            selected_files=forget_files,
+            forget_class_names=forget_class_names,
+        )
+        dr_dataset = dataset_cls(
+            label_names=self.label_names,
+            annotation_file=self.args.train_annotation_file,
+            image_root=self.args.train_image_root,
+            split=self.args.train_split,
+            transform=transform,
+            return_meta=self.args.return_meta,
+            selected_files=retain_files,
+            forget_class_names=forget_class_names,
+        )
+        return df_dataset, dr_dataset
 
 
-def _load_images_from_df_lists(
-    df_root: str,
-    split: str,
-    item_folder: str,
-    class_names: Sequence[str],
-) -> List[str]:
-    images: List[str] = []
-    for class_name in class_names:
-        txt_path = os.path.join(df_root, split, "Df", item_folder, f"{_normalize_name(class_name)}.txt")
-        images.extend(_read_txt_image_list(txt_path))
-    return _unique_keep_order(images)
+    def _encode_text_features(
+        self,
+        model,
+        class_names: Sequence[str],
+        tokenize_fn: Callable[[Sequence[str]], torch.Tensor],
+        device: torch.device,
+    ) -> torch.Tensor:
+        text_tokens = tokenize_fn(list(class_names)).to(device)
+        with torch.no_grad():
+            text_features = model.encode_text(text_tokens)
+            text_features = text_features / text_features.norm(dim=-1, keepdim=True)
+        return text_features
 
 
-def _build_train_datasets(args, transform):
-    dataset_cls = get_finegrained_dataset_cls(args.dataset)
-    forget_class_names = [_normalize_name(x) for x in args.forget_classes]
-    all_class_names = [_normalize_name(v) for _, v in sorted(LABEL_NAMES.items())]
-    retain_class_names = [c for c in all_class_names if c not in set(forget_class_names)]
-
-    # Forget set: item3 of forget classes
-    forget_files = _load_images_from_df_lists(
-        df_root=args.df_root,
-        split=args.train_split,
-        item_folder=args.train_item_folder,
-        class_names=forget_class_names,
-    )
-    # Retain set: item1 of non-forget classes
-    retain_files = _load_images_from_df_lists(
-        df_root=args.df_root,
-        split=args.train_split,
-        item_folder=args.retain_item_folder,
-        class_names=retain_class_names,
-    )
-
-    df_dataset = dataset_cls(
-        annotation_file=args.train_annotation_file,
-        image_root=args.train_image_root,
-        split=args.train_split,
-        transform=transform,
-        return_meta=args.return_meta,
-        selected_files=forget_files,
-        forget_class_names=forget_class_names,
-    )
-    dr_dataset = dataset_cls(
-        annotation_file=args.train_annotation_file,
-        image_root=args.train_image_root,
-        split=args.train_split,
-        transform=transform,
-        return_meta=args.return_meta,
-        selected_files=retain_files,
-        forget_class_names=forget_class_names,
-    )
-    return df_dataset, dr_dataset
-
-
-def _encode_text_features(
-    model,
-    class_names: Sequence[str],
-    tokenize_fn: Callable[[Sequence[str]], torch.Tensor],
-    device: torch.device,
-) -> torch.Tensor:
-    text_tokens = tokenize_fn(list(class_names)).to(device)
-    with torch.no_grad():
+    def _get_logits_and_feats(
+        self,
+        model,
+        images: torch.Tensor,
+        text_tokens: torch.Tensor,
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+        image_features = model.encode_image(images)
+        image_features = image_features / image_features.norm(dim=-1, keepdim=True)
         text_features = model.encode_text(text_tokens)
         text_features = text_features / text_features.norm(dim=-1, keepdim=True)
-    return text_features
+        logit_scale = model.logit_scale.exp()
+        sim_i2t = logit_scale * (image_features @ text_features.t())
+        sim_t2i = logit_scale * (text_features @ image_features.t())
+        return sim_i2t, sim_t2i, image_features, text_features
 
 
-def _get_logits_and_feats(
-    model,
-    images: torch.Tensor,
-    text_tokens: torch.Tensor,
-) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
-    image_features = model.encode_image(images)
-    image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-    text_features = model.encode_text(text_tokens)
-    text_features = text_features / text_features.norm(dim=-1, keepdim=True)
-    logit_scale = model.logit_scale.exp()
-    sim_i2t = logit_scale * (image_features @ text_features.t())
-    sim_t2i = logit_scale * (text_features @ image_features.t())
-    return sim_i2t, sim_t2i, image_features, text_features
+    def _get_model_device(self, model: torch.nn.Module) -> torch.device:
+        try:
+            return next(model.parameters()).device
+        except StopIteration:
+            return torch.device("cpu")
 
 
-def _get_model_device(model: torch.nn.Module) -> torch.device:
-    try:
-        return next(model.parameters()).device
-    except StopIteration:
-        return torch.device("cpu")
+    def _labels_to_texts(
+        self,
+        labels: torch.Tensor,
+        class_names: Sequence[str],
+        prefer_indices: Sequence[int],
+    ) -> List[str]:
+        texts: List[str] = []
+        prefer_set = set(prefer_indices)
+        for row in labels:
+            idxs = torch.nonzero(row > 0.5).flatten().tolist()
+            choice = None
+            for idx in idxs:
+                if idx in prefer_set:
+                    choice = idx
+                    break
+            if choice is None and idxs:
+                choice = idxs[0]
+            if choice is None:
+                choice = 0
+            name = class_names[choice].replace("_", " ")
+            texts.append(f"a photo of {name}")
+        return texts
 
 
-def _labels_to_texts(
-    labels: torch.Tensor,
-    class_names: Sequence[str],
-    prefer_indices: Sequence[int],
-) -> List[str]:
-    texts: List[str] = []
-    prefer_set = set(prefer_indices)
-    for row in labels:
-        idxs = torch.nonzero(row > 0.5).flatten().tolist()
-        choice = None
-        for idx in idxs:
-            if idx in prefer_set:
-                choice = idx
-                break
-        if choice is None and idxs:
-            choice = idxs[0]
-        if choice is None:
-            choice = 0
-        name = class_names[choice].replace("_", " ")
-        texts.append(f"a photo of {name}")
-    return texts
+   
+    def _evaluate_single_accuracy(
+        self,
+        model,
+        data_loader,
+        text_features: torch.Tensor,
+        device: torch.device,
+    ) -> float:
+        model.eval()
+
+        correct = 0
+        total = 0
+
+        with torch.no_grad():
+            for batch in data_loader:
+                images = batch["image"].to(device, non_blocking=True)
+                labels = batch["label"].to(device, non_blocking=True)
+                eval_class_idx = batch.get("eval_class_idx")
+                if eval_class_idx is not None:
+                    eval_class_idx = eval_class_idx.to(device, non_blocking=True)
+
+                image_features = model.encode_image(images)
+                image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                logits = model.logit_scale.exp() * (image_features @ text_features.t())
+                pred_global = logits.argmax(dim=1)
+                if eval_class_idx is not None and (eval_class_idx >= 0).any():
+                    valid_mask = eval_class_idx >= 0
+                    gt_global = eval_class_idx
+                else:
+                    valid_mask = labels.sum(dim=1) == 1
+                    gt_global = labels.argmax(dim=1)
+                if valid_mask.any():
+                    batch_correct = (pred_global[valid_mask] == gt_global[valid_mask]).sum().item()
+                    correct += int(batch_correct)
+                    total += int(valid_mask.sum().item())
+
+        return float(correct / total) if total > 0 else 0.0
 
 
-def supervised_unlearn_train_cliperase(
-    model,
-    teacher,
-    df_train_loader,
-    dr_train_loader,
-    tokenizer_fn: Callable[[Sequence[str]], torch.Tensor],
-    class_names: Sequence[str],
-    forget_indices: Sequence[int],
-    retain_indices: Sequence[int],
-    optimizer,
-    scaler,
-    lambda_df: float = 1.0,
-    lambda_dr: float = 1.0,
-    lambda_uni: float = 1.0,
-    epoch_idx: int = 0,
-    max_epoch: int = 1,
-    log_interval: int = 50,
-) -> Dict[str, float]:
-    device = _get_model_device(model)
-    iters_per_epoch = min(len(df_train_loader), len(dr_train_loader))
+    def _dump_topk_results(
+        self,
+        model,
+        data_loader,
+        text_features: torch.Tensor,
+        class_names: Sequence[str],
+        device: torch.device,
+        out_path: str,
+        topk: int = 5,
+    ) -> None:
+        model.eval()
 
-    def masked_mean(x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-        denom = mask.sum().clamp_min(1.0)
-        return (x * mask).sum() / denom
+        rows = []
+        with torch.no_grad():
+            for batch in data_loader:
+                images = batch["image"].to(device, non_blocking=True)
+                labels = batch["label"].to(device, non_blocking=True)
+                image_paths = batch.get("image_path")
+                eval_class_idx = batch.get("eval_class_idx")
+                if eval_class_idx is not None:
+                    eval_class_idx = eval_class_idx.to(device, non_blocking=True)
 
-    model.train()
-    df_iter = iter(df_train_loader)
-    dr_iter = iter(dr_train_loader)
-    running = {"forget": 0.0, "retain": 0.0, "kl": 0.0, "tot": 0.0}
+                image_features = model.encode_image(images)
+                image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                logits = model.logit_scale.exp() * (image_features @ text_features.t())
 
-    for it in range(iters_per_epoch):
-        df_s = next(df_iter)
-        dr_s = next(dr_iter)
+                if eval_class_idx is not None and (eval_class_idx >= 0).any():
+                    valid_mask = eval_class_idx >= 0
+                    gt_global = eval_class_idx
+                else:
+                    valid_mask = labels.sum(dim=1) == 1
+                    gt_global = labels.argmax(dim=1)
+                if not valid_mask.any():
+                    continue
 
-        img_df = df_s["image"].to(device, non_blocking=True)
-        img_dr = dr_s["image"].to(device, non_blocking=True)
+                k = min(topk, logits.size(1))
+                topk_scores, topk_indices = logits.topk(k, dim=1)
+                pred_global = logits.argmax(dim=1)
 
-        txt_df = _labels_to_texts(df_s["label"], class_names, forget_indices)
-        txt_dr = _labels_to_texts(dr_s["label"], class_names, retain_indices)
-        txt_df = tokenizer_fn(txt_df).to(device)
-        txt_dr = tokenizer_fn(txt_dr).to(device)
+                for i in range(images.size(0)):
+                    if not valid_mask[i]:
+                        continue
+                    image_path = None
+                    if image_paths is not None:
+                        image_path = image_paths[i]
+                    pred_idx = int(pred_global[i].item())
+                    label_idx = int(gt_global[i].item())
+                    rows.append(
+                        {
+                            "image_path": image_path,
+                            "label": class_names[label_idx],
+                            "pred_name": class_names[pred_idx],
+                            "top5": [
+                                {
+                                    "name": class_names[int(topk_indices[i, j].item())],
+                                    "score": float(topk_scores[i, j].item()),
+                                }
+                                for j in range(k)
+                            ],
+                        }
+                    )
 
-        img_all = torch.cat([img_df, img_dr], dim=0)
-        txt_all = torch.cat([txt_df, txt_dr], dim=0)
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        with open(out_path, "w", encoding="utf-8") as f:
+            for row in rows:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
-        batch_forget = img_df.size(0)
-        batch_retain = img_dr.size(0)
-        batch_total = batch_forget + batch_retain
 
-        flags = torch.cat(
-            [
-                torch.ones(batch_forget, dtype=torch.long, device=device),
-                torch.zeros(batch_retain, dtype=torch.long, device=device),
-            ],
-            dim=0,
-        )
-        forget_mask = flags.float()
-        retain_mask = (1 - flags).float()
-        targets = torch.arange(batch_total, device=device)
+    def _compute_topk_retain_classes(
+        self,
+        df_dataset,
+        forget_indices: Sequence[int],
+        k: int,
+    ) -> List[int]:
+        if k <= 0:
+            return []
+        forget_set = set(forget_indices)
+        counts = np.zeros(len(self.label_names), dtype=np.int64)
+        for target in df_dataset.targets:
+            for idx in np.where(target > 0.5)[0]:
+                if idx in forget_set:
+                    continue
+                counts[idx] += 1
+        topk = np.argsort(-counts) # 返回数组值从大到小的索引值
+        topk = [int(i) for i in topk if counts[int(i)] > 0 and i not in forget_set]
+        for idx in topk[:k]:
+            print(f"Retain class: {self.label_names[idx]} with count: {counts[idx]}")
+        print()
+        return topk[:k]
 
-        optimizer.zero_grad(set_to_none=True)
-        with torch.amp.autocast(device_type="cuda", enabled=True):
-            sim_i2t_u, sim_t2i_u, _, _ = _get_logits_and_feats(model, img_all, txt_all)
-            with torch.no_grad():
-                sim_i2t_t, sim_t2i_t, _, _ = _get_logits_and_feats(teacher, img_all, txt_all)
 
-            ce_img = F.cross_entropy(sim_i2t_u, targets, reduction="none")
-            ce_txt = F.cross_entropy(sim_t2i_u, targets, reduction="none")
+    def _evaluate_single_class_accuracy(
+        model,
+        data_loader,
+        text_features: torch.Tensor,
+        class_index: int,
+        device: torch.device,
+    ) -> float:
+        model.eval()
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for batch in data_loader:
+                images = batch["image"].to(device, non_blocking=True)
+                labels = batch["label"].to(device, non_blocking=True)
+                eval_class_idx = batch.get("eval_class_idx")
+                if eval_class_idx is not None:
+                    eval_class_idx = eval_class_idx.to(device, non_blocking=True)
 
-            forget_img_loss = masked_mean(ce_img, forget_mask)
-            forget_txt_loss = masked_mean(ce_txt, forget_mask)
-            loss_forget = -(forget_img_loss + forget_txt_loss)
+                if eval_class_idx is not None and (eval_class_idx >= 0).any():
+                    mask = eval_class_idx == class_index
+                else:
+                    mask = (labels.sum(dim=1) == 1) & (labels[:, class_index] > 0.5)
+                if not mask.any():
+                    continue
 
-            retain_img_loss = masked_mean(ce_img, retain_mask)
-            retain_txt_loss = masked_mean(ce_txt, retain_mask)
-            loss_retain = retain_img_loss + retain_txt_loss
+                image_features = model.encode_image(images)
+                image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                logits = model.logit_scale.exp() * (image_features @ text_features.t())
+                preds = logits.argmax(dim=1)
 
-            log_p_img = F.log_softmax(sim_i2t_u, dim=-1)
-            p_img_t = F.softmax(sim_i2t_t, dim=-1)
-            log_p_txt = F.log_softmax(sim_t2i_u, dim=-1)
-            p_txt_t = F.softmax(sim_t2i_t, dim=-1)
+                correct += int((preds[mask] == class_index).sum().item())
+                total += int(mask.sum().item())
+        return float(correct / total) if total > 0 else 0.0
 
-            kl_img_all = F.kl_div(log_p_img, p_img_t, reduction="none").sum(dim=-1)
-            kl_txt_all = F.kl_div(log_p_txt, p_txt_t, reduction="none").sum(dim=-1)
-            kl_img = masked_mean(kl_img_all, retain_mask)
-            kl_txt = masked_mean(kl_txt_all, retain_mask)
-            loss_kl = kl_img + kl_txt
 
-            loss = lambda_df * loss_forget + lambda_dr * loss_retain + lambda_uni * loss_kl
+    def _evaluate_topk_retain_accuracy(
+        self,
+        model,
+        data_loader,
+        text_features: torch.Tensor,
+        class_names: Sequence[str],
+        device: torch.device,
+        retain_indices: Sequence[int],
+    ) -> Dict[str, float]:
+        if not retain_indices:
+            return {}
+        results: Dict[str, float] = {}
+        for idx in retain_indices:
+            acc = self._evaluate_single_class_accuracy(
+                model=model,
+                data_loader=data_loader,
+                text_features=text_features,
+                class_index=idx,
+                device=device,
+            )
+            results[class_names[idx]] = acc
+        return results
 
-        scaler.scale(loss).backward()
-        scaler.step(optimizer)
-        scaler.update()
 
-        running["forget"] += float(loss_forget.detach().item())
-        running["retain"] += float(loss_retain.detach().item())
-        running["kl"] += float(loss_kl.detach().item())
-        running["tot"] += float(loss.detach().item())
+    def _average_precision_binary(self, y_true: np.ndarray, y_score: np.ndarray) -> float:
+        positives = int(y_true.sum())
+        if positives == 0:
+            return float("nan")
+        return float(average_precision_score(y_true, y_score))
 
-        if (it + 1) % log_interval == 0:
-            t = it + 1
-            print(
-                f"[ClipErase EP {epoch_idx+1}/{max_epoch}] it={t}/{iters_per_epoch} "
-                f"forget={running['forget']/t:.4f} "
-                f"retain={running['retain']/t:.4f} "
-                f"kl={running['kl']/t:.4f} "
-                f"total={running['tot']/t:.4f}"
+
+    def _compute_map_for_indices(
+        self,
+        gt: np.ndarray,
+        scores: np.ndarray,
+        indices: Sequence[int],
+    ) -> float:
+        ap_values: List[float] = []
+        for class_idx in indices:
+            ap = self._average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
+            if not np.isnan(ap):
+                ap_values.append(ap)
+        if not ap_values:
+            return 0.0
+        return float(np.mean(ap_values))
+
+
+    def _build_val_joint_multilabel_loader(
+        self,
+        transform,
+        forget_indices: Sequence[int],
+        retain_topk_indices: Sequence[int],
+    ):
+        dataset_cls = get_finegrained_dataset_cls(self.args.dataset)
+        if not forget_indices or not retain_topk_indices:
+            return DataLoader(
+                dataset_cls(
+                    label_names=self.label_names,
+                    annotation_file=self.args.val_annotation_file,
+                    image_root=self.args.val_image_root,
+                    split=self.args.val_split,
+                    transform=transform,
+                    return_meta=self.args.return_meta,
+                    selected_files=[],
+                    forget_class_names=self.args.forget_classes,
+                ),
+                batch_size=self.args.batch_size,
+                shuffle=False,
+                num_workers=self.args.num_workers,
+                pin_memory=self.args.pin_memory,
+                drop_last=False,
             )
 
-    denom = float(max(iters_per_epoch, 1))
-    return {
-        "loss_forget": running["forget"] / denom,
-        "loss_retain": running["retain"] / denom,
-        "loss_kl": running["kl"] / denom,
-        "loss_total": running["tot"] / denom,
-    }
-
-
-def _evaluate_single_accuracy(
-    model,
-    data_loader,
-    text_features: torch.Tensor,
-    device: torch.device,
-) -> float:
-    model.eval()
-
-    correct = 0
-    total = 0
-
-    with torch.no_grad():
-        for batch in data_loader:
-            images = batch["image"].to(device, non_blocking=True)
-            labels = batch["label"].to(device, non_blocking=True)
-            eval_class_idx = batch.get("eval_class_idx")
-            if eval_class_idx is not None:
-                eval_class_idx = eval_class_idx.to(device, non_blocking=True)
-
-            image_features = model.encode_image(images)
-            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            logits = model.logit_scale.exp() * (image_features @ text_features.t())
-            pred_global = logits.argmax(dim=1)
-            if eval_class_idx is not None and (eval_class_idx >= 0).any():
-                valid_mask = eval_class_idx >= 0
-                gt_global = eval_class_idx
-            else:
-                valid_mask = labels.sum(dim=1) == 1
-                gt_global = labels.argmax(dim=1)
-            if valid_mask.any():
-                batch_correct = (pred_global[valid_mask] == gt_global[valid_mask]).sum().item()
-                correct += int(batch_correct)
-                total += int(valid_mask.sum().item())
-
-    return float(correct / total) if total > 0 else 0.0
-
-
-def _dump_topk_results(
-    model,
-    data_loader,
-    text_features: torch.Tensor,
-    class_names: Sequence[str],
-    device: torch.device,
-    out_path: str,
-    topk: int = 5,
-) -> None:
-    model.eval()
-
-    rows = []
-    with torch.no_grad():
-        for batch in data_loader:
-            images = batch["image"].to(device, non_blocking=True)
-            labels = batch["label"].to(device, non_blocking=True)
-            image_paths = batch.get("image_path")
-            eval_class_idx = batch.get("eval_class_idx")
-            if eval_class_idx is not None:
-                eval_class_idx = eval_class_idx.to(device, non_blocking=True)
-
-            image_features = model.encode_image(images)
-            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            logits = model.logit_scale.exp() * (image_features @ text_features.t())
-
-            if eval_class_idx is not None and (eval_class_idx >= 0).any():
-                valid_mask = eval_class_idx >= 0
-                gt_global = eval_class_idx
-            else:
-                valid_mask = labels.sum(dim=1) == 1
-                gt_global = labels.argmax(dim=1)
-            if not valid_mask.any():
-                continue
-
-            k = min(topk, logits.size(1))
-            topk_scores, topk_indices = logits.topk(k, dim=1)
-            pred_global = logits.argmax(dim=1)
-
-            for i in range(images.size(0)):
-                if not valid_mask[i]:
-                    continue
-                image_path = None
-                if image_paths is not None:
-                    image_path = image_paths[i]
-                pred_idx = int(pred_global[i].item())
-                label_idx = int(gt_global[i].item())
-                rows.append(
-                    {
-                        "image_path": image_path,
-                        "label": class_names[label_idx],
-                        "pred_name": class_names[pred_idx],
-                        "top5": [
-                            {
-                                "name": class_names[int(topk_indices[i, j].item())],
-                                "score": float(topk_scores[i, j].item()),
-                            }
-                            for j in range(k)
-                        ],
-                    }
-                )
-
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        for row in rows:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
-
-
-def _compute_topk_retain_classes(
-    df_dataset,
-    forget_indices: Sequence[int],
-    k: int,
-) -> List[int]:
-    if k <= 0:
-        return []
-    forget_set = set(forget_indices)
-    counts = np.zeros(len(LABEL_NAMES), dtype=np.int64)
-    for target in df_dataset.targets:
-        for idx in np.where(target > 0.5)[0]:
-            if idx in forget_set:
-                continue
-            counts[idx] += 1
-    topk = np.argsort(-counts) # 返回数组值从大到小的索引值
-    topk = [int(i) for i in topk if counts[int(i)] > 0 and i not in forget_set]
-    for idx in topk[:k]:
-        print(f"Retain class: {LABEL_NAMES[idx]} with count: {counts[idx]}")
-    return topk[:k]
-
-
-def _evaluate_single_class_accuracy(
-    model,
-    data_loader,
-    text_features: torch.Tensor,
-    class_index: int,
-    device: torch.device,
-) -> float:
-    model.eval()
-    correct = 0
-    total = 0
-    with torch.no_grad():
-        for batch in data_loader:
-            images = batch["image"].to(device, non_blocking=True)
-            labels = batch["label"].to(device, non_blocking=True)
-            eval_class_idx = batch.get("eval_class_idx")
-            if eval_class_idx is not None:
-                eval_class_idx = eval_class_idx.to(device, non_blocking=True)
-
-            if eval_class_idx is not None and (eval_class_idx >= 0).any():
-                mask = eval_class_idx == class_index
-            else:
-                mask = (labels.sum(dim=1) == 1) & (labels[:, class_index] > 0.5)
-            if not mask.any():
-                continue
-
-            image_features = model.encode_image(images)
-            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            logits = model.logit_scale.exp() * (image_features @ text_features.t())
-            preds = logits.argmax(dim=1)
-
-            correct += int((preds[mask] == class_index).sum().item())
-            total += int(mask.sum().item())
-    return float(correct / total) if total > 0 else 0.0
-
-
-def _evaluate_topk_retain_accuracy(
-    model,
-    data_loader,
-    text_features: torch.Tensor,
-    class_names: Sequence[str],
-    device: torch.device,
-    retain_indices: Sequence[int],
-) -> Dict[str, float]:
-    if not retain_indices:
-        return {}
-    results: Dict[str, float] = {}
-    for idx in retain_indices:
-        acc = _evaluate_single_class_accuracy(
-            model=model,
-            data_loader=data_loader,
-            text_features=text_features,
-            class_index=idx,
-            device=device,
+        full_dataset = dataset_cls(
+            label_names=self.label_names,
+            annotation_file=self.args.val_annotation_file,
+            image_root=self.args.val_image_root,
+            split=self.args.val_split,
+            transform=transform,
+            return_meta=self.args.return_meta,
+            forget_class_names=self.args.forget_classes,
         )
-        results[class_names[idx]] = acc
-    return results
 
+        forget_idx_arr = np.array(list(forget_indices), dtype=np.int64)
+        topk_idx_arr = np.array(list(retain_topk_indices), dtype=np.int64)
+        selected_files: List[str] = []
+        max_per_class = int(getattr(self.args, "joint_multilabel_max_per_class", 0))
+        cap_indices = sorted(set(int(i) for i in forget_indices) | set(int(i) for i in retain_topk_indices))
+        cap_counts = {idx: 0 for idx in cap_indices}
 
-def _average_precision_binary(y_true: np.ndarray, y_score: np.ndarray) -> float:
-    positives = int(y_true.sum())
-    if positives == 0:
-        return float("nan")
-    return float(average_precision_score(y_true, y_score))
+        for file_name, target in zip(full_dataset.file_names, full_dataset.targets):
+            has_forget = bool(np.any(target[forget_idx_arr] > 0.5))
+            has_topk_retain = bool(np.any(target[topk_idx_arr] > 0.5))
+            if not (has_forget and has_topk_retain):
+                continue
 
+            if max_per_class > 0 and cap_indices:
+                present_cap_indices = [idx for idx in cap_indices if target[idx] > 0.5]
+                if not present_cap_indices:
+                    continue
+                if not any(cap_counts[idx] < max_per_class for idx in present_cap_indices):
+                    continue
+                selected_files.append(file_name)
+                for idx in present_cap_indices:
+                    if cap_counts[idx] < max_per_class:
+                        cap_counts[idx] += 1
+                continue
 
-def _compute_map_for_indices(
-    gt: np.ndarray,
-    scores: np.ndarray,
-    indices: Sequence[int],
-) -> float:
-    ap_values: List[float] = []
-    for class_idx in indices:
-        ap = _average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
-        if not np.isnan(ap):
-            ap_values.append(ap)
-    if not ap_values:
-        return 0.0
-    return float(np.mean(ap_values))
+            selected_files.append(file_name)
 
+        subset_dataset = dataset_cls(
+            label_names=self.label_names,
+            annotation_file=self.args.val_annotation_file,
+            image_root=self.args.val_image_root,
+            split=self.args.val_split,
+            transform=transform,
+            return_meta=self.args.return_meta,
+            selected_files=selected_files,
+            forget_class_names=self.args.forget_classes,
+        )
 
-def _build_val_joint_multilabel_loader(
-    args,
-    transform,
-    forget_indices: Sequence[int],
-    retain_topk_indices: Sequence[int],
-):
-    dataset_cls = get_finegrained_dataset_cls(args.dataset)
-    if not forget_indices or not retain_topk_indices:
         return DataLoader(
-            dataset_cls(
-                annotation_file=args.val_annotation_file,
-                image_root=args.val_image_root,
-                split=args.val_split,
-                transform=transform,
-                return_meta=args.return_meta,
-                selected_files=[],
-                forget_class_names=args.forget_classes,
-            ),
-            batch_size=args.batch_size,
+            subset_dataset,
+            batch_size=self.args.batch_size,
             shuffle=False,
-            num_workers=args.num_workers,
-            pin_memory=args.pin_memory,
+            num_workers=self.args.num_workers,
+            pin_memory=self.args.pin_memory,
             drop_last=False,
         )
 
-    full_dataset = dataset_cls(
-        annotation_file=args.val_annotation_file,
-        image_root=args.val_image_root,
-        split=args.val_split,
-        transform=transform,
-        return_meta=args.return_meta,
-        forget_class_names=args.forget_classes,
-    )
 
-    forget_idx_arr = np.array(list(forget_indices), dtype=np.int64)
-    topk_idx_arr = np.array(list(retain_topk_indices), dtype=np.int64)
-    selected_files: List[str] = []
-    max_per_class = int(getattr(args, "joint_multilabel_max_per_class", 0))
-    cap_indices = sorted(set(int(i) for i in forget_indices) | set(int(i) for i in retain_topk_indices))
-    cap_counts = {idx: 0 for idx in cap_indices}
+    def _evaluate_joint_multilabel_ap(
+        self,
+        model,
+        data_loader,
+        text_features: torch.Tensor,
+        class_names: Sequence[str],
+        forget_indices: Sequence[int],
+        retain_topk_indices: Sequence[int],
+        device: torch.device,
+    ) -> Dict[str, object]:
+        model.eval()
+        all_scores: List[np.ndarray] = [] # 每个元素 [B, C]，最后拼接成 [N, C]
+        all_labels: List[np.ndarray] = [] # 每个元素 [B, C]，最后拼接成 [N, C]
+        per_class_ap: Dict[int, float] = {}
 
-    for file_name, target in zip(full_dataset.file_names, full_dataset.targets):
-        has_forget = bool(np.any(target[forget_idx_arr] > 0.5))
-        has_topk_retain = bool(np.any(target[topk_idx_arr] > 0.5))
-        if not (has_forget and has_topk_retain):
-            continue
+        with torch.no_grad():
+            for batch in data_loader:
+                images = batch["image"].to(device, non_blocking=True)
+                labels = batch["label"].to(device, non_blocking=True)
 
-        if max_per_class > 0 and cap_indices:
-            present_cap_indices = [idx for idx in cap_indices if target[idx] > 0.5]
-            if not present_cap_indices:
-                continue
-            if not any(cap_counts[idx] < max_per_class for idx in present_cap_indices):
-                continue
-            selected_files.append(file_name)
-            for idx in present_cap_indices:
-                if cap_counts[idx] < max_per_class:
-                    cap_counts[idx] += 1
-            continue
+                image_features = model.encode_image(images)
+                image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                logits = model.logit_scale.exp() * (image_features @ text_features.t())
 
-        selected_files.append(file_name)
+                all_scores.append(logits.detach().cpu().numpy())
+                all_labels.append(labels.detach().cpu().numpy())
 
-    subset_dataset = dataset_cls(
-        annotation_file=args.val_annotation_file,
-        image_root=args.val_image_root,
-        split=args.val_split,
-        transform=transform,
-        return_meta=args.return_meta,
-        selected_files=selected_files,
-        forget_class_names=args.forget_classes,
-    )
+        if not all_scores:
+            return {
+                "eval_size": 0,
+                "forget_map": 0.0,
+                "forget_class_ap": {},
+                "retain_topk_ap": {},
+                "other_map": 0.0,
+                "other_classes": [],
+            }
 
-    return DataLoader(
-        subset_dataset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_memory,
-        drop_last=False,
-    )
+        scores = np.concatenate(all_scores, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C]，C为数据集的全部候选集类别数
+        gt = np.concatenate(all_labels, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C], 0/1 二值标签矩阵
+        present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist() # 只保留“出现过”的类计算 AP，避免某些完全没有正样本的类导致 AP 计算出 NaN
 
+        for class_idx in present_classes:
+            ap = self._average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
+            if not np.isnan(ap):
+                per_class_ap[int(class_idx)] = float(ap)
 
-def _evaluate_joint_multilabel_ap(
-    model,
-    data_loader,
-    text_features: torch.Tensor,
-    class_names: Sequence[str],
-    forget_indices: Sequence[int],
-    retain_topk_indices: Sequence[int],
-    device: torch.device,
-) -> Dict[str, object]:
-    model.eval()
-    all_scores: List[np.ndarray] = [] # 每个元素 [B, C]，最后拼接成 [N, C]
-    all_labels: List[np.ndarray] = [] # 每个元素 [B, C]，最后拼接成 [N, C]
-    per_class_ap: Dict[int, float] = {}
-
-    with torch.no_grad():
-        for batch in data_loader:
-            images = batch["image"].to(device, non_blocking=True)
-            labels = batch["label"].to(device, non_blocking=True)
-
-            image_features = model.encode_image(images)
-            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            logits = model.logit_scale.exp() * (image_features @ text_features.t())
-
-            all_scores.append(logits.detach().cpu().numpy())
-            all_labels.append(labels.detach().cpu().numpy())
-
-    if not all_scores:
-        return {
-            "eval_size": 0,
-            "forget_map": 0.0,
-            "forget_class_ap": {},
-            "retain_topk_ap": {},
-            "other_map": 0.0,
-            "other_classes": [],
+        forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
+        forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap} # 最多 F 项
+        retain_topk_ap = { # 最多 K 项
+            class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap 
         }
 
-    scores = np.concatenate(all_scores, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C]，C为数据集的全部候选集类别数
-    gt = np.concatenate(all_labels, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C], 0/1 二值标签矩阵
-    present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist() # 只保留“出现过”的类计算 AP，避免某些完全没有正样本的类导致 AP 计算出 NaN
+        excluded = set(forget_indices) | set(retain_topk_indices)
+        other_indices = [idx for idx in present_classes if idx not in excluded]
+        other_map = self._compute_map_for_indices(gt, scores, other_indices)
 
-    for class_idx in present_classes:
-        ap = _average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
-        if not np.isnan(ap):
-            per_class_ap[int(class_idx)] = float(ap)
-
-    forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
-    forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap} # 最多 F 项
-    retain_topk_ap = { # 最多 K 项
-        class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap 
-    }
-
-    excluded = set(forget_indices) | set(retain_topk_indices)
-    other_indices = [idx for idx in present_classes if idx not in excluded]
-    other_map = _compute_map_for_indices(gt, scores, other_indices)
-
-    return {
-        "eval_size": int(gt.shape[0]),
-        "forget_map": float(np.mean(forget_aps)) if forget_aps else 0.0,
-        "forget_class_ap": forget_class_ap,
-        "retain_topk_ap": retain_topk_ap,
-        "other_map": other_map,
-        "other_classes": [class_names[idx] for idx in other_indices],
-    }
+        return {
+            "eval_size": int(gt.shape[0]),
+            "forget_map": float(np.mean(forget_aps)) if forget_aps else 0.0,
+            "forget_class_ap": forget_class_ap,
+            "retain_topk_ap": retain_topk_ap,
+            "other_map": other_map,
+            "other_classes": [class_names[idx] for idx in other_indices],
+        }
 
 
-def _dump_joint_multilabel_results(
-    model,
-    data_loader,
-    text_features: torch.Tensor,
-    class_names: Sequence[str],
-    device: torch.device,
-    out_path: str,
-    topk: int = 5,
-) -> None:
-    model.eval()
-    rows = []
+    def _dump_joint_multilabel_results(
+        self,
+        model,
+        data_loader,
+        text_features: torch.Tensor,
+        class_names: Sequence[str],
+        device: torch.device,
+        out_path: str,
+        topk: int = 5,
+    ) -> None:
+        model.eval()
+        rows = []
 
-    with torch.no_grad():
-        for batch in data_loader:
-            images = batch["image"].to(device, non_blocking=True)
-            labels = batch["label"].to(device, non_blocking=True)
-            image_paths = batch.get("image_path")
+        with torch.no_grad():
+            for batch in data_loader:
+                images = batch["image"].to(device, non_blocking=True)
+                labels = batch["label"].to(device, non_blocking=True)
+                image_paths = batch.get("image_path")
 
-            image_features = model.encode_image(images)
-            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            logits = model.logit_scale.exp() * (image_features @ text_features.t())
+                image_features = model.encode_image(images)
+                image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                logits = model.logit_scale.exp() * (image_features @ text_features.t())
 
-            k = min(topk, logits.size(1))
-            topk_scores, topk_indices = logits.topk(k, dim=1)
-            pred_global = logits.argmax(dim=1)
+                k = min(topk, logits.size(1))
+                topk_scores, topk_indices = logits.topk(k, dim=1)
+                pred_global = logits.argmax(dim=1)
 
-            for i in range(images.size(0)):
-                gt_indices = torch.nonzero(labels[i] > 0.5).flatten().tolist()
-                if not gt_indices:
+                for i in range(images.size(0)):
+                    gt_indices = torch.nonzero(labels[i] > 0.5).flatten().tolist()
+                    if not gt_indices:
+                        continue
+                    image_path = image_paths[i] if image_paths is not None else None
+                    pred_idx = int(pred_global[i].item())
+                    rows.append(
+                        {
+                            "image_path": image_path,
+                            "gt": [class_names[int(idx)] for idx in gt_indices],
+                            "pred_name": class_names[pred_idx],
+                            "top5": [
+                                {
+                                    "name": class_names[int(topk_indices[i, j].item())],
+                                    "score": float(topk_scores[i, j].item()),
+                                }
+                                for j in range(k)
+                            ],
+                        }
+                    )
+
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        with open(out_path, "w", encoding="utf-8") as f:
+            for row in rows:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+    def _collect_eval_cache(
+        self,
+        model,
+        data_loader,
+        text_features: torch.Tensor,
+        device: torch.device,
+    ) -> Dict[str, object]:
+        model.eval()
+        all_logits: List[np.ndarray] = []
+        all_labels: List[np.ndarray] = []
+        all_eval_idx: List[np.ndarray] = []
+        all_paths: List[str] = []
+
+        with torch.no_grad():
+            for batch in data_loader:
+                images = batch["image"].to(device, non_blocking=True)
+                labels = batch["label"].to(device, non_blocking=True)
+                eval_class_idx = batch.get("eval_class_idx")
+                image_paths = batch.get("image_path")
+
+                image_features = model.encode_image(images)
+                image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                logits = model.logit_scale.exp() * (image_features @ text_features.t())
+
+                all_logits.append(logits.detach().cpu().numpy())
+                all_labels.append(labels.detach().cpu().numpy())
+                if eval_class_idx is None:
+                    all_eval_idx.append(np.full((labels.size(0),), -1, dtype=np.int64))
+                else:
+                    all_eval_idx.append(eval_class_idx.detach().cpu().numpy().astype(np.int64))
+
+                if image_paths is None:
+                    all_paths.extend([None] * labels.size(0))
+                else:
+                    all_paths.extend(list(image_paths))
+
+        if not all_logits:
+            num_classes = int(text_features.size(0))
+            return {
+                "logits": np.zeros((0, num_classes), dtype=np.float32),
+                "labels": np.zeros((0, num_classes), dtype=np.float32),
+                "eval_idx": np.zeros((0,), dtype=np.int64),
+                "image_paths": [],
+            }
+
+        return {
+            "logits": np.concatenate(all_logits, axis=0),
+            "labels": np.concatenate(all_labels, axis=0),
+            "eval_idx": np.concatenate(all_eval_idx, axis=0),
+            "image_paths": all_paths,
+        }
+
+
+    def _single_accuracy_from_cache(self, cache: Dict[str, object]) -> float:
+        logits = cache["logits"]
+        labels = cache["labels"]
+        eval_idx = cache["eval_idx"]
+        if logits.shape[0] == 0:
+            return 0.0
+
+        if np.any(eval_idx >= 0):
+            valid = eval_idx >= 0
+            gt = eval_idx
+        else:
+            valid = labels.sum(axis=1) == 1
+            gt = labels.argmax(axis=1)
+        if valid.sum() == 0:
+            return 0.0
+        pred = logits.argmax(axis=1)
+        return float((pred[valid] == gt[valid]).mean())
+
+
+    def _single_class_accuracy_from_cache(self, cache: Dict[str, object], class_index: int) -> float:
+        logits = cache["logits"]
+        labels = cache["labels"]
+        eval_idx = cache["eval_idx"]
+        if logits.shape[0] == 0:
+            return 0.0
+
+        if np.any(eval_idx >= 0):
+            mask = eval_idx == class_index
+        else:
+            mask = (labels.sum(axis=1) == 1) & (labels[:, class_index] > 0.5)
+        if mask.sum() == 0:
+            return 0.0
+        pred = logits.argmax(axis=1)
+        return float((pred[mask] == class_index).mean())
+
+
+    def _topk_retain_accuracy_from_cache(
+        self,
+        cache: Dict[str, object],
+        class_names: Sequence[str],
+        retain_indices: Sequence[int],
+    ) -> Dict[str, float]:
+        out: Dict[str, float] = {}
+        for idx in retain_indices:
+            out[class_names[idx]] = self._single_class_accuracy_from_cache(cache, int(idx))
+        return out
+
+
+    def _joint_multilabel_ap_from_cache(
+        self,
+        cache: Dict[str, object],
+        class_names: Sequence[str],
+        forget_indices: Sequence[int],
+        retain_topk_indices: Sequence[int],
+    ) -> Dict[str, object]:
+        scores = cache["logits"]
+        gt = cache["labels"]
+        if scores.shape[0] == 0:
+            return {
+                "eval_size": 0,
+                "forget_map": 0.0,
+                "forget_class_ap": {},
+                "retain_topk_ap": {},
+                "other_map": 0.0,
+                "other_classes": [],
+            }
+
+        present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist()
+        per_class_ap: Dict[int, float] = {}
+        for class_idx in present_classes:
+            ap = self._average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
+            if not np.isnan(ap):
+                per_class_ap[int(class_idx)] = float(ap)
+
+        forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
+        forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap}
+        retain_topk_ap = {
+            class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap
+        }
+        excluded = set(forget_indices) | set(retain_topk_indices)
+        other_indices = [idx for idx in present_classes if idx not in excluded]
+        other_map = self._compute_map_for_indices(gt, scores, other_indices)
+        return {
+            "eval_size": int(gt.shape[0]),
+            "forget_map": float(np.mean(forget_aps)) if forget_aps else 0.0,
+            "forget_class_ap": forget_class_ap,
+            "retain_topk_ap": retain_topk_ap,
+            "other_map": other_map,
+            "other_classes": [class_names[idx] for idx in other_indices],
+        }
+
+
+    def _dump_topk_results_from_cache(
+        self,
+        cache: Dict[str, object],
+        class_names: Sequence[str],
+        out_path: str,
+        topk: int = 5,
+    ) -> None:
+        logits = cache["logits"]
+        labels = cache["labels"]
+        eval_idx = cache["eval_idx"]
+        image_paths = cache["image_paths"]
+        rows: List[Dict[str, object]] = []
+        if logits.shape[0] > 0:
+            if np.any(eval_idx >= 0):
+                valid_mask = eval_idx >= 0
+                gt_global = eval_idx
+            else:
+                valid_mask = labels.sum(axis=1) == 1
+                gt_global = labels.argmax(axis=1)
+
+            pred_global = logits.argmax(axis=1)
+            k = min(topk, logits.shape[1])
+            topk_indices = np.argsort(-logits, axis=1)[:, :k]
+            topk_scores = np.take_along_axis(logits, topk_indices, axis=1)
+
+            for i in range(logits.shape[0]):
+                if not bool(valid_mask[i]):
                     continue
-                image_path = image_paths[i] if image_paths is not None else None
-                pred_idx = int(pred_global[i].item())
+                label_idx = int(gt_global[i])
+                pred_idx = int(pred_global[i])
                 rows.append(
                     {
-                        "image_path": image_path,
-                        "gt": [class_names[int(idx)] for idx in gt_indices],
+                        "image_path": image_paths[i] if i < len(image_paths) else None,
+                        "label": class_names[label_idx],
                         "pred_name": class_names[pred_idx],
                         "top5": [
-                            {
-                                "name": class_names[int(topk_indices[i, j].item())],
-                                "score": float(topk_scores[i, j].item()),
-                            }
+                            {"name": class_names[int(topk_indices[i, j])], "score": float(topk_scores[i, j])}
                             for j in range(k)
                         ],
                     }
                 )
 
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        for row in rows:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        with open(out_path, "w", encoding="utf-8") as f:
+            for row in rows:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
-def _collect_eval_cache(
-    model,
-    data_loader,
-    text_features: torch.Tensor,
-    device: torch.device,
-) -> Dict[str, object]:
-    model.eval()
-    all_logits: List[np.ndarray] = []
-    all_labels: List[np.ndarray] = []
-    all_eval_idx: List[np.ndarray] = []
-    all_paths: List[str] = []
+    def _dump_joint_multilabel_results_from_cache(
+        self,
+        cache: Dict[str, object],
+        class_names: Sequence[str],
+        out_path: str,
+        topk: int = 5,
+    ) -> None:
+        logits = cache["logits"]
+        labels = cache["labels"]
+        image_paths = cache["image_paths"]
+        rows: List[Dict[str, object]] = []
+        if logits.shape[0] > 0:
+            pred_global = logits.argmax(axis=1)
+            k = min(topk, logits.shape[1])
+            topk_indices = np.argsort(-logits, axis=1)[:, :k]
+            topk_scores = np.take_along_axis(logits, topk_indices, axis=1)
 
-    with torch.no_grad():
-        for batch in data_loader:
-            images = batch["image"].to(device, non_blocking=True)
-            labels = batch["label"].to(device, non_blocking=True)
-            eval_class_idx = batch.get("eval_class_idx")
-            image_paths = batch.get("image_path")
+            for i in range(logits.shape[0]):
+                gt_indices = np.where(labels[i] > 0.5)[0].tolist()
+                if not gt_indices:
+                    continue
+                pred_idx = int(pred_global[i])
+                rows.append(
+                    {
+                        "image_path": image_paths[i] if i < len(image_paths) else None,
+                        "gt": [class_names[int(idx)] for idx in gt_indices],
+                        "pred_name": class_names[pred_idx],
+                        "top5": [
+                            {"name": class_names[int(topk_indices[i, j])], "score": float(topk_scores[i, j])}
+                            for j in range(k)
+                        ],
+                    }
+                )
 
-            image_features = model.encode_image(images)
-            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            logits = model.logit_scale.exp() * (image_features @ text_features.t())
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        with open(out_path, "w", encoding="utf-8") as f:
+            for row in rows:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
-            all_logits.append(logits.detach().cpu().numpy())
-            all_labels.append(labels.detach().cpu().numpy())
-            if eval_class_idx is None:
-                all_eval_idx.append(np.full((labels.size(0),), -1, dtype=np.int64))
-            else:
-                all_eval_idx.append(eval_class_idx.detach().cpu().numpy().astype(np.int64))
 
-            if image_paths is None:
-                all_paths.extend([None] * labels.size(0))
-            else:
-                all_paths.extend(list(image_paths))
+    def run_original_eval(
+        self,
+        model: torch.nn.Module = None,
+        tokenize_fn: Callable[[Sequence[str]], torch.Tensor] = None,
+        image_size: int = None,
+        backend: str = None,
+        retain_topk_indices: Sequence[int] = None,
+    ) -> Dict[str, object]:
+        device = torch.device(self.args.device if torch.cuda.is_available() else "cpu")
+        if model is None or tokenize_fn is None or image_size is None or backend is None:
+            model, tokenize_fn, image_size, backend = self._load_clip_backend(device)
+        eval_transform = self._build_eval_transform(image_size)
 
-    if not all_logits:
-        num_classes = int(text_features.size(0))
+        forget_loader, retain_loader = self._build_test_dataloaders_from_folders(transform=eval_transform)
+        class_names = self._build_class_name_list()
+        forget_indices, retain_indices = self._build_forget_retain_indices(self.args.forget_classes)
+        if retain_topk_indices is None and self.args.retain_topk > 0:
+            df_dataset, _ = self._build_train_datasets(transform=eval_transform)
+            retain_topk_indices = self._compute_topk_retain_classes(
+                df_dataset=df_dataset,
+                forget_indices=forget_indices,
+                k=self.args.retain_topk,
+            )
+        text_features = self._encode_text_features(model, class_names, tokenize_fn, device)
+        joint_multilabel_loader = self._build_val_joint_multilabel_loader(
+            transform=eval_transform,
+            forget_indices=forget_indices,
+            retain_topk_indices=retain_topk_indices or [],
+        )
+
+        forget_cache = self._collect_eval_cache(
+            model=model,
+            data_loader=forget_loader,
+            text_features=text_features,
+            device=device,
+        )
+        retain_cache = self._collect_eval_cache(
+            model=model,
+            data_loader=retain_loader,
+            text_features=text_features,
+            device=device,
+        )
+        forget_acc = self._single_accuracy_from_cache(forget_cache)
+        retain_acc = self._single_accuracy_from_cache(retain_cache)
+        joint_ap_metrics = self._evaluate_joint_multilabel_ap(
+            model=model,
+            data_loader=joint_multilabel_loader,
+            text_features=text_features,
+            class_names=class_names,
+            forget_indices=forget_indices,
+            retain_topk_indices=retain_topk_indices or [],
+            device=device,
+        )
+
+        os.makedirs(self.args.output_dir, exist_ok=True)
+        metrics = {
+            "backend": backend,
+            "clip_model_path": self.args.clip_model_path,
+            "clip_arch": self.args.clip_arch,
+            "forget_classes": list(self.args.forget_classes),
+            "forget_test_size": len(forget_loader.dataset),
+            "retain_test_size": len(retain_loader.dataset),
+            "joint_multilabel_val_size": joint_ap_metrics["eval_size"],
+            "joint_multilabel_max_per_class": int(getattr(self.args, "joint_multilabel_max_per_class", 0)),
+            "forget_success": 1.0 - forget_acc,
+            "retain_accuracy": retain_acc,
+            "forget_map": joint_ap_metrics["forget_map"],
+            "forget_class_ap": joint_ap_metrics["forget_class_ap"],
+            "retain_topk_ap": joint_ap_metrics["retain_topk_ap"],
+            "other_map": joint_ap_metrics["other_map"],
+            "other_classes": joint_ap_metrics["other_classes"],
+        }
+        if retain_topk_indices:
+            topk_acc = self._topk_retain_accuracy_from_cache(
+                cache=retain_cache,
+                class_names=class_names,
+                retain_indices=retain_topk_indices,
+            )
+            topk_acc_mean = float(np.mean(list(topk_acc.values()))) if topk_acc else 0.0
+            metrics["retain_topk_classes"] = [class_names[i] for i in retain_topk_indices]
+            metrics["retain_topk_accuracy"] = topk_acc
+            metrics["retain_topk_accuracy_mean"] = topk_acc_mean
+        metrics_path = os.path.join(self.args.output_dir, "original_eval_metrics.json")
+        with open(metrics_path, "w", encoding="utf-8") as f:
+            json.dump(metrics, f, ensure_ascii=False, indent=2)
+
+        forget_topk_path = os.path.join(self.args.output_dir, "forget_test_topk.jsonl")
+        retain_topk_path = os.path.join(self.args.output_dir, "retain_test_topk.jsonl")
+        joint_map_topk_path = os.path.join(self.args.output_dir, "joint_multilabel_val_topk.jsonl")
+        self._dump_topk_results(
+            model=model,
+            data_loader=forget_loader,
+            text_features=text_features,
+            class_names=class_names,
+            device=device,
+            out_path=forget_topk_path,
+        )
+        self._dump_topk_results(
+            model=model,
+            data_loader=retain_loader,
+            text_features=text_features,
+            class_names=class_names,
+            device=device,
+            out_path=retain_topk_path,
+        )
+        self._dump_joint_multilabel_results(
+            model=model,
+            data_loader=joint_multilabel_loader,
+            text_features=text_features,
+            class_names=class_names,
+            device=device,
+            out_path=joint_map_topk_path,
+        )
+
+        print(f"Forget test accuracy: {forget_acc:.4f}")
+        print(f"Retain test accuracy: {retain_acc:.4f}")
+        if retain_topk_indices:
+            print(f"Retain top-{self.args.retain_topk} accuracy mean: {metrics['retain_topk_accuracy_mean']:.4f}")
+        print(f"Joint multi-label val size: {joint_ap_metrics['eval_size']}")
+        print(f"Forget AP (mean over forget classes): {joint_ap_metrics['forget_map']:.4f}")
+        print(f"Top-{self.args.retain_topk} retain AP: {joint_ap_metrics['retain_topk_ap']}")
+        print(f"Other classes mAP: {joint_ap_metrics['other_map']:.4f}")
+        print(f"Saved metrics to: {metrics_path}")
+        return metrics
+
+
+    def _evaluate_for_selection(
+        self,
+        model: torch.nn.Module,
+        tokenize_fn: Callable[[Sequence[str]], torch.Tensor],
+        image_size: int,
+        class_names: Sequence[str],
+    ) -> Dict[str, float]:
+        device = self._get_model_device(model)
+        eval_transform = self._build_eval_transform(image_size)
+        forget_loader, retain_loader = self._build_test_dataloaders_from_folders(transform=eval_transform)
+
+        text_features = self._encode_text_features(model, class_names, tokenize_fn, device)
+        forget_cache = self._collect_eval_cache(
+            model=model,
+            data_loader=forget_loader,
+            text_features=text_features,
+            device=device,
+        )
+        retain_cache = self._collect_eval_cache(
+            model=model,
+            data_loader=retain_loader,
+            text_features=text_features,
+            device=device,
+        )
+        forget_acc = self._single_accuracy_from_cache(forget_cache)
+        retain_acc = self._single_accuracy_from_cache(retain_cache)
         return {
-            "logits": np.zeros((0, num_classes), dtype=np.float32),
-            "labels": np.zeros((0, num_classes), dtype=np.float32),
-            "eval_idx": np.zeros((0,), dtype=np.int64),
-            "image_paths": [],
+            "forget_success": 1.0 - float(forget_acc),
+            "retain_accuracy": float(retain_acc),
+            "selection_score": float((1.0 - float(forget_acc)) + float(retain_acc)),
+            "forget_test_size": len(forget_loader.dataset),
+            "retain_test_size": len(retain_loader.dataset),
         }
 
-    return {
-        "logits": np.concatenate(all_logits, axis=0),
-        "labels": np.concatenate(all_labels, axis=0),
-        "eval_idx": np.concatenate(all_eval_idx, axis=0),
-        "image_paths": all_paths,
-    }
 
+    def run_cliperase(self) -> None:
+        device = torch.device(self.args.device if torch.cuda.is_available() else "cpu")
+        model, tokenize_fn, image_size, backend = self._load_clip_backend(device)
+        model = model.float().to(device)
+        teacher = copy.deepcopy(model).eval()
+        for param in teacher.parameters():
+            param.requires_grad = False
 
-def _single_accuracy_from_cache(cache: Dict[str, object]) -> float:
-    logits = cache["logits"]
-    labels = cache["labels"]
-    eval_idx = cache["eval_idx"]
-    if logits.shape[0] == 0:
-        return 0.0
+        train_transform = self._build_eval_transform(image_size)
+        df_dataset, dr_dataset = self._build_train_datasets(transform=train_transform)
+        df_loader = DataLoader(
+            df_dataset,
+            batch_size=self.args.batch_size,
+            shuffle=True,
+            num_workers=self.args.num_workers,
+            pin_memory=self.args.pin_memory,
+            drop_last=True,
+        )
+        dr_loader = DataLoader(
+            dr_dataset,
+            batch_size=self.args.batch_size,
+            shuffle=True,
+            num_workers=self.args.num_workers,
+            pin_memory=self.args.pin_memory,
+            drop_last=True,
+        )
 
-    if np.any(eval_idx >= 0):
-        valid = eval_idx >= 0
-        gt = eval_idx
-    else:
-        valid = labels.sum(axis=1) == 1
-        gt = labels.argmax(axis=1)
-    if valid.sum() == 0:
-        return 0.0
-    pred = logits.argmax(axis=1)
-    return float((pred[valid] == gt[valid]).mean())
-
-
-def _single_class_accuracy_from_cache(cache: Dict[str, object], class_index: int) -> float:
-    logits = cache["logits"]
-    labels = cache["labels"]
-    eval_idx = cache["eval_idx"]
-    if logits.shape[0] == 0:
-        return 0.0
-
-    if np.any(eval_idx >= 0):
-        mask = eval_idx == class_index
-    else:
-        mask = (labels.sum(axis=1) == 1) & (labels[:, class_index] > 0.5)
-    if mask.sum() == 0:
-        return 0.0
-    pred = logits.argmax(axis=1)
-    return float((pred[mask] == class_index).mean())
-
-
-def _topk_retain_accuracy_from_cache(
-    cache: Dict[str, object],
-    class_names: Sequence[str],
-    retain_indices: Sequence[int],
-) -> Dict[str, float]:
-    out: Dict[str, float] = {}
-    for idx in retain_indices:
-        out[class_names[idx]] = _single_class_accuracy_from_cache(cache, int(idx))
-    return out
-
-
-def _joint_multilabel_ap_from_cache(
-    cache: Dict[str, object],
-    class_names: Sequence[str],
-    forget_indices: Sequence[int],
-    retain_topk_indices: Sequence[int],
-) -> Dict[str, object]:
-    scores = cache["logits"]
-    gt = cache["labels"]
-    if scores.shape[0] == 0:
-        return {
-            "eval_size": 0,
-            "forget_map": 0.0,
-            "forget_class_ap": {},
-            "retain_topk_ap": {},
-            "other_map": 0.0,
-            "other_classes": [],
-        }
-
-    present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist()
-    per_class_ap: Dict[int, float] = {}
-    for class_idx in present_classes:
-        ap = _average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
-        if not np.isnan(ap):
-            per_class_ap[int(class_idx)] = float(ap)
-
-    forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
-    forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap}
-    retain_topk_ap = {
-        class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap
-    }
-    excluded = set(forget_indices) | set(retain_topk_indices)
-    other_indices = [idx for idx in present_classes if idx not in excluded]
-    other_map = _compute_map_for_indices(gt, scores, other_indices)
-    return {
-        "eval_size": int(gt.shape[0]),
-        "forget_map": float(np.mean(forget_aps)) if forget_aps else 0.0,
-        "forget_class_ap": forget_class_ap,
-        "retain_topk_ap": retain_topk_ap,
-        "other_map": other_map,
-        "other_classes": [class_names[idx] for idx in other_indices],
-    }
-
-
-def _dump_topk_results_from_cache(
-    cache: Dict[str, object],
-    class_names: Sequence[str],
-    out_path: str,
-    topk: int = 5,
-) -> None:
-    logits = cache["logits"]
-    labels = cache["labels"]
-    eval_idx = cache["eval_idx"]
-    image_paths = cache["image_paths"]
-    rows: List[Dict[str, object]] = []
-    if logits.shape[0] > 0:
-        if np.any(eval_idx >= 0):
-            valid_mask = eval_idx >= 0
-            gt_global = eval_idx
-        else:
-            valid_mask = labels.sum(axis=1) == 1
-            gt_global = labels.argmax(axis=1)
-
-        pred_global = logits.argmax(axis=1)
-        k = min(topk, logits.shape[1])
-        topk_indices = np.argsort(-logits, axis=1)[:, :k]
-        topk_scores = np.take_along_axis(logits, topk_indices, axis=1)
-
-        for i in range(logits.shape[0]):
-            if not bool(valid_mask[i]):
-                continue
-            label_idx = int(gt_global[i])
-            pred_idx = int(pred_global[i])
-            rows.append(
-                {
-                    "image_path": image_paths[i] if i < len(image_paths) else None,
-                    "label": class_names[label_idx],
-                    "pred_name": class_names[pred_idx],
-                    "top5": [
-                        {"name": class_names[int(topk_indices[i, j])], "score": float(topk_scores[i, j])}
-                        for j in range(k)
-                    ],
-                }
-            )
-
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        for row in rows:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
-
-
-def _dump_joint_multilabel_results_from_cache(
-    cache: Dict[str, object],
-    class_names: Sequence[str],
-    out_path: str,
-    topk: int = 5,
-) -> None:
-    logits = cache["logits"]
-    labels = cache["labels"]
-    image_paths = cache["image_paths"]
-    rows: List[Dict[str, object]] = []
-    if logits.shape[0] > 0:
-        pred_global = logits.argmax(axis=1)
-        k = min(topk, logits.shape[1])
-        topk_indices = np.argsort(-logits, axis=1)[:, :k]
-        topk_scores = np.take_along_axis(logits, topk_indices, axis=1)
-
-        for i in range(logits.shape[0]):
-            gt_indices = np.where(labels[i] > 0.5)[0].tolist()
-            if not gt_indices:
-                continue
-            pred_idx = int(pred_global[i])
-            rows.append(
-                {
-                    "image_path": image_paths[i] if i < len(image_paths) else None,
-                    "gt": [class_names[int(idx)] for idx in gt_indices],
-                    "pred_name": class_names[pred_idx],
-                    "top5": [
-                        {"name": class_names[int(topk_indices[i, j])], "score": float(topk_scores[i, j])}
-                        for j in range(k)
-                    ],
-                }
-            )
-
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        for row in rows:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
-
-
-def run_original_eval(
-    args,
-    model: torch.nn.Module = None,
-    tokenize_fn: Callable[[Sequence[str]], torch.Tensor] = None,
-    image_size: int = None,
-    backend: str = None,
-    retain_topk_indices: Sequence[int] = None,
-) -> Dict[str, object]:
-    device = torch.device(args.device if torch.cuda.is_available() else "cpu")
-    if model is None or tokenize_fn is None or image_size is None or backend is None:
-        model, tokenize_fn, image_size, backend = _load_clip_backend(args, device)
-    eval_transform = _build_eval_transform(image_size)
-
-    forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
-    class_names = _build_class_name_list()
-    forget_indices, retain_indices = _build_forget_retain_indices(args.forget_classes)
-    if retain_topk_indices is None and args.retain_topk > 0:
-        df_dataset, _ = _build_train_datasets(args, transform=eval_transform)
-        retain_topk_indices = _compute_topk_retain_classes(
+        class_names = self._build_class_name_list()
+        forget_indices, retain_indices = self._build_forget_retain_indices(self.args.forget_classes)
+        retain_topk_indices = self._compute_topk_retain_classes(
             df_dataset=df_dataset,
             forget_indices=forget_indices,
-            k=args.retain_topk,
+            k=self.args.retain_topk,
         )
-    text_features = _encode_text_features(model, class_names, tokenize_fn, device)
-    joint_multilabel_loader = _build_val_joint_multilabel_loader(
-        args=args,
-        transform=eval_transform,
-        forget_indices=forget_indices,
-        retain_topk_indices=retain_topk_indices or [],
-    )
 
-    forget_cache = _collect_eval_cache(
-        model=model,
-        data_loader=forget_loader,
-        text_features=text_features,
-        device=device,
-    )
-    retain_cache = _collect_eval_cache(
-        model=model,
-        data_loader=retain_loader,
-        text_features=text_features,
-        device=device,
-    )
-    forget_acc = _single_accuracy_from_cache(forget_cache)
-    retain_acc = _single_accuracy_from_cache(retain_cache)
-    joint_ap_metrics = _evaluate_joint_multilabel_ap(
-        model=model,
-        data_loader=joint_multilabel_loader,
-        text_features=text_features,
-        class_names=class_names,
-        forget_indices=forget_indices,
-        retain_topk_indices=retain_topk_indices or [],
-        device=device,
-    )
+        optimizer = torch.optim.AdamW(model.parameters(), lr=self.args.lr, weight_decay=self.args.weight_decay)
+        scaler = torch.amp.GradScaler(init_scale=1024)
 
-    os.makedirs(args.output_dir, exist_ok=True)
-    metrics = {
-        "backend": backend,
-        "clip_model_path": args.clip_model_path,
-        "clip_arch": args.clip_arch,
-        "forget_classes": list(args.forget_classes),
-        "forget_test_size": len(forget_loader.dataset),
-        "retain_test_size": len(retain_loader.dataset),
-        "joint_multilabel_val_size": joint_ap_metrics["eval_size"],
-        "joint_multilabel_max_per_class": int(getattr(args, "joint_multilabel_max_per_class", 0)),
-        "forget_success": 1.0 - forget_acc,
-        "retain_accuracy": retain_acc,
-        "forget_map": joint_ap_metrics["forget_map"],
-        "forget_class_ap": joint_ap_metrics["forget_class_ap"],
-        "retain_topk_ap": joint_ap_metrics["retain_topk_ap"],
-        "other_map": joint_ap_metrics["other_map"],
-        "other_classes": joint_ap_metrics["other_classes"],
-    }
-    if retain_topk_indices:
-        topk_acc = _topk_retain_accuracy_from_cache(
-            cache=retain_cache,
-            class_names=class_names,
-            retain_indices=retain_topk_indices,
+        os.makedirs(self.args.output_dir, exist_ok=True)
+        config_path = os.path.join(self.args.output_dir, "config.json")
+        ckpt_path = os.path.join(self.args.output_dir, "clip_finegrained_cliperase.pth")
+        eval_interval = 2
+        best_score = float("-inf")
+        best_epoch = -1
+        best_metrics = None
+
+        for ep in range(self.args.max_epoch):
+            train_stats = self.supervised_unlearn_train_cliperase(
+                model=model,
+                teacher=teacher,
+                df_train_loader=df_loader,
+                dr_train_loader=dr_loader,
+                tokenizer_fn=tokenize_fn,
+                class_names=class_names,
+                forget_indices=forget_indices,
+                retain_indices=retain_indices,
+                optimizer=optimizer,
+                scaler=scaler,
+                lambda_df=self.args.lambda_df,
+                lambda_dr=self.args.lambda_dr,
+                lambda_uni=self.args.lambda_uni,
+                epoch_idx=ep,
+                max_epoch=self.args.max_epoch,
+                log_interval=self.args.log_interval,
+            )
+
+            should_eval = ((ep + 1) % eval_interval == 0) or ((ep + 1) == self.args.max_epoch)
+            if not should_eval:
+                continue
+
+            eval_metrics = self._evaluate_for_selection(
+                model=model,
+                tokenize_fn=tokenize_fn,
+                image_size=image_size,
+                class_names=class_names,
+            )
+            cur_score = eval_metrics["selection_score"]
+            print(
+                f"[Eval EP {ep + 1}/{self.args.max_epoch}] "
+                f"forget_success={eval_metrics['forget_success']:.4f} "
+                f"retain_acc={eval_metrics['retain_accuracy']:.4f} "
+                f"score={cur_score:.4f}"
+            )
+
+            if cur_score > best_score:
+                best_score = cur_score
+                best_epoch = ep + 1
+                best_metrics = eval_metrics
+                torch.save(
+                    {
+                        "model": model.state_dict(),
+                        "clip_arch": self.args.clip_arch,
+                        "best_epoch": best_epoch,
+                        "best_score": best_score,
+                        "best_forget_success": eval_metrics["forget_success"],
+                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
+                    },
+                    ckpt_path,
+                )
+                save_cfg = dict(vars(self.args))
+                save_cfg.update(
+                    {
+                        "best_epoch": best_epoch,
+                        "best_score": best_score,
+                        "best_forget_success": eval_metrics["forget_success"],
+                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
+                        "selection_metric": "forget_success + retain_accuracy",
+                        "eval_interval_epoch": eval_interval,
+                        "train_stats_at_best_epoch": train_stats,
+                    }
+                )
+                with open(config_path, "w", encoding="utf-8") as f:
+                    json.dump(save_cfg, f, ensure_ascii=False, indent=2)
+                print(f"[Best Updated] epoch={best_epoch} score={best_score:.4f} -> overwrite checkpoint/config")
+
+        if best_epoch < 0:
+            raise RuntimeError("No evaluation executed, no best checkpoint saved.")
+
+        best_ckpt = torch.load(ckpt_path, map_location=device)
+        model.load_state_dict(best_ckpt["model"], strict=True)
+        print(
+            f"Final best epoch: {best_epoch}, "
+            f"forget_success={best_metrics['forget_success']:.4f}, "
+            f"retain_acc={best_metrics['retain_accuracy']:.4f}, "
+            f"score={best_score:.4f}"
         )
-        topk_acc_mean = float(np.mean(list(topk_acc.values()))) if topk_acc else 0.0
-        metrics["retain_topk_classes"] = [class_names[i] for i in retain_topk_indices]
-        metrics["retain_topk_accuracy"] = topk_acc
-        metrics["retain_topk_accuracy_mean"] = topk_acc_mean
-    metrics_path = os.path.join(args.output_dir, "original_eval_metrics.json")
-    with open(metrics_path, "w", encoding="utf-8") as f:
-        json.dump(metrics, f, ensure_ascii=False, indent=2)
 
-    forget_topk_path = os.path.join(args.output_dir, "forget_test_topk.jsonl")
-    retain_topk_path = os.path.join(args.output_dir, "retain_test_topk.jsonl")
-    joint_map_topk_path = os.path.join(args.output_dir, "joint_multilabel_val_topk.jsonl")
-    _dump_topk_results(
-        model=model,
-        data_loader=forget_loader,
-        text_features=text_features,
-        class_names=class_names,
-        device=device,
-        out_path=forget_topk_path,
-    )
-    _dump_topk_results(
-        model=model,
-        data_loader=retain_loader,
-        text_features=text_features,
-        class_names=class_names,
-        device=device,
-        out_path=retain_topk_path,
-    )
-    _dump_joint_multilabel_results(
-        model=model,
-        data_loader=joint_multilabel_loader,
-        text_features=text_features,
-        class_names=class_names,
-        device=device,
-        out_path=joint_map_topk_path,
-    )
-
-    print(f"Forget test accuracy: {forget_acc:.4f}")
-    print(f"Retain test accuracy: {retain_acc:.4f}")
-    if retain_topk_indices:
-        print(f"Retain top-{args.retain_topk} accuracy mean: {metrics['retain_topk_accuracy_mean']:.4f}")
-    print(f"Joint multi-label val size: {joint_ap_metrics['eval_size']}")
-    print(f"Forget AP (mean over forget classes): {joint_ap_metrics['forget_map']:.4f}")
-    print(f"Top-{args.retain_topk} retain AP: {joint_ap_metrics['retain_topk_ap']}")
-    print(f"Other classes mAP: {joint_ap_metrics['other_map']:.4f}")
-    print(f"Saved metrics to: {metrics_path}")
-    return metrics
-
-
-def _evaluate_for_selection(
-    model: torch.nn.Module,
-    args,
-    tokenize_fn: Callable[[Sequence[str]], torch.Tensor],
-    image_size: int,
-    class_names: Sequence[str],
-) -> Dict[str, float]:
-    device = _get_model_device(model)
-    eval_transform = _build_eval_transform(image_size)
-    forget_loader, retain_loader = _build_test_dataloaders_from_folders(args, transform=eval_transform)
-
-    text_features = _encode_text_features(model, class_names, tokenize_fn, device)
-    forget_cache = _collect_eval_cache(
-        model=model,
-        data_loader=forget_loader,
-        text_features=text_features,
-        device=device,
-    )
-    retain_cache = _collect_eval_cache(
-        model=model,
-        data_loader=retain_loader,
-        text_features=text_features,
-        device=device,
-    )
-    forget_acc = _single_accuracy_from_cache(forget_cache)
-    retain_acc = _single_accuracy_from_cache(retain_cache)
-    return {
-        "forget_success": 1.0 - float(forget_acc),
-        "retain_accuracy": float(retain_acc),
-        "selection_score": float((1.0 - float(forget_acc)) + float(retain_acc)),
-        "forget_test_size": len(forget_loader.dataset),
-        "retain_test_size": len(retain_loader.dataset),
-    }
-
-
-def run_cliperase(args) -> None:
-    device = torch.device(args.device if torch.cuda.is_available() else "cpu")
-    model, tokenize_fn, image_size, backend = _load_clip_backend(args, device)
-    model = model.float().to(device)
-    teacher = copy.deepcopy(model).eval()
-    for param in teacher.parameters():
-        param.requires_grad = False
-
-    train_transform = _build_eval_transform(image_size)
-    df_dataset, dr_dataset = _build_train_datasets(args, transform=train_transform)
-    df_loader = DataLoader(
-        df_dataset,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_memory,
-        drop_last=True,
-    )
-    dr_loader = DataLoader(
-        dr_dataset,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_memory,
-        drop_last=True,
-    )
-
-    class_names = _build_class_name_list()
-    forget_indices, retain_indices = _build_forget_retain_indices(args.forget_classes)
-    retain_topk_indices = _compute_topk_retain_classes(
-        df_dataset=df_dataset,
-        forget_indices=forget_indices,
-        k=args.retain_topk,
-    )
-
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
-    scaler = torch.cuda.amp.GradScaler(init_scale=1024)
-
-    os.makedirs(args.output_dir, exist_ok=True)
-    config_path = os.path.join(args.output_dir, "config.json")
-    ckpt_path = os.path.join(args.output_dir, "clip_finegrained_cliperase.pth")
-    eval_interval = 2
-    best_score = float("-inf")
-    best_epoch = -1
-    best_metrics = None
-
-    for ep in range(args.max_epoch):
-        train_stats = supervised_unlearn_train_cliperase(
+        final_eval_metrics = self.run_original_eval(
             model=model,
-            teacher=teacher,
-            df_train_loader=df_loader,
-            dr_train_loader=dr_loader,
-            tokenizer_fn=tokenize_fn,
-            class_names=class_names,
-            forget_indices=forget_indices,
-            retain_indices=retain_indices,
-            optimizer=optimizer,
-            scaler=scaler,
-            lambda_df=args.lambda_df,
-            lambda_dr=args.lambda_dr,
-            lambda_uni=args.lambda_uni,
-            epoch_idx=ep,
-            max_epoch=args.max_epoch,
-            log_interval=args.log_interval,
-        )
-
-        should_eval = ((ep + 1) % eval_interval == 0) or ((ep + 1) == args.max_epoch)
-        if not should_eval:
-            continue
-
-        eval_metrics = _evaluate_for_selection(
-            model=model,
-            args=args,
             tokenize_fn=tokenize_fn,
             image_size=image_size,
-            class_names=class_names,
+            backend=backend,
+            retain_topk_indices=retain_topk_indices,
         )
-        cur_score = eval_metrics["selection_score"]
-        print(
-            f"[Eval EP {ep + 1}/{args.max_epoch}] "
-            f"forget_success={eval_metrics['forget_success']:.4f} "
-            f"retain_acc={eval_metrics['retain_accuracy']:.4f} "
-            f"score={cur_score:.4f}"
+        final_cfg = dict(vars(self.args))
+        final_cfg.update(
+            {
+                "best_epoch": best_epoch,
+                "best_score": best_score,
+                "best_forget_success": best_metrics["forget_success"],
+                "best_retain_accuracy": best_metrics["retain_accuracy"],
+                "selection_metric": "forget_success + retain_accuracy",
+                "eval_interval_epoch": eval_interval,
+                "final_original_eval": final_eval_metrics,
+            }
         )
+        with open(config_path, "w", encoding="utf-8") as f:
+            json.dump(final_cfg, f, ensure_ascii=False, indent=2)
 
-        if cur_score > best_score:
-            best_score = cur_score
-            best_epoch = ep + 1
-            best_metrics = eval_metrics
-            torch.save(
-                {
-                    "model": model.state_dict(),
-                    "clip_arch": args.clip_arch,
-                    "best_epoch": best_epoch,
-                    "best_score": best_score,
-                    "best_forget_success": eval_metrics["forget_success"],
-                    "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                },
-                ckpt_path,
+    def supervised_unlearn_train_cliperase(
+        self,
+        model,
+        teacher,
+        df_train_loader,
+        dr_train_loader,
+        tokenizer_fn: Callable[[Sequence[str]], torch.Tensor],
+        class_names: Sequence[str],
+        forget_indices: Sequence[int],
+        retain_indices: Sequence[int],
+        optimizer,
+        scaler,
+        lambda_df: float = 1.0,
+        lambda_dr: float = 1.0,
+        lambda_uni: float = 1.0,
+        epoch_idx: int = 0,
+        max_epoch: int = 1,
+        log_interval: int = 50,
+    ) -> Dict[str, float]:
+        device = self._get_model_device(model)
+        iters_per_epoch = min(len(df_train_loader), len(dr_train_loader))
+
+        def masked_mean(x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+            denom = mask.sum().clamp_min(1.0)
+            return (x * mask).sum() / denom
+
+        model.train()
+        df_iter = iter(df_train_loader)
+        dr_iter = iter(dr_train_loader)
+        running = {"forget": 0.0, "retain": 0.0, "kl": 0.0, "tot": 0.0}
+
+        for it in range(iters_per_epoch):
+            df_s = next(df_iter)
+            dr_s = next(dr_iter)
+
+            img_df = df_s["image"].to(device, non_blocking=True)
+            img_dr = dr_s["image"].to(device, non_blocking=True)
+
+            txt_df = self._labels_to_texts(df_s["label"], class_names, forget_indices)
+            txt_dr = self._labels_to_texts(dr_s["label"], class_names, retain_indices)
+            txt_df = tokenizer_fn(txt_df).to(device)
+            txt_dr = tokenizer_fn(txt_dr).to(device)
+
+            img_all = torch.cat([img_df, img_dr], dim=0)
+            txt_all = torch.cat([txt_df, txt_dr], dim=0)
+
+            batch_forget = img_df.size(0)
+            batch_retain = img_dr.size(0)
+            batch_total = batch_forget + batch_retain
+
+            flags = torch.cat(
+                [
+                    torch.ones(batch_forget, dtype=torch.long, device=device),
+                    torch.zeros(batch_retain, dtype=torch.long, device=device),
+                ],
+                dim=0,
             )
-            save_cfg = dict(vars(args))
-            save_cfg.update(
-                {
-                    "best_epoch": best_epoch,
-                    "best_score": best_score,
-                    "best_forget_success": eval_metrics["forget_success"],
-                    "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                    "selection_metric": "forget_success + retain_accuracy",
-                    "eval_interval_epoch": eval_interval,
-                    "train_stats_at_best_epoch": train_stats,
-                }
-            )
-            with open(config_path, "w", encoding="utf-8") as f:
-                json.dump(save_cfg, f, ensure_ascii=False, indent=2)
-            print(f"[Best Updated] epoch={best_epoch} score={best_score:.4f} -> overwrite checkpoint/config")
+            forget_mask = flags.float()
+            retain_mask = (1 - flags).float()
+            targets = torch.arange(batch_total, device=device)
 
-    if best_epoch < 0:
-        raise RuntimeError("No evaluation executed, no best checkpoint saved.")
+            optimizer.zero_grad(set_to_none=True)
+            with torch.amp.autocast(device_type="cuda", enabled=True):
+                sim_i2t_u, sim_t2i_u, _, _ = self._get_logits_and_feats(model, img_all, txt_all)
+                with torch.no_grad():
+                    sim_i2t_t, sim_t2i_t, _, _ = self._get_logits_and_feats(teacher, img_all, txt_all)
 
-    best_ckpt = torch.load(ckpt_path, map_location=device)
-    model.load_state_dict(best_ckpt["model"], strict=True)
-    print(
-        f"Final best epoch: {best_epoch}, "
-        f"forget_success={best_metrics['forget_success']:.4f}, "
-        f"retain_acc={best_metrics['retain_accuracy']:.4f}, "
-        f"score={best_score:.4f}"
-    )
+                ce_img = F.cross_entropy(sim_i2t_u, targets, reduction="none")
+                ce_txt = F.cross_entropy(sim_t2i_u, targets, reduction="none")
 
-    final_eval_metrics = run_original_eval(
-        args,
-        model=model,
-        tokenize_fn=tokenize_fn,
-        image_size=image_size,
-        backend=backend,
-        retain_topk_indices=retain_topk_indices,
-    )
-    final_cfg = dict(vars(args))
-    final_cfg.update(
-        {
-            "best_epoch": best_epoch,
-            "best_score": best_score,
-            "best_forget_success": best_metrics["forget_success"],
-            "best_retain_accuracy": best_metrics["retain_accuracy"],
-            "selection_metric": "forget_success + retain_accuracy",
-            "eval_interval_epoch": eval_interval,
-            "final_original_eval": final_eval_metrics,
+                forget_img_loss = masked_mean(ce_img, forget_mask)
+                forget_txt_loss = masked_mean(ce_txt, forget_mask)
+                loss_forget = -(forget_img_loss + forget_txt_loss)
+
+                retain_img_loss = masked_mean(ce_img, retain_mask)
+                retain_txt_loss = masked_mean(ce_txt, retain_mask)
+                loss_retain = retain_img_loss + retain_txt_loss
+
+                log_p_img = F.log_softmax(sim_i2t_u, dim=-1)
+                p_img_t = F.softmax(sim_i2t_t, dim=-1)
+                log_p_txt = F.log_softmax(sim_t2i_u, dim=-1)
+                p_txt_t = F.softmax(sim_t2i_t, dim=-1)
+
+                kl_img_all = F.kl_div(log_p_img, p_img_t, reduction="none").sum(dim=-1)
+                kl_txt_all = F.kl_div(log_p_txt, p_txt_t, reduction="none").sum(dim=-1)
+                kl_img = masked_mean(kl_img_all, retain_mask)
+                kl_txt = masked_mean(kl_txt_all, retain_mask)
+                loss_kl = kl_img + kl_txt
+
+                loss = lambda_df * loss_forget + lambda_dr * loss_retain + lambda_uni * loss_kl
+
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+
+            running["forget"] += float(loss_forget.detach().item())
+            running["retain"] += float(loss_retain.detach().item())
+            running["kl"] += float(loss_kl.detach().item())
+            running["tot"] += float(loss.detach().item())
+
+            if (it + 1) % log_interval == 0:
+                t = it + 1
+                print(
+                    f"[ClipErase EP {epoch_idx+1}/{max_epoch}] it={t}/{iters_per_epoch} "
+                    f"forget={running['forget']/t:.4f} "
+                    f"retain={running['retain']/t:.4f} "
+                    f"kl={running['kl']/t:.4f} "
+                    f"total={running['tot']/t:.4f}"
+                )
+
+        denom = float(max(iters_per_epoch, 1))
+        return {
+            "loss_forget": running["forget"] / denom,
+            "loss_retain": running["retain"] / denom,
+            "loss_kl": running["kl"] / denom,
+            "loss_total": running["tot"] / denom,
         }
-    )
-    with open(config_path, "w", encoding="utf-8") as f:
-        json.dump(final_cfg, f, ensure_ascii=False, indent=2)
+
+
 
 
 def main() -> None:
-    
     args = parse_args()
+    clip_finegrained_baseline_runner = ClipFinegrainedBaseline(args)
     if args.original_eval:
-        run_original_eval(args)
+        clip_finegrained_baseline_runner.run_original_eval()
         return
     if args.method == "cliperase":
-        run_cliperase(args)
+        clip_finegrained_baseline_runner.run_cliperase()
         return
     raise NotImplementedError(f"Unknown method: {args.method}")
 
