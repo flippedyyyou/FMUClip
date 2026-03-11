@@ -1,0 +1,56 @@
+{
+  "backend": "open_clip",
+  "clip_model_path": "",
+  "clip_arch": "local-dir:/datanfs4/shenruoyan/checkpoints/timm/vit_large_patch14_clip_336.openai",
+  "forget_classes": [
+    "table"
+  ],
+  "forget_test_size": 70,
+  "retain_test_size": 2018,
+  "joint_multilabel_val_size": 205,
+  "joint_multilabel_max_per_class": 50,
+  "forget_success": 0.19999999999999996,
+  "retain_accuracy": 0.6333002973240832,
+  "forget_map": 1.0,
+  "forget_class_ap": {
+    "table": 1.0
+  },
+  "retain_topk_ap": {
+    "man": 0.6570150998621731,
+    "woman": 0.5345006160248742,
+    "girl": 0.5390262218966189,
+    "boy": 0.6532116678408556,
+    "chair": 0.5452507263331672
+  },
+  "other_map": 0.32097580021203714,
+  "other_classes": [
+    "dog",
+    "orange",
+    "person",
+    "car",
+    "bench",
+    "bicycle",
+    "baby",
+    "house",
+    "book",
+    "umbrella",
+    "motorcycle",
+    "bus",
+    "cup"
+  ],
+  "retain_topk_classes": [
+    "man",
+    "woman",
+    "girl",
+    "boy",
+    "chair"
+  ],
+  "retain_topk_accuracy": {
+    "man": 0.5142857142857142,
+    "woman": 0.4,
+    "girl": 0.6142857142857143,
+    "boy": 0.8285714285714286,
+    "chair": 0.5142857142857142
+  },
+  "retain_topk_accuracy_mean": 0.5742857142857143
+}

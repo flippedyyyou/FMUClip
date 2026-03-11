@@ -172,15 +172,15 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Prune item1/single_train_images to target size per class using eval predictions.")
     parser.add_argument(
         "--eval-dir",
-        default="/datanfs4/shenruoyan/FMUClip/finegrained/output/original_eval/flickr30k_entities/original_table5_DF3_DR1_UNI3_03082352",
+        default="/datanfs4/shenruoyan/FMUClip/finegrained/output/original_eval/flickr30k_entities/original_table7_DF3_DR1_UNI3_03100034",
     )
     parser.add_argument(
         "--item1-dir",
-        default="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/val/Df/item1",
+        default="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/Df/item1",
     )
     parser.add_argument(
         "--single-dir",
-        default="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/val/test_images",
+        default="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/Df/single_train_images",
     )
     parser.add_argument("--target-per-class", type=int, default=50)
     args = parser.parse_args()

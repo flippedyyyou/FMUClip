@@ -1,6 +1,6 @@
 {
   "concept": "road",
-  "num": 70,
+  "num": 50,
   "images": [
     {
       "img_id": "3263741906",
@@ -16,45 +16,6 @@
       "dataset": "flickr30k_entities"
     },
     {
-      "img_id": "6811962907",
-      "file_name": "6811962907.jpg",
-      "source_item": 3,
-      "bbox": [
-        1.0,
-        89.0,
-        498.0,
-        77.0
-      ],
-      "area": 38346.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "465994762",
-      "file_name": "465994762.jpg",
-      "source_item": 3,
-      "bbox": [
-        0.0,
-        238.0,
-        498.0,
-        94.0
-      ],
-      "area": 46812.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "3170122039",
-      "file_name": "3170122039.jpg",
-      "source_item": 4,
-      "bbox": [
-        0.0,
-        116.0,
-        499.0,
-        216.0
-      ],
-      "area": 107784.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
       "img_id": "2059842472",
       "file_name": "2059842472.jpg",
       "source_item": 4,
@@ -65,19 +26,6 @@
         119.0
       ],
       "area": 44268.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "3605142079",
-      "file_name": "3605142079.jpg",
-      "source_item": 4,
-      "bbox": [
-        1.0,
-        165.0,
-        497.0,
-        100.0
-      ],
-      "area": 49700.0,
       "dataset": "flickr30k_entities"
     },
     {
@@ -146,45 +94,6 @@
       "dataset": "flickr30k_entities"
     },
     {
-      "img_id": "2677565007",
-      "file_name": "2677565007.jpg",
-      "source_item": 5,
-      "bbox": [
-        3.0,
-        156.0,
-        496.0,
-        163.0
-      ],
-      "area": 80848.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "2912210904",
-      "file_name": "2912210904.jpg",
-      "source_item": 5,
-      "bbox": [
-        4.0,
-        188.0,
-        488.0,
-        78.0
-      ],
-      "area": 38064.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "880220939",
-      "file_name": "880220939.jpg",
-      "source_item": 5,
-      "bbox": [
-        0.0,
-        268.0,
-        497.0,
-        106.0
-      ],
-      "area": 52682.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
       "img_id": "11214205",
       "file_name": "11214205.jpg",
       "source_item": 5,
@@ -195,19 +104,6 @@
         194.0
       ],
       "area": 96612.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "1356895715",
-      "file_name": "1356895715.jpg",
-      "source_item": 5,
-      "bbox": [
-        0.0,
-        217.0,
-        499.0,
-        115.0
-      ],
-      "area": 57385.0,
       "dataset": "flickr30k_entities"
     },
     {
@@ -312,19 +208,6 @@
         209.0
       ],
       "area": 62909.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "1149179852",
-      "file_name": "1149179852.jpg",
-      "source_item": 6,
-      "bbox": [
-        0.0,
-        171.0,
-        496.0,
-        140.0
-      ],
-      "area": 69440.0,
       "dataset": "flickr30k_entities"
     },
     {
@@ -484,19 +367,6 @@
       "dataset": "flickr30k_entities"
     },
     {
-      "img_id": "6634655583",
-      "file_name": "6634655583.jpg",
-      "source_item": 6,
-      "bbox": [
-        2.0,
-        165.0,
-        496.0,
-        90.0
-      ],
-      "area": 44640.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
       "img_id": "4731580287",
       "file_name": "4731580287.jpg",
       "source_item": 6,
@@ -507,19 +377,6 @@
         158.0
       ],
       "area": 76156.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "186348874",
-      "file_name": "186348874.jpg",
-      "source_item": 6,
-      "bbox": [
-        0.0,
-        276.0,
-        304.0,
-        223.0
-      ],
-      "area": 67792.0,
       "dataset": "flickr30k_entities"
     },
     {
@@ -546,19 +403,6 @@
         293.0
       ],
       "area": 96983.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "4887879873",
-      "file_name": "4887879873.jpg",
-      "source_item": 7,
-      "bbox": [
-        241.0,
-        66.0,
-        256.0,
-        118.0
-      ],
-      "area": 30208.0,
       "dataset": "flickr30k_entities"
     },
     {
@@ -601,45 +445,6 @@
       "dataset": "flickr30k_entities"
     },
     {
-      "img_id": "1581304802",
-      "file_name": "1581304802.jpg",
-      "source_item": 7,
-      "bbox": [
-        0.0,
-        182.0,
-        498.0,
-        190.0
-      ],
-      "area": 94620.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "5363528971",
-      "file_name": "5363528971.jpg",
-      "source_item": 7,
-      "bbox": [
-        1.0,
-        217.0,
-        498.0,
-        62.0
-      ],
-      "area": 30876.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "2894850774",
-      "file_name": "2894850774.jpg",
-      "source_item": 7,
-      "bbox": [
-        0.0,
-        270.0,
-        276.0,
-        95.0
-      ],
-      "area": 26220.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
       "img_id": "133243755",
       "file_name": "133243755.jpg",
       "source_item": 7,
@@ -679,32 +484,6 @@
       "dataset": "flickr30k_entities"
     },
     {
-      "img_id": "2778198363",
-      "file_name": "2778198363.jpg",
-      "source_item": 7,
-      "bbox": [
-        21.0,
-        174.0,
-        477.0,
-        56.0
-      ],
-      "area": 26712.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "2866254827",
-      "file_name": "2866254827.jpg",
-      "source_item": 7,
-      "bbox": [
-        0.0,
-        219.0,
-        496.0,
-        114.0
-      ],
-      "area": 56544.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
       "img_id": "146098876",
       "file_name": "146098876.jpg",
       "source_item": 7,
@@ -715,19 +494,6 @@
         294.0
       ],
       "area": 146412.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "2863180332",
-      "file_name": "2863180332.jpg",
-      "source_item": 7,
-      "bbox": [
-        0.0,
-        89.0,
-        498.0,
-        242.0
-      ],
-      "area": 120516.0,
       "dataset": "flickr30k_entities"
     },
     {
@@ -845,32 +611,6 @@
         215.0
       ],
       "area": 102340.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "7862746870",
-      "file_name": "7862746870.jpg",
-      "source_item": 7,
-      "bbox": [
-        184.0,
-        200.0,
-        313.0,
-        107.0
-      ],
-      "area": 33491.0,
-      "dataset": "flickr30k_entities"
-    },
-    {
-      "img_id": "3432495898",
-      "file_name": "3432495898.jpg",
-      "source_item": 7,
-      "bbox": [
-        1.0,
-        78.0,
-        498.0,
-        254.0
-      ],
-      "area": 126492.0,
       "dataset": "flickr30k_entities"
     },
     {

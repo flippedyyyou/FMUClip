@@ -15,6 +15,7 @@ COCO_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instance
 FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities"
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
+RETAIN_ITEM_FOLDER="item1"
 CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
 BATCH_SIZE=16
 NUM_WORKERS=4
@@ -43,7 +44,7 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
     exit 1
   fi
 
-  OUTPUT_DIR="finegrained/output/original_eval/${METHOD}_${DATASET}_${FORGET_CLASSES}5_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
+  OUTPUT_DIR="finegrained/output/original_eval/${METHOD}_${DATASET}_${FORGET_CLASSES}7_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
 
   echo "METHOD: ${METHOD}"
   echo "DATASET: ${DATASET}"
@@ -61,6 +62,7 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
     --flickr_instances_file "${FLICKR_INSTANCES_FILE}" \
     --flickr_image_root "${FLICKR_IMAGE_ROOT}" \
     --train_item_folder "${TRAIN_ITEM_FOLDER}" \
+    --retain_item_folder "${RETAIN_ITEM_FOLDER}" \
     --train_split "${TRAIN_SPLIT}" \
     --val_split "${VAL_SPLIT}" \
     --test_item_folder item1 \

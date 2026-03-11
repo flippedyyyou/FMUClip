@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
@@ -8,8 +9,15 @@ from PIL import Image
 
 from sam3.model_builder import build_sam3_image_model
 from sam3.model.sam3_image_processor import Sam3Processor
-from coco_labels.coco import LABEL_NAMES
-from load_dataset import COCODataSet
+
+_CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.dirname(_CURRENT_DIR)
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
+from finegrained.coco_labels.coco import LABEL_NAMES as COCO_LABEL_NAMES
+from finegrained.flickr30k_labels.flickr30k import LABEL_NAMES as FLICKR30K_LABEL_NAMES
+from finegrained.load_dataset import get_finegrained_dataset_cls
 
 
 def build_sam3_processor(
@@ -101,9 +109,35 @@ def _pack_bool_mask(mask_bool: torch.Tensor) -> Tuple[torch.Tensor, Tuple[int, i
     return torch.from_numpy(bits), (h, w)
 
 
-def build_retain_mask_cache(
-    df_root: str,
+def _resolve_dataset_assets(
+    dataset: str,
     coco_root: str,
+    split: str,
+    flickr_instances_file: str,
+    flickr_image_root: str,
+) -> Tuple[Dict[int, str], str, str]:
+    normalized = str(dataset).strip().lower()
+    if normalized in {"coco", "coco2017", "coco2017_instances"}:
+        annotation_file = os.path.join(coco_root, "annotations", f"instances_{split}2017.json")
+        image_root = os.path.join(coco_root, f"{split}2017")
+        return COCO_LABEL_NAMES, annotation_file, image_root
+
+    if normalized in {"flickr", "flickr30k", "flickr30k_entities"}:
+        if not flickr_instances_file:
+            raise ValueError("`--flickr-instances-file` is required when --dataset=flickr30k_entities.")
+        if not flickr_image_root:
+            raise ValueError("`--flickr-image-root` is required when --dataset=flickr30k_entities.")
+        return FLICKR30K_LABEL_NAMES, flickr_instances_file, flickr_image_root
+
+    raise ValueError(f"Unsupported dataset: {dataset}")
+
+
+def build_retain_mask_cache(
+    dataset: str,
+    df_root: str,
+    annotation_file: str,
+    image_root: str,
+    label_names: Dict[int, str],
     split: str,
     item_folder: str,
     forget_classes: Sequence[str],
@@ -112,7 +146,7 @@ def build_retain_mask_cache(
     confidence_threshold: float,
     out_path: str,
 ) -> None:
-    class_names = [name for _, name in sorted(LABEL_NAMES.items())]
+    class_names = [name for _, name in sorted(label_names.items())]
     forget_names = {_normalize_name(x) for x in forget_classes}
     selected_files = _load_images_from_df_lists(
         df_root=df_root,
@@ -123,11 +157,11 @@ def build_retain_mask_cache(
     if not selected_files:
         raise ValueError("No training images found from Df lists.")
 
-    ann_file = os.path.join(coco_root, "annotations", f"instances_{split}2017.json")
-    img_root = os.path.join(coco_root, f"{split}2017")
-    dataset = COCODataSet(
-        annotation_file=ann_file,
-        image_root=img_root,
+    dataset_cls = get_finegrained_dataset_cls(dataset)
+    dataset_obj = dataset_cls(
+        label_names=label_names,
+        annotation_file=annotation_file,
+        image_root=image_root,
         split=split,
         selected_files=selected_files,
         forget_class_names=list(forget_names),
@@ -141,11 +175,11 @@ def build_retain_mask_cache(
 
     entries: Dict[str, Dict[str, object]] = {}
     miss_retain, miss_sam = 0, 0
-    for i in range(len(dataset)):
-        file_name = dataset.file_names[i]
+    for i in range(len(dataset_obj)):
+        file_name = dataset_obj.file_names[i]
         stem = os.path.splitext(file_name)[0]
-        image_path = os.path.join(dataset.image_root, file_name)
-        retain_vec = torch.from_numpy(dataset.targets[i].copy()) * (1.0 - dataset.forget_mask)
+        image_path = os.path.join(dataset_obj.image_root, file_name)
+        retain_vec = torch.from_numpy(dataset_obj.targets[i].copy()) * (1.0 - dataset_obj.forget_mask)
         candidate_indices = torch.nonzero(retain_vec > 0.5).flatten().tolist()
         if not candidate_indices:
             miss_retain += 1
@@ -188,7 +222,7 @@ def build_retain_mask_cache(
             "split": split,
             "item_folder": item_folder,
             "forget_classes": list(forget_names),
-            "num_images": len(dataset),
+            "num_images": len(dataset_obj),
             "num_cached": len(entries),
             "num_missing_retain_label": int(miss_retain),
             "num_missing_sam_mask": int(miss_sam),
@@ -198,7 +232,7 @@ def build_retain_mask_cache(
     )
     print(
         f"Saved retain cache to {out_path}. "
-        f"cached={len(entries)}/{len(dataset)}, miss_retain={miss_retain}, miss_sam={miss_sam}"
+        f"cached={len(entries)}/{len(dataset_obj)}, miss_retain={miss_retain}, miss_sam={miss_sam}"
     )
 
 
@@ -221,6 +255,13 @@ def _save_image_paths(list_path, image_paths):
 
 def main():
     parser = argparse.ArgumentParser(description="Batch-generate SAM3 binary masks for forget images.")
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="coco2017_instances",
+        choices=["coco2017_instances", "flickr30k_entities"],
+        help="Finegrained dataset backend.",
+    )
     parser.add_argument("--build-retain-cache", action="store_true")
     parser.add_argument("--image-list", default="", help="txt file with image paths (one per line)")
     parser.add_argument("--image-root", default="", help="optional root to prepend to relative paths")
@@ -231,6 +272,8 @@ def main():
     parser.add_argument("--confidence-threshold", type=float, default=0.5)
     parser.add_argument("--df-root", default="")
     parser.add_argument("--coco-root", default="")
+    parser.add_argument("--flickr-instances-file", default="")
+    parser.add_argument("--flickr-image-root", default="")
     parser.add_argument("--train-split", default="train")
     parser.add_argument("--train-item-folder", default="item3")
     parser.add_argument("--forget-classes", default="")
@@ -238,13 +281,23 @@ def main():
     args = parser.parse_args()
 
     if args.build_retain_cache:
-        if not args.df_root or not args.coco_root or not args.retain_cache_out or not args.forget_classes:
+        if not args.df_root or not args.retain_cache_out or not args.forget_classes:
             raise ValueError(
-                "For --build-retain-cache, require --df-root --coco-root --retain-cache-out --forget-classes."
+                "For --build-retain-cache, require --df-root --retain-cache-out --forget-classes."
             )
-        build_retain_mask_cache(
-            df_root=args.df_root,
+        label_names, train_annotation_file, train_image_root = _resolve_dataset_assets(
+            dataset=args.dataset,
             coco_root=args.coco_root,
+            split=args.train_split,
+            flickr_instances_file=args.flickr_instances_file,
+            flickr_image_root=args.flickr_image_root,
+        )
+        build_retain_mask_cache(
+            dataset=args.dataset,
+            df_root=args.df_root,
+            annotation_file=train_annotation_file,
+            image_root=train_image_root,
+            label_names=label_names,
             split=args.train_split,
             item_folder=args.train_item_folder,
             forget_classes=_parse_forget_classes(args.forget_classes),
