@@ -19,22 +19,16 @@ RETAIN_ITEM_FOLDER="item1"
 CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
 BATCH_SIZE=16
 NUM_WORKERS=4
-MAX_EPOCH=20
-LR=1e-6
-WEIGHT_DECAY=5e-4
-LAMBDA_DF=3
-LAMBDA_DR=1
-LAMBDA_UNI=3
-METHOD="cliperase"
 RETAIN_TOPK=5
+SLUG_RATIO_DIVISOR=6
+SLUG_SEARCH_MULTIPLIERS="0.5,1.0,2.0,4.0"
+SLUG_MAX_CANDIDATES=3
 
-
-for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
+for DATASET in "flickr30k_entities"; do
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_CLASSES="airplane"
     TRAIN_ITEM_FOLDER="item5"
-    
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_CLASSES="table"
@@ -44,17 +38,9 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
     exit 1
   fi
 
-  OUTPUT_DIR="finegrained/output/baselines/${METHOD}_${DATASET}_${FORGET_CLASSES}7_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
+  OUTPUT_DIR="finegrained/output/baselines/slug_${DATASET}_${FORGET_CLASSES}_$(date +%m%d%H%M)"
 
-  echo "METHOD: ${METHOD}"
-  echo "DATASET: ${DATASET}"
-  echo "FORGET_CLASSES: ${FORGET_CLASSES}"
-  echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
-  echo "OUTPUT_DIR: ${OUTPUT_DIR}"
-
-
-  python finegrained/clip_finegrained_baseline.py \
-    --method ${METHOD} \
+  python finegrained/baselines/clip_unlearn_slug.py \
     --dataset "${DATASET}" \
     --forget_classes "${FORGET_CLASSES}" \
     --df_root "${DF_ROOT}" \
@@ -73,13 +59,10 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
     --output_dir "${OUTPUT_DIR}" \
     --batch_size "${BATCH_SIZE}" \
     --num_workers "${NUM_WORKERS}" \
-    --max_epoch "${MAX_EPOCH}" \
-    --lr "${LR}" \
-    --log_interval 1 \
-    --weight_decay "${WEIGHT_DECAY}" \
-    --lambda_df "${LAMBDA_DF}" \
-    --lambda_dr "${LAMBDA_DR}" \
-    --lambda_uni "${LAMBDA_UNI}" \
     --retain_topk "${RETAIN_TOPK}" \
+    --slug_parts all \
+    --slug_ratio_divisor "${SLUG_RATIO_DIVISOR}" \
+    --slug_search_multipliers "${SLUG_SEARCH_MULTIPLIERS}" \
+    --slug_max_candidates_per_part "${SLUG_MAX_CANDIDATES}" \
     --device "${DEVICE}"
 done

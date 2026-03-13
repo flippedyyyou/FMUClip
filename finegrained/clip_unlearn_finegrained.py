@@ -968,8 +968,7 @@ def main() -> None:
         f"score={best_score:.4f}"
     )
 
-    final_eval_metrics =clip_unlearn_finegrained.run_original_eval(
-        args,
+    final_eval_metrics = clip_unlearn_finegrained.run_original_eval(
         model=model,
         tokenize_fn=tokenize_fn,
         image_size=image_size,
