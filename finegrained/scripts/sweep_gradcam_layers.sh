@@ -3,7 +3,7 @@ set -euo pipefail
 set -a
 source .env
 set +a
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=2
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -15,20 +15,20 @@ FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/mask"
 CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
-BATCH_SIZE=4
+BATCH_SIZE=16
 NUM_WORKERS=4
-MAX_EPOCH=20
-LR=2e-6
+MAX_EPOCH=10
+LR=1e-6
 WEIGHT_DECAY=3e-4
-LAMBDA_RTF=1
+LAMBDA_RTF=2
 LAMBDA_CE=1
 SAMPLE_K=5
 RETAIN_TOPK=5
-METHOD="ours"
+METHOD="gradcam"
 LAYERS="${1:-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24}"
 RUN_TAG="$(date +%m%d%H%M%S)"
 
-for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
+for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_CLASSES="airplane"
@@ -37,15 +37,15 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
     
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
-    FORGET_CLASSES="table"
-    TRAIN_ITEM_FOLDER="item7"
+    FORGET_CLASSES="girl"
+    TRAIN_ITEM_FOLDER="item4"
     RETAIN_CACHE_PATH="/datanfs4/shenruoyan/FMUClip/finegrained/mask/flickr/${TRAIN_ITEM_FOLDER}/retain_cache_${FORGET_CLASSES}.pt"
   else
     echo "Unknown dataset: ${DATASET}"
     exit 1
   fi
 
-  BASE_OUTPUT_DIR="finegrained/output/unlearn/${DATASET}/sweep_${METHOD}_${FORGET_CLASSES}_${RUN_TAG}"
+  BASE_OUTPUT_DIR="finegrained/output/unlearn/${DATASET}/sweep_${METHOD}_${FORGET_CLASSES}5_${RUN_TAG}"
   mkdir -p "${BASE_OUTPUT_DIR}"
   SUMMARY_CSV="${BASE_OUTPUT_DIR}/summary.csv"
   echo "METHOD: ${METHOD}"
