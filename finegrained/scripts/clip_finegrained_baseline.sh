@@ -16,7 +16,7 @@ FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entit
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 RETAIN_ITEM_FOLDER="item1"
-CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
+
 BATCH_SIZE=16
 NUM_WORKERS=4
 MAX_EPOCH=20
@@ -69,7 +69,7 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
     --test_item_format json \
     --test_max_per_class 50 \
     --joint_multilabel_max_per_class 50 \
-    --clip_arch "${CLIP_ARCH}" \
+    --clip_path "${CLIP_PATH}" \
     --output_dir "${OUTPUT_DIR}" \
     --batch_size "${BATCH_SIZE}" \
     --num_workers "${NUM_WORKERS}" \

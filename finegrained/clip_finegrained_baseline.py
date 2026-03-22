@@ -1,3 +1,7 @@
+from finegrained.params import parse_args
+from finegrained.load_dataset import get_finegrained_dataset_cls
+from finegrained.flickr30k_labels.flickr30k import LABEL_NAMES as FLICKR30K_LABEL_NAMES
+from finegrained.coco_labels.coco import LABEL_NAMES as COCO_LABEL_NAMES
 import copy
 import json
 import os
@@ -8,7 +12,7 @@ import numpy as np
 import torch
 from sklearn.metrics import average_precision_score
 from torchvision import transforms
-import open_clip
+# import open_clip
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
@@ -18,11 +22,6 @@ _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.dirname(_CURRENT_DIR)
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
-
-from finegrained.coco_labels.coco import LABEL_NAMES as COCO_LABEL_NAMES
-from finegrained.flickr30k_labels.flickr30k import LABEL_NAMES as FLICKR30K_LABEL_NAMES
-from finegrained.load_dataset import get_finegrained_dataset_cls
-from finegrained.params import parse_args
 
 
 CLIP_MEAN = (0.48145466, 0.4578275, 0.40821073)
@@ -53,7 +52,6 @@ class _FolderClassEvalDataset(Dataset):
             "eval_class_idx": torch.tensor(class_idx, dtype=torch.long),
             "image_path": image_path,
         }
-
 
 
 class ClipFinegrainedBaseline:
@@ -92,9 +90,8 @@ class ClipFinegrainedBaseline:
             ]
         )
 
-    def _build_class_name_list(self ) -> List[str]:
+    def _build_class_name_list(self) -> List[str]:
         return [name for _, name in sorted(self.label_names.items())]
-
 
     def _resolve_test_images_root(self) -> str:
         explicit = getattr(self.args, "test_images_root", None)
@@ -163,7 +160,6 @@ class ClipFinegrainedBaseline:
         )
         return forget_loader, retain_loader
 
-
     def _build_forget_retain_indices(self, forget_classes: Sequence[str]) -> Tuple[List[int], List[int]]:
         norm_forget = {name.strip().replace(" ", "_") for name in forget_classes}
         all_classes = self._build_class_name_list()
@@ -178,10 +174,8 @@ class ClipFinegrainedBaseline:
         retain_indices = [i for i in range(len(all_classes)) if i not in set(forget_indices)]
         return forget_indices, retain_indices
 
-
     def _normalize_name(self, name: str) -> str:
         return name.strip().replace(" ", "_")
-
 
     def _read_txt_image_list(self, txt_path: str) -> List[str]:
         items: List[str] = []
@@ -195,7 +189,6 @@ class ClipFinegrainedBaseline:
                 items.append(os.path.basename(line))
         return items
 
-
     def _unique_keep_order(self, items: Sequence[str]) -> List[str]:
         seen = set()
         out: List[str] = []
@@ -205,7 +198,6 @@ class ClipFinegrainedBaseline:
             seen.add(item)
             out.append(item)
         return out
-
 
     def _load_images_from_df_lists(
         self,
@@ -219,7 +211,6 @@ class ClipFinegrainedBaseline:
             txt_path = os.path.join(df_root, split, "Df", item_folder, f"{self._normalize_name(class_name)}.txt")
             images.extend(self._read_txt_image_list(txt_path))
         return self._unique_keep_order(images)
-        
 
     def _build_train_datasets(self, transform):
         dataset_cls = get_finegrained_dataset_cls(self.args.dataset)
@@ -264,7 +255,6 @@ class ClipFinegrainedBaseline:
         )
         return df_dataset, dr_dataset
 
-
     def _encode_text_features(
         self,
         model,
@@ -277,7 +267,6 @@ class ClipFinegrainedBaseline:
             text_features = model.encode_text(text_tokens)
             text_features = text_features / text_features.norm(dim=-1, keepdim=True)
         return text_features
-
 
     def _get_logits_and_feats(
         self,
@@ -294,13 +283,11 @@ class ClipFinegrainedBaseline:
         sim_t2i = logit_scale * (text_features @ image_features.t())
         return sim_i2t, sim_t2i, image_features, text_features
 
-
     def _get_model_device(self, model: torch.nn.Module) -> torch.device:
         try:
             return next(model.parameters()).device
         except StopIteration:
             return torch.device("cpu")
-
 
     def _labels_to_texts(
         self,
@@ -325,8 +312,6 @@ class ClipFinegrainedBaseline:
             texts.append(f"a photo of {name}")
         return texts
 
-
-   
     def _evaluate_single_accuracy(
         self,
         model,
@@ -363,7 +348,6 @@ class ClipFinegrainedBaseline:
                     total += int(valid_mask.sum().item())
 
         return float(correct / total) if total > 0 else 0.0
-
 
     def _dump_topk_results(
         self,
@@ -432,7 +416,6 @@ class ClipFinegrainedBaseline:
             for row in rows:
                 f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
-
     def _compute_topk_retain_classes(
         self,
         df_dataset,
@@ -448,13 +431,12 @@ class ClipFinegrainedBaseline:
                 if idx in forget_set:
                     continue
                 counts[idx] += 1
-        topk = np.argsort(-counts) # 返回数组值从大到小的索引值
+        topk = np.argsort(-counts)  # 返回数组值从大到小的索引值
         topk = [int(i) for i in topk if counts[int(i)] > 0 and i not in forget_set]
         for idx in topk[:k]:
             print(f"Retain class: {self.label_names[idx]} with count: {counts[idx]}")
         print()
         return topk[:k]
-
 
     def _evaluate_single_class_accuracy(
         model,
@@ -490,7 +472,6 @@ class ClipFinegrainedBaseline:
                 total += int(mask.sum().item())
         return float(correct / total) if total > 0 else 0.0
 
-
     def _evaluate_topk_retain_accuracy(
         self,
         model,
@@ -514,13 +495,11 @@ class ClipFinegrainedBaseline:
             results[class_names[idx]] = acc
         return results
 
-
     def _average_precision_binary(self, y_true: np.ndarray, y_score: np.ndarray) -> float:
         positives = int(y_true.sum())
         if positives == 0:
             return float("nan")
         return float(average_precision_score(y_true, y_score))
-
 
     def _compute_map_for_indices(
         self,
@@ -536,7 +515,6 @@ class ClipFinegrainedBaseline:
         if not ap_values:
             return 0.0
         return float(np.mean(ap_values))
-
 
     def _build_val_joint_multilabel_loader(
         self,
@@ -621,7 +599,6 @@ class ClipFinegrainedBaseline:
             drop_last=False,
         )
 
-
     def _evaluate_joint_multilabel_ap(
         self,
         model,
@@ -633,8 +610,8 @@ class ClipFinegrainedBaseline:
         device: torch.device,
     ) -> Dict[str, object]:
         model.eval()
-        all_scores: List[np.ndarray] = [] # 每个元素 [B, C]，最后拼接成 [N, C]
-        all_labels: List[np.ndarray] = [] # 每个元素 [B, C]，最后拼接成 [N, C]
+        all_scores: List[np.ndarray] = []  # 每个元素 [B, C]，最后拼接成 [N, C]
+        all_labels: List[np.ndarray] = []  # 每个元素 [B, C]，最后拼接成 [N, C]
         per_class_ap: Dict[int, float] = {}
 
         with torch.no_grad():
@@ -659,9 +636,9 @@ class ClipFinegrainedBaseline:
                 "other_classes": [],
             }
 
-        scores = np.concatenate(all_scores, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C]，C为数据集的全部候选集类别数
-        gt = np.concatenate(all_labels, axis=0) # 所有 batch 拼接得到的 all_scores，shape [N, C], 0/1 二值标签矩阵
-        present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist() # 只保留“出现过”的类计算 AP，避免某些完全没有正样本的类导致 AP 计算出 NaN
+        scores = np.concatenate(all_scores, axis=0)  # 所有 batch 拼接得到的 all_scores，shape [N, C]，C为数据集的全部候选集类别数
+        gt = np.concatenate(all_labels, axis=0)  # 所有 batch 拼接得到的 all_scores，shape [N, C], 0/1 二值标签矩阵
+        present_classes = np.where(gt.sum(axis=0) > 0)[0].tolist()  # 只保留“出现过”的类计算 AP，避免某些完全没有正样本的类导致 AP 计算出 NaN
 
         for class_idx in present_classes:
             ap = self._average_precision_binary(gt[:, class_idx].astype(np.int32), scores[:, class_idx])
@@ -669,9 +646,10 @@ class ClipFinegrainedBaseline:
                 per_class_ap[int(class_idx)] = float(ap)
 
         forget_aps = [per_class_ap[idx] for idx in forget_indices if idx in per_class_ap]
-        forget_class_ap = {class_names[idx]: per_class_ap[idx] for idx in forget_indices if idx in per_class_ap} # 最多 F 项
-        retain_topk_ap = { # 最多 K 项
-            class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap 
+        forget_class_ap = {class_names[idx]: per_class_ap[idx]
+                           for idx in forget_indices if idx in per_class_ap}  # 最多 F 项
+        retain_topk_ap = {  # 最多 K 项
+            class_names[idx]: per_class_ap[idx] for idx in retain_topk_indices if idx in per_class_ap
         }
 
         excluded = set(forget_indices) | set(retain_topk_indices)
@@ -686,7 +664,6 @@ class ClipFinegrainedBaseline:
             "other_map": other_map,
             "other_classes": [class_names[idx] for idx in other_indices],
         }
-
 
     def _dump_joint_multilabel_results(
         self,
@@ -741,7 +718,6 @@ class ClipFinegrainedBaseline:
             for row in rows:
                 f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
-
     def _collect_eval_cache(
         self,
         model,
@@ -794,7 +770,6 @@ class ClipFinegrainedBaseline:
             "image_paths": all_paths,
         }
 
-
     def _single_accuracy_from_cache(self, cache: Dict[str, object]) -> float:
         logits = cache["logits"]
         labels = cache["labels"]
@@ -813,7 +788,6 @@ class ClipFinegrainedBaseline:
         pred = logits.argmax(axis=1)
         return float((pred[valid] == gt[valid]).mean())
 
-
     def _single_class_accuracy_from_cache(self, cache: Dict[str, object], class_index: int) -> float:
         logits = cache["logits"]
         labels = cache["labels"]
@@ -830,7 +804,6 @@ class ClipFinegrainedBaseline:
         pred = logits.argmax(axis=1)
         return float((pred[mask] == class_index).mean())
 
-
     def _topk_retain_accuracy_from_cache(
         self,
         cache: Dict[str, object],
@@ -841,7 +814,6 @@ class ClipFinegrainedBaseline:
         for idx in retain_indices:
             out[class_names[idx]] = self._single_class_accuracy_from_cache(cache, int(idx))
         return out
-
 
     def _joint_multilabel_ap_from_cache(
         self,
@@ -885,7 +857,6 @@ class ClipFinegrainedBaseline:
             "other_map": other_map,
             "other_classes": [class_names[idx] for idx in other_indices],
         }
-
 
     def _dump_topk_results_from_cache(
         self,
@@ -934,7 +905,6 @@ class ClipFinegrainedBaseline:
             for row in rows:
                 f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
-
     def _dump_joint_multilabel_results_from_cache(
         self,
         cache: Dict[str, object],
@@ -973,7 +943,6 @@ class ClipFinegrainedBaseline:
         with open(out_path, "w", encoding="utf-8") as f:
             for row in rows:
                 f.write(json.dumps(row, ensure_ascii=False) + "\n")
-
 
     def run_original_eval(
         self,
@@ -1100,7 +1069,6 @@ class ClipFinegrainedBaseline:
         print(f"Saved metrics to: {metrics_path}")
         return metrics
 
-
     def _evaluate_for_selection(
         self,
         model: torch.nn.Module,
@@ -1134,7 +1102,6 @@ class ClipFinegrainedBaseline:
             "forget_test_size": len(forget_loader.dataset),
             "retain_test_size": len(retain_loader.dataset),
         }
-
 
     def run_cliperase(self) -> None:
         device = torch.device(self.args.device if torch.cuda.is_available() else "cpu")
@@ -1402,8 +1369,6 @@ class ClipFinegrainedBaseline:
             "loss_kl": running["kl"] / denom,
             "loss_total": running["tot"] / denom,
         }
-
-
 
 
 def main() -> None:
