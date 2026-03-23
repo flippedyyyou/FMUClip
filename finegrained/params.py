@@ -84,9 +84,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--return_meta", action="store_true")
     parser.add_argument(
         "--method",
-        choices=["cliperase", "ours", "gradcam"],
+        choices=["cliperase", "ours", "gradcam", 'original'],
         default="cliperase",
-        help="Training method when not using --original_eval.",
     )
     parser.add_argument("--max_epoch", type=int, default=1)
     parser.add_argument("--log_interval", type=int, default=50)
@@ -105,24 +104,11 @@ def build_parser() -> argparse.ArgumentParser:
             "(0 means no limit)."
         ),
     )
-    parser.add_argument("--original_eval", action="store_true", help="Only run original CLIP evaluation on test sets.")
+    # parser.add_argument("--original_eval", action="store_true", help="Only run original CLIP evaluation on test sets.")
     parser.add_argument(
-        "--clip_model_path",
+        "--clip_path",
         type=str,
-        default="",
-        help="Path to CLIP checkpoint .pt file used for evaluation.",
-    )
-    parser.add_argument(
-        "--clip_arch",
-        type=str,
-        default="ViT-L-14-336",
-        help="CLIP architecture name (used by open_clip fallback).",
-    )
-    parser.add_argument(
-        "--clip_pretrained",
-        type=str,
-        default="openai",
-        help="Pretrained tag for open_clip (e.g. openai, laion2b_s34b_b79k).",
+        default=None,
     )
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--output_dir", type=str, default="finegrained/output")

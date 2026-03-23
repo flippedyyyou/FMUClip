@@ -1,32 +1,61 @@
-from finegrained.params import parse_args
-from finegrained.load_dataset import get_finegrained_dataset_cls
-from finegrained.flickr30k_labels.flickr30k import LABEL_NAMES as FLICKR30K_LABEL_NAMES
-from finegrained.coco_labels.coco import LABEL_NAMES as COCO_LABEL_NAMES
 import copy
 import json
 import os
 import sys
-from typing import Callable, Dict, List, Sequence, Tuple
+from typing import Callable, Dict, List, Sequence, Tuple, Union
 
 import numpy as np
 import torch
 from sklearn.metrics import average_precision_score
 from torchvision import transforms
-# import open_clip
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 from PIL import Image
+from transformers import CLIPModel, CLIPTokenizerFast
 
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.dirname(_CURRENT_DIR)
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
+from finegrained.params import parse_args
+from finegrained.load_dataset import get_finegrained_dataset_cls
+from finegrained.flickr30k_labels.flickr30k import LABEL_NAMES as FLICKR30K_LABEL_NAMES
+from finegrained.coco_labels.coco import LABEL_NAMES as COCO_LABEL_NAMES
+
 
 CLIP_MEAN = (0.48145466, 0.4578275, 0.40821073)
 CLIP_STD = (0.26862954, 0.26130258, 0.27577711)
 IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".bmp")
+
+
+class _HFCLIPWrapper(torch.nn.Module):
+    def __init__(self, clip_model: CLIPModel, pad_token_id: int):
+        super().__init__()
+        self.clip_model = clip_model
+        self.pad_token_id = int(pad_token_id)
+
+    @property
+    def logit_scale(self):
+        return self.clip_model.logit_scale
+
+    def encode_image(self, pixel_values: torch.Tensor) -> torch.Tensor:
+        return self.clip_model.get_image_features(pixel_values=pixel_values)
+
+    def encode_text(self, input_ids: Union[torch.Tensor, Dict[str, torch.Tensor]]) -> torch.Tensor:
+        if isinstance(input_ids, dict):
+            token_ids = input_ids["input_ids"]
+            attention_mask = input_ids.get("attention_mask")
+            if attention_mask is None:
+                attention_mask = (token_ids != self.pad_token_id).long()
+        else:
+            token_ids = input_ids
+            attention_mask = (token_ids != self.pad_token_id).long()
+        return self.clip_model.get_text_features(
+            input_ids=token_ids,
+            attention_mask=attention_mask,
+        )
 
 
 class _FolderClassEvalDataset(Dataset):
@@ -65,20 +94,31 @@ class ClipFinegrainedBaseline:
             raise ValueError(f"Unsupported dataset: {args.dataset}")
 
     def _load_clip_backend(self, device: torch.device):
-        # args.clip_model_path 这里建议传 "ViT-B-32" 这种 model_name
-        model_name = getattr(self.args, "clip_arch", "ViT-B-32")
+        model_name = getattr(self.args, "clip_path", None)
+        clip_model = CLIPModel.from_pretrained(model_name)
+        tokenizer = CLIPTokenizerFast.from_pretrained(model_name)
+        if tokenizer.pad_token is None and tokenizer.eos_token is not None:
+            tokenizer.pad_token = tokenizer.eos_token
+        pad_token_id = tokenizer.pad_token_id
+        if pad_token_id is None:
+            pad_token_id = tokenizer.eos_token_id if tokenizer.eos_token_id is not None else 0
 
-        model, _, preprocess = open_clip.create_model_and_transforms(
-            model_name,
-            device=device
-        )
-        tokenize_fn = open_clip.get_tokenizer(model_name)
+        model = _HFCLIPWrapper(clip_model=clip_model, pad_token_id=pad_token_id).to(device)
 
-        # open_clip 的 input size：从 preprocess 里取
-        image_size = preprocess.transforms[0].size if hasattr(preprocess, "transforms") else 224
+        def tokenize_fn(texts: Sequence[str]) -> torch.Tensor:
+            encoded = tokenizer(
+                list(texts),
+                padding="max_length",
+                truncation=True,
+                max_length=tokenizer.model_max_length,
+                return_tensors="pt",
+            )
+            return encoded["input_ids"]
+
+        image_size = int(getattr(clip_model.config.vision_config, "image_size", 224))
 
         model.eval()
-        return model, tokenize_fn, image_size, "open_clip"
+        return model, tokenize_fn, image_size, "hf_transformers"
 
     def _build_eval_transform(self, image_size: int):
         return transforms.Compose(
@@ -312,6 +352,23 @@ class ClipFinegrainedBaseline:
             texts.append(f"a photo of {name}")
         return texts
 
+    def _normalize_logits_for_export_torch(self, logits: torch.Tensor) -> torch.Tensor:
+        # Convert logits to probabilities for human-readable JSON export.
+        return torch.softmax(logits, dim=1)
+
+    def _normalize_logits_for_export_numpy(self, logits: np.ndarray) -> np.ndarray:
+        # Stable softmax for export readability (values in [0, 1], sum to 1 per row).
+        shifted = logits - np.max(logits, axis=1, keepdims=True)
+        exp_shifted = np.exp(shifted)
+        denom = np.sum(exp_shifted, axis=1, keepdims=True)
+        return exp_shifted / np.clip(denom, a_min=1e-12, a_max=None)
+
+    def _round_sig(self, value: float, sig: int = 4) -> float:
+        x = float(value)
+        if x == 0.0 or not np.isfinite(x):
+            return x
+        return float(f"{x:.{sig}g}")
+
     def _evaluate_single_accuracy(
         self,
         model,
@@ -374,6 +431,7 @@ class ClipFinegrainedBaseline:
                 image_features = model.encode_image(images)
                 image_features = image_features / image_features.norm(dim=-1, keepdim=True)
                 logits = model.logit_scale.exp() * (image_features @ text_features.t())
+                export_scores = self._normalize_logits_for_export_torch(logits)
 
                 if eval_class_idx is not None and (eval_class_idx >= 0).any():
                     valid_mask = eval_class_idx >= 0
@@ -385,7 +443,7 @@ class ClipFinegrainedBaseline:
                     continue
 
                 k = min(topk, logits.size(1))
-                topk_scores, topk_indices = logits.topk(k, dim=1)
+                topk_scores, topk_indices = export_scores.topk(k, dim=1)
                 pred_global = logits.argmax(dim=1)
 
                 for i in range(images.size(0)):
@@ -687,9 +745,10 @@ class ClipFinegrainedBaseline:
                 image_features = model.encode_image(images)
                 image_features = image_features / image_features.norm(dim=-1, keepdim=True)
                 logits = model.logit_scale.exp() * (image_features @ text_features.t())
+                export_scores = self._normalize_logits_for_export_torch(logits)
 
                 k = min(topk, logits.size(1))
-                topk_scores, topk_indices = logits.topk(k, dim=1)
+                topk_scores, topk_indices = export_scores.topk(k, dim=1)
                 pred_global = logits.argmax(dim=1)
 
                 for i in range(images.size(0)):
@@ -871,6 +930,7 @@ class ClipFinegrainedBaseline:
         image_paths = cache["image_paths"]
         rows: List[Dict[str, object]] = []
         if logits.shape[0] > 0:
+            export_scores = self._normalize_logits_for_export_numpy(logits)
             if np.any(eval_idx >= 0):
                 valid_mask = eval_idx >= 0
                 gt_global = eval_idx
@@ -880,8 +940,8 @@ class ClipFinegrainedBaseline:
 
             pred_global = logits.argmax(axis=1)
             k = min(topk, logits.shape[1])
-            topk_indices = np.argsort(-logits, axis=1)[:, :k]
-            topk_scores = np.take_along_axis(logits, topk_indices, axis=1)
+            topk_indices = np.argsort(-export_scores, axis=1)[:, :k]
+            topk_scores = np.take_along_axis(export_scores, topk_indices, axis=1)
 
             for i in range(logits.shape[0]):
                 if not bool(valid_mask[i]):
@@ -917,10 +977,11 @@ class ClipFinegrainedBaseline:
         image_paths = cache["image_paths"]
         rows: List[Dict[str, object]] = []
         if logits.shape[0] > 0:
+            export_scores = self._normalize_logits_for_export_numpy(logits)
             pred_global = logits.argmax(axis=1)
             k = min(topk, logits.shape[1])
-            topk_indices = np.argsort(-logits, axis=1)[:, :k]
-            topk_scores = np.take_along_axis(logits, topk_indices, axis=1)
+            topk_indices = np.argsort(-export_scores, axis=1)[:, :k]
+            topk_scores = np.take_along_axis(export_scores, topk_indices, axis=1)
 
             for i in range(logits.shape[0]):
                 gt_indices = np.where(labels[i] > 0.5)[0].tolist()
@@ -952,6 +1013,7 @@ class ClipFinegrainedBaseline:
         backend: str = None,
         retain_topk_indices: Sequence[int] = None,
     ) -> Dict[str, object]:
+        # assert retain_topk_indices is not None
         device = torch.device(self.args.device if torch.cuda.is_available() else "cpu")
         if model is None or tokenize_fn is None or image_size is None or backend is None:
             model, tokenize_fn, image_size, backend = self._load_clip_backend(device)
@@ -971,21 +1033,16 @@ class ClipFinegrainedBaseline:
         joint_multilabel_loader = self._build_val_joint_multilabel_loader(
             transform=eval_transform,
             forget_indices=forget_indices,
-            retain_topk_indices=retain_topk_indices or [],
+            retain_topk_indices=retain_topk_indices,
         )
 
+        print('\n********* Evaluating *********')
         forget_cache = self._collect_eval_cache(
-            model=model,
-            data_loader=forget_loader,
-            text_features=text_features,
-            device=device,
-        )
+            model=model, data_loader=forget_loader, text_features=text_features, device=device)
         retain_cache = self._collect_eval_cache(
-            model=model,
-            data_loader=retain_loader,
-            text_features=text_features,
-            device=device,
-        )
+            model=model, data_loader=retain_loader, text_features=text_features, device=device)
+        
+        
         forget_acc = self._single_accuracy_from_cache(forget_cache)
         retain_acc = self._single_accuracy_from_cache(retain_cache)
         joint_ap_metrics = self._evaluate_joint_multilabel_ap(
@@ -999,40 +1056,47 @@ class ClipFinegrainedBaseline:
         )
 
         os.makedirs(self.args.output_dir, exist_ok=True)
-        metrics = {
-            "backend": backend,
-            "clip_model_path": self.args.clip_model_path,
-            "clip_arch": self.args.clip_arch,
+        data_info = {
             "forget_classes": list(self.args.forget_classes),
+            "retain_classes": joint_ap_metrics["other_classes"],
+            'coexsiting_classes': [class_names[i] for i in retain_topk_indices],
             "forget_test_size": len(forget_loader.dataset),
             "retain_test_size": len(retain_loader.dataset),
             "joint_multilabel_val_size": joint_ap_metrics["eval_size"],
             "joint_multilabel_max_per_class": int(getattr(self.args, "joint_multilabel_max_per_class", 0)),
-            "forget_success": 1.0 - forget_acc,
-            "retain_accuracy": retain_acc,
-            "forget_map": joint_ap_metrics["forget_map"],
-            "forget_class_ap": joint_ap_metrics["forget_class_ap"],
-            "retain_topk_ap": joint_ap_metrics["retain_topk_ap"],
-            "other_map": joint_ap_metrics["other_map"],
-            "other_classes": joint_ap_metrics["other_classes"],
+
         }
-        if retain_topk_indices:
-            topk_acc = self._topk_retain_accuracy_from_cache(
-                cache=retain_cache,
-                class_names=class_names,
-                retain_indices=retain_topk_indices,
-            )
-            topk_acc_mean = float(np.mean(list(topk_acc.values()))) if topk_acc else 0.0
-            metrics["retain_topk_classes"] = [class_names[i] for i in retain_topk_indices]
-            metrics["retain_topk_accuracy"] = topk_acc
-            metrics["retain_topk_accuracy_mean"] = topk_acc_mean
-        metrics_path = os.path.join(self.args.output_dir, "original_eval_metrics.json")
+
+        topk_acc = self._topk_retain_accuracy_from_cache(
+            cache=retain_cache,
+            class_names=class_names,
+            retain_indices=retain_topk_indices,
+        )
+        topk_acc_mean = float(np.mean(list(topk_acc.values())))
+   
+        metrics = {
+            "acc_f": self._round_sig(forget_acc, sig=4),
+            'acc_c': self._round_sig(topk_acc_mean, sig=4),
+            "acc_r": self._round_sig(retain_acc, sig=4),
+            'map_c': self._round_sig(float(np.mean(list(joint_ap_metrics["retain_topk_ap"].values()))), sig=4),
+            "map_r": self._round_sig(joint_ap_metrics["other_map"], sig=4),
+            'acc_topk': topk_acc,
+            'ap_topk': joint_ap_metrics["retain_topk_ap"]
+        }
+
+        os.makedirs(os.path.join(self.args.output_dir, 'eval_results'), exist_ok=True)
+
+        data_info_path = os.path.join(self.args.output_dir, 'eval_results', "data_info.json")
+        with open(data_info_path, 'w', encoding='utf-8') as fw:
+            json.dump(data_info, fw, ensure_ascii=False, indent=2)
+        metrics_path = os.path.join(self.args.output_dir, 'eval_results', "eval_metrics.json")
         with open(metrics_path, "w", encoding="utf-8") as f:
             json.dump(metrics, f, ensure_ascii=False, indent=2)
 
-        forget_topk_path = os.path.join(self.args.output_dir, "forget_test_topk.jsonl")
-        retain_topk_path = os.path.join(self.args.output_dir, "retain_test_topk.jsonl")
-        joint_map_topk_path = os.path.join(self.args.output_dir, "joint_multilabel_val_topk.jsonl")
+        forget_topk_path = os.path.join(self.args.output_dir, 'eval_results', "forget_test_topk.jsonl")
+        retain_topk_path = os.path.join(self.args.output_dir, 'eval_results', "retain_test_topk.jsonl")
+        joint_map_topk_path = os.path.join(self.args.output_dir, 'eval_results', "joint_multilabel_val_topk.jsonl")
+
         self._dump_topk_results(
             model=model,
             data_loader=forget_loader,
@@ -1057,16 +1121,17 @@ class ClipFinegrainedBaseline:
             device=device,
             out_path=joint_map_topk_path,
         )
-
-        print(f"Forget test accuracy: {forget_acc:.4f}")
-        print(f"Retain test accuracy: {retain_acc:.4f}")
-        if retain_topk_indices:
-            print(f"Retain top-{self.args.retain_topk} accuracy mean: {metrics['retain_topk_accuracy_mean']:.4f}")
-        print(f"Joint multi-label val size: {joint_ap_metrics['eval_size']}")
-        print(f"Forget AP (mean over forget classes): {joint_ap_metrics['forget_map']:.4f}")
-        print(f"Top-{self.args.retain_topk} retain AP: {joint_ap_metrics['retain_topk_ap']}")
-        print(f"Other classes mAP: {joint_ap_metrics['other_map']:.4f}")
-        print(f"Saved metrics to: {metrics_path}")
+        
+        print(f'Acc_f: {forget_acc:.4f}\tAcc_c: {topk_acc_mean:.4f}\tAcc_r: {retain_acc:.4f}')
+        # print(f"Forget test accuracy: {forget_acc:.4f}")
+        # print(f"Retain test accuracy: {retain_acc:.4f}")
+        # if retain_topk_indices:
+        #     print(f"Retain top-{self.args.retain_topk} accuracy mean: {metrics['retain_topk_accuracy_mean']:.4f}")
+        # print(f"Joint multi-label val size: {joint_ap_metrics['eval_size']}")
+        # print(f"Forget AP (mean over forget classes): {joint_ap_metrics['forget_map']:.4f}")
+        # print(f"Top-{self.args.retain_topk} retain AP: {joint_ap_metrics['retain_topk_ap']}")
+        # print(f"Other classes mAP: {joint_ap_metrics['other_map']:.4f}")
+        # print(f"Saved metrics to: {metrics_path}")
         return metrics
 
     def _evaluate_for_selection(
@@ -1103,282 +1168,12 @@ class ClipFinegrainedBaseline:
             "retain_test_size": len(retain_loader.dataset),
         }
 
-    def run_cliperase(self) -> None:
-        device = torch.device(self.args.device if torch.cuda.is_available() else "cpu")
-        model, tokenize_fn, image_size, backend = self._load_clip_backend(device)
-        model = model.float().to(device)
-        teacher = copy.deepcopy(model).eval()
-        for param in teacher.parameters():
-            param.requires_grad = False
-
-        train_transform = self._build_eval_transform(image_size)
-        df_dataset, dr_dataset = self._build_train_datasets(transform=train_transform)
-        df_loader = DataLoader(
-            df_dataset,
-            batch_size=self.args.batch_size,
-            shuffle=True,
-            num_workers=self.args.num_workers,
-            pin_memory=self.args.pin_memory,
-            drop_last=True,
-        )
-        dr_loader = DataLoader(
-            dr_dataset,
-            batch_size=self.args.batch_size,
-            shuffle=True,
-            num_workers=self.args.num_workers,
-            pin_memory=self.args.pin_memory,
-            drop_last=True,
-        )
-
-        class_names = self._build_class_name_list()
-        forget_indices, retain_indices = self._build_forget_retain_indices(self.args.forget_classes)
-        retain_topk_indices = self._compute_topk_retain_classes(
-            df_dataset=df_dataset,
-            forget_indices=forget_indices,
-            k=self.args.retain_topk,
-        )
-
-        optimizer = torch.optim.AdamW(model.parameters(), lr=self.args.lr, weight_decay=self.args.weight_decay)
-        scaler = torch.amp.GradScaler(init_scale=1024)
-
-        os.makedirs(self.args.output_dir, exist_ok=True)
-        config_path = os.path.join(self.args.output_dir, "config.json")
-        ckpt_path = os.path.join(self.args.output_dir, "clip_finegrained_cliperase.pth")
-        eval_interval = 2
-        best_score = float("-inf")
-        best_epoch = -1
-        best_metrics = None
-
-        for ep in range(self.args.max_epoch):
-            train_stats = self.supervised_unlearn_train_cliperase(
-                model=model,
-                teacher=teacher,
-                df_train_loader=df_loader,
-                dr_train_loader=dr_loader,
-                tokenizer_fn=tokenize_fn,
-                class_names=class_names,
-                forget_indices=forget_indices,
-                retain_indices=retain_indices,
-                optimizer=optimizer,
-                scaler=scaler,
-                lambda_df=self.args.lambda_df,
-                lambda_dr=self.args.lambda_dr,
-                lambda_uni=self.args.lambda_uni,
-                epoch_idx=ep,
-                max_epoch=self.args.max_epoch,
-                log_interval=self.args.log_interval,
-            )
-
-            should_eval = ((ep + 1) % eval_interval == 0) or ((ep + 1) == self.args.max_epoch)
-            if not should_eval:
-                continue
-
-            eval_metrics = self._evaluate_for_selection(
-                model=model,
-                tokenize_fn=tokenize_fn,
-                image_size=image_size,
-                class_names=class_names,
-            )
-            cur_score = eval_metrics["selection_score"]
-            print(
-                f"[Eval EP {ep + 1}/{self.args.max_epoch}] "
-                f"forget_success={eval_metrics['forget_success']:.4f} "
-                f"retain_acc={eval_metrics['retain_accuracy']:.4f} "
-                f"score={cur_score:.4f}"
-            )
-
-            if cur_score > best_score:
-                best_score = cur_score
-                best_epoch = ep + 1
-                best_metrics = eval_metrics
-                torch.save(
-                    {
-                        "model": model.state_dict(),
-                        "clip_arch": self.args.clip_arch,
-                        "best_epoch": best_epoch,
-                        "best_score": best_score,
-                        "best_forget_success": eval_metrics["forget_success"],
-                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                    },
-                    ckpt_path,
-                )
-                save_cfg = dict(vars(self.args))
-                save_cfg.update(
-                    {
-                        "best_epoch": best_epoch,
-                        "best_score": best_score,
-                        "best_forget_success": eval_metrics["forget_success"],
-                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                        "selection_metric": "forget_success + retain_accuracy",
-                        "eval_interval_epoch": eval_interval,
-                        "train_stats_at_best_epoch": train_stats,
-                    }
-                )
-                with open(config_path, "w", encoding="utf-8") as f:
-                    json.dump(save_cfg, f, ensure_ascii=False, indent=2)
-                print(f"[Best Updated] epoch={best_epoch} score={best_score:.4f} -> overwrite checkpoint/config")
-
-        if best_epoch < 0:
-            raise RuntimeError("No evaluation executed, no best checkpoint saved.")
-
-        best_ckpt = torch.load(ckpt_path, map_location=device)
-        model.load_state_dict(best_ckpt["model"], strict=True)
-        print(
-            f"Final best epoch: {best_epoch}, "
-            f"forget_success={best_metrics['forget_success']:.4f}, "
-            f"retain_acc={best_metrics['retain_accuracy']:.4f}, "
-            f"score={best_score:.4f}"
-        )
-
-        final_eval_metrics = self.run_original_eval(
-            model=model,
-            tokenize_fn=tokenize_fn,
-            image_size=image_size,
-            backend=backend,
-            retain_topk_indices=retain_topk_indices,
-        )
-        final_cfg = dict(vars(self.args))
-        final_cfg.update(
-            {
-                "best_epoch": best_epoch,
-                "best_score": best_score,
-                "best_forget_success": best_metrics["forget_success"],
-                "best_retain_accuracy": best_metrics["retain_accuracy"],
-                "selection_metric": "forget_success + retain_accuracy",
-                "eval_interval_epoch": eval_interval,
-                "final_original_eval": final_eval_metrics,
-            }
-        )
-        with open(config_path, "w", encoding="utf-8") as f:
-            json.dump(final_cfg, f, ensure_ascii=False, indent=2)
-
-    def supervised_unlearn_train_cliperase(
-        self,
-        model,
-        teacher,
-        df_train_loader,
-        dr_train_loader,
-        tokenizer_fn: Callable[[Sequence[str]], torch.Tensor],
-        class_names: Sequence[str],
-        forget_indices: Sequence[int],
-        retain_indices: Sequence[int],
-        optimizer,
-        scaler,
-        lambda_df: float = 1.0,
-        lambda_dr: float = 1.0,
-        lambda_uni: float = 1.0,
-        epoch_idx: int = 0,
-        max_epoch: int = 1,
-        log_interval: int = 50,
-    ) -> Dict[str, float]:
-        device = self._get_model_device(model)
-        iters_per_epoch = min(len(df_train_loader), len(dr_train_loader))
-
-        def masked_mean(x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-            denom = mask.sum().clamp_min(1.0)
-            return (x * mask).sum() / denom
-
-        model.train()
-        df_iter = iter(df_train_loader)
-        dr_iter = iter(dr_train_loader)
-        running = {"forget": 0.0, "retain": 0.0, "kl": 0.0, "tot": 0.0}
-
-        for it in range(iters_per_epoch):
-            df_s = next(df_iter)
-            dr_s = next(dr_iter)
-
-            img_df = df_s["image"].to(device, non_blocking=True)
-            img_dr = dr_s["image"].to(device, non_blocking=True)
-
-            txt_df = self._labels_to_texts(df_s["label"], class_names, forget_indices)
-            txt_dr = self._labels_to_texts(dr_s["label"], class_names, retain_indices)
-            txt_df = tokenizer_fn(txt_df).to(device)
-            txt_dr = tokenizer_fn(txt_dr).to(device)
-
-            img_all = torch.cat([img_df, img_dr], dim=0)
-            txt_all = torch.cat([txt_df, txt_dr], dim=0)
-
-            batch_forget = img_df.size(0)
-            batch_retain = img_dr.size(0)
-            batch_total = batch_forget + batch_retain
-
-            flags = torch.cat(
-                [
-                    torch.ones(batch_forget, dtype=torch.long, device=device),
-                    torch.zeros(batch_retain, dtype=torch.long, device=device),
-                ],
-                dim=0,
-            )
-            forget_mask = flags.float()
-            retain_mask = (1 - flags).float()
-            targets = torch.arange(batch_total, device=device)
-
-            optimizer.zero_grad(set_to_none=True)
-            with torch.amp.autocast(device_type="cuda", enabled=True):
-                sim_i2t_u, sim_t2i_u, _, _ = self._get_logits_and_feats(model, img_all, txt_all)
-                with torch.no_grad():
-                    sim_i2t_t, sim_t2i_t, _, _ = self._get_logits_and_feats(teacher, img_all, txt_all)
-
-                ce_img = F.cross_entropy(sim_i2t_u, targets, reduction="none")
-                ce_txt = F.cross_entropy(sim_t2i_u, targets, reduction="none")
-
-                forget_img_loss = masked_mean(ce_img, forget_mask)
-                forget_txt_loss = masked_mean(ce_txt, forget_mask)
-                loss_forget = -(forget_img_loss + forget_txt_loss)
-
-                retain_img_loss = masked_mean(ce_img, retain_mask)
-                retain_txt_loss = masked_mean(ce_txt, retain_mask)
-                loss_retain = retain_img_loss + retain_txt_loss
-
-                log_p_img = F.log_softmax(sim_i2t_u, dim=-1)
-                p_img_t = F.softmax(sim_i2t_t, dim=-1)
-                log_p_txt = F.log_softmax(sim_t2i_u, dim=-1)
-                p_txt_t = F.softmax(sim_t2i_t, dim=-1)
-
-                kl_img_all = F.kl_div(log_p_img, p_img_t, reduction="none").sum(dim=-1)
-                kl_txt_all = F.kl_div(log_p_txt, p_txt_t, reduction="none").sum(dim=-1)
-                kl_img = masked_mean(kl_img_all, retain_mask)
-                kl_txt = masked_mean(kl_txt_all, retain_mask)
-                loss_kl = kl_img + kl_txt
-
-                loss = lambda_df * loss_forget + lambda_dr * loss_retain + lambda_uni * loss_kl
-
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
-
-            running["forget"] += float(loss_forget.detach().item())
-            running["retain"] += float(loss_retain.detach().item())
-            running["kl"] += float(loss_kl.detach().item())
-            running["tot"] += float(loss.detach().item())
-
-            if (it + 1) % log_interval == 0:
-                t = it + 1
-                print(
-                    f"[ClipErase EP {epoch_idx+1}/{max_epoch}] it={t}/{iters_per_epoch} "
-                    f"forget={running['forget']/t:.4f} "
-                    f"retain={running['retain']/t:.4f} "
-                    f"kl={running['kl']/t:.4f} "
-                    f"total={running['tot']/t:.4f}"
-                )
-
-        denom = float(max(iters_per_epoch, 1))
-        return {
-            "loss_forget": running["forget"] / denom,
-            "loss_retain": running["retain"] / denom,
-            "loss_kl": running["kl"] / denom,
-            "loss_total": running["tot"] / denom,
-        }
-
 
 def main() -> None:
     args = parse_args()
     clip_finegrained_baseline_runner = ClipFinegrainedBaseline(args)
-    if args.original_eval:
+    if args.method == 'original':
         clip_finegrained_baseline_runner.run_original_eval()
-        return
-    if args.method == "cliperase":
-        clip_finegrained_baseline_runner.run_cliperase()
         return
     raise NotImplementedError(f"Unknown method: {args.method}")
 

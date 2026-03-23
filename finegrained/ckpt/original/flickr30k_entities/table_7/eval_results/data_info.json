@@ -1,0 +1,31 @@
+{
+  "forget_classes": [
+    "table"
+  ],
+  "retain_classes": [
+    "dog",
+    "orange",
+    "person",
+    "car",
+    "bench",
+    "bicycle",
+    "baby",
+    "house",
+    "book",
+    "umbrella",
+    "motorcycle",
+    "bus",
+    "cup"
+  ],
+  "coexsiting_classes": [
+    "man",
+    "woman",
+    "girl",
+    "boy",
+    "chair"
+  ],
+  "forget_test_size": 50,
+  "retain_test_size": 1450,
+  "joint_multilabel_val_size": 205,
+  "joint_multilabel_max_per_class": 50
+}

@@ -18,33 +18,35 @@ FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 RETAIN_ITEM_FOLDER="item1"
 
 BATCH_SIZE=16
-NUM_WORKERS=4
+NUM_WORKERS=0
 MAX_EPOCH=20
 LR=1e-6
 WEIGHT_DECAY=5e-4
 LAMBDA_DF=3
 LAMBDA_DR=1
 LAMBDA_UNI=3
-METHOD="cliperase"
 RETAIN_TOPK=5
 
 
+METHOD="original"
 for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
-    FORGET_CLASSES="airplane"
-    TRAIN_ITEM_FOLDER="item5"
+    ITEM_NUM=7
+    FORGET_CLASSES="carrot"
+    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
     
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
+    ITEM_NUM=7
     FORGET_CLASSES="table"
-    TRAIN_ITEM_FOLDER="item7"
+    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
   else
     echo "Unknown dataset: ${DATASET}"
     exit 1
   fi
 
-  OUTPUT_DIR="finegrained/output/baselines/${METHOD}_${DATASET}_${FORGET_CLASSES}7_DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}_$(date +%m%d%H%M)"
+  OUTPUT_DIR="finegrained/ckpt/${METHOD}/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}/DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}"
 
   echo "METHOD: ${METHOD}"
   echo "DATASET: ${DATASET}"

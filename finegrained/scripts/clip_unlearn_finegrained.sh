@@ -14,9 +14,8 @@ FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entit
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/mask"
-CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
 BATCH_SIZE=4
-NUM_WORKERS=4
+NUM_WORKERS=0
 MAX_EPOCH=20
 LR=5e-6
 WEIGHT_DECAY=3e-4
@@ -33,20 +32,22 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_CLASSES="airplane"
-    TRAIN_ITEM_FOLDER="item5"
+    ITEM_NUM=5
+    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
     RETAIN_CACHE_PATH="/datanfs4/shenruoyan/FMUClip/finegrained/mask/coco/${TRAIN_ITEM_FOLDER}/retain_cache_${FORGET_CLASSES}.pt"
     
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_CLASSES="table"
-    TRAIN_ITEM_FOLDER="item7"
+    ITEM_NUM=7
+    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
     RETAIN_CACHE_PATH="/datanfs4/shenruoyan/FMUClip/finegrained/mask/flickr/${TRAIN_ITEM_FOLDER}/retain_cache_${FORGET_CLASSES}.pt"
   else
     echo "Unknown dataset: ${DATASET}"
     exit 1
   fi
  
-  OUTPUT_DIR="finegrained/output/unlearn/${METHOD}_${DATASET}_${FORGET_CLASSES}5_A${LAMBDA_RTF}_C${LAMBDA_CE}_LAYER${LAYER}_$(date +%m%d%H%M)"
+  OUTPUT_DIR="finegrained/ckpt/${METHOD}/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}/A${LAMBDA_RTF}_C${LAMBDA_CE}_LAYER${LAYER}"
 
   echo "METHOD: ${METHOD}"
   echo "DATASET: ${DATASET}"
@@ -69,7 +70,7 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
     --test_item_format json \
     --test_max_per_class 50 \
     --joint_multilabel_max_per_class 50 \
-    --clip_arch "${CLIP_ARCH}" \
+    --clip_path "${CLIP_PATH}" \
     --output_dir "${OUTPUT_DIR}" \
     --batch_size "${BATCH_SIZE}" \
     --num_workers "${NUM_WORKERS}" \

@@ -1,0 +1,43 @@
+{
+  "forget_classes": [
+    "carrot"
+  ],
+  "retain_classes": [
+    "person",
+    "car",
+    "truck",
+    "umbrella",
+    "handbag",
+    "bottle",
+    "wine_glass",
+    "spoon",
+    "banana",
+    "apple",
+    "sandwich",
+    "orange",
+    "broccoli",
+    "hot_dog",
+    "pizza",
+    "donut",
+    "cake",
+    "chair",
+    "cell_phone",
+    "oven",
+    "sink",
+    "refrigerator",
+    "book",
+    "clock",
+    "vase"
+  ],
+  "coexsiting_classes": [
+    "dining_table",
+    "bowl",
+    "cup",
+    "fork",
+    "knife"
+  ],
+  "forget_test_size": 50,
+  "retain_test_size": 3950,
+  "joint_multilabel_val_size": 59,
+  "joint_multilabel_max_per_class": 50
+}

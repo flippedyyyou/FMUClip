@@ -16,9 +16,8 @@ FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entit
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 RETAIN_ITEM_FOLDER="item1"
-CLIP_ARCH="local-dir:${OPENCLIP_PATH}"
 BATCH_SIZE=16
-NUM_WORKERS=4
+NUM_WORKERS=0
 RETAIN_TOPK=5
 SLUG_RATIO_DIVISOR=6
 SLUG_SEARCH_MULTIPLIERS="0.5,1.0,2.0,4.0"
@@ -27,18 +26,20 @@ SLUG_MAX_CANDIDATES=3
 for DATASET in "flickr30k_entities"; do
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
+    ITEM_NUM=5
     FORGET_CLASSES="airplane"
-    TRAIN_ITEM_FOLDER="item5"
+    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
+    ITEM_NUM=7
     FORGET_CLASSES="table"
-    TRAIN_ITEM_FOLDER="item7"
+    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
   else
     echo "Unknown dataset: ${DATASET}"
     exit 1
   fi
 
-  OUTPUT_DIR="finegrained/output/baselines/slug_${DATASET}_${FORGET_CLASSES}_$(date +%m%d%H%M)"
+  OUTPUT_DIR="finegrained/ckpt/slug/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
 
   python finegrained/baselines/clip_unlearn_slug.py \
     --dataset "${DATASET}" \
@@ -55,7 +56,7 @@ for DATASET in "flickr30k_entities"; do
     --test_item_format json \
     --test_max_per_class 50 \
     --joint_multilabel_max_per_class 50 \
-    --clip_arch "${CLIP_ARCH}" \
+    --clip_path "${CLIP_PATH}" \
     --output_dir "${OUTPUT_DIR}" \
     --batch_size "${BATCH_SIZE}" \
     --num_workers "${NUM_WORKERS}" \

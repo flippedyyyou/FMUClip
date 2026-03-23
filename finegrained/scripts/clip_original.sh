@@ -5,7 +5,7 @@ set -a
 source .env
 set +a
 
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=1
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -16,38 +16,46 @@ FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entit
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 RETAIN_ITEM_FOLDER="item1"
+
 BATCH_SIZE=16
 NUM_WORKERS=0
 MAX_EPOCH=20
 LR=1e-6
 WEIGHT_DECAY=5e-4
+LAMBDA_DF=3
+LAMBDA_DR=1
+LAMBDA_UNI=3
 RETAIN_TOPK=5
-GA_EVAL_INTERVAL=1
 
-for DATASET in "flickr30k_entities"; do
+
+for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
-    FORGET_CLASSES="airplane"
     ITEM_NUM=5
+    FORGET_CLASSES="airplane"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
+    
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
-    FORGET_CLASSES="girl"
     ITEM_NUM=4
+    FORGET_CLASSES="girl"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
   else
     echo "Unknown dataset: ${DATASET}"
     exit 1
   fi
 
-  OUTPUT_DIR="finegrained/ckpt/ga/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+  OUTPUT_DIR="finegrained/ckpt/original/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
 
+  echo "METHOD: original"
   echo "DATASET: ${DATASET}"
   echo "FORGET_CLASSES: ${FORGET_CLASSES}"
   echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
   echo "OUTPUT_DIR: ${OUTPUT_DIR}"
 
-  python finegrained/baselines/clip_unlearn_ga.py \
+
+  python finegrained/clip_finegrained_baseline.py \
+    --method "original" \
     --dataset "${DATASET}" \
     --forget_classes "${FORGET_CLASSES}" \
     --df_root "${DF_ROOT}" \
@@ -67,10 +75,8 @@ for DATASET in "flickr30k_entities"; do
     --batch_size "${BATCH_SIZE}" \
     --num_workers "${NUM_WORKERS}" \
     --max_epoch "${MAX_EPOCH}" \
-    --lr "${LR}" \
     --log_interval 1 \
     --weight_decay "${WEIGHT_DECAY}" \
     --retain_topk "${RETAIN_TOPK}" \
-    --ga_eval_interval "${GA_EVAL_INTERVAL}" \
     --device "${DEVICE}"
 done

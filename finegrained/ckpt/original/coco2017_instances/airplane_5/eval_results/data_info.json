@@ -1,0 +1,29 @@
+{
+  "forget_classes": [
+    "airplane"
+  ],
+  "retain_classes": [
+    "bicycle",
+    "motorcycle",
+    "bus",
+    "boat",
+    "traffic_light",
+    "bench",
+    "backpack",
+    "bottle",
+    "cup",
+    "chair",
+    "dining_table"
+  ],
+  "coexsiting_classes": [
+    "person",
+    "truck",
+    "car",
+    "suitcase",
+    "handbag"
+  ],
+  "forget_test_size": 50,
+  "retain_test_size": 3950,
+  "joint_multilabel_val_size": 44,
+  "joint_multilabel_max_per_class": 50
+}

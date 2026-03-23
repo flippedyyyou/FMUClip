@@ -36,7 +36,7 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
 MASK_ROOT="/datanfs4/shenruoyan/FMUClip/finegrained/mask/${DATASET}/${TRAIN_ITEM_FOLDER}"
 
 # Stage 1: forget-class mask pngs (original behavior).
-python /datanfs4/shenruoyan/FMUClip/finegrained/generate_sam3_mask.py \
+python finegrained/generate_sam3_mask.py \
   --dataset "${DATASET}" \
   --image-list "${DF_ROOT}/${TRAIN_SPLIT}/Df/${TRAIN_ITEM_FOLDER}/${FORGET_CLASSES}.txt" \
   --image-root "${IMAGE_ROOT}" \
@@ -47,7 +47,7 @@ python /datanfs4/shenruoyan/FMUClip/finegrained/generate_sam3_mask.py \
   --confidence-threshold "${CONF_THRESH}"
 
 # Stage 2: retain cache (best non-forget class idx + packed mask tensor per image).
-python /datanfs4/shenruoyan/FMUClip/finegrained/generate_sam3_mask.py \
+python finegrained/generate_sam3_mask.py \
   --dataset "${DATASET}" \
   --build-retain-cache \
   --df-root "${DF_ROOT}" \
