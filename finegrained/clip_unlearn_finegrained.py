@@ -11,6 +11,7 @@ import torch
 import torch.nn.functional as F
 from PIL import Image
 from torch.utils.data import DataLoader
+from transformers import CLIPModel, CLIPTokenizerFast
 
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.dirname(_CURRENT_DIR)
@@ -19,7 +20,7 @@ if _PROJECT_ROOT not in sys.path:
 
 from finegrained.params import build_parser as build_base_parser, resolve_dataset_paths
 from finegrained.load_dataset import get_finegrained_dataset_cls
-from finegrained.clip_finegrained_baseline import ClipFinegrainedBaseline
+from finegrained.clip_finegrained_baseline import ClipFinegrainedBaseline, _HFCLIPWrapper
 
 DEFAULT_MASK_DIR = "finegrained/mask"
 
@@ -848,9 +849,7 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
             "retain_accuracy": float(retain_acc),
             "retain_topk_accuracy": float(retain_topk_acc),
             "retain_topk_class_accuracy": retain_topk_class_acc,
-            "selection_score": float(score),
-            "forget_test_size": len(forget_loader.dataset),
-            "retain_test_size": len(retain_loader.dataset),
+            "selection_score": float(score)
         }
 
     def _prepare_training_context(self):
@@ -923,6 +922,34 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
             "scaler": scaler,
         }
 
+    def _load_model_from_pretrained_dir(self, model_dir: str):
+        device = torch.device(self.args.device if torch.cuda.is_available() else "cpu")
+        clip_model = CLIPModel.from_pretrained(model_dir)
+
+        tokenizer_source = getattr(self.args, "clip_path", None) or model_dir
+        tokenizer = CLIPTokenizerFast.from_pretrained(tokenizer_source)
+        if tokenizer.pad_token is None and tokenizer.eos_token is not None:
+            tokenizer.pad_token = tokenizer.eos_token
+        pad_token_id = tokenizer.pad_token_id
+        if pad_token_id is None:
+            pad_token_id = tokenizer.eos_token_id if tokenizer.eos_token_id is not None else 0
+
+        model = _HFCLIPWrapper(clip_model=clip_model, pad_token_id=pad_token_id).float().to(device)
+
+        def tokenize_fn(texts: Sequence[str]) -> torch.Tensor:
+            encoded = tokenizer(
+                list(texts),
+                padding="max_length",
+                truncation=True,
+                max_length=tokenizer.model_max_length,
+                return_tensors="pt",
+            )
+            return encoded["input_ids"]
+
+        image_size = int(getattr(clip_model.config.vision_config, "image_size", 224))
+        model.eval()
+        return model, tokenize_fn, image_size
+
     def _run_train_loop(self, train_epoch_fn) -> None:
         args = self.args
         ctx = self._prepare_training_context()
@@ -943,6 +970,7 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         os.makedirs(args.output_dir, exist_ok=True)
 
         best_score = -1
+        best_epoch_info = None
         for ep in range(args.max_epoch):
             train_epoch_fn(
                 model=model,
@@ -986,25 +1014,45 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                     print(f'New Best Epoch: {ep + 1}')
                     best_score = score
                     model.clip_model.save_pretrained(args.output_dir)
-                    json.dump({
+                    best_epoch_info = {
                         'best_epoch': ep + 1,
                         'forget_success': eval_metrics['forget_success'],
+                        'coexisting_accuracy': eval_metrics['retain_topk_accuracy'],
                         'retain_accuracy': eval_metrics['retain_accuracy']
-                    },
-                        open(f'{self.args.output_dir}/best_epoch.json', 'w', encoding='utf-8'),
-                        ensure_ascii=False,
-                        indent=2)
+                    }
+                    with open(f'{self.args.output_dir}/best_epoch.json', 'w', encoding='utf-8') as fw:
+                        json.dump(best_epoch_info, fw, ensure_ascii=False, indent=2)
 
         if not self.args.do_eval:
             # Save last checkpoint
             model.clip_model.save_pretrained(args.output_dir)
+            best_epoch_info = {'best_epoch': args.max_epoch}
+
+        best_model, best_tokenize_fn, best_image_size = self._load_model_from_pretrained_dir(args.output_dir)
+        final_eval_metrics = self.run_original_eval(
+            model=best_model,
+            tokenize_fn=best_tokenize_fn,
+            image_size=best_image_size,
+            retain_topk_indices=retain_topk_indices,
+        )
+
+        best_epoch_path = os.path.join(self.args.output_dir, 'best_epoch.json')
+        if best_epoch_info is None and os.path.exists(best_epoch_path):
+            with open(best_epoch_path, 'r', encoding='utf-8') as fr:
+                best_epoch_info = json.load(fr)
+        if best_epoch_info is None:
+            best_epoch_info = {}
+        best_epoch_info['map_c'] = final_eval_metrics['map_c']
+        best_epoch_info['map_r'] = final_eval_metrics['map_r']
+        with open(best_epoch_path, 'w', encoding='utf-8') as fw:
+            json.dump(best_epoch_info, fw, ensure_ascii=False, indent=2)
+
 
     def train_ours(self) -> None:
         self._run_train_loop(self.train_one_epoch)
 
     def train_gradcam(self) -> None:
         self._run_train_loop(self.train_one_epoch_gradcam)
-
 
 def build_parser():
     parser = build_base_parser()

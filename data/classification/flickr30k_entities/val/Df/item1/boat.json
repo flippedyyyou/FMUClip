@@ -3,6 +3,7 @@
   "num": 50,
   "images": [
     {
+      "dataset": "imagenet1k",
       "img_id": "3722572342",
       "file_name": "3722572342.jpg",
       "source_item": 2,
@@ -12,8 +13,7 @@
         482.0,
         104.0
       ],
-      "area": 50128.0,
-      "dataset": "flickr30k_entities"
+      "area": 50128.0
     },
     {
       "img_id": "445259867",

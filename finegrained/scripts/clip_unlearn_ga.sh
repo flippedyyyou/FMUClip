@@ -27,50 +27,56 @@ GA_EVAL_INTERVAL=1
 for DATASET in "flickr30k_entities"; do
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
-    FORGET_CLASSES="airplane"
-    ITEM_NUM=5
-    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
+    FORGET_SPECS=(
+      "airplane:5"
+    )
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
-    FORGET_CLASSES="girl"
-    ITEM_NUM=4
-    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
+    FORGET_SPECS=(
+      "girl:5"
+      "table:5"
+      "dog:7"
+    )
   else
     echo "Unknown dataset: ${DATASET}"
     exit 1
   fi
 
-  OUTPUT_DIR="finegrained/ckpt/ga/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+  for FORGET_SPEC in "${FORGET_SPECS[@]}"; do
+    IFS=":" read -r FORGET_CLASSES ITEM_NUM <<< "${FORGET_SPEC}"
+    TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
+    OUTPUT_DIR="finegrained/ckpt/ga/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
 
-  echo "DATASET: ${DATASET}"
-  echo "FORGET_CLASSES: ${FORGET_CLASSES}"
-  echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
-  echo "OUTPUT_DIR: ${OUTPUT_DIR}"
+    echo "DATASET: ${DATASET}"
+    echo "FORGET_CLASSES: ${FORGET_CLASSES}"
+    echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
+    echo "OUTPUT_DIR: ${OUTPUT_DIR}"
 
-  python finegrained/baselines/clip_unlearn_ga.py \
-    --dataset "${DATASET}" \
-    --forget_classes "${FORGET_CLASSES}" \
-    --df_root "${DF_ROOT}" \
-    --coco_root "${COCO_ROOT}" \
-    --flickr_instances_file "${FLICKR_INSTANCES_FILE}" \
-    --flickr_image_root "${FLICKR_IMAGE_ROOT}" \
-    --train_item_folder "${TRAIN_ITEM_FOLDER}" \
-    --retain_item_folder "${RETAIN_ITEM_FOLDER}" \
-    --train_split "${TRAIN_SPLIT}" \
-    --val_split "${VAL_SPLIT}" \
-    --test_item_folder item1 \
-    --test_item_format json \
-    --test_max_per_class 50 \
-    --joint_multilabel_max_per_class 50 \
-    --clip_path "${CLIP_PATH}" \
-    --output_dir "${OUTPUT_DIR}" \
-    --batch_size "${BATCH_SIZE}" \
-    --num_workers "${NUM_WORKERS}" \
-    --max_epoch "${MAX_EPOCH}" \
-    --lr "${LR}" \
-    --log_interval 1 \
-    --weight_decay "${WEIGHT_DECAY}" \
-    --retain_topk "${RETAIN_TOPK}" \
-    --ga_eval_interval "${GA_EVAL_INTERVAL}" \
-    --device "${DEVICE}"
+    python finegrained/baselines/clip_unlearn_ga.py \
+      --dataset "${DATASET}" \
+      --forget_classes "${FORGET_CLASSES}" \
+      --df_root "${DF_ROOT}" \
+      --coco_root "${COCO_ROOT}" \
+      --flickr_instances_file "${FLICKR_INSTANCES_FILE}" \
+      --flickr_image_root "${FLICKR_IMAGE_ROOT}" \
+      --train_item_folder "${TRAIN_ITEM_FOLDER}" \
+      --retain_item_folder "${RETAIN_ITEM_FOLDER}" \
+      --train_split "${TRAIN_SPLIT}" \
+      --val_split "${VAL_SPLIT}" \
+      --test_item_folder item1 \
+      --test_item_format json \
+      --test_max_per_class 50 \
+      --joint_multilabel_max_per_class 50 \
+      --clip_path "${CLIP_PATH}" \
+      --output_dir "${OUTPUT_DIR}" \
+      --batch_size "${BATCH_SIZE}" \
+      --num_workers "${NUM_WORKERS}" \
+      --max_epoch "${MAX_EPOCH}" \
+      --lr "${LR}" \
+      --log_interval 1 \
+      --weight_decay "${WEIGHT_DECAY}" \
+      --retain_topk "${RETAIN_TOPK}" \
+      --ga_eval_interval "${GA_EVAL_INTERVAL}" \
+      --device "${DEVICE}"
+  done
 done

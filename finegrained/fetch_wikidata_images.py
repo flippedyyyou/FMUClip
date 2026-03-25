@@ -11,22 +11,22 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Sequence, Set, Tuple
 
 DEFAULT_EVAL_DIR = Path(
-    "/datanfs4/shenruoyan/FMUClip/finegrained/output/original_eval/original_banana3_100images_DF3_DR1_UNI3_03022152"
+    "/datanfs4/shenruoyan/FMUClip/finegrained/ckpt/original/flickr30k_entities/filter2_girl_4/eval_results"
 )
 DEFAULT_TEST_IMAGES_DIR = Path(
-    "/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances/val/test_images"
+    "/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/val/test_images"
 )
 DEFAULT_IMAGENET_ROOT = Path("/datanfs4/shenruoyan/datasets/imagenet-1000/imagenet1k")
 DEFAULT_ITEM1_DIR = Path(
-    "/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances/val/Df/item1"
+    "/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/val/Df/item1"
 )
 DEFAULT_DATASET_NAME = "imagenet1k"
 
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 
-# You can extend this mapping on your server if some labels cannot be matched.
+# You can extend these mappings on your server if some labels cannot be matched.
 COCO_TO_IMAGENET_HINTS: Dict[str, List[str]] = {
-    "airplane": ["airliner", "warplane", "aircraft"],
+    "airplane": ["aircraft"],
     "cell_phone": ["cellular telephone", "mobile phone"],
     "couch": ["sofa"],
     "dining_table": ["dining table", "table"],
@@ -34,7 +34,7 @@ COCO_TO_IMAGENET_HINTS: Dict[str, List[str]] = {
     "hair_drier": ["hair dryer", "hair drier", "blow dryer"],
     "handbag": ["purse", "handbag"],
     "hot_dog": ["hotdog", "hot dog"],
-    "motorcycle": ["motor scooter", "moped", "motorcycle"],
+    "motorcycle": ["motorcycle"],
     "potted_plant": ["pot", "flowerpot", "plant"],
     "remote": ["remote control", "remote"],
     "sports_ball": ["ball"],
@@ -43,7 +43,40 @@ COCO_TO_IMAGENET_HINTS: Dict[str, List[str]] = {
     "toothbrush": ["toothbrush"],
     "traffic_light": ["traffic light", "stoplight"],
     "tv": ["television", "tv", "monitor"],
-    "wine_glass": ["wine glass", "goblet"],
+    "wine_glass": ["wine glass"],
+}
+
+FLICKR30K_TO_IMAGENET_HINTS: Dict[str, List[str]] = {
+    "man": [],
+    "woman": [],
+    "girl": [],
+    "boy": [],
+    "dog": ["dog"],
+    "table": ["table"],
+    "orange": ["orange"],
+    "person": ["scuba diver"],
+    "road": ["road", "street"],
+    "car": ["car", "sports car", "cab"],
+    "chair": ["chair"],
+    "bench": ["bench", "park bench"],
+    "bicycle": ["bicycle", "mountain bike"],
+    "mountain": ["mountain"],
+    "boat": ["boat"],
+    "baby": ["baby"],
+    "backpack": ["backpack"],
+    "house": ["house", "home"],
+    "horse": ["horse"],
+    "train": ["train",],
+    "tank": ["tank", "armored vehicle"],
+    "skateboard": ["skateboard"],
+    "book": ["book"],
+    "truck": ["truck","moving van"],
+    "umbrella": ["umbrella"],
+    "forest": ["forest", "woodland"],
+    "motorcycle": ["motorcycle"],
+    "bus": ["bus", "school bus"],
+    "bridge": ["bridge", "suspension bridge"],
+    "cup": ["cup"],
 }
 
 
@@ -62,8 +95,14 @@ def normalize_name(name: str) -> str:
 
 
 def extract_image_id_from_path(image_path: str) -> str:
-    # Example: /.../000000575205.jpg -> 000000575205
-    return Path(image_path).stem
+    # Supports both:
+    # /.../000000575205.jpg -> 000000575205
+    # /.../006_000000448810.jpg -> 000000448810
+    stem = Path(image_path).stem
+    m = re.search(r"(\d+)$", stem)
+    if m:
+        return m.group(1)
+    return stem
 
 
 def parse_eval_jsonl_files(eval_dir: Path, eval_files: Sequence[str]) -> List[MisclassifiedItem]:
@@ -144,6 +183,22 @@ def parse_imagenet_dir_aliases(dir_name: str) -> List[str]:
     return [a for a in aliases if a]
 
 
+def infer_label_space(test_images_dir: Path) -> str:
+    path_str = str(test_images_dir)
+    if "flickr30k_entities" in path_str:
+        return "flickr30k"
+    if "coco2017_instances" in path_str:
+        return "coco"
+    return "coco"
+
+
+def get_imagenet_hints(test_images_dir: Path) -> Dict[str, List[str]]:
+    label_space = infer_label_space(test_images_dir)
+    if label_space == "flickr30k":
+        return FLICKR30K_TO_IMAGENET_HINTS
+    return COCO_TO_IMAGENET_HINTS
+
+
 def build_imagenet_index(imagenet_root: Path) -> Tuple[Dict[str, List[Path]], Dict[Path, List[Path]]]:
     alias_to_dirs: Dict[str, List[Path]] = defaultdict(list)
     dir_to_images: Dict[Path, List[Path]] = {}
@@ -163,10 +218,14 @@ def build_imagenet_index(imagenet_root: Path) -> Tuple[Dict[str, List[Path]], Di
     return alias_to_dirs, dir_to_images
 
 
-def match_imagenet_dirs_for_label(label: str, alias_to_dirs: Dict[str, List[Path]]) -> List[Path]:
+def match_imagenet_dirs_for_label(
+    label: str,
+    alias_to_dirs: Dict[str, List[Path]],
+    hints: Dict[str, List[str]],
+) -> List[Path]:
     norm_label = normalize_name(label)
     candidates: List[str] = [norm_label]
-    candidates.extend(normalize_name(x) for x in COCO_TO_IMAGENET_HINTS.get(label, []))
+    candidates.extend(normalize_name(x) for x in hints.get(label, []))
 
     matched: List[Path] = []
     seen = set()
@@ -199,11 +258,16 @@ def match_imagenet_dirs_for_label(label: str, alias_to_dirs: Dict[str, List[Path
 def choose_source_images(
     label: str,
     needed: int,
+    test_images_dir: Path,
     alias_to_dirs: Dict[str, List[Path]],
     dir_to_images: Dict[Path, List[Path]],
     rng: random.Random,
 ) -> List[Path]:
-    class_dirs = match_imagenet_dirs_for_label(label, alias_to_dirs)
+    class_dirs = match_imagenet_dirs_for_label(
+        label=label,
+        alias_to_dirs=alias_to_dirs,
+        hints=get_imagenet_hints(test_images_dir),
+    )
     pool: List[Path] = []
     for d in class_dirs:
         pool.extend(dir_to_images.get(d, []))
@@ -255,6 +319,7 @@ def replace_images_for_misclassified_items(
         sources = choose_source_images(
             label=label,
             needed=len(target_records),
+            test_images_dir=test_images_dir,
             alias_to_dirs=alias_to_dirs,
             dir_to_images=dir_to_images,
             rng=rng,

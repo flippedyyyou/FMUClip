@@ -159,6 +159,7 @@
       "dataset": "flickr30k_entities"
     },
     {
+      "dataset": "imagenet1k",
       "img_id": "516433137",
       "file_name": "516433137.jpg",
       "source_item": 5,
@@ -168,8 +169,7 @@
         235.0,
         200.0
       ],
-      "area": 47000.0,
-      "dataset": "flickr30k_entities"
+      "area": 47000.0
     },
     {
       "img_id": "2371749487",
@@ -614,6 +614,7 @@
       "dataset": "flickr30k_entities"
     },
     {
+      "dataset": "imagenet1k",
       "img_id": "7070587673",
       "file_name": "7070587673.jpg",
       "source_item": 7,
@@ -623,8 +624,7 @@
         261.0,
         122.0
       ],
-      "area": 31842.0,
-      "dataset": "flickr30k_entities"
+      "area": 31842.0
     },
     {
       "img_id": "2458862292",

@@ -3,189 +3,33 @@
   "num": 50,
   "images": [
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000237864",
-      "file_name": "000000237864.jpg",
-      "source_item": 2,
-      "bbox": [
-        436.37,
-        243.94,
-        47.83,
-        79.23
-      ],
-      "area": 3789.5709
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000185250",
-      "file_name": "000000185250.jpg",
-      "source_item": 3,
-      "bbox": [
-        167.33,
-        387.02,
-        108.94,
-        180.96
-      ],
-      "area": 19713.7824
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000225184",
-      "file_name": "000000225184.jpg",
-      "source_item": 2,
-      "bbox": [
-        192.65,
-        353.24,
-        42.25,
-        40.49
-      ],
-      "area": 1710.7025
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000291664",
-      "file_name": "000000291664.jpg",
-      "source_item": 2,
-      "bbox": [
-        280.66,
-        169.34,
-        209.06,
-        328.8
-      ],
-      "area": 68738.928
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000329447",
-      "file_name": "000000329447.jpg",
-      "source_item": 2,
-      "bbox": [
-        466.23,
-        336.34,
-        165.48,
-        118.85
-      ],
-      "area": 19667.298
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000209613",
-      "file_name": "000000209613.jpg",
-      "source_item": 2,
-      "bbox": [
-        555.88,
-        232.54,
-        50.58,
-        47.42
-      ],
-      "area": 2398.5036
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000253386",
-      "file_name": "000000253386.jpg",
-      "source_item": 2,
-      "bbox": [
-        145.39,
-        24.89,
-        316.25,
-        302.85
-      ],
-      "area": 95776.3125
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000089880",
-      "file_name": "000000089880.jpg",
+      "img_id": "000000520301",
+      "file_name": "000000520301.jpg",
       "source_item": 1,
       "bbox": [
-        145.5,
-        13.18,
-        150.11,
-        172.06
+        112.71,
+        154.82,
+        367.29,
+        479.35
       ],
-      "area": 25827.926600000003
+      "area": 176060.4615,
+      "dataset": "coco2017_instances"
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000546829",
-      "file_name": "000000546829.jpg",
-      "source_item": 2,
-      "bbox": [
-        208.59,
-        147.46,
-        84.62,
-        141.72
-      ],
-      "area": 11992.3464
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000138492",
-      "file_name": "000000138492.jpg",
-      "source_item": 2,
-      "bbox": [
-        89.21,
-        45.25,
-        285.74,
-        562.43
-      ],
-      "area": 160708.7482
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000125405",
-      "file_name": "000000125405.jpg",
-      "source_item": 2,
-      "bbox": [
-        220.9,
-        109.24,
-        162.23,
-        296.84
-      ],
-      "area": 48156.35319999999
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000072813",
-      "file_name": "000000072813.jpg",
-      "source_item": 3,
-      "bbox": [
-        228.8,
-        133.65,
-        267.82,
-        187.0
-      ],
-      "area": 50082.34
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000355905",
-      "file_name": "000000355905.jpg",
+      "img_id": "000000464522",
+      "file_name": "000000464522.jpg",
       "source_item": 1,
       "bbox": [
-        83.39,
-        64.97,
-        456.73,
-        398.55
+        155.33,
+        2.88,
+        338.67,
+        628.49
       ],
-      "area": 182029.7415
+      "area": 212850.70830000003,
+      "dataset": "coco2017_instances"
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000159458",
-      "file_name": "000000159458.jpg",
-      "source_item": 3,
-      "bbox": [
-        220.02,
-        217.2,
-        91.1,
-        35.23
-      ],
-      "area": 3209.4529999999995
-    },
-    {
-      "dataset": "coco2017_instances",
+      "dataset": "imagenet1k",
       "img_id": "000000269113",
       "file_name": "000000269113.jpg",
       "source_item": 1,
@@ -198,202 +42,33 @@
       "area": 37926.224
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000049269",
-      "file_name": "000000049269.jpg",
-      "source_item": 2,
-      "bbox": [
-        6.48,
-        315.47,
-        269.47,
-        317.4
-      ],
-      "area": 85529.778
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000311190",
-      "file_name": "000000311190.jpg",
-      "source_item": 2,
-      "bbox": [
-        43.43,
-        150.51,
-        284.85,
-        341.41
-      ],
-      "area": 97250.63850000002
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000389933",
-      "file_name": "000000389933.jpg",
-      "source_item": 2,
-      "bbox": [
-        3.87,
-        82.26,
-        529.36,
-        391.93
-      ],
-      "area": 207472.06480000002
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000361571",
-      "file_name": "000000361571.jpg",
+      "dataset": "imagenet1k",
+      "img_id": "000000392818",
+      "file_name": "000000392818.jpg",
       "source_item": 1,
       "bbox": [
-        255.52,
-        7.31,
-        384.48,
-        412.96
-      ],
-      "area": 158774.8608
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000117525",
-      "file_name": "000000117525.jpg",
-      "source_item": 2,
-      "bbox": [
-        32.32,
-        317.0,
-        170.71,
-        177.78
-      ],
-      "area": 30348.823800000002
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000236784",
-      "file_name": "000000236784.jpg",
-      "source_item": 2,
-      "bbox": [
-        1.79,
-        194.26,
-        241.26,
-        154.26
-      ],
-      "area": 37216.7676
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000145781",
-      "file_name": "000000145781.jpg",
-      "source_item": 2,
-      "bbox": [
-        3.88,
         0.0,
-        600.24,
-        340.36
+        10.55,
+        500.0,
+        436.45
       ],
-      "area": 204297.6864
+      "area": 218225.0
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000261161",
-      "file_name": "000000261161.jpg",
-      "source_item": 2,
-      "bbox": [
-        324.45,
-        26.68,
-        271.95,
-        399.32
-      ],
-      "area": 108595.074
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000297830",
-      "file_name": "000000297830.jpg",
-      "source_item": 2,
-      "bbox": [
-        161.03,
-        59.18,
-        313.81,
-        484.48
-      ],
-      "area": 152034.6688
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000236592",
-      "file_name": "000000236592.jpg",
-      "source_item": 2,
-      "bbox": [
-        1.94,
-        167.46,
-        241.45,
-        305.46
-      ],
-      "area": 73753.317
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000520301",
-      "file_name": "000000520301.jpg",
+      "img_id": "000000412240",
+      "file_name": "000000412240.jpg",
       "source_item": 1,
       "bbox": [
-        112.71,
-        154.82,
-        367.29,
-        479.35
+        148.79,
+        47.01,
+        262.65,
+        245.2
       ],
-      "area": 176060.4615
+      "area": 64401.77999999999,
+      "dataset": "coco2017_instances"
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000309938",
-      "file_name": "000000309938.jpg",
-      "source_item": 2,
-      "bbox": [
-        100.85,
-        110.55,
-        338.42,
-        231.75
-      ],
-      "area": 78428.835
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000224200",
-      "file_name": "000000224200.jpg",
-      "source_item": 2,
-      "bbox": [
-        56.38,
-        239.79,
-        252.41,
-        265.98
-      ],
-      "area": 67136.01180000001
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000532575",
-      "file_name": "000000532575.jpg",
-      "source_item": 2,
-      "bbox": [
-        2.59,
-        64.7,
-        490.83,
-        362.3
-      ],
-      "area": 177827.709
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000029393",
-      "file_name": "000000029393.jpg",
-      "source_item": 2,
-      "bbox": [
-        170.04,
-        157.52,
-        195.09,
-        183.7
-      ],
-      "area": 35838.032999999996
-    },
-    {
-      "dataset": "coco2017_instances",
+      "dataset": "imagenet1k",
       "img_id": "000000289702",
       "file_name": "000000289702.jpg",
       "source_item": 1,
@@ -406,189 +81,59 @@
       "area": 61752.2092
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000090003",
-      "file_name": "000000090003.jpg",
-      "source_item": 2,
-      "bbox": [
-        219.44,
-        213.85,
-        273.73,
-        151.93
-      ],
-      "area": 41587.7989
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000292330",
-      "file_name": "000000292330.jpg",
-      "source_item": 2,
-      "bbox": [
-        175.84,
-        30.0,
-        457.18,
-        294.78
-      ],
-      "area": 134767.52039999998
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000377575",
-      "file_name": "000000377575.jpg",
-      "source_item": 2,
-      "bbox": [
-        58.42,
-        159.35,
-        221.99,
-        463.45
-      ],
-      "area": 102881.26550000001
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000030494",
-      "file_name": "000000030494.jpg",
-      "source_item": 2,
-      "bbox": [
-        106.67,
-        29.09,
-        179.39,
-        192.97
-      ],
-      "area": 34616.8883
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000331075",
-      "file_name": "000000331075.jpg",
+      "img_id": "000000355905",
+      "file_name": "000000355905.jpg",
       "source_item": 1,
       "bbox": [
-        4.9,
-        110.18,
-        539.89,
-        495.82
+        83.39,
+        64.97,
+        456.73,
+        398.55
       ],
-      "area": 267688.2598
+      "area": 182029.7415,
+      "dataset": "coco2017_instances"
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000170278",
-      "file_name": "000000170278.jpg",
+      "dataset": "imagenet1k",
+      "img_id": "000000029393",
+      "file_name": "000000029393.jpg",
       "source_item": 2,
       "bbox": [
-        122.18,
-        143.56,
-        476.51,
-        336.0
+        170.04,
+        157.52,
+        195.09,
+        183.7
       ],
-      "area": 160107.36
+      "area": 35838.032999999996
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000486479",
-      "file_name": "000000486479.jpg",
+      "img_id": "000000205834",
+      "file_name": "000000205834.jpg",
       "source_item": 2,
       "bbox": [
-        65.64,
-        52.89,
-        236.17,
-        181.84
+        129.18,
+        20.75,
+        410.77,
+        387.53
       ],
-      "area": 42945.152799999996
+      "area": 159185.69809999998,
+      "dataset": "coco2017_instances"
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000575357",
-      "file_name": "000000575357.jpg",
+      "dataset": "imagenet1k",
+      "img_id": "000000125405",
+      "file_name": "000000125405.jpg",
       "source_item": 2,
       "bbox": [
-        250.5,
-        158.39,
-        366.49,
-        199.85
+        220.9,
+        109.24,
+        162.23,
+        296.84
       ],
-      "area": 73243.02649999999
+      "area": 48156.35319999999
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000517832",
-      "file_name": "000000517832.jpg",
-      "source_item": 2,
-      "bbox": [
-        128.58,
-        221.12,
-        346.4,
-        346.96
-      ],
-      "area": 120186.94399999999
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000452891",
-      "file_name": "000000452891.jpg",
-      "source_item": 2,
-      "bbox": [
-        59.31,
-        84.25,
-        352.19,
-        463.16
-      ],
-      "area": 163120.3204
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000579321",
-      "file_name": "000000579321.jpg",
-      "source_item": 2,
-      "bbox": [
-        200.61,
-        89.65,
-        400.22,
-        251.02
-      ],
-      "area": 100463.2244
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000412240",
-      "file_name": "000000412240.jpg",
-      "source_item": 1,
-      "bbox": [
-        148.79,
-        47.01,
-        262.65,
-        245.2
-      ],
-      "area": 64401.77999999999
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000364636",
-      "file_name": "000000364636.jpg",
-      "source_item": 2,
-      "bbox": [
-        118.44,
-        88.29,
-        520.08,
-        439.33
-      ],
-      "area": 228486.7464
-    },
-    {
-      "dataset": "coco2017_instances",
-      "img_id": "000000131273",
-      "file_name": "000000131273.jpg",
-      "source_item": 1,
-      "bbox": [
-        120.24,
-        0.32,
-        359.76,
-        596.04
-      ],
-      "area": 214431.3504
-    },
-    {
-      "dataset": "coco2017_instances",
+      "dataset": "imagenet1k",
       "img_id": "000000236166",
       "file_name": "000000236166.jpg",
       "source_item": 2,
@@ -601,56 +146,511 @@
       "area": 95871.2234
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000511398",
-      "file_name": "000000511398.jpg",
-      "source_item": 1,
+      "img_id": "000000236784",
+      "file_name": "000000236784.jpg",
+      "source_item": 2,
       "bbox": [
-        12.03,
-        46.52,
-        514.63,
-        355.69
+        1.79,
+        194.26,
+        241.26,
+        154.26
       ],
-      "area": 183048.7447
+      "area": 37216.7676,
+      "dataset": "coco2017_instances"
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000219578",
-      "file_name": "000000219578.jpg",
+      "img_id": "000000253386",
+      "file_name": "000000253386.jpg",
+      "source_item": 2,
+      "bbox": [
+        145.39,
+        24.89,
+        316.25,
+        302.85
+      ],
+      "area": 95776.3125,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000049269",
+      "file_name": "000000049269.jpg",
+      "source_item": 2,
+      "bbox": [
+        6.48,
+        315.47,
+        269.47,
+        317.4
+      ],
+      "area": 85529.778
+    },
+    {
+      "img_id": "000000209613",
+      "file_name": "000000209613.jpg",
+      "source_item": 2,
+      "bbox": [
+        555.88,
+        232.54,
+        50.58,
+        47.42
+      ],
+      "area": 2398.5036,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000170893",
+      "file_name": "000000170893.jpg",
+      "source_item": 2,
+      "bbox": [
+        270.55,
+        80.55,
+        367.51,
+        393.7
+      ],
+      "area": 144688.687
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000575357",
+      "file_name": "000000575357.jpg",
+      "source_item": 2,
+      "bbox": [
+        250.5,
+        158.39,
+        366.49,
+        199.85
+      ],
+      "area": 73243.02649999999
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000236592",
+      "file_name": "000000236592.jpg",
+      "source_item": 2,
+      "bbox": [
+        1.94,
+        167.46,
+        241.45,
+        305.46
+      ],
+      "area": 73753.317
+    },
+    {
+      "img_id": "000000237864",
+      "file_name": "000000237864.jpg",
+      "source_item": 2,
+      "bbox": [
+        436.37,
+        243.94,
+        47.83,
+        79.23
+      ],
+      "area": 3789.5709,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000292330",
+      "file_name": "000000292330.jpg",
+      "source_item": 2,
+      "bbox": [
+        175.84,
+        30.0,
+        457.18,
+        294.78
+      ],
+      "area": 134767.52039999998
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000090003",
+      "file_name": "000000090003.jpg",
+      "source_item": 2,
+      "bbox": [
+        219.44,
+        213.85,
+        273.73,
+        151.93
+      ],
+      "area": 41587.7989
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000309938",
+      "file_name": "000000309938.jpg",
+      "source_item": 2,
+      "bbox": [
+        100.85,
+        110.55,
+        338.42,
+        231.75
+      ],
+      "area": 78428.835
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000297830",
+      "file_name": "000000297830.jpg",
+      "source_item": 2,
+      "bbox": [
+        161.03,
+        59.18,
+        313.81,
+        484.48
+      ],
+      "area": 152034.6688
+    },
+    {
+      "img_id": "000000224200",
+      "file_name": "000000224200.jpg",
+      "source_item": 2,
+      "bbox": [
+        56.38,
+        239.79,
+        252.41,
+        265.98
+      ],
+      "area": 67136.01180000001,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000562561",
+      "file_name": "000000562561.jpg",
+      "source_item": 2,
+      "bbox": [
+        190.06,
+        42.67,
+        416.97,
+        432.48
+      ],
+      "area": 180331.18560000003
+    },
+    {
+      "img_id": "000000452891",
+      "file_name": "000000452891.jpg",
+      "source_item": 2,
+      "bbox": [
+        59.31,
+        84.25,
+        352.19,
+        463.16
+      ],
+      "area": 163120.3204,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "img_id": "000000225184",
+      "file_name": "000000225184.jpg",
+      "source_item": 2,
+      "bbox": [
+        192.65,
+        353.24,
+        42.25,
+        40.49
+      ],
+      "area": 1710.7025,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000505573",
+      "file_name": "000000505573.jpg",
+      "source_item": 2,
+      "bbox": [
+        38.79,
+        1.08,
+        320.21,
+        633.53
+      ],
+      "area": 202862.6413
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000530624",
+      "file_name": "000000530624.jpg",
+      "source_item": 2,
+      "bbox": [
+        96.57,
+        107.19,
+        518.55,
+        194.09
+      ],
+      "area": 100645.36949999999
+    },
+    {
+      "img_id": "000000579321",
+      "file_name": "000000579321.jpg",
+      "source_item": 2,
+      "bbox": [
+        200.61,
+        89.65,
+        400.22,
+        251.02
+      ],
+      "area": 100463.2244,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000377575",
+      "file_name": "000000377575.jpg",
+      "source_item": 2,
+      "bbox": [
+        58.42,
+        159.35,
+        221.99,
+        463.45
+      ],
+      "area": 102881.26550000001
+    },
+    {
+      "img_id": "000000145781",
+      "file_name": "000000145781.jpg",
+      "source_item": 2,
+      "bbox": [
+        3.88,
+        0.0,
+        600.24,
+        340.36
+      ],
+      "area": 204297.6864,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "img_id": "000000072813",
+      "file_name": "000000072813.jpg",
       "source_item": 3,
       "bbox": [
-        29.11,
-        115.68,
-        439.03,
-        247.43
+        228.8,
+        133.65,
+        267.82,
+        187.0
       ],
-      "area": 108629.1929
+      "area": 50082.34,
+      "dataset": "coco2017_instances"
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000464522",
-      "file_name": "000000464522.jpg",
-      "source_item": 1,
+      "img_id": "000000159458",
+      "file_name": "000000159458.jpg",
+      "source_item": 3,
       "bbox": [
-        155.33,
-        2.88,
-        338.67,
-        628.49
+        220.02,
+        217.2,
+        91.1,
+        35.23
       ],
-      "area": 212850.70830000003
+      "area": 3209.4529999999995,
+      "dataset": "coco2017_instances"
     },
     {
-      "dataset": "coco2017_instances",
-      "img_id": "000000392818",
-      "file_name": "000000392818.jpg",
-      "source_item": 1,
+      "dataset": "imagenet1k",
+      "img_id": "000000472375",
+      "file_name": "000000472375.jpg",
+      "source_item": 3,
       "bbox": [
-        0.0,
-        10.55,
-        500.0,
-        436.45
+        124.71,
+        196.18,
+        372.85,
+        356.81
       ],
-      "area": 218225.0
+      "area": 133036.6085
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000415990",
+      "file_name": "000000415990.jpg",
+      "source_item": 3,
+      "bbox": [
+        484.56,
+        278.0,
+        15.35,
+        88.33
+      ],
+      "area": 1355.8654999999999
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000190140",
+      "file_name": "000000190140.jpg",
+      "source_item": 3,
+      "bbox": [
+        355.66,
+        155.09,
+        79.23,
+        147.26
+      ],
+      "area": 11667.4098
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000060835",
+      "file_name": "000000060835.jpg",
+      "source_item": 3,
+      "bbox": [
+        203.08,
+        44.21,
+        305.1,
+        380.89
+      ],
+      "area": 116209.539
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000061471",
+      "file_name": "000000061471.jpg",
+      "source_item": 3,
+      "bbox": [
+        272.1,
+        200.23,
+        151.97,
+        279.77
+      ],
+      "area": 42516.6469
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000078565",
+      "file_name": "000000078565.jpg",
+      "source_item": 3,
+      "bbox": [
+        201.78,
+        306.48,
+        31.21,
+        16.72
+      ],
+      "area": 521.8312
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000225670",
+      "file_name": "000000225670.jpg",
+      "source_item": 3,
+      "bbox": [
+        248.44,
+        141.47,
+        152.68,
+        95.75
+      ],
+      "area": 14619.11
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000560880",
+      "file_name": "000000560880.jpg",
+      "source_item": 3,
+      "bbox": [
+        279.55,
+        352.13,
+        25.96,
+        34.53
+      ],
+      "area": 896.3988
+    },
+    {
+      "img_id": "000000079229",
+      "file_name": "000000079229.jpg",
+      "source_item": 3,
+      "bbox": [
+        108.44,
+        291.75,
+        92.94,
+        50.77
+      ],
+      "area": 4718.5638,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000489014",
+      "file_name": "000000489014.jpg",
+      "source_item": 3,
+      "bbox": [
+        311.92,
+        229.05,
+        86.43,
+        45.27
+      ],
+      "area": 3912.686100000001
+    },
+    {
+      "img_id": "000000367082",
+      "file_name": "000000367082.jpg",
+      "source_item": 3,
+      "bbox": [
+        100.82,
+        74.68,
+        375.79,
+        346.1
+      ],
+      "area": 130060.91900000001,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "img_id": "000000151962",
+      "file_name": "000000151962.jpg",
+      "source_item": 3,
+      "bbox": [
+        342.56,
+        239.98,
+        107.41,
+        119.03
+      ],
+      "area": 12785.0123,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "img_id": "000000365207",
+      "file_name": "000000365207.jpg",
+      "source_item": 3,
+      "bbox": [
+        464.19,
+        273.52,
+        93.72,
+        82.24
+      ],
+      "area": 7707.532799999999,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "img_id": "000000251572",
+      "file_name": "000000251572.jpg",
+      "source_item": 3,
+      "bbox": [
+        190.29,
+        128.33,
+        449.71,
+        296.57
+      ],
+      "area": 133370.49469999998,
+      "dataset": "coco2017_instances"
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000171611",
+      "file_name": "000000171611.jpg",
+      "source_item": 3,
+      "bbox": [
+        327.13,
+        263.37,
+        30.78,
+        20.93
+      ],
+      "area": 644.2254
+    },
+    {
+      "dataset": "imagenet1k",
+      "img_id": "000000246454",
+      "file_name": "000000246454.jpg",
+      "source_item": 3,
+      "bbox": [
+        2.75,
+        219.19,
+        321.37,
+        370.82
+      ],
+      "area": 119170.4234
     }
   ]
 }

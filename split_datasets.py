@@ -19,8 +19,8 @@ dotenv.load_dotenv()
 COCO2017_PATH = os.getenv("COCO2017_PATH")
 FLICKR30K_ENTITIES_PATH = os.getenv("FLICKR30K_ENTITIES_PATH")
 OUTPUT_PATH = 'data'
-ITEM1_JSON_MIN_SAMPLES = 60
-ITEM1_JSON_MAX_SAMPLES = 70
+ITEM1_JSON_MIN_SAMPLES = 180
+ITEM1_JSON_MAX_SAMPLES = 150
 FLICKR30K_TRAIN_OUTPUT_PATH = "/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train"
 FLICKR30K_TEST_OUTPUT_PATH = "/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/test"
 

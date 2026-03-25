@@ -215,50 +215,29 @@ class ClipFinegrainedGARunner(ClipFinegrainedBaseline):
                 class_names=class_names,
                 retain_topk_indices=retain_topk_indices,
             )
-            cur_score = float(eval_metrics["selection_score"])
-            print(
-                f"[Eval EP {ep + 1}/{self.args.max_epoch}] "
-                f"forget_success={eval_metrics['forget_success']:.4f} "
-                f"retain_acc={eval_metrics['retain_accuracy']:.4f} "
-                f"retain_topk_acc={eval_metrics['retain_topk_accuracy']:.4f} "
-                f"score={cur_score:.4f}"
-            )
-
-            if cur_score > best_score:
-                best_score = cur_score
+            print(eval_metrics)
+            with open(f'{self.args.output_dir}/eval_log.jsonl', 'a', encoding='utf-8') as fw:
+                    fw.write(json.dumps(
+                        {
+                            'epoch': ep + 1,
+                            'metric': eval_metrics
+                        }
+                    ) + '\n')
+            score = eval_metrics['forget_success'] + eval_metrics['retain_accuracy']
+            if score > best_score:
+                print(f'New Best Epoch: {ep + 1}')
+                best_score = score
+                model.clip_model.save_pretrained(self.args.output_dir)
                 best_epoch = ep + 1
                 best_metrics = dict(eval_metrics)
-                torch.save(
-                    {
-                        "model": copy.deepcopy(model).state_dict(),
-                        "clip_arch": self.args.clip_arch,
-                        "best_epoch": best_epoch,
-                        "best_score": best_score,
-                        "best_forget_success": eval_metrics["forget_success"],
-                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                        "best_retain_topk_accuracy": eval_metrics["retain_topk_accuracy"],
+                json.dump({
+                        'best_epoch': ep + 1,
+                        'forget_success': eval_metrics['forget_success'],
+                        'retain_accuracy': eval_metrics['retain_accuracy']
                     },
-                    ckpt_path,
-                )
-                save_cfg = dict(vars(self.args))
-                save_cfg.update(
-                    {
-                        "best_epoch": best_epoch,
-                        "best_score": best_score,
-                        "best_forget_success": eval_metrics["forget_success"],
-                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                        "best_retain_topk_accuracy": eval_metrics["retain_topk_accuracy"],
-                        "selection_metric": "forget_success + retain_topk_accuracy + retain_accuracy",
-                        "eval_interval_epoch": eval_interval,
-                        "train_stats_at_best_epoch": train_stats,
-                    }
-                )
-                with open(config_path, "w", encoding="utf-8") as handle:
-                    json.dump(save_cfg, handle, ensure_ascii=False, indent=2)
-                print(f"[Best Updated] epoch={best_epoch} score={best_score:.4f}")
-
-        if best_epoch < 0:
-            raise RuntimeError("No evaluation executed, no best checkpoint saved.")
+                        open(f'{self.args.output_dir}/best_epoch.json', 'w', encoding='utf-8'),
+                        ensure_ascii=False,
+                        indent=2)
 
         best_ckpt = torch.load(ckpt_path, map_location=device)
         model.load_state_dict(best_ckpt["model"], strict=True)

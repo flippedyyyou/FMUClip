@@ -536,6 +536,7 @@
       "dataset": "flickr30k_entities"
     },
     {
+      "dataset": "imagenet1k",
       "img_id": "5651210045",
       "file_name": "5651210045.jpg",
       "source_item": 8,
@@ -545,8 +546,7 @@
         32.0,
         52.0
       ],
-      "area": 1664.0,
-      "dataset": "flickr30k_entities"
+      "area": 1664.0
     },
     {
       "img_id": "6320911874",

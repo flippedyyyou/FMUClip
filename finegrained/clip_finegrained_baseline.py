@@ -1010,12 +1010,11 @@ class ClipFinegrainedBaseline:
         model: torch.nn.Module = None,
         tokenize_fn: Callable[[Sequence[str]], torch.Tensor] = None,
         image_size: int = None,
-        backend: str = None,
         retain_topk_indices: Sequence[int] = None,
     ) -> Dict[str, object]:
         # assert retain_topk_indices is not None
         device = torch.device(self.args.device if torch.cuda.is_available() else "cpu")
-        if model is None or tokenize_fn is None or image_size is None or backend is None:
+        if model is None or tokenize_fn is None or image_size is None:
             model, tokenize_fn, image_size, backend = self._load_clip_backend(device)
         eval_transform = self._build_eval_transform(image_size)
 
@@ -1105,14 +1104,14 @@ class ClipFinegrainedBaseline:
             device=device,
             out_path=forget_topk_path,
         )
-        self._dump_topk_results(
-            model=model,
-            data_loader=retain_loader,
-            text_features=text_features,
-            class_names=class_names,
-            device=device,
-            out_path=retain_topk_path,
-        )
+        # self._dump_topk_results(
+        #     model=model,
+        #     data_loader=retain_loader,
+        #     text_features=text_features,
+        #     class_names=class_names,
+        #     device=device,
+        #     out_path=retain_topk_path,
+        # )
         self._dump_joint_multilabel_results(
             model=model,
             data_loader=joint_multilabel_loader,
