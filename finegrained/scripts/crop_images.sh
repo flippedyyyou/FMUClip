@@ -4,9 +4,9 @@ from pathlib import Path
 from PIL import Image
 import math
 
-item1_dir = Path('/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances/train/Df/item1')
-out_root = Path('/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances/train/single_train_images')
-img_root = Path('/datanfs4/shenruoyan/datasets/coco2017/train2017')
+item1_dir = Path('/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/val/Df/item1')
+out_root = Path('/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/val/test_images')
+img_root = Path('/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images')
 
 json_files = sorted(item1_dir.glob('*.json'))
 if not json_files:
@@ -20,7 +20,7 @@ summary = []
 for jp in json_files:
     data = json.loads(jp.read_text(encoding='utf-8'))
     concept = data.get('concept', jp.stem)
-    images = list(data.get('images', []))[:100]
+    images = list(data.get('images', []))[:250]
 
     concept_dir = out_root / concept
     concept_dir.mkdir(parents=True, exist_ok=True)

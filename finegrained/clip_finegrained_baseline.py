@@ -120,6 +120,57 @@ class ClipFinegrainedBaseline:
         model.eval()
         return model, tokenize_fn, image_size, "hf_transformers"
 
+    def _load_model_from_pretrained_dir(self, model_dir: str):
+        device = torch.device(self.args.device if torch.cuda.is_available() else "cpu")
+        clip_model = CLIPModel.from_pretrained(model_dir)
+
+        tokenizer_source = getattr(self.args, "clip_path", None) or model_dir
+        tokenizer = CLIPTokenizerFast.from_pretrained(tokenizer_source)
+        if tokenizer.pad_token is None and tokenizer.eos_token is not None:
+            tokenizer.pad_token = tokenizer.eos_token
+        pad_token_id = tokenizer.pad_token_id
+        if pad_token_id is None:
+            pad_token_id = tokenizer.eos_token_id if tokenizer.eos_token_id is not None else 0
+
+        model = _HFCLIPWrapper(clip_model=clip_model, pad_token_id=pad_token_id).float().to(device)
+
+        def tokenize_fn(texts: Sequence[str]) -> torch.Tensor:
+            encoded = tokenizer(
+                list(texts),
+                padding="max_length",
+                truncation=True,
+                max_length=tokenizer.model_max_length,
+                return_tensors="pt",
+            )
+            return encoded["input_ids"]
+
+        image_size = int(getattr(clip_model.config.vision_config, "image_size", 224))
+        model.eval()
+        return model, tokenize_fn, image_size
+
+    def _best_epoch_json_path(self) -> str:
+        return os.path.join(self.args.output_dir, "best_epoch.json")
+
+    def _write_best_epoch_info(self, payload: Dict[str, object]) -> None:
+        os.makedirs(self.args.output_dir, exist_ok=True)
+        with open(self._best_epoch_json_path(), "w", encoding="utf-8") as handle:
+            json.dump(payload, handle, ensure_ascii=False, indent=2)
+
+    def _merge_final_eval_into_best_epoch(
+        self,
+        final_eval_metrics: Dict[str, object],
+        base_info: Dict[str, object] = None,
+    ) -> Dict[str, object]:
+        best_epoch_info = dict(base_info or {})
+        best_epoch_path = self._best_epoch_json_path()
+        if not best_epoch_info and os.path.exists(best_epoch_path):
+            with open(best_epoch_path, "r", encoding="utf-8") as handle:
+                best_epoch_info = json.load(handle)
+        best_epoch_info["map_c"] = final_eval_metrics["map_c"]
+        best_epoch_info["map_r"] = final_eval_metrics["map_r"]
+        self._write_best_epoch_info(best_epoch_info)
+        return best_epoch_info
+
     def _build_eval_transform(self, image_size: int):
         return transforms.Compose(
             [

@@ -297,7 +297,11 @@ class ClipFinegrainedSlugRunner(ClipFinegrainedBaseline):
             }
         ]
 
-        best_model = copy.deepcopy(model)
+        best_model = model
+        best_model_state = {
+            key: value.detach().cpu().clone()
+            for key, value in model.state_dict().items()
+        }
         best_metrics = dict(base_selection)
         best_score = float(base_selection["selection_score"])
         best_layer = None
@@ -340,21 +344,23 @@ class ClipFinegrainedSlugRunner(ClipFinegrainedBaseline):
                         best_score = float(metrics["selection_score"])
                         best_metrics = dict(metrics)
                         best_model = candidate
+                        best_model_state = {
+                            key: value.detach().cpu().clone()
+                            for key, value in candidate.state_dict().items()
+                        }
                         best_layer = layer_name
                         best_scale = float(update_scale)
 
-        ckpt_path = os.path.join(self.args.output_dir, "clip_finegrained_slug.pth")
-        torch.save(
-            {
-                "model": best_model.state_dict(),
-                "clip_arch": self.args.clip_arch,
-                "best_layer": best_layer,
-                "best_scale": best_scale,
-                "best_selection_score": best_score,
-                "best_selection_metrics": best_metrics,
-            },
-            ckpt_path,
-        )
+        model.load_state_dict(best_model_state, strict=True)
+        model.clip_model.save_pretrained(self.args.output_dir)
+        best_epoch_info = {
+            "best_epoch": 0,
+            "forget_success": best_metrics["forget_success"],
+            "retain_accuracy": best_metrics["retain_accuracy"],
+            "slug_best_layer": best_layer,
+            "slug_best_scale": best_scale,
+        }
+        self._write_best_epoch_info(best_epoch_info)
 
         layer_stats_path = os.path.join(self.args.output_dir, "slug_layer_stats.json")
         with open(layer_stats_path, "w", encoding="utf-8") as handle:
@@ -372,29 +378,14 @@ class ClipFinegrainedSlugRunner(ClipFinegrainedBaseline):
         with open(search_path, "w", encoding="utf-8") as handle:
             json.dump(search_records, handle, ensure_ascii=False, indent=2)
 
+        best_model, best_tokenize_fn, best_image_size = self._load_model_from_pretrained_dir(self.args.output_dir)
         final_eval_metrics = self.run_original_eval(
             model=best_model,
-            tokenize_fn=tokenize_fn,
-            image_size=image_size,
-            backend=backend,
+            tokenize_fn=best_tokenize_fn,
+            image_size=best_image_size,
             retain_topk_indices=retain_topk_indices,
         )
-
-        config_path = os.path.join(self.args.output_dir, "config.json")
-        save_cfg = dict(vars(self.args))
-        save_cfg.update(
-            {
-                "slug_selected_layers": selected_layers,
-                "slug_best_layer": best_layer,
-                "slug_best_scale": best_scale,
-                "slug_best_selection_score": best_score,
-                "slug_best_selection_metrics": best_metrics,
-                "slug_search_multipliers": self.search_multipliers,
-                "final_original_eval": final_eval_metrics,
-            }
-        )
-        with open(config_path, "w", encoding="utf-8") as handle:
-            json.dump(save_cfg, handle, ensure_ascii=False, indent=2)
+        self._merge_final_eval_into_best_epoch(final_eval_metrics, base_info=best_epoch_info)
 
         print(
             f"SLUG best layer={best_layer}, "

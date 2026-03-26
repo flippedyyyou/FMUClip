@@ -5,6 +5,7 @@ set -a
 source .env
 set +a
 
+# Adjust this to the appropriate CUDA device
 export CUDA_VISIBLE_DEVICES=1
 
 DEVICE="cuda"
@@ -16,19 +17,21 @@ FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entit
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 RETAIN_ITEM_FOLDER="item1"
-
-BATCH_SIZE=16
+BATCH_SIZE=4
 NUM_WORKERS=0
-MAX_EPOCH=20
-LR=1e-6
+MAX_EPOCH=10
+LR=2e-5
 WEIGHT_DECAY=5e-4
 LAMBDA_DF=3
 LAMBDA_DR=1
 LAMBDA_UNI=3
+METHOD="salun"
 RETAIN_TOPK=5
 
+SALUN_THRESHOLD=0.5
+SALUN_MASK_STEPS=100
 
-for DATASET in "coco2017_instances"; do
+for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_SPECS=(
@@ -49,11 +52,18 @@ for DATASET in "coco2017_instances"; do
   for FORGET_SPEC in "${FORGET_SPECS[@]}"; do
     IFS=":" read -r FORGET_CLASSES ITEM_NUM <<< "${FORGET_SPEC}"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
-    OUTPUT_DIR="finegrained/ckpt/original/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+    OUTPUT_DIR="finegrained/ckpt/${METHOD}/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}/DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}"
 
+    echo "METHOD: ${METHOD}"
+    echo "DATASET: ${DATASET}"
+    echo "FORGET_CLASSES: ${FORGET_CLASSES}"
+    echo "LEARNING_RATE: ${LR}"
+    echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
+    echo "SALUN_THRESHOLD: ${SALUN_THRESHOLD}"
+    echo "SALUN_MASK_STEPS: ${SALUN_MASK_STEPS}"
+    echo "OUTPUT_DIR: ${OUTPUT_DIR}"
 
-    python finegrained/clip_finegrained_baseline.py \
-      --method "original" \
+    python finegrained/baselines/clip_unlearn_salun.py \
       --dataset "${DATASET}" \
       --forget_classes "${FORGET_CLASSES}" \
       --df_root "${DF_ROOT}" \
@@ -73,9 +83,15 @@ for DATASET in "coco2017_instances"; do
       --batch_size "${BATCH_SIZE}" \
       --num_workers "${NUM_WORKERS}" \
       --max_epoch "${MAX_EPOCH}" \
+      --lr "${LR}" \
       --log_interval 1 \
       --weight_decay "${WEIGHT_DECAY}" \
+      --lambda_df "${LAMBDA_DF}" \
+      --lambda_dr "${LAMBDA_DR}" \
+      --lambda_uni "${LAMBDA_UNI}" \
       --retain_topk "${RETAIN_TOPK}" \
+      --salun_threshold "${SALUN_THRESHOLD}" \
+      --salun_mask_steps "${SALUN_MASK_STEPS}" \
       --device "${DEVICE}"
   done
 done

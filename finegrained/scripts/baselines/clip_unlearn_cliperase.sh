@@ -5,7 +5,7 @@ set -a
 source .env
 set +a
 
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=2
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -21,21 +21,24 @@ NUM_WORKERS=0
 MAX_EPOCH=20
 LR=1e-6
 WEIGHT_DECAY=5e-4
+LAMBDA_DF=3
+LAMBDA_DR=1
+LAMBDA_UNI=3
 RETAIN_TOPK=5
-GA_EVAL_INTERVAL=1
+METHOD="cliperase"
 
-for DATASET in "flickr30k_entities"; do
+for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_SPECS=(
       "airplane:5"
+      "cow:5"
     )
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_SPECS=(
-      "girl:5"
-      "table:5"
-      "dog:7"
+      "girl:4"
+      "dog:4"
     )
   else
     echo "Unknown dataset: ${DATASET}"
@@ -45,14 +48,16 @@ for DATASET in "flickr30k_entities"; do
   for FORGET_SPEC in "${FORGET_SPECS[@]}"; do
     IFS=":" read -r FORGET_CLASSES ITEM_NUM <<< "${FORGET_SPEC}"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
-    OUTPUT_DIR="finegrained/ckpt/ga/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+    OUTPUT_DIR="finegrained/ckpt/${METHOD}/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}/DF${LAMBDA_DF}_DR${LAMBDA_DR}_UNI${LAMBDA_UNI}"
 
+    echo "METHOD: ${METHOD}"
     echo "DATASET: ${DATASET}"
     echo "FORGET_CLASSES: ${FORGET_CLASSES}"
     echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
     echo "OUTPUT_DIR: ${OUTPUT_DIR}"
 
-    python finegrained/baselines/clip_unlearn_ga.py \
+    python finegrained/baselines/clip_unlearn_cliperase.py \
+      --method "${METHOD}" \
       --dataset "${DATASET}" \
       --forget_classes "${FORGET_CLASSES}" \
       --df_root "${DF_ROOT}" \
@@ -75,8 +80,10 @@ for DATASET in "flickr30k_entities"; do
       --lr "${LR}" \
       --log_interval 1 \
       --weight_decay "${WEIGHT_DECAY}" \
+      --lambda_df "${LAMBDA_DF}" \
+      --lambda_dr "${LAMBDA_DR}" \
+      --lambda_uni "${LAMBDA_UNI}" \
       --retain_topk "${RETAIN_TOPK}" \
-      --ga_eval_interval "${GA_EVAL_INTERVAL}" \
       --device "${DEVICE}"
   done
 done

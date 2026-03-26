@@ -179,11 +179,11 @@ class ClipEraseRunner(ClipFinegrainedBaseline):
         scaler = torch.amp.GradScaler(enabled=device.type == "cuda", init_scale=1024)
 
         os.makedirs(self.args.output_dir, exist_ok=True)
-        config_path = os.path.join(self.args.output_dir, "config.json")
         eval_interval = max(1, int(self.args.cliperase_eval_interval))
         best_score = float("-inf")
         best_epoch = -1
         best_metrics = None
+        best_epoch_info = None
 
         for ep in range(self.args.max_epoch):
             train_stats = self.supervised_unlearn_train_cliperase(
@@ -229,32 +229,18 @@ class ClipEraseRunner(ClipFinegrainedBaseline):
                 best_metrics = dict(eval_metrics)
 
                 model.clip_model.save_pretrained(self.args.output_dir)
-                save_cfg = dict(vars(self.args))
-                save_cfg.update(
-                    {
-                        "best_epoch": best_epoch,
-                        "best_score": best_score,
-                        "best_forget_success": eval_metrics["forget_success"],
-                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                        "selection_metric": "forget_success + retain_accuracy",
-                        "eval_interval_epoch": eval_interval,
-                        "train_stats_at_best_epoch": train_stats,
-                        "train_set_construction": {
-                            "forget_dataset_size": len(df_dataset),
-                            "retain_dataset_size": len(dr_dataset),
-                            "forget_item_folder": self.args.train_item_folder,
-                            "retain_item_folder": self.args.retain_item_folder,
-                        },
-                    }
-                )
-                with open(config_path, "w", encoding="utf-8") as handle:
-                    json.dump(save_cfg, handle, ensure_ascii=False, indent=2)
+                best_epoch_info = {
+                    "best_epoch": best_epoch,
+                    "forget_success": eval_metrics["forget_success"],
+                    "retain_accuracy": eval_metrics["retain_accuracy"],
+                }
+                self._write_best_epoch_info(best_epoch_info)
                 print(f"[Best Updated] epoch={best_epoch} score={best_score:.4f}")
 
         if best_epoch < 0:
             raise RuntimeError("No evaluation executed, no best checkpoint saved.")
 
-        model.clip_model = model.clip_model.from_pretrained(self.args.output_dir)
+        best_model, best_tokenize_fn, best_image_size = self._load_model_from_pretrained_dir(self.args.output_dir)
         print(
             f"Final best epoch: {best_epoch}, "
             f"forget_success={best_metrics['forget_success']:.4f}, "
@@ -263,26 +249,12 @@ class ClipEraseRunner(ClipFinegrainedBaseline):
         )
 
         final_eval_metrics = self.run_original_eval(
-            model=model,
-            tokenize_fn=tokenize_fn,
-            image_size=image_size,
-            backend=backend,
+            model=best_model,
+            tokenize_fn=best_tokenize_fn,
+            image_size=best_image_size,
             retain_topk_indices=retain_topk_indices,
         )
-        final_cfg = dict(vars(self.args))
-        final_cfg.update(
-            {
-                "best_epoch": best_epoch,
-                "best_score": best_score,
-                "best_forget_success": best_metrics["forget_success"],
-                "best_retain_accuracy": best_metrics["retain_accuracy"],
-                "selection_metric": "forget_success + retain_accuracy",
-                "eval_interval_epoch": eval_interval,
-                "final_original_eval": final_eval_metrics,
-            }
-        )
-        with open(config_path, "w", encoding="utf-8") as handle:
-            json.dump(final_cfg, handle, ensure_ascii=False, indent=2)
+        self._merge_final_eval_into_best_epoch(final_eval_metrics, base_info=best_epoch_info)
 
     def run_cliperase(self) -> None:
         self.run()

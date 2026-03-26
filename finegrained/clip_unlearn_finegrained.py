@@ -1,4 +1,3 @@
-from pytorch_grad_cam import ScoreCAM
 import json
 import os
 import re
@@ -47,6 +46,53 @@ class _ForwardCapture:
 class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
     def __init__(self, args):
         super().__init__(args)
+
+    def _trainable_params(self, model: torch.nn.Module) -> List[torch.nn.Parameter]:
+        return [p for p in model.parameters() if p.requires_grad]
+
+    def _grad_cosine_similarity(
+        self,
+        loss_a: torch.Tensor,
+        loss_b: torch.Tensor,
+        params: Sequence[torch.nn.Parameter],
+    ) -> float:
+        grads_a = torch.autograd.grad(
+            loss_a,
+            params,
+            retain_graph=True,
+            create_graph=False,
+            allow_unused=True,
+        )
+        grads_b = torch.autograd.grad(
+            loss_b,
+            params,
+            retain_graph=True,
+            create_graph=False,
+            allow_unused=True,
+        )
+
+        dot = torch.zeros((), device=loss_a.device, dtype=torch.float32)
+        norm_a = torch.zeros((), device=loss_a.device, dtype=torch.float32)
+        norm_b = torch.zeros((), device=loss_a.device, dtype=torch.float32)
+        for ga, gb in zip(grads_a, grads_b):
+            if ga is None or gb is None:
+                continue
+            ga32 = ga.detach().float()
+            gb32 = gb.detach().float()
+            dot = dot + (ga32 * gb32).sum()
+            norm_a = norm_a + ga32.square().sum()
+            norm_b = norm_b + gb32.square().sum()
+
+        denom = norm_a.sqrt() * norm_b.sqrt()
+        if denom.item() <= 0.0:
+            return 0.0
+        cos_sim = (dot / denom.clamp_min(1e-12)).clamp(-1.0, 1.0)
+        return float(cos_sim.item())
+
+    def _forget_scale_from_grad_similarity(self, grad_cosine_sim: float) -> float:
+        sim = max(-1.0, min(1.0, float(grad_cosine_sim)))
+        sigmoid = 1.0 / (1.0 + np.exp(-sim))
+        return float(np.exp(2.0 * sigmoid - 1.0))
 
     def _normalize_name(self, name: str) -> str:
         return name.strip().replace(" ", "_")
@@ -547,7 +593,9 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                 device,
             )
 
-        running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0}
+        trainable_params = self._trainable_params(model)
+        running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "grad_sim": 0.0, "forget_scale": 0.0}
+        # running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "forget_scale": 0.0}
         for it in range(iters_per_epoch):
             train_s = next(train_iter)
 
@@ -625,8 +673,14 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                 else:
                     loss_ce = torch.zeros((), device=device, dtype=loss_rtf.dtype)
 
+                grad_sim = 0.0
+                forget_scale = 1.0
+                if loss_ce.requires_grad:
+                    grad_sim = self._grad_cosine_similarity(loss_rtf, loss_ce, trainable_params)
+                    forget_scale = self._forget_scale_from_grad_similarity(grad_sim)
+
                 loss = (
-                    lambda_rtf * loss_rtf
+                    (lambda_rtf * forget_scale) * loss_rtf
                     + lambda_ce * loss_ce
                 )
 
@@ -637,20 +691,24 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
             running["rtf"] += float(loss_rtf.detach().item())
             running["ce"] += float(loss_ce.detach().item())
             running["tot"] += float(loss.detach().item())
+            running["grad_sim"] += float(grad_sim)
+            running["forget_scale"] += float(forget_scale)
 
             if (it + 1) % log_interval == 0:
                 t = it + 1
                 print(
                     f"[Unlearn EP {epoch_idx + 1}/{max_epoch}] it={t}/{iters_per_epoch} "
                     f"rtf={running['rtf']/t:.4f} "
-                    # f"keep={running['keep']/t:.4f} ce={running['ce']/t:.4f} "
+                    f"grad_sim={running['grad_sim']/t:.4f} "
+                    f"forget_scale={running['forget_scale']/t:.4f} "
                     f"total={running['tot']/t:.4f}"
                 )
                 with open(f'{self.args.output_dir}/train_log.jsonl', 'a', encoding='utf-8') as fw:
                     fw.write(json.dumps({
                         'Epoch': epoch_idx + 1,
                         'Iteration': it + 1,
-                        # 'Keep': f'{running["keep"]/t:.4f}',
+                        'GradSim': f'{running["grad_sim"]/t:.4f}',
+                        'ForgetScale': f'{running["forget_scale"]/t:.4f}',
                         'CE': f'{running["ce"]/t:.4f}',
                         'Total': f'{running["tot"]/t:.4f}'
                     }) + '\n')
@@ -700,7 +758,9 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         gradcam_layer = self._get_gradcam_layer(model, layer=layer)
         layer_capture = _ForwardCapture(gradcam_layer)
 
-        running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0}
+        trainable_params = self._trainable_params(model)
+        # running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "grad_sim": 0.0, "forget_scale": 0.0}
+        running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "forget_scale": 0.0}
         try:
             for it in range(iters_per_epoch):
                 train_s = next(train_iter)
@@ -781,8 +841,14 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                     else:
                         loss_ce = torch.zeros((), device=device, dtype=loss_rtf.dtype)
 
+                    grad_sim = 0.0
+                    forget_scale = 1.0
+                    # if loss_ce.requires_grad:
+                    #     grad_sim = self._grad_cosine_similarity(loss_rtf, loss_ce, trainable_params)
+                    #     forget_scale = self._forget_scale_from_grad_similarity(grad_sim)
+
                     loss = (
-                        lambda_rtf * loss_rtf
+                        (lambda_rtf * forget_scale) * loss_rtf
                         + lambda_ce * loss_ce
                     )
 
@@ -793,20 +859,24 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                 running["rtf"] += float(loss_rtf.detach().item())
                 running["ce"] += float(loss_ce.detach().item())
                 running["tot"] += float(loss.detach().item())
+                # running["grad_sim"] += float(grad_sim)
+                running["forget_scale"] += float(forget_scale)
 
                 if (it + 1) % log_interval == 0:
                     t = it + 1
                     print(
                         f"[Unlearn EP {epoch_idx + 1}/{max_epoch}] it={t}/{iters_per_epoch} "
                         f"rtf={running['rtf']/t:.4f} "
-                        # f"keep={running['keep']/t:.4f} ce={running['ce']/t:.4f} "
+                        # f"grad_sim={running['grad_sim']/t:.4f} "
+                        f"forget_scale={running['forget_scale']/t:.4f} "
                         f"total={running['tot']/t:.4f}"
                     )
                     with open(f'{self.args.output_dir}/train_log.jsonl', 'a', encoding='utf-8') as fw:
                         fw.write(json.dumps({
                             'Epoch': epoch_idx + 1,
                             'Iteration': it + 1,
-                            # 'Keep': f'{running["keep"]/t:.4f}',
+                            # 'GradSim': f'{running["grad_sim"]/t:.4f}',
+                            'ForgetScale': f'{running["forget_scale"]/t:.4f}',
                             'CE': f'{running["ce"]/t:.4f}',
                             'Total': f'{running["tot"]/t:.4f}'
                         }) + '\n')

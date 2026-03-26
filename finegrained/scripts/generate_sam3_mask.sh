@@ -11,15 +11,14 @@ FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities"
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 TRAIN_SPLIT="train"
-TRAIN_ITEM_FOLDER="item5"
 BPE_PATH="/datanfs4/shenruoyan/FMUClip/sam3/sam3/assets/bpe_simple_vocab_16e6.txt.gz"
 CHECKPOINT="/datanfs4/shenruoyan/checkpoints/sam3/sam3.pt"
-CONF_THRESH="0.1"
+CONF_THRESH="0.3"
 
 for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
-    FORGET_CLASSES="airplane"
+    FORGET_CLASSES="cow"
     TRAIN_ITEM_FOLDER="item5"
     IMAGE_ROOT="${COCO_ROOT}/${TRAIN_SPLIT}2017"
     

@@ -1,4 +1,3 @@
-import copy
 import json
 import os
 import sys
@@ -167,6 +166,11 @@ class SalUn(ClipFinegrainedBaseline):
 
         class_names = self._build_class_name_list()
         forget_indices, retain_indices = self._build_forget_retain_indices(self.args.forget_classes)
+        retain_topk_indices = self._compute_topk_retain_classes(
+            df_dataset=df_dataset,
+            forget_indices=forget_indices,
+            k=self.args.retain_topk,
+        )
 
         # 1. Generate the SalUn mask
         salun_mask = self.generate_mask(model, tokenize_fn, df_loader, class_names, forget_indices, device)
@@ -183,8 +187,6 @@ class SalUn(ClipFinegrainedBaseline):
         scaler = torch.amp.GradScaler(init_scale=1024)
 
         os.makedirs(self.args.output_dir, exist_ok=True)
-        ckpt_path = os.path.join(self.args.output_dir, "clip_unlearn_salun.pt")
-        config_path = os.path.join(self.args.output_dir, "config.json")
 
         print("Starting SalUn with Random Labeling...")
         for ep in range(self.args.max_epoch):
@@ -304,48 +306,28 @@ class SalUn(ClipFinegrainedBaseline):
             "retain_accuracy": float(retain_acc),
             "selection_score": float(score)
         }
-        torch.save(
-            {
-                "model": model.state_dict(),
-                "clip_arch": self.args.clip_arch,
-                "epoch": current_epoch,
-                "score": score,
-                "forget_success": metrics["forget_success"],
-                "retain_accuracy": metrics["retain_accuracy"],
-            },
-            ckpt_path,
-        )
-        save_cfg = dict(vars(self.args))
-        save_cfg.update(
-            {
-                "epoch": current_epoch,
-                "score": score,
-                "forget_success": metrics["forget_success"],
-                "retain_accuracy": metrics["retain_accuracy"],
-                "selection_metric": "forget_success + retain_accuracy",
-            }
-        )
-        with open(config_path, "w", encoding="utf-8") as f:
-            json.dump(save_cfg, f, ensure_ascii=False, indent=2)
-        print(f"[Saved] epoch={current_epoch} score={score:.4f} -> overwrite checkpoint/config")
+        model.clip_model.save_pretrained(self.args.output_dir)
+        best_epoch_info = {
+            "best_epoch": current_epoch,
+            "forget_success": metrics["forget_success"],
+            "retain_accuracy": metrics["retain_accuracy"],
+        }
+        self._write_best_epoch_info(best_epoch_info)
+        print(f"[Saved] epoch={current_epoch} score={score:.4f} -> overwrite checkpoint")
 
         print(f"\nFinal epoch: {current_epoch}, "
               f"forget_success={metrics['forget_success']:.4f}, "
               f"retain_acc={metrics['retain_accuracy']:.4f}, "
               f"score={score:.4f}")
 
-        # Load the saved model (which is the last epoch's model)
-        ckpt = torch.load(ckpt_path, map_location=device)
-        model.load_state_dict(ckpt["model"], strict=True)
-        # Optional: Detailed retention accuracy on top-k retain classes
-        # Since df_dataset might not have targets attribute initialized similar to the full set,
-        # we can skip this or compute correctly. For now, empty retain top-k.
-        self.run_original_eval(
-            model=model,
-            tokenize_fn=tokenize_fn,
-            image_size=image_size,
-            backend=backend,
+        best_model, best_tokenize_fn, best_image_size = self._load_model_from_pretrained_dir(self.args.output_dir)
+        final_eval_metrics = self.run_original_eval(
+            model=best_model,
+            tokenize_fn=best_tokenize_fn,
+            image_size=best_image_size,
+            retain_topk_indices=retain_topk_indices,
         )
+        self._merge_final_eval_into_best_epoch(final_eval_metrics, base_info=best_epoch_info)
 
 
 def main() -> None:

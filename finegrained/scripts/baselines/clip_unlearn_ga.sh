@@ -5,7 +5,7 @@ set -a
 source .env
 set +a
 
-export CUDA_VISIBLE_DEVICES=1
+export CUDA_VISIBLE_DEVICES=3
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -16,19 +16,15 @@ FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entit
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 RETAIN_ITEM_FOLDER="item1"
-
-BATCH_SIZE=16
+BATCH_SIZE=4
 NUM_WORKERS=0
-MAX_EPOCH=20
+MAX_EPOCH=10
 LR=1e-6
 WEIGHT_DECAY=5e-4
-LAMBDA_DF=3
-LAMBDA_DR=1
-LAMBDA_UNI=3
 RETAIN_TOPK=5
+GA_EVAL_INTERVAL=2
 
-
-for DATASET in "coco2017_instances"; do
+for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_SPECS=(
@@ -38,8 +34,8 @@ for DATASET in "coco2017_instances"; do
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_SPECS=(
-      "girl:4"
-      "dog:4"
+      "table:7"
+      "dog:7"
     )
   else
     echo "Unknown dataset: ${DATASET}"
@@ -49,11 +45,14 @@ for DATASET in "coco2017_instances"; do
   for FORGET_SPEC in "${FORGET_SPECS[@]}"; do
     IFS=":" read -r FORGET_CLASSES ITEM_NUM <<< "${FORGET_SPEC}"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
-    OUTPUT_DIR="finegrained/ckpt/original/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+    OUTPUT_DIR="finegrained/ckpt/ga/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
 
+    echo "DATASET: ${DATASET}"
+    echo "FORGET_CLASSES: ${FORGET_CLASSES}"
+    echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
+    echo "OUTPUT_DIR: ${OUTPUT_DIR}"
 
-    python finegrained/clip_finegrained_baseline.py \
-      --method "original" \
+    python finegrained/baselines/clip_unlearn_ga.py \
       --dataset "${DATASET}" \
       --forget_classes "${FORGET_CLASSES}" \
       --df_root "${DF_ROOT}" \
@@ -73,9 +72,11 @@ for DATASET in "coco2017_instances"; do
       --batch_size "${BATCH_SIZE}" \
       --num_workers "${NUM_WORKERS}" \
       --max_epoch "${MAX_EPOCH}" \
+      --lr "${LR}" \
       --log_interval 1 \
       --weight_decay "${WEIGHT_DECAY}" \
       --retain_topk "${RETAIN_TOPK}" \
+      --ga_eval_interval "${GA_EVAL_INTERVAL}" \
       --device "${DEVICE}"
   done
 done

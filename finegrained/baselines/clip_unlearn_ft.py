@@ -1,4 +1,3 @@
-import copy
 import json
 import math
 import os
@@ -138,12 +137,11 @@ class ClipFinegrainedFTRunner(ClipFinegrainedBaseline):
         scaler = torch.amp.GradScaler(enabled=device.type == "cuda", init_scale=1024)
 
         os.makedirs(self.args.output_dir, exist_ok=True)
-        config_path = os.path.join(self.args.output_dir, "config.json")
-        ckpt_path = os.path.join(self.args.output_dir, "clip_unlearn_ft.pth")
         eval_interval = max(1, int(self.args.ft_eval_interval))
         best_score = float("-inf")
         best_epoch = -1
         best_metrics = None
+        best_epoch_info = None
 
         for ep in range(self.args.max_epoch):
             train_stats = self.train_one_epoch_ft(
@@ -181,57 +179,19 @@ class ClipFinegrainedFTRunner(ClipFinegrainedBaseline):
                 best_score = cur_score
                 best_epoch = ep + 1
                 best_metrics = dict(eval_metrics)
-                torch.save(
-                    {
-                        "model": copy.deepcopy(model).state_dict(),
-                        "clip_arch": self.args.clip_arch,
-                        "best_epoch": best_epoch,
-                        "best_score": best_score,
-                        "best_forget_success": eval_metrics["forget_success"],
-                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                    },
-                    ckpt_path,
-                )
-                save_cfg = dict(vars(self.args))
-                save_cfg.update(
-                    {
-                        "best_epoch": best_epoch,
-                        "best_score": best_score,
-                        "best_forget_success": eval_metrics["forget_success"],
-                        "best_retain_accuracy": eval_metrics["retain_accuracy"],
-                        "selection_metric": "forget_success + retain_accuracy",
-                        "eval_interval_epoch": eval_interval,
-                        "train_stats_at_best_epoch": train_stats,
-                        "train_set_construction": {
-                            "forget_source": {
-                                "split": self.args.train_split,
-                                "item_folder": self.args.train_item_folder,
-                                "classes": list(self.args.forget_classes),
-                                "used_for_training": False,
-                            },
-                            "retain_source": {
-                                "split": self.args.train_split,
-                                "item_folder": self.args.retain_item_folder,
-                                "classes": [
-                                    name for idx, name in enumerate(class_names) if idx not in set(forget_indices)
-                                ],
-                                "used_for_training": True,
-                            },
-                            "train_dataset_size": len(dr_dataset),
-                            "forget_dataset_size": len(df_dataset),
-                            "training_strategy": "retain_only",
-                        },
-                    }
-                )
-                with open(config_path, "w", encoding="utf-8") as handle:
-                    json.dump(save_cfg, handle, ensure_ascii=False, indent=2)
+                model.clip_model.save_pretrained(self.args.output_dir)
+                best_epoch_info = {
+                    "best_epoch": best_epoch,
+                    "forget_success": eval_metrics["forget_success"],
+                    "retain_accuracy": eval_metrics["retain_accuracy"],
+                }
+                self._write_best_epoch_info(best_epoch_info)
                 print(f"[Best Updated] epoch={best_epoch} score={best_score:.4f}")
 
         if best_epoch < 0:
             raise RuntimeError("No epoch completed successfully, no best checkpoint saved.")
 
-        best_ckpt = torch.load(ckpt_path, map_location=device)
-        model.load_state_dict(best_ckpt["model"], strict=True)
+        best_model, best_tokenize_fn, best_image_size = self._load_model_from_pretrained_dir(self.args.output_dir)
         print(
             f"Final best epoch: {best_epoch}, "
             f"forget_success={best_metrics['forget_success']:.4f}, "
@@ -239,13 +199,13 @@ class ClipFinegrainedFTRunner(ClipFinegrainedBaseline):
             f"score={best_score:.4f}"
         )
 
-        self.run_original_eval(
-            model=model,
-            tokenize_fn=tokenize_fn,
-            image_size=image_size,
-            backend=backend,
+        final_eval_metrics = self.run_original_eval(
+            model=best_model,
+            tokenize_fn=best_tokenize_fn,
+            image_size=best_image_size,
             retain_topk_indices=retain_topk_indices,
         )
+        self._merge_final_eval_into_best_epoch(final_eval_metrics, base_info=best_epoch_info)
 
 
 def main() -> None:

@@ -13,3 +13,4 @@ tmp*
 .DS_Store
 third_party
 pytorch-grad-cam/*
+finegrained/ckpt/*
