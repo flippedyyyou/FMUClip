@@ -190,7 +190,12 @@ class ClipFinegrainedBaseline:
             return explicit
         return os.path.join(self.args.df_root, self.args.val_split, "test_images")
 
-    def _build_test_dataloaders_from_folders(self, transform):
+    def _build_test_dataloaders_from_folders(
+        self,
+        transform,
+        forget_classes: Sequence[str] = None,
+        retain_exclude_classes: Sequence[str] = None,
+    ):
         class_names = self._build_class_name_list()
         name_to_idx = {name: idx for idx, name in enumerate(class_names)}
         test_images_root = self._resolve_test_images_root()
@@ -198,11 +203,20 @@ class ClipFinegrainedBaseline:
         if not os.path.isdir(test_images_root):
             raise FileNotFoundError(f"test_images root not found: {test_images_root}")
 
-        forget_names = {self._normalize_name(x) for x in self.args.forget_classes}
+        forget_source = forget_classes if forget_classes is not None else self.args.forget_classes
+        retain_exclude_source = (
+            retain_exclude_classes if retain_exclude_classes is not None else forget_source
+        )
+        forget_names = {self._normalize_name(x) for x in forget_source}
+        retain_exclude_names = {self._normalize_name(x) for x in retain_exclude_source}
         unknown = [n for n in sorted(forget_names) if n not in name_to_idx]
         if unknown:
             raise ValueError(f"Unknown forget classes: {unknown}")
         forget_idx_set = {name_to_idx[n] for n in forget_names}
+        unknown_retain_exclude = [n for n in sorted(retain_exclude_names) if n not in name_to_idx]
+        if unknown_retain_exclude:
+            raise ValueError(f"Unknown retain exclude classes: {unknown_retain_exclude}")
+        retain_exclude_idx_set = {name_to_idx[n] for n in retain_exclude_names}
 
         forget_samples: List[Tuple[str, int]] = []
         retain_samples: List[Tuple[str, int]] = []
@@ -220,7 +234,12 @@ class ClipFinegrainedBaseline:
                     continue
                 image_paths.append(fpath)
 
-            dst = forget_samples if class_idx in forget_idx_set else retain_samples
+            if class_idx in forget_idx_set:
+                dst = forget_samples
+            elif class_idx not in retain_exclude_idx_set:
+                dst = retain_samples
+            else:
+                continue
             dst.extend((p, class_idx) for p in image_paths)
 
         forget_dataset = _FolderClassEvalDataset(

@@ -24,28 +24,53 @@ from finegrained.clip_finegrained_baseline import ClipFinegrainedBaseline, _HFCL
 DEFAULT_MASK_DIR = "finegrained/mask"
 
 
-class _ForwardCapture:
-    """Capture one module output tensor from the latest forward."""
-
-    def __init__(self, module: torch.nn.Module):
-        self.tensor: Optional[torch.Tensor] = None
-        self._handle = module.register_forward_hook(self._hook)
-
-    def _hook(self, _module, _inputs, output):
-        self.tensor = output
-
-    def clear(self) -> None:
-        self.tensor = None
-
-    def close(self) -> None:
-        if self._handle is not None:
-            self._handle.remove()
-            self._handle = None
-
-
 class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
     def __init__(self, args):
         super().__init__(args)
+
+    def _parse_csv_arg(self, raw: str) -> List[str]:
+        if not raw:
+            return []
+        return [item.strip() for item in str(raw).split(",") if item.strip()]
+
+    def _get_concept_specs(self) -> List[Dict[str, object]]:
+        multi_forget_classes = self._parse_csv_arg(getattr(self.args, "multi_forget_classes", ""))
+        if not multi_forget_classes:
+            return [
+                {
+                    "name": "__single__",
+                    "forget_classes": list(self.args.forget_classes),
+                    "train_item_folder": self.args.train_item_folder,
+                    "retain_cache_path": self.args.retain_cache_path,
+                }
+            ]
+
+        multi_train_item_folders = self._parse_csv_arg(getattr(self.args, "multi_train_item_folders", ""))
+        multi_retain_cache_paths = self._parse_csv_arg(getattr(self.args, "multi_retain_cache_paths", ""))
+        if len(multi_forget_classes) != len(multi_train_item_folders):
+            raise ValueError("`--multi_forget_classes` and `--multi_train_item_folders` must have the same length.")
+        if len(multi_forget_classes) != len(multi_retain_cache_paths):
+            raise ValueError("`--multi_forget_classes` and `--multi_retain_cache_paths` must have the same length.")
+
+        global_forget = {self._normalize_name(x) for x in self.args.forget_classes}
+        specs: List[Dict[str, object]] = []
+        for forget_class, item_folder, retain_cache_path in zip(
+            multi_forget_classes, multi_train_item_folders, multi_retain_cache_paths
+        ):
+            norm_name = self._normalize_name(forget_class)
+            if norm_name not in global_forget:
+                raise ValueError(
+                    f"Multi-concept class `{forget_class}` is not included in `--forget_classes={self.args.forget_classes}`."
+                )
+            specs.append(
+                {
+                    "name": norm_name,
+                    "forget_classes": [forget_class],
+                    "train_item_folder": item_folder,
+                    "retain_cache_path": retain_cache_path,
+                }
+            )
+        return specs
 
     def _trainable_params(self, model: torch.nn.Module) -> List[torch.nn.Parameter]:
         return [p for p in model.parameters() if p.requires_grad]
@@ -125,21 +150,35 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         split: str,
         item_folder: str,
         class_names: Sequence[str],
+        max_per_class: int = 0,
     ) -> List[str]:
         images: List[str] = []
         for class_name in class_names:
             txt_path = os.path.join(df_root, split, "Df", item_folder, f"{self._normalize_name(class_name)}.txt")
-            images.extend(self._read_txt_image_list(txt_path))
+            class_images = self._read_txt_image_list(txt_path)
+            if int(max_per_class) > 0:
+                class_images = class_images[: int(max_per_class)]
+            images.extend(class_images)
         return self._unique_keep_order(images)
 
-    def _build_single_train_dataset(self, transform):
+    def _build_single_train_dataset(
+        self,
+        transform,
+        selected_forget_classes: Sequence[str] = None,
+        train_item_folder: str = None,
+        dataset_forget_class_names: Sequence[str] = None,
+    ):
         dataset_cls = get_finegrained_dataset_cls(self.args.dataset)
-        forget_class_names = [self._normalize_name(x) for x in self.args.forget_classes]
+        selected_forget_classes = selected_forget_classes or self.args.forget_classes
+        train_item_folder = train_item_folder or self.args.train_item_folder
+        dataset_forget_class_names = dataset_forget_class_names or self.args.forget_classes
+        forget_class_names = [self._normalize_name(x) for x in selected_forget_classes]
         train_files = self._load_images_from_df_lists(
             df_root=self.args.df_root,
             split=self.args.train_split,
-            item_folder=self.args.train_item_folder,
+            item_folder=train_item_folder,
             class_names=forget_class_names,
+            max_per_class=self.args.train_max_per_class,
         )
         return dataset_cls(
             label_names=self.label_names,
@@ -149,7 +188,7 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
             transform=transform,
             return_meta=self.args.return_meta,
             selected_files=train_files,
-            forget_class_names=forget_class_names,
+            forget_class_names=[self._normalize_name(x) for x in dataset_forget_class_names],
         )
 
     def _get_model_device(self, model: torch.nn.Module) -> torch.device:
@@ -208,6 +247,34 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
             raise ValueError(f"Patch token count {n_patches} is not a square number.")
         return patch_feats, grid
 
+    def _encode_image_cls(self, model, images: torch.Tensor, layer: int) -> torch.Tensor:
+        clip_model = getattr(model, "clip_model", None)
+        if clip_model is None:
+            raise AttributeError("Cannot locate visual encoder on model.")
+        vision_model = getattr(clip_model, "vision_model", None)
+        if vision_model is None:
+            raise AttributeError("HF clip_model has no vision_model.")
+
+        x = vision_model.embeddings(images)
+        if hasattr(vision_model, "pre_layrnorm"):
+            x = vision_model.pre_layrnorm(x)
+
+        layers = getattr(getattr(vision_model, "encoder", None), "layers", None)
+        if layers is None or len(layers) == 0:
+            raise AttributeError("Cannot find vision_model.encoder.layers for HF CLIP.")
+        stop_k = self._resolve_block_stop(len(layers), layer)
+        for blk in layers[:stop_k]:
+            x = blk(
+                x,
+                attention_mask=None,
+                causal_attention_mask=None,
+            )[0]
+
+        cls_feats = x[:, 0, :]
+        if hasattr(vision_model, "post_layernorm"):
+            cls_feats = vision_model.post_layernorm(cls_feats)
+        return self._project_patch_feats(model, cls_feats)
+
     def _project_patch_feats(self, model, patch_feats: torch.Tensor) -> torch.Tensor:
         clip_model = getattr(model, "clip_model", None)
         if clip_model is not None and hasattr(clip_model, "visual_projection"):
@@ -218,6 +285,9 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         if device.type == "cuda":
             return torch.amp.autocast(device_type="cuda", enabled=getattr(self.args, "amp", True))
         return nullcontext()
+
+    def _normalize_feats(self, feats: torch.Tensor) -> torch.Tensor:
+        return feats / feats.norm(dim=-1, keepdim=True).clamp_min(1e-12)
 
     def _mask_to_patch_attention(self, mask_tensor: torch.Tensor, grid_size: int) -> torch.Tensor:
         mask_tensor = mask_tensor.unsqueeze(1)
@@ -449,6 +519,74 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         if not hasattr(target_block, "layer_norm1"):
             raise AttributeError("HF CLIP Grad-CAM target block has no layer_norm1.")
         return target_block.layer_norm1
+
+    def _encode_image_from_target_layer(
+        self,
+        model,
+        images: torch.Tensor,
+        layer: int,
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Compute image features while only building autograd graph from the chosen
+        Grad-CAM target block onward. Earlier blocks run under no_grad so unused
+        layers do not keep activations.
+        """
+        clip_model = getattr(model, "clip_model", None)
+        if clip_model is None:
+            raise AttributeError("Cannot locate visual encoder on model.")
+        vision_model = getattr(clip_model, "vision_model", None)
+        if vision_model is None:
+            raise AttributeError("HF clip_model has no vision_model.")
+
+        layers = getattr(getattr(vision_model, "encoder", None), "layers", None)
+        if layers is None or len(layers) == 0:
+            raise AttributeError("Cannot find vision_model.encoder.layers for HF CLIP.")
+
+        stop_k = self._resolve_block_stop(len(layers), layer)
+        block_idx = stop_k - 1
+
+        with torch.no_grad():
+            x = vision_model.embeddings(images)
+            if hasattr(vision_model, "pre_layrnorm"):
+                x = vision_model.pre_layrnorm(x)
+            for blk in layers[:block_idx]:
+                x = blk(
+                    x,
+                    attention_mask=None,
+                    causal_attention_mask=None,
+                )[0]
+
+        x = x.detach()
+        target_block = layers[block_idx]
+        target_acts: List[torch.Tensor] = []
+
+        def _capture_target(_module, _inputs, output):
+            target_acts.append(output)
+
+        handle = target_block.layer_norm1.register_forward_hook(_capture_target)
+        try:
+            x = target_block(
+                x,
+                attention_mask=None,
+                causal_attention_mask=None,
+            )[0]
+            for blk in layers[block_idx + 1:]:
+                x = blk(
+                    x,
+                    attention_mask=None,
+                    causal_attention_mask=None,
+                )[0]
+        finally:
+            handle.remove()
+
+        if not target_acts:
+            raise RuntimeError("Grad-CAM target activation capture failed.")
+
+        cls_feats = x[:, 0, :]
+        if hasattr(vision_model, "post_layernorm"):
+            cls_feats = vision_model.post_layernorm(cls_feats)
+        image_feats = self._project_patch_feats(model, cls_feats)
+        return image_feats, target_acts[0]
 
     def _tokens_without_cls(self, x: torch.Tensor) -> torch.Tensor:
         if x.ndim != 3:
@@ -760,135 +898,125 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                 tokenizer_fn,
                 device,
             )
-        gradcam_layer = self._get_gradcam_layer(model, layer=layer)
-        layer_capture = _ForwardCapture(gradcam_layer)
-
+        use_mask_localization = bool(getattr(self.args, "use_mask_localization", True))
         trainable_params = self._trainable_params(model)
         running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "grad_sim": 0.0, "forget_scale": 0.0}
         # running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "forget_scale": 0.0}
-        try:
-            for it in range(iters_per_epoch):
-                train_s = next(train_iter)
-                img_df = train_s["image"].to(device, non_blocking=True)
-                df_paths = train_s["image_path"]
-                txt_df = self._labels_to_texts(train_s["forget_label"], class_names, forget_indices)
+        for it in range(iters_per_epoch):
+            train_s = next(train_iter)
+            img_df = train_s["image"].to(device, non_blocking=True)
+            df_paths = train_s["image_path"]
+            txt_df = self._labels_to_texts(train_s["forget_label"], class_names, forget_indices)
 
-                retain_idx_cpu, retain_texts = self._select_retain_targets_from_cache(
-                    image_paths=df_paths,
-                    retain_labels=train_s["retain_label"],
-                    class_names=class_names,
-                    retain_cache_entries=retain_cache_entries,
-                )
+            retain_idx_cpu, retain_texts = self._select_retain_targets_from_cache(
+                image_paths=df_paths,
+                retain_labels=train_s["retain_label"],
+                class_names=class_names,
+                retain_cache_entries=retain_cache_entries,
+            )
 
-                optimizer.zero_grad(set_to_none=True)
-                with self._autocast_context(device):
-                    df_tokens = tokenizer_fn(txt_df).to(device)
-                    df_text_feats = model.encode_text(df_tokens)
-                    df_text_feats = df_text_feats / df_text_feats.norm(dim=-1, keepdim=True)
+            optimizer.zero_grad(set_to_none=True)
+            with self._autocast_context(device):
+                df_tokens = tokenizer_fn(txt_df).to(device)
+                df_text_feats = model.encode_text(df_tokens)
+                df_text_feats = self._normalize_feats(df_text_feats)
 
-                    # Layer-selectable Grad-CAM (clip_example.py style): use target logit gradients
-                    # to keep only positively contributing patch tokens for forget targets.
-                    layer_capture.clear()
-                    df_img_feats = model.encode_image(img_df)
-                    df_img_feats = df_img_feats / df_img_feats.norm(dim=-1, keepdim=True)
-                    if layer_capture.tensor is None:
-                        raise RuntimeError("Grad-CAM forward capture failed on forget branch.")
+                if use_mask_localization:
+                    # Only keep autograd state from the chosen Grad-CAM layer onward.
+                    df_img_feats, df_target_acts = self._encode_image_from_target_layer(model, img_df, layer=layer)
+                    df_img_feats = self._normalize_feats(df_img_feats)
                     df_score = (df_img_feats * df_text_feats).sum(dim=-1).sum()
-                    # We only need first-order grads for CAM mask generation.
-                    # Keep graph retention off to reduce memory pressure.
-                    df_grads = torch.autograd.grad(df_score, layer_capture.tensor, retain_graph=False)[0]
-                    _, df_pos_mask = self._gradcam_positive_patch_selection(layer_capture.tensor, df_grads)
+                    df_grads = torch.autograd.grad(df_score, df_target_acts, retain_graph=False)[0]
+                    _, df_pos_mask = self._gradcam_positive_patch_selection(df_target_acts, df_grads)
                     df_patch_feats, _ = self._encode_image_patches(model, img_df, layer=forget_layer)
-
                     pooled_patch_feats = self._masked_max_mean_pool(df_patch_feats, df_pos_mask)
                     pooled_patch_feats = self._project_patch_feats(model, pooled_patch_feats)
-                    pooled_patch_feats = pooled_patch_feats / pooled_patch_feats.norm(dim=-1, keepdim=True)
+                    pooled_patch_feats = self._normalize_feats(pooled_patch_feats)
+                else:
+                    pooled_patch_feats = self._normalize_feats(self._encode_image_cls(model, img_df, layer=1))
 
-                    contrast_text_feats = torch.cat([df_text_feats, text_pool_features], dim=0)
-                    logit_scale = model.logit_scale.exp()
-                    labels = torch.arange(img_df.size(0), device=device)
-                    logits_i2t = logit_scale * (pooled_patch_feats @ contrast_text_feats.t())
-                    logits_t2i = logit_scale * (df_text_feats @ pooled_patch_feats.t())
-                    loss_rtf = -0.5 * (
-                        F.cross_entropy(logits_i2t, labels) + F.cross_entropy(logits_t2i, labels)
-                    )
+                contrast_text_feats = torch.cat([df_text_feats, text_pool_features], dim=0)
+                logit_scale = model.logit_scale.exp()
+                labels = torch.arange(img_df.size(0), device=device)
+                logits_i2t = logit_scale * (pooled_patch_feats @ contrast_text_feats.t())
+                logits_t2i = logit_scale * (df_text_feats @ pooled_patch_feats.t())
+                loss_rtf = -0.5 * (
+                    F.cross_entropy(logits_i2t, labels) + F.cross_entropy(logits_t2i, labels)
+                )
 
-                    if lambda_ce > 0.0 and retain_idx_cpu.numel() > 0:
-                        retain_idx = retain_idx_cpu.to(device, non_blocking=True)
-                        retain_imgs = img_df.index_select(0, retain_idx)
-                        dr_tokens = tokenizer_fn(retain_texts).to(device)
-                        dr_text_feats = model.encode_text(dr_tokens)
-                        dr_text_feats = dr_text_feats / dr_text_feats.norm(dim=-1, keepdim=True)
+                if lambda_ce > 0.0 and retain_idx_cpu.numel() > 0:
+                    retain_idx = retain_idx_cpu.to(device, non_blocking=True)
+                    retain_imgs = img_df.index_select(0, retain_idx)
+                    dr_tokens = tokenizer_fn(retain_texts).to(device)
+                    dr_text_feats = model.encode_text(dr_tokens)
+                    dr_text_feats = self._normalize_feats(dr_text_feats)
 
-                        # Retain branch does the opposite: use retain-cache top class as target
-                        # and keep patches with positive contribution to that class.
-                        layer_capture.clear()
-                        dr_img_feats = model.encode_image(retain_imgs)
-                        dr_img_feats = dr_img_feats / dr_img_feats.norm(dim=-1, keepdim=True)
-                        if layer_capture.tensor is None:
-                            raise RuntimeError("Grad-CAM forward capture failed on retain branch.")
+                    if use_mask_localization:
+                        # Retain branch keeps patches with positive contribution to the retained target class.
+                        dr_img_feats, dr_target_acts = self._encode_image_from_target_layer(
+                            model, retain_imgs, layer=layer
+                        )
+                        dr_img_feats = self._normalize_feats(dr_img_feats)
                         dr_score = (dr_img_feats * dr_text_feats).sum(dim=-1).sum()
-                        dr_grads = torch.autograd.grad(dr_score, layer_capture.tensor, retain_graph=False)[0]
-                        _, dr_pos_mask = self._gradcam_positive_patch_selection(
-                            layer_capture.tensor, dr_grads)
+                        dr_grads = torch.autograd.grad(dr_score, dr_target_acts, retain_graph=False)[0]
+                        _, dr_pos_mask = self._gradcam_positive_patch_selection(dr_target_acts, dr_grads)
                         dr_patch_feats, _ = self._encode_image_patches(model, retain_imgs, layer=retain_layer)
-
                         retain_pooled_patch_feats = self._masked_max_mean_pool(dr_patch_feats, dr_pos_mask)
                         retain_pooled_patch_feats = self._project_patch_feats(model, retain_pooled_patch_feats)
-                        retain_pooled_patch_feats = retain_pooled_patch_feats / retain_pooled_patch_feats.norm(
-                            dim=-1, keepdim=True
-                        )
-                        retain_targets = torch.arange(retain_pooled_patch_feats.size(0), device=device)
-                        retain_logits_i2t = logit_scale * (retain_pooled_patch_feats @ dr_text_feats.t())
-                        retain_logits_t2i = logit_scale * (dr_text_feats @ retain_pooled_patch_feats.t())
-                        loss_ce = 0.5 * (
-                            F.cross_entropy(retain_logits_i2t, retain_targets)
-                            + F.cross_entropy(retain_logits_t2i, retain_targets)
-                        )
+                        retain_pooled_patch_feats = self._normalize_feats(retain_pooled_patch_feats)
                     else:
-                        loss_ce = torch.zeros((), device=device, dtype=loss_rtf.dtype)
-
-                    grad_sim = 0.0
-                    forget_scale = 1.0
-                    if loss_ce.requires_grad:
-                        grad_sim = self._grad_cosine_similarity(loss_rtf, loss_ce, trainable_params)
-                        forget_scale = self._forget_scale_from_grad_similarity(grad_sim)
-
-                    loss = (
-                        (lambda_rtf * forget_scale) * loss_rtf
-                        + lambda_ce * loss_ce
+                        retain_pooled_patch_feats = self._normalize_feats(
+                            self._encode_image_cls(model, retain_imgs, layer=1)
+                        )
+                    retain_targets = torch.arange(retain_pooled_patch_feats.size(0), device=device)
+                    retain_logits_i2t = logit_scale * (retain_pooled_patch_feats @ dr_text_feats.t())
+                    retain_logits_t2i = logit_scale * (dr_text_feats @ retain_pooled_patch_feats.t())
+                    loss_ce = 0.5 * (
+                        F.cross_entropy(retain_logits_i2t, retain_targets)
+                        + F.cross_entropy(retain_logits_t2i, retain_targets)
                     )
+                else:
+                    loss_ce = torch.zeros((), device=device, dtype=loss_rtf.dtype)
 
-                scaler.scale(loss).backward()
-                scaler.step(optimizer)
-                scaler.update()
+                grad_sim = 0.0
+                forget_scale = 1.0
+                if loss_ce.requires_grad:
+                    grad_sim = self._grad_cosine_similarity(loss_rtf, loss_ce, trainable_params)
+                    forget_scale = self._forget_scale_from_grad_similarity(grad_sim)
 
-                running["rtf"] += float(loss_rtf.detach().item())
-                running["ce"] += float(loss_ce.detach().item())
-                running["tot"] += float(loss.detach().item())
-                running["grad_sim"] += float(grad_sim)
-                running["forget_scale"] += float(forget_scale)
+                loss = (
+                    (lambda_rtf * forget_scale) * loss_rtf
+                    + lambda_ce * loss_ce
+                )
 
-                if (it + 1) % log_interval == 0:
-                    t = it + 1
-                    print(
-                        f"[Unlearn EP {epoch_idx + 1}/{max_epoch}] it={t}/{iters_per_epoch} "
-                        f"rtf={running['rtf']/t:.4f} "
-                        f"grad_sim={running['grad_sim']/t:.4f} "
-                        f"forget_scale={running['forget_scale']/t:.4f} "
-                        f"total={running['tot']/t:.4f}"
-                    )
-                    with open(f'{self.args.output_dir}/train_log.jsonl', 'a', encoding='utf-8') as fw:
-                        fw.write(json.dumps({
-                            'Epoch': epoch_idx + 1,
-                            'Iteration': it + 1,
-                            'GradSim': f'{running["grad_sim"]/t:.4f}',
-                            'ForgetScale': f'{running["forget_scale"]/t:.4f}',
-                            'CE': f'{running["ce"]/t:.4f}',
-                            'Total': f'{running["tot"]/t:.4f}'
-                        }) + '\n')
-        finally:
-            layer_capture.close()
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+
+            running["rtf"] += float(loss_rtf.detach().item())
+            running["ce"] += float(loss_ce.detach().item())
+            running["tot"] += float(loss.detach().item())
+            running["grad_sim"] += float(grad_sim)
+            running["forget_scale"] += float(forget_scale)
+
+            if (it + 1) % log_interval == 0:
+                t = it + 1
+                print(
+                    f"[Unlearn EP {epoch_idx + 1}/{max_epoch}] it={t}/{iters_per_epoch} "
+                    f"rtf={running['rtf']/t:.4f} "
+                    f"grad_sim={running['grad_sim']/t:.4f} "
+                    f"forget_scale={running['forget_scale']/t:.4f} "
+                    f"total={running['tot']/t:.4f}"
+                )
+                with open(f'{self.args.output_dir}/train_log.jsonl', 'a', encoding='utf-8') as fw:
+                    fw.write(json.dumps({
+                        'Epoch': epoch_idx + 1,
+                        'Iteration': it + 1,
+                        'GradSim': f'{running["grad_sim"]/t:.4f}',
+                        'ForgetScale': f'{running["forget_scale"]/t:.4f}',
+                        'CE': f'{running["ce"]/t:.4f}',
+                        'Total': f'{running["tot"]/t:.4f}'
+                    }) + '\n')
 
         denom = float(max(iters_per_epoch, 1))
         return {
@@ -904,10 +1032,16 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         image_size: int,
         class_names: Sequence[str],
         retain_topk_indices: Sequence[int],
+        forget_classes: Sequence[str] = None,
+        retain_exclude_classes: Sequence[str] = None,
     ) -> Dict[str, float]:
         device = self._get_model_device(model)
         eval_transform = self._build_eval_transform(image_size)
-        forget_loader, retain_loader = self._build_test_dataloaders_from_folders(transform=eval_transform)
+        forget_loader, retain_loader = self._build_test_dataloaders_from_folders(
+            transform=eval_transform,
+            forget_classes=forget_classes,
+            retain_exclude_classes=retain_exclude_classes,
+        )
 
         text_features = self._encode_text_features(model, class_names, tokenize_fn, device)
         forget_cache = self._collect_eval_cache(model, forget_loader, text_features, device)
@@ -950,35 +1084,58 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
 
         args.return_meta = True
         train_transform = self._build_eval_transform(image_size)
-        df_dataset = self._build_single_train_dataset(transform=train_transform)
-        train_loader = DataLoader(
-            df_dataset,
-            batch_size=args.batch_size,
-            shuffle=True,
-            num_workers=args.num_workers,
-            pin_memory=args.pin_memory,
-            drop_last=True,
-        )
-
+        concept_specs = self._get_concept_specs()
         class_names = self._build_class_name_list()
         forget_indices, retain_indices = self._build_forget_retain_indices(args.forget_classes)
-        retain_topk_indices = self._compute_topk_retain_classes(df_dataset, forget_indices, args.retain_topk)
 
         class_name_to_idx = self._build_class_name_to_idx(class_names)
         mask_index = self._build_mask_index(args.sam3_mask_dir, args.sam3_mask_suffix, class_name_to_idx)
         if not mask_index:
             raise FileNotFoundError(f"No mask files found under: {args.sam3_mask_dir}")
-        if not args.retain_cache_path:
-            raise ValueError("`--retain_cache_path` is required.")
-        retain_cache_blob = torch.load(args.retain_cache_path, map_location="cpu")
-        retain_cache_entries = retain_cache_blob.get("entries", {})
-        if not retain_cache_entries:
-            raise ValueError(f"No retain cache entries found in: {args.retain_cache_path}")
-        print(
-            f"Loaded retain cache: {len(retain_cache_entries)} entries "
-            f"from {args.retain_cache_path}"
-        )
-        retain_mask_tensor_cache: Dict[Tuple[str, int], torch.Tensor] = {}
+
+        concept_contexts: List[Dict[str, object]] = []
+        for spec in concept_specs:
+            forget_classes = list(spec["forget_classes"])
+            df_dataset = self._build_single_train_dataset(
+                transform=train_transform,
+                selected_forget_classes=forget_classes,
+                train_item_folder=str(spec["train_item_folder"]),
+                dataset_forget_class_names=args.forget_classes,
+            )
+            train_loader = DataLoader(
+                df_dataset,
+                batch_size=args.batch_size,
+                shuffle=args.shuffle_train,
+                num_workers=args.num_workers,
+                pin_memory=args.pin_memory,
+                drop_last=True,
+            )
+
+            local_forget_indices, _ = self._build_forget_retain_indices(forget_classes)
+            local_retain_topk_indices = self._compute_topk_retain_classes(df_dataset, forget_indices, args.retain_topk)
+            retain_cache_path = str(spec["retain_cache_path"])
+            if not retain_cache_path:
+                raise ValueError(f"Missing retain cache path for concept `{spec['name']}`.")
+            retain_cache_blob = torch.load(retain_cache_path, map_location="cpu")
+            retain_cache_entries = retain_cache_blob.get("entries", {})
+            if not retain_cache_entries:
+                raise ValueError(f"No retain cache entries found in: {retain_cache_path}")
+            print(
+                f"Loaded retain cache for `{spec['name']}`: {len(retain_cache_entries)} entries "
+                f"from {retain_cache_path}"
+            )
+            concept_contexts.append(
+                {
+                    "name": str(spec["name"]),
+                    "forget_classes": forget_classes,
+                    "train_item_folder": str(spec["train_item_folder"]),
+                    "train_loader": train_loader,
+                    "forget_indices": local_forget_indices,
+                    "retain_topk_indices": local_retain_topk_indices,
+                    "retain_cache_entries": retain_cache_entries,
+                    "retain_mask_tensor_cache": {},
+                }
+            )
 
         optimizer = self._build_optimizer(model, backend=backend)
         scaler = torch.amp.GradScaler(enabled=(device.type == "cuda"), init_scale=1024)
@@ -988,14 +1145,11 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
             "tokenize_fn": tokenize_fn,
             "image_size": image_size,
             "backend": backend,
-            "train_loader": train_loader,
+            "concept_contexts": concept_contexts,
             "class_names": class_names,
             "forget_indices": forget_indices,
             "retain_indices": retain_indices,
-            "retain_topk_indices": retain_topk_indices,
             "mask_index": mask_index,
-            "retain_cache_entries": retain_cache_entries,
-            "retain_mask_tensor_cache": retain_mask_tensor_cache,
             "optimizer": optimizer,
             "scaler": scaler,
         }
@@ -1035,70 +1189,104 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         tokenize_fn = ctx["tokenize_fn"]
         image_size = ctx["image_size"]
         class_names = ctx["class_names"]
-        forget_indices = ctx["forget_indices"]
         retain_indices = ctx["retain_indices"]
-        retain_topk_indices = ctx["retain_topk_indices"]
-        train_loader = ctx["train_loader"]
+        concept_contexts = ctx["concept_contexts"]
         mask_index = ctx["mask_index"]
-        retain_cache_entries = ctx["retain_cache_entries"]
-        retain_mask_tensor_cache = ctx["retain_mask_tensor_cache"]
         optimizer = ctx["optimizer"]
         scaler = ctx["scaler"]
+        merged_retain_topk_indices = self._unique_keep_order(
+            [
+                int(idx)
+                for concept_ctx in concept_contexts
+                for idx in concept_ctx["retain_topk_indices"]
+            ]
+        )
 
         os.makedirs(args.output_dir, exist_ok=True)
 
-        best_score = -1
+        best_score = float("-inf")
         best_epoch_info = None
         for ep in range(args.max_epoch):
-            train_epoch_fn(
-                model=model,
-                tokenizer_fn=tokenize_fn,
-                train_loader=train_loader,
-                mask_index=mask_index,
-                retain_cache_entries=retain_cache_entries,
-                retain_mask_tensor_cache=retain_mask_tensor_cache,
-                class_names=class_names,
-                forget_indices=forget_indices,
-                retain_indices=retain_indices,
-                optimizer=optimizer,
-                scaler=scaler,
-                lambda_rtf=args.lambda_rtf,
-                lambda_keep=args.lambda_keep,
-                lambda_ce=args.lambda_ce,
-                sample_k=args.sample_k,
-                layer=args.layer,
-                forget_layer=args.forget_layer,
-                retain_layer=args.retain_layer,
-                epoch_idx=ep,
-                max_epoch=args.max_epoch,
-                log_interval=args.log_interval,
-            )
-            if self.args.do_eval:
-                eval_metrics = self._evaluate_for_selection(
-                    model=model,
-                    tokenize_fn=tokenize_fn,
-                    image_size=image_size,
-                    class_names=class_names,
-                    retain_topk_indices=retain_topk_indices,
+            epoch_train_metrics: List[Dict[str, object]] = []
+            for concept_idx, concept_ctx in enumerate(concept_contexts):
+                print(
+                    f"[Epoch {ep + 1}/{args.max_epoch}] "
+                    f"concept={concept_ctx['name']} ({concept_idx + 1}/{len(concept_contexts)}) "
+                    f"train_item_folder={concept_ctx['train_item_folder']}"
                 )
-                print(eval_metrics)
+                train_metrics = train_epoch_fn(
+                    model=model,
+                    tokenizer_fn=tokenize_fn,
+                    train_loader=concept_ctx["train_loader"],
+                    mask_index=mask_index,
+                    retain_cache_entries=concept_ctx["retain_cache_entries"],
+                    retain_mask_tensor_cache=concept_ctx["retain_mask_tensor_cache"],
+                    class_names=class_names,
+                    forget_indices=concept_ctx["forget_indices"],
+                    retain_indices=retain_indices,
+                    optimizer=optimizer,
+                    scaler=scaler,
+                    lambda_rtf=args.lambda_rtf,
+                    lambda_keep=args.lambda_keep,
+                    lambda_ce=args.lambda_ce,
+                    sample_k=args.sample_k,
+                    layer=args.layer,
+                    forget_layer=args.forget_layer,
+                    retain_layer=args.retain_layer,
+                    epoch_idx=ep,
+                    max_epoch=args.max_epoch,
+                    log_interval=args.log_interval,
+                )
+                epoch_train_metrics.append(
+                    {
+                        "concept": concept_ctx["name"],
+                        "train_item_folder": concept_ctx["train_item_folder"],
+                        "metrics": train_metrics,
+                    }
+                )
+            if self.args.do_eval:
+                concept_eval_metrics: List[Dict[str, object]] = []
+                total_score = 0.0
+                for concept_ctx in concept_contexts:
+                    eval_metrics = self._evaluate_for_selection(
+                        model=model,
+                        tokenize_fn=tokenize_fn,
+                        image_size=image_size,
+                        class_names=class_names,
+                        retain_topk_indices=concept_ctx["retain_topk_indices"],
+                        forget_classes=concept_ctx["forget_classes"],
+                        retain_exclude_classes=args.forget_classes,
+                    )
+                    concept_payload = {
+                        "concept": concept_ctx["name"],
+                        "forget_classes": list(concept_ctx["forget_classes"]),
+                        "train_item_folder": concept_ctx["train_item_folder"],
+                        "metrics": eval_metrics,
+                    }
+                    concept_eval_metrics.append(concept_payload)
+                    total_score += float(eval_metrics["selection_score"])
+                    print(concept_payload)
                 with open(f'{self.args.output_dir}/eval_log.jsonl', 'a', encoding='utf-8') as fw:
                     fw.write(json.dumps(
                         {
                             'epoch': ep + 1,
-                            'metric': eval_metrics
+                            'train_metrics': epoch_train_metrics,
+                            'concept_metrics': concept_eval_metrics,
+                            'selection_score_sum': total_score,
                         }
                     ) + '\n')
-                score = eval_metrics['forget_success'] + eval_metrics['retain_accuracy']
-                if score > best_score:
+                if total_score > best_score:
                     print(f'New Best Epoch: {ep + 1}')
-                    best_score = score
+                    best_score = total_score
                     model.clip_model.save_pretrained(args.output_dir)
+                    forget_success_sum = sum(float(x["metrics"]["forget_success"]) for x in concept_eval_metrics)
+                    retain_accuracy_sum = sum(float(x["metrics"]["retain_accuracy"]) for x in concept_eval_metrics)
                     best_epoch_info = {
                         'best_epoch': ep + 1,
-                        'forget_success': eval_metrics['forget_success'],
-                        'coexisting_accuracy': eval_metrics['retain_topk_accuracy'],
-                        'retain_accuracy': eval_metrics['retain_accuracy']
+                        'forget_success': forget_success_sum,
+                        'retain_accuracy': retain_accuracy_sum,
+                        'selection_score_sum': total_score,
+                        'concept_metrics': concept_eval_metrics,
                     }
                     with open(f'{self.args.output_dir}/best_epoch.json', 'w', encoding='utf-8') as fw:
                         json.dump(best_epoch_info, fw, ensure_ascii=False, indent=2)
@@ -1113,7 +1301,7 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
             model=best_model,
             tokenize_fn=best_tokenize_fn,
             image_size=best_image_size,
-            retain_topk_indices=retain_topk_indices,
+            retain_topk_indices=merged_retain_topk_indices,
         )
 
         best_epoch_path = os.path.join(self.args.output_dir, 'best_epoch.json')
@@ -1163,6 +1351,24 @@ def build_parser():
     parser.add_argument("--sam3_mask_dir", type=str, default=DEFAULT_MASK_DIR)
     parser.add_argument("--sam3_mask_suffix", type=str, default=".png")
     parser.add_argument("--retain_cache_path", type=str, default="")
+    parser.add_argument(
+        "--multi_forget_classes",
+        type=str,
+        default="",
+        help="Comma-separated per-concept forget classes for sequential multi-concept training.",
+    )
+    parser.add_argument(
+        "--multi_train_item_folders",
+        type=str,
+        default="",
+        help="Comma-separated train item folders aligned with `--multi_forget_classes`.",
+    )
+    parser.add_argument(
+        "--multi_retain_cache_paths",
+        type=str,
+        default="",
+        help="Comma-separated retain cache paths aligned with `--multi_forget_classes`.",
+    )
     parser.add_argument("--vision_lr", type=float, default=-1.0)
     parser.add_argument("--text_lr", type=float, default=-1.0)
     parser.add_argument("--proj_lr", type=float, default=-1.0)
@@ -1171,6 +1377,13 @@ def build_parser():
     parser.add_argument("--no_amp", action="store_false", dest="amp")
     parser.set_defaults(amp=True)
     parser.add_argument("--freeze_text_tower", action="store_true")
+    parser.add_argument(
+        "--use_mask_localization",
+        type=int,
+        default=1,
+        choices=[0, 1],
+        help="Whether to localize concepts before training. 1 uses Grad-CAM patch localization; 0 uses full-image CLS features.",
+    )
     parser.add_argument("--do_eval", action="store_true")
     parser.set_defaults(freeze_text_tower=False)
     parser.set_defaults(do_eval=False)

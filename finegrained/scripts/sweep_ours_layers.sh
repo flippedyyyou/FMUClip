@@ -24,7 +24,9 @@ LAMBDA_CE=1
 SAMPLE_K=5
 RETAIN_TOPK=5
 METHOD="ours"
-LAYERS="1"
+LAYER=1
+FORGET_LAYERS="${FORGET_LAYERS:-1}"
+RETAIN_LAYERS="${RETAIN_LAYERS:-1}"
 RUN_TAG="$(date +%m%d%H%M%S)"
 
 for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
@@ -57,12 +59,13 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
     echo "FORGET_CLASSES: ${FORGET_CLASSES}"
     echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
     echo "OUTPUT_DIR: ${BASE_OUTPUT_DIR}"
-    echo "layer,best_acc_mean,best_map_mean,output_dir" > "${SUMMARY_CSV}"
+    echo "layer,forget_layer,retain_layer,best_acc_mean,best_map_mean,output_dir" > "${SUMMARY_CSV}"
 
-    for LAYER in ${LAYERS}; do
+    for FORGET_LAYER in ${FORGET_LAYERS}; do
+      for RETAIN_LAYER in ${RETAIN_LAYERS}; do
       for LR in "1e-5" "2e-5"; do
-        OUTPUT_DIR="${BASE_OUTPUT_DIR}/LR_${LR}/L${LAYER}"
-        echo "[RUN] layer=${LAYER}, output=${OUTPUT_DIR}"
+        OUTPUT_DIR="${BASE_OUTPUT_DIR}/LR_${LR}/L${LAYER}_FL${FORGET_LAYER}_RL${RETAIN_LAYER}"
+        echo "[RUN] layer=${LAYER}, forget_layer=${FORGET_LAYER}, retain_layer=${RETAIN_LAYER}, output=${OUTPUT_DIR}"
         python finegrained/clip_unlearn_finegrained.py \
           --do_eval \
           --dataset "${DATASET}" \
@@ -93,6 +96,8 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
           --lambda_ce "${LAMBDA_CE}" \
           --sample_k "${SAMPLE_K}" \
           --layer "${LAYER}" \
+          --forget_layer "${FORGET_LAYER}" \
+          --retain_layer "${RETAIN_LAYER}" \
           --retain_topk "${RETAIN_TOPK}" \
           --device "${DEVICE}"
 
@@ -100,8 +105,11 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
         row="$(python /datanfs4/shenruoyan/FMUClip/finegrained/summarize_layer_result.py \
           --config "${CFG_PATH}" \
           --layer "${LAYER}" \
+          --forget_layer "${FORGET_LAYER}" \
+          --retain_layer "${RETAIN_LAYER}" \
           --output_dir "${OUTPUT_DIR}")"
         echo "${row}" >> "${SUMMARY_CSV}"
+      done
       done
     done
   echo "[DONE] summary csv: ${SUMMARY_CSV}"

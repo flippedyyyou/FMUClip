@@ -49,6 +49,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--train_split", type=str, default="train")
     parser.add_argument("--val_split", type=str, default="val")
     parser.add_argument("--train_item_folder", type=str, default="item3")
+    parser.add_argument(
+        "--train_max_per_class",
+        type=int,
+        default=0,
+        help="Maximum number of training samples per concept (0 means no limit).",
+    )
     parser.add_argument("--retain_item_folder", type=str, default="item1")
     parser.add_argument("--test_item_folder", type=str, default="item1")
     parser.add_argument(

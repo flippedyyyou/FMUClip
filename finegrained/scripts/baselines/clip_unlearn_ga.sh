@@ -24,7 +24,7 @@ WEIGHT_DECAY=5e-4
 RETAIN_TOPK=5
 GA_EVAL_INTERVAL=20
 
-for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_instances"
+for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_SPECS=(
