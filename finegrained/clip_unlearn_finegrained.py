@@ -577,10 +577,13 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         lambda_ce: float,
         sample_k: int,
         layer: int,
+        forget_layer: int,
+        retain_layer: int,
         epoch_idx: int,
         max_epoch: int,
         log_interval: int,
     ) -> Dict[str, float]:
+        del forget_layer, retain_layer
         device = self._get_model_device(model)
         iters_per_epoch = len(train_loader)
         model.train()
@@ -739,6 +742,8 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         lambda_ce: float,
         sample_k: int,
         layer: int,
+        forget_layer: int,
+        retain_layer: int,
         epoch_idx: int,
         max_epoch: int,
         log_interval: int,
@@ -759,8 +764,8 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         layer_capture = _ForwardCapture(gradcam_layer)
 
         trainable_params = self._trainable_params(model)
-        # running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "grad_sim": 0.0, "forget_scale": 0.0}
-        running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "forget_scale": 0.0}
+        running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "grad_sim": 0.0, "forget_scale": 0.0}
+        # running = {"rtf": 0.0, "keep": 0.0, "ce": 0.0, "tot": 0.0, "forget_scale": 0.0}
         try:
             for it in range(iters_per_epoch):
                 train_s = next(train_iter)
@@ -792,7 +797,8 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                     # We only need first-order grads for CAM mask generation.
                     # Keep graph retention off to reduce memory pressure.
                     df_grads = torch.autograd.grad(df_score, layer_capture.tensor, retain_graph=False)[0]
-                    df_patch_feats, df_pos_mask = self._gradcam_positive_patch_selection(layer_capture.tensor, df_grads)
+                    _, df_pos_mask = self._gradcam_positive_patch_selection(layer_capture.tensor, df_grads)
+                    df_patch_feats, _ = self._encode_image_patches(model, img_df, layer=forget_layer)
 
                     pooled_patch_feats = self._masked_max_mean_pool(df_patch_feats, df_pos_mask)
                     pooled_patch_feats = self._project_patch_feats(model, pooled_patch_feats)
@@ -823,8 +829,9 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                             raise RuntimeError("Grad-CAM forward capture failed on retain branch.")
                         dr_score = (dr_img_feats * dr_text_feats).sum(dim=-1).sum()
                         dr_grads = torch.autograd.grad(dr_score, layer_capture.tensor, retain_graph=False)[0]
-                        dr_patch_feats, dr_pos_mask = self._gradcam_positive_patch_selection(
+                        _, dr_pos_mask = self._gradcam_positive_patch_selection(
                             layer_capture.tensor, dr_grads)
+                        dr_patch_feats, _ = self._encode_image_patches(model, retain_imgs, layer=retain_layer)
 
                         retain_pooled_patch_feats = self._masked_max_mean_pool(dr_patch_feats, dr_pos_mask)
                         retain_pooled_patch_feats = self._project_patch_feats(model, retain_pooled_patch_feats)
@@ -843,9 +850,9 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
 
                     grad_sim = 0.0
                     forget_scale = 1.0
-                    # if loss_ce.requires_grad:
-                    #     grad_sim = self._grad_cosine_similarity(loss_rtf, loss_ce, trainable_params)
-                    #     forget_scale = self._forget_scale_from_grad_similarity(grad_sim)
+                    if loss_ce.requires_grad:
+                        grad_sim = self._grad_cosine_similarity(loss_rtf, loss_ce, trainable_params)
+                        forget_scale = self._forget_scale_from_grad_similarity(grad_sim)
 
                     loss = (
                         (lambda_rtf * forget_scale) * loss_rtf
@@ -859,7 +866,7 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                 running["rtf"] += float(loss_rtf.detach().item())
                 running["ce"] += float(loss_ce.detach().item())
                 running["tot"] += float(loss.detach().item())
-                # running["grad_sim"] += float(grad_sim)
+                running["grad_sim"] += float(grad_sim)
                 running["forget_scale"] += float(forget_scale)
 
                 if (it + 1) % log_interval == 0:
@@ -867,7 +874,7 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                     print(
                         f"[Unlearn EP {epoch_idx + 1}/{max_epoch}] it={t}/{iters_per_epoch} "
                         f"rtf={running['rtf']/t:.4f} "
-                        # f"grad_sim={running['grad_sim']/t:.4f} "
+                        f"grad_sim={running['grad_sim']/t:.4f} "
                         f"forget_scale={running['forget_scale']/t:.4f} "
                         f"total={running['tot']/t:.4f}"
                     )
@@ -875,7 +882,7 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                         fw.write(json.dumps({
                             'Epoch': epoch_idx + 1,
                             'Iteration': it + 1,
-                            # 'GradSim': f'{running["grad_sim"]/t:.4f}',
+                            'GradSim': f'{running["grad_sim"]/t:.4f}',
                             'ForgetScale': f'{running["forget_scale"]/t:.4f}',
                             'CE': f'{running["ce"]/t:.4f}',
                             'Total': f'{running["tot"]/t:.4f}'
@@ -928,6 +935,7 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
         model, tokenize_fn, image_size, backend = self._load_clip_backend(device)
         model = model.float().to(device)
         if getattr(args, "freeze_text_tower", False):
+            print("freeze text tower...")
             clip_model = getattr(model, "clip_model", None)
             if clip_model is not None and hasattr(clip_model, "text_model"):
                 for p in clip_model.text_model.parameters():
@@ -1059,6 +1067,8 @@ class ClipUnlearnFinegrained(ClipFinegrainedBaseline):
                 lambda_ce=args.lambda_ce,
                 sample_k=args.sample_k,
                 layer=args.layer,
+                forget_layer=args.forget_layer,
+                retain_layer=args.retain_layer,
                 epoch_idx=ep,
                 max_epoch=args.max_epoch,
                 log_interval=args.log_interval,
@@ -1136,7 +1146,19 @@ def build_parser():
         "--layer",
         type=int,
         default=1,
-        help="Target layer for `ours`/`gradcam`: 1..N (1-based) or -1..-N (from last block).",
+        help="Grad-CAM mask layer / default patch layer: 1..N (1-based) or -1..-N (from last block).",
+    )
+    parser.add_argument(
+        "--forget_layer",
+        type=int,
+        default=1,
+        help="Patch feature layer used by the forget branch. Grad-CAM mask is still generated from `--layer`.",
+    )
+    parser.add_argument(
+        "--retain_layer",
+        type=int,
+        default=1,
+        help="Patch feature layer used by the retain branch. Grad-CAM mask is still generated from `--layer`.",
     )
     parser.add_argument("--sam3_mask_dir", type=str, default=DEFAULT_MASK_DIR)
     parser.add_argument("--sam3_mask_suffix", type=str, default=".png")

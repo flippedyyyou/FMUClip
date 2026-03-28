@@ -3,7 +3,7 @@ set -euo pipefail
 set -a
 source .env
 set +a
-export CUDA_VISIBLE_DEVICES=2
+export CUDA_VISIBLE_DEVICES=0
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -16,7 +16,7 @@ FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/mask"
 BATCH_SIZE=16
 NUM_WORKERS=0
-MAX_EPOCH=10
+MAX_EPOCH=20
 LR=2e-5
 WEIGHT_DECAY=3e-4
 LAMBDA_RTF=2
@@ -24,22 +24,24 @@ LAMBDA_CE=1
 SAMPLE_K=5
 RETAIN_TOPK=5
 METHOD="gradcam"
-LAYERS="23"
+LAYER=1
+FORGET_LAYERS=1
+RETAIN_LAYERS=11
 RUN_TAG="$(date +%m%d%H%M%S)"
 
 for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_SPECS=(
-      "cow:5"
       "airplane:5"
+      "cow:5"
     )
     
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_SPECS=(
       "girl:4"
-      "dog:4"
+      "boy:4"
     )
   else
     echo "Unknown dataset: ${DATASET}"
@@ -50,7 +52,7 @@ for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_ins
     IFS=":" read -r FORGET_CLASSES ITEM_NUM <<< "${FORGET_SPEC}"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
     RETAIN_CACHE_PATH="/datanfs4/shenruoyan/FMUClip/finegrained/mask/${DATASET}/${TRAIN_ITEM_FOLDER}/retain_cache_${FORGET_CLASSES}.pt"
-    BASE_OUTPUT_DIR="finegrained/ckpt/sweep_${METHOD}/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+    BASE_OUTPUT_DIR="finegrained/ckpt/vitb-32/sweep_${METHOD}/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
     mkdir -p "${BASE_OUTPUT_DIR}"
     SUMMARY_CSV="${BASE_OUTPUT_DIR}/summary.csv"
 
@@ -58,12 +60,13 @@ for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_ins
     echo "FORGET_CLASSES: ${FORGET_CLASSES}"
     echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
     echo "OUTPUT_DIR: ${BASE_OUTPUT_DIR}"
-    echo "layer,best_acc_mean,best_map_mean,output_dir" > "${SUMMARY_CSV}"
+    echo "layer,forget_layer,retain_layer,best_acc_mean,best_map_mean,output_dir" > "${SUMMARY_CSV}"
 
-    for LAYER in ${LAYERS}; do
-      for LR in "1e-5" "2e-5"; do
-        OUTPUT_DIR="${BASE_OUTPUT_DIR}/LR_${LR}/L${LAYER}"
-        echo "[RUN] layer=${LAYER}, output=${OUTPUT_DIR}"
+    for FORGET_LAYER in ${FORGET_LAYERS}; do
+      for RETAIN_LAYER in ${RETAIN_LAYERS}; do
+      for LR in "1e-5" "1e-6" "5e-6"; do
+        OUTPUT_DIR="${BASE_OUTPUT_DIR}/LR_${LR}/L${LAYER}_FL${FORGET_LAYER}_RL${RETAIN_LAYER}"
+        echo "[RUN] layer=${LAYER}, forget_layer=${FORGET_LAYER}, retain_layer=${RETAIN_LAYER}, output=${OUTPUT_DIR}"
         python finegrained/clip_unlearn_finegrained.py \
           --do_eval \
           --dataset "${DATASET}" \
@@ -94,6 +97,8 @@ for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_ins
           --lambda_ce "${LAMBDA_CE}" \
           --sample_k "${SAMPLE_K}" \
           --layer "${LAYER}" \
+          --forget_layer "${FORGET_LAYER}" \
+          --retain_layer "${RETAIN_LAYER}" \
           --retain_topk "${RETAIN_TOPK}" \
           --device "${DEVICE}"
 
@@ -101,8 +106,11 @@ for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_ins
         row="$(python /datanfs4/shenruoyan/FMUClip/finegrained/summarize_layer_result.py \
           --config "${CFG_PATH}" \
           --layer "${LAYER}" \
+          --forget_layer "${FORGET_LAYER}" \
+          --retain_layer "${RETAIN_LAYER}" \
           --output_dir "${OUTPUT_DIR}")"
         echo "${row}" >> "${SUMMARY_CSV}"
+      done
       done
     done
   echo "[DONE] summary csv: ${SUMMARY_CSV}"

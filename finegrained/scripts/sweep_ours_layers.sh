@@ -3,7 +3,7 @@ set -euo pipefail
 set -a
 source .env
 set +a
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=0
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -27,7 +27,7 @@ METHOD="ours"
 LAYERS="1"
 RUN_TAG="$(date +%m%d%H%M%S)"
 
-for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_instances"
+for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_instances"
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_SPECS=(
@@ -37,8 +37,8 @@ for DATASET in "coco2017_instances"; do  # "flickr30k_entities" or "coco2017_ins
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_SPECS=(
-      "table:7"
-      "dog:7"
+      "girl:4"
+      "boy:4"
     )
   else
     echo "Unknown dataset: ${DATASET}"

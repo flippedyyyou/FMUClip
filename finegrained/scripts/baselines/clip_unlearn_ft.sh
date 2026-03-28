@@ -5,7 +5,7 @@ set -a
 source .env
 set +a
 
-export CUDA_VISIBLE_DEVICES=2
+export CUDA_VISIBLE_DEVICES=0
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -16,7 +16,7 @@ FLICKR_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entit
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
 RETAIN_ITEM_FOLDER="item1"
-BATCH_SIZE=8
+BATCH_SIZE=16
 NUM_WORKERS=0
 MAX_EPOCH=10
 LR=1e-6
@@ -36,8 +36,8 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_SPECS=(
-      # "girl:4"
-      "dog:4"
+      "girl:4"
+      "boy:4"
     )
   else
     echo "Unknown dataset: ${DATASET}"
@@ -47,7 +47,7 @@ for DATASET in "flickr30k_entities"; do  # "flickr30k_entities" or "coco2017_ins
   for FORGET_SPEC in "${FORGET_SPECS[@]}"; do
     IFS=":" read -r FORGET_CLASSES ITEM_NUM <<< "${FORGET_SPEC}"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
-    OUTPUT_DIR="finegrained/ckpt/ft/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+    OUTPUT_DIR="finegrained/ckpt/vitb-32/ft/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
 
     echo "METHOD: ft"
     echo "DATASET: ${DATASET}"

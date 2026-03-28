@@ -5,7 +5,7 @@ set -a
 source .env
 set +a
 
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=1
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -19,21 +19,22 @@ RETAIN_ITEM_FOLDER="item1"
 BATCH_SIZE=16
 NUM_WORKERS=0
 RETAIN_TOPK=5
-SLUG_RATIO_DIVISOR=10
+SLUG_RATIO_DIVISOR=6
 SLUG_SEARCH_MULTIPLIERS="0.5,1.0,2.0"
 SLUG_MAX_CANDIDATES=3
 
-for DATASET in "coco2017_instances"; do
+for DATASET in "flickr30k_entities"; do
   if [ "${DATASET}" = "coco2017_instances" ]; then
     DF_ROOT="${COCO_DF_ROOT}"
     FORGET_SPECS=(
       "cow:5"
+      "airplane:5"
     )
   elif [ "${DATASET}" = "flickr30k_entities" ]; then
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_SPECS=(
-      "table:7"
-      "dog:7"
+      "boy:4"
+      "girl:4"
     )
   else
     echo "Unknown dataset: ${DATASET}"
@@ -43,7 +44,7 @@ for DATASET in "coco2017_instances"; do
   for FORGET_SPEC in "${FORGET_SPECS[@]}"; do
     IFS=":" read -r FORGET_CLASSES ITEM_NUM <<< "${FORGET_SPEC}"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
-    OUTPUT_DIR="finegrained/ckpt/slug/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+    OUTPUT_DIR="finegrained/ckpt/vitb-32/slug/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
 
     python finegrained/baselines/clip_unlearn_slug.py \
       --dataset "${DATASET}" \

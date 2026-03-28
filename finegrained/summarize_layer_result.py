@@ -13,12 +13,14 @@ def _safe_float(v, default=0.0) -> float:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build one CSV row for layer sweep summary.")
     parser.add_argument("--config", type=str, required=True, help="Path to config.json")
-    parser.add_argument("--layer", type=int, required=True, help="Layer index")
+    parser.add_argument("--layer", type=int, required=True, help="Grad-CAM mask layer index")
+    parser.add_argument("--forget_layer", type=int, required=True, help="Forget patch feature layer index")
+    parser.add_argument("--retain_layer", type=int, required=True, help="Retain patch feature layer index")
     parser.add_argument("--output_dir", type=str, required=True, help="Run output directory")
     args = parser.parse_args()
 
     if not os.path.exists(args.config):
-        print(f"{args.layer},,,{args.output_dir}")
+        print(f"{args.layer},{args.forget_layer},{args.retain_layer},,,{args.output_dir}")
         return
 
     with open(args.config, "r", encoding="utf-8") as f:
@@ -34,7 +36,10 @@ def main() -> None:
 
     best_acc_mean = (forget_success + retain_topk_accuracy + retain_accuracy) / 3.0
     best_map_mean = (retain_topk_map + other_map) / 2.0
-    print(f"{args.layer},{best_acc_mean:.6f},{best_map_mean:.6f},{args.output_dir}")
+    print(
+        f"{args.layer},{args.forget_layer},{args.retain_layer},"
+        f"{best_acc_mean:.6f},{best_map_mean:.6f},{args.output_dir}"
+    )
 
 
 if __name__ == "__main__":

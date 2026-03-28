@@ -5,7 +5,7 @@ set -a
 source .env
 set +a
 
-export CUDA_VISIBLE_DEVICES=1
+export CUDA_VISIBLE_DEVICES=4
 
 DEVICE="cuda"
 TRAIN_SPLIT="train"
@@ -39,7 +39,7 @@ for DATASET in "coco2017_instances"; do
     DF_ROOT="${FLICKR_DF_ROOT}"
     FORGET_SPECS=(
       "girl:4"
-      "dog:4"
+      "boy:4"
     )
   else
     echo "Unknown dataset: ${DATASET}"
@@ -49,7 +49,7 @@ for DATASET in "coco2017_instances"; do
   for FORGET_SPEC in "${FORGET_SPECS[@]}"; do
     IFS=":" read -r FORGET_CLASSES ITEM_NUM <<< "${FORGET_SPEC}"
     TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
-    OUTPUT_DIR="finegrained/ckpt/original/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
+    OUTPUT_DIR="finegrained/ckpt/vitb-32/original/${DATASET}/${FORGET_CLASSES}_${ITEM_NUM}"
 
 
     python finegrained/clip_finegrained_baseline.py \
