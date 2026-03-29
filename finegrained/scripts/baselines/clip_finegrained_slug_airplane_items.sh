@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
 set -a
 source .env
 set +a
-export CUDA_VISIBLE_DEVICES=3
+
+export CUDA_VISIBLE_DEVICES=1
 
 DEVICE="cuda"
 DATASET="coco2017_instances"
@@ -11,28 +13,20 @@ FORGET_CLASSES="airplane"
 TRAIN_SPLIT="train"
 VAL_SPLIT="val"
 TRAIN_MAX_PER_CLASS=80
-ITEM_NUM_LIST=(2 3 4 5 6 7)
+ITEM_NUM_LIST=(2 3 4 5 6)
 COCO_ROOT="/datanfs4/shenruoyan/datasets/coco2017"
 COCO_DF_ROOT="/datanfs4/shenruoyan/FMUClip/data/classification/coco2017_instances"
 FLICKR_INSTANCES_FILE="/datanfs4/shenruoyan/FMUClip/data/classification/flickr30k_entities/train/meta/instances.json"
 FLICKR_IMAGE_ROOT="/datanfs4/shenruoyan/datasets/flickr30k/flickr30k-images"
-SAM3_MASK_DIR="/datanfs4/shenruoyan/FMUClip/finegrained/mask"
+RETAIN_ITEM_FOLDER="item1"
 BATCH_SIZE=16
 NUM_WORKERS=0
-MAX_EPOCH=5
-LR="1e-5"
-WEIGHT_DECAY=3e-4
-LAMBDA_RTF=2
-LAMBDA_CE=1
-SAMPLE_K=5
 RETAIN_TOPK=5
-METHOD="gradcam"
-LAYER=1
-FORGET_LAYER=1
-RETAIN_LAYER=1
+SLUG_RATIO_DIVISOR=6
+SLUG_SEARCH_MULTIPLIERS="0.5,1.0,2.0"
+SLUG_MAX_CANDIDATES=3
 DF_ROOT="${COCO_DF_ROOT}"
-RUN_TAG="$(date +%m%d%H%M%S)"
-BASE_OUTPUT_DIR="finegrained/ckpt/sweep_${METHOD}_scale/${DATASET}/${FORGET_CLASSES}_item_ablation"
+BASE_OUTPUT_DIR="finegrained/ckpt/sweep_slug_scale/${DATASET}/${FORGET_CLASSES}_item_ablation"
 SUMMARY_CSV="${BASE_OUTPUT_DIR}/summary.csv"
 
 mkdir -p "${BASE_OUTPUT_DIR}"
@@ -40,27 +34,25 @@ echo "train_item_folder,acc_f,acc_c,acc_r" > "${SUMMARY_CSV}"
 
 for ITEM_NUM in "${ITEM_NUM_LIST[@]}"; do
   TRAIN_ITEM_FOLDER="item${ITEM_NUM}"
-  RETAIN_CACHE_PATH="/datanfs4/shenruoyan/FMUClip/finegrained/mask/${DATASET}/${TRAIN_ITEM_FOLDER}/retain_cache_${FORGET_CLASSES}.pt"
-  OUTPUT_DIR="${BASE_OUTPUT_DIR}/${TRAIN_ITEM_FOLDER}/trainmax_${TRAIN_MAX_PER_CLASS}/LR_${LR}/L${LAYER}_FL${FORGET_LAYER}_RL${RETAIN_LAYER}"
+  OUTPUT_DIR="${BASE_OUTPUT_DIR}/${TRAIN_ITEM_FOLDER}/trainmax_${TRAIN_MAX_PER_CLASS}/ratio_${SLUG_RATIO_DIVISOR}"
 
+  echo "METHOD: slug"
   echo "DATASET: ${DATASET}"
   echo "FORGET_CLASSES: ${FORGET_CLASSES}"
   echo "TRAIN_ITEM_FOLDER: ${TRAIN_ITEM_FOLDER}"
   echo "TRAIN_MAX_PER_CLASS: ${TRAIN_MAX_PER_CLASS}"
   echo "OUTPUT_DIR: ${OUTPUT_DIR}"
 
-  python finegrained/clip_unlearn_finegrained.py \
-    --do_eval \
+  python finegrained/baselines/clip_unlearn_slug.py \
     --dataset "${DATASET}" \
     --forget_classes "${FORGET_CLASSES}" \
-    --coco_root "${COCO_ROOT}" \
     --df_root "${DF_ROOT}" \
+    --coco_root "${COCO_ROOT}" \
     --flickr_instances_file "${FLICKR_INSTANCES_FILE}" \
     --flickr_image_root "${FLICKR_IMAGE_ROOT}" \
-    --sam3_mask_dir "${SAM3_MASK_DIR}" \
-    --retain_cache_path "${RETAIN_CACHE_PATH}" \
     --train_item_folder "${TRAIN_ITEM_FOLDER}" \
     --train_max_per_class "${TRAIN_MAX_PER_CLASS}" \
+    --retain_item_folder "${RETAIN_ITEM_FOLDER}" \
     --train_split "${TRAIN_SPLIT}" \
     --val_split "${VAL_SPLIT}" \
     --test_item_folder item1 \
@@ -71,18 +63,11 @@ for ITEM_NUM in "${ITEM_NUM_LIST[@]}"; do
     --output_dir "${OUTPUT_DIR}" \
     --batch_size "${BATCH_SIZE}" \
     --num_workers "${NUM_WORKERS}" \
-    --max_epoch "${MAX_EPOCH}" \
-    --lr "${LR}" \
-    --log_interval 1 \
-    --weight_decay "${WEIGHT_DECAY}" \
-    --method "${METHOD}" \
-    --lambda_rtf "${LAMBDA_RTF}" \
-    --lambda_ce "${LAMBDA_CE}" \
-    --sample_k "${SAMPLE_K}" \
-    --layer "${LAYER}" \
-    --forget_layer "${FORGET_LAYER}" \
-    --retain_layer "${RETAIN_LAYER}" \
     --retain_topk "${RETAIN_TOPK}" \
+    --slug_parts all \
+    --slug_ratio_divisor "${SLUG_RATIO_DIVISOR}" \
+    --slug_search_multipliers "${SLUG_SEARCH_MULTIPLIERS}" \
+    --slug_max_candidates_per_part "${SLUG_MAX_CANDIDATES}" \
     --device "${DEVICE}"
 
   CFG_PATH="${OUTPUT_DIR}/config.json"
